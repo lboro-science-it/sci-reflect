@@ -12,3 +12,11 @@
 */
 
 Route::post('launch', 'LtiController@launch');
+
+// activity routes
+Route::get('a/{activity}', 'ActivityController@show');
+Route::put('a/{activity}', 'ActivityController@create');
+Route::put('a/{activity}/close', 'ActivityController@close');
+Route::put('a/{activity}/open', 'ActivityController@open');
+
+Route::get('eject', 'ActivityController@eject');

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Activity;
+use Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -26,6 +28,15 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        // bind the activity_user pivot to both $activity and Auth::user()
+        Route::bind('activity', function($value) {
+            $activity = Activity::find($value);
+            $user = $activity->users()->where('user_id', '=', Auth::user()->id)->first();
+            $activity->setRelation('pivot', $user->pivot);
+            Auth::user()->setRelation('pivot', $user->pivot);
+            return $activity;
+        });
     }
 
     /**
