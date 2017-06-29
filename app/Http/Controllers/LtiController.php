@@ -22,7 +22,7 @@ class LtiController extends Controller
             $tool->handleRequest();
             if ($tool->ok) {
                 Auth::loginUsingId($tool->user_id);
-                return redirect('activity/' . $tool->activity_id);
+                return redirect('a/' . $tool->activity_id);
             } else {
                 return view('lti.error');
             }
