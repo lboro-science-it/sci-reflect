@@ -13,15 +13,16 @@ class LtiToolProvider extends ToolProvider
     {
         // find or create the user based on launcher email
         $user = User::firstOrCreate([
-            'email' => $this->user->email,
-            'name' => $this->user->fullname
+            'email' => $this->user->email
         ]);
+        $user->name = $this->user->fullname;
+        $user->save();
         $this->user_id = $user->id;
 
         // find or create an activity record based on launch
         $activity = Activity::firstOrCreate([
             'resource_link_record_id' => $this->resourceLink->getRecordId(),
-            'consumer_pk' => $this->consumer->getRecordId(),
+            'consumer_pk' => $this->consumer->getRecordId()
         ]);
         if ($activity->wasRecentlyCreated) {
             $activity->name = $this->resourceLink->title . ' (' . $this->context->title . ')';
@@ -34,7 +35,9 @@ class LtiToolProvider extends ToolProvider
         if (!$user->activities()->where('activity_id', '=', $this->activity_id)->count()) {
             $user->activities()->attach($activity, [
                 'role' => $role,
-                'lti_user_id' => $this->user->ltiUserId
+                'lti_user_id' => $this->user->ltiUserId,
+                'current_page' => $role == 'staff' ? null : 1,
+                'current_round' => $role == 'staff' ? null : 1
             ]);
         } else {
             $user->activities()->updateExistingPivot($this->activity_id, [

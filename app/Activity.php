@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Activity extends Model
 {
     protected $fillable = [
-        'close_date', 'format', 'name', 'open_date'
+        'close_date', 'format', 'name', 'open_date', 'resource_link_record_id', 'consumer_pk',
     ];
 
     protected $hidden = [
