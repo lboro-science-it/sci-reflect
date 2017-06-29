@@ -41,6 +41,6 @@ class Activity extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User')->withPivot(['complete', 'current_page_id', 'current_round_id', 'lti_user_id', 'role']);
+        return $this->belongsToMany('App\User')->withPivot(['complete', 'current_page', 'current_round', 'lti_user_id', 'role'])->withTimestamps();
     }
 }
