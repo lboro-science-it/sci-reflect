@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind('SelectionHelper', function($app) {
+            return new \App\Reflect\SelectionHelper($app->request);
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('Reflect', function($app) {
+            return new \App\Reflect\Reflect($app->request);
+        });
     }
 }

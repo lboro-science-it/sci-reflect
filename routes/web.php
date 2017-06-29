@@ -18,5 +18,7 @@ Route::get('a/{activity}', 'ActivityController@show');
 Route::put('a/{activity}', 'ActivityController@create');
 Route::put('a/{activity}/close', 'ActivityController@close');
 Route::put('a/{activity}/open', 'ActivityController@open');
-
 Route::get('eject', 'ActivityController@eject');
+
+// student page routes
+Route::post('a/{activity}/student/r/{round}/p/{page}', 'StudentPageController@process');
