@@ -17,6 +17,10 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer(
             'activity.*', 'App\Http\ViewComposers\ActivityComposer'
         );
+
+        View::composer(
+            'activity.student', 'App\Http\ViewComposers\StudentActivityComposer'
+        );
     }
 
     /**

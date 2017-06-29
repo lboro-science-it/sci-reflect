@@ -4,6 +4,7 @@
 
 Student view. Todo: <br>
 Explanatory Text | Current Round | Current Round % Complete | Previous Rounds | Forthcoming Rounds | Current Skills | Strongest Skills | Skills to Improve<br>
-Resume link
+
+@include('activity.partials._resumelink')
 
 @endsection
