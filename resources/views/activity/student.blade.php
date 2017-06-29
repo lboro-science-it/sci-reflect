@@ -2,6 +2,8 @@
 
 @section('content')
 
-Student view of activity
+Student view. Todo: <br>
+Explanatory Text | Current Round | Current Round % Complete | Previous Rounds | Forthcoming Rounds | Current Skills | Strongest Skills | Skills to Improve<br>
+Resume link
 
 @endsection
