@@ -19,8 +19,8 @@ class CreateActivityUserTable extends Migration
             $table->integer('user_id');
             $table->enum('role', ['staff', 'student'])->default('student');
             $table->integer('lti_user_id')->nullable();
-            $table->integer('current_page_id')->nullable();
-            $table->integer('current_round_id')->nullable();
+            $table->integer('current_page')->default(1)->nullable();
+            $table->integer('current_round')->default(1)->nullable();
             $table->boolean('complete')->default(false);
             $table->timestamps();
         });

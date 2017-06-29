@@ -11,6 +11,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        if (App::environment('local')) {
+            $this->call(Lti2ConsumerTableSeeder::class);
+            $this->call(RoundTableSeeder::class);
+            $this->call(PageTableSeeder::class);
+            $this->call(SkillTableSeeder::class);
+            $this->call(BlockTableSeeder::class);
+            $this->call(IndicatorTableSeeder::class);
+            $this->call(ChoiceTableSeeder::class);
+        }
     }
 }
