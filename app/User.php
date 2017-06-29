@@ -26,4 +26,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function activities()
+    {
+        return $this->belongsToMany('App\Activity')->withPivot(['complete', 'current_page_id', 'current_round_id', 'lti_user_id', 'role']);
+    }
 }
