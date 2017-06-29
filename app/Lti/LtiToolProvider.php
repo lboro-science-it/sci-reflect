@@ -24,7 +24,7 @@ class LtiToolProvider extends ToolProvider
             'consumer_pk' => $this->consumer->getRecordId(),
         ]);
         if ($activity->wasRecentlyCreated) {
-            $activity->name = $this->resourceLink->title . ' (' . $this->context.title . ')';
+            $activity->name = $this->resourceLink->title . ' (' . $this->context->title . ')';
             $activity->save();
         }
         $this->activity_id = $activity->id;
