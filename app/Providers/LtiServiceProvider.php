@@ -20,7 +20,7 @@ class LtiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the application services.
+     * Registers the LtiToolProvider interface to the IMSGlobal library.
      *
      * @return void
      */

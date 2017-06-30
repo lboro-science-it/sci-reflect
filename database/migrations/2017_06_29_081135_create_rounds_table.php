@@ -13,11 +13,13 @@ class CreateRoundsTable extends Migration
      */
     public function up()
     {
-        Schema::create('rounds', function (Blueprint $table) {
+        $formatClasses = app('Reflect')->getFormatClasses();
+
+        Schema::create('rounds', function (Blueprint $table) use ($formatClasses) {
             $table->increments('id');
             $table->integer('activity_id')->nullable();
             $table->integer('inherit_from_round_id')->nullable();
-            $table->enum('format', ['linear', 'nonlinear'])->default('linear');
+            $table->enum('format', $formatClasses)->default($formatClasses[0]);
             $table->boolean('keep_visible')->default(true);
             $table->dateTime('open_date')->nullable();
             $table->dateTime('close_date')->nullable();

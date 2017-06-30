@@ -4,29 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Page;
-use App\Reflect\Reflect;
-use App\Reflect\SelectionHelper;
 use App\Round;
+use Auth;
 use Illuminate\Http\Request;
 
 class StudentPageController extends Controller
 {
-    protected $selectionHelper;
-
-    public function __construct(SelectionHelper $selectionHelper)
+    /**
+     * Processes submitted data, updating student data in DB,
+     * returns view according to the action submitted & the round format.
+     *
+     * @return View
+     */
+    public function process(Activity $activity, Round $round, Page $page)
     {
-        $this->selectionHelper = $selectionHelper;
-    }
-
-    public function process(Activity $activity, Round $round, Page $page, Reflect $reflect)
-    {
-        // store responses from the HTTP request
-        // todo: check role/permissions
-        $selections = $this->requestHelper->getNumericParameters();
-        $this->selectionHelper->insertOrUpdateSelections($round, Auth::user());
-
-        // do anything necessary for the submit action (next, prev, start, done)
-        // returns a view with data - either page or chart
-        return $reflect->processAction();
+        $formatClass = app($round->format);
+        // todo: check role / permissions
+        return $formatClass->processAction($round, $page, Auth::user());
     }
 }

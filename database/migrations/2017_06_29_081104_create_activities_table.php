@@ -13,7 +13,9 @@ class CreateActivitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('activities', function (Blueprint $table) {
+        $formatClasses = app('Reflect')->getFormatClasses();
+
+        Schema::create('activities', function (Blueprint $table) use ($formatClasses) {
             $table->increments('id');
             $table->string('name', 255)->nullable();
             $table->integer('resource_link_record_id')->nullable();
@@ -21,7 +23,7 @@ class CreateActivitiesTable extends Migration
             $table->dateTime('open_date')->nullable();
             $table->dateTime('close_date')->nullable();
             $table->enum('status', ['new', 'design', 'open', 'closed'])->default('new');
-            $table->enum('format', ['linear', 'nonlinear'])->default('linear');
+            $table->enum('format', $formatClasses)->default($formatClasses[0]);
             $table->timestamps();
         });
     }

@@ -11,11 +11,7 @@
         <label for="close_date">Close date (leave blank for manual open/close)</label>
         <input name="close_date" type="datetime-local" class="form-control">
 
-        <label for="format">Format</label>
-        <select name="format" class="form-control">
-            <option value="linear" selected>Linear</option>
-            <option value="nonlinear">Nonlinear</option>
-        </select>
+        @include('activity.partials._format')
 
         <button type="submit" class="btn btn-primary">Save</button>
     </div>

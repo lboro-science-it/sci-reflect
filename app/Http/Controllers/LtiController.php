@@ -10,13 +10,15 @@ class LtiController extends Controller
 {
 
     /**
-     * Handle LTI launch or return form for manual resubmission
+     * Handles LTI launch, returning either the activity or a form
+     * for manual resubmission to ensure cookie created in iframe.
      *
-     * @return View
+     * @return View or Redirect
      */
     public function launch(Request $request, LtiToolProvider $tool)
     {
-        // todo: get activity record to see if it's open
+        // todo: get activity record to see if it's open so we can
+        // display closed directly without showing the splash
 
         if ($request->session()->has('live')) {     // cookies are working
             $tool->handleRequest();

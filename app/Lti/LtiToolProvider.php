@@ -9,6 +9,14 @@ use IMSGlobal\LTI\ToolProvider\ToolProvider;
 
 class LtiToolProvider extends ToolProvider
 {
+    /**
+     * Identifies our User and Activity models based on the launching data,
+     * creating them if necessary, and setting pivot data.
+     * These can then be accessed from controller via $tool->user_id and
+     * $tool->activity_id. User is NOT authed here.
+     *
+     * @return void
+     */
     function onLaunch() 
     {
         // find or create the user based on launcher email
@@ -46,6 +54,14 @@ class LtiToolProvider extends ToolProvider
         }
     }
 
+    /**
+     * Manually handle an error following $tool->handleRequest().
+     * Setting $this->ok to false can be tested in the controller, 
+     * if (!$tool->ok). We could also add message, etc.
+     * return true overrides the default onError behaviour of parent class.
+     *
+     * @return bool
+     */
     function onError() 
     {
         $this->ok = false;

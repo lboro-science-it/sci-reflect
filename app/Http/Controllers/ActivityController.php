@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class ActivityController extends Controller
 {
+
+    /**
+     * Set status of activity to closed, returns activity dashboard view.
+     *
+     * @return View
+     */
     public function close(Activity $activity)
     {
         // todo: checking user role
@@ -17,6 +23,11 @@ class ActivityController extends Controller
         return view('activity.staff');
     }
 
+    /**
+     * Handles a submitted activity create form, generating default content.
+     *
+     * @return View
+     */
     public function create(Request $request, Activity $activity)
     {
         // todo: checking user role
@@ -39,6 +50,11 @@ class ActivityController extends Controller
         return view('activity.design');
     }
 
+    /**
+     * Logs the authed user out of the application.
+     *
+     * @return View
+     */
     public function eject()
     {
         Auth::logout();
@@ -47,6 +63,11 @@ class ActivityController extends Controller
         return view('eject');
     }
 
+    /**
+     * Sets status of activity to open, returns staff activity dashboard.
+     *
+     * @return View
+     */
     public function open(Activity $activity)
     {
         // todo: checking user role
@@ -57,7 +78,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * Return activity view according to status of activity and user's role
+     * Returns activity view according to status of activity and user's role.
      *
      * @return View
      */
