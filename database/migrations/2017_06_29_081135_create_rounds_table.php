@@ -13,7 +13,7 @@ class CreateRoundsTable extends Migration
      */
     public function up()
     {
-        $formatClasses = app('Reflect')->getFormatClasses();
+        $formatClasses = app('Reflect')->getFormatClassNames();
 
         Schema::create('rounds', function (Blueprint $table) use ($formatClasses) {
             $table->increments('id');

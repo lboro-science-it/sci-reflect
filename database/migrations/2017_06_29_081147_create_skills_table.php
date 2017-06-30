@@ -19,7 +19,6 @@ class CreateSkillsTable extends Migration
             $table->string('title', 50)->nullable();
             $table->text('description')->nullable();
             $table->text('info_link')->nullable();
-            $table->integer('page_position')->nullable();
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ class CreateActivitiesTable extends Migration
      */
     public function up()
     {
-        $formatClasses = app('Reflect')->getFormatClasses();
+        $formatClasses = app('Reflect')->getFormatClassNames();
 
         Schema::create('activities', function (Blueprint $table) use ($formatClasses) {
             $table->increments('id');
