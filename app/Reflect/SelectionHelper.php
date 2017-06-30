@@ -15,7 +15,7 @@ class SelectionHelper
     }
 
     /**
-     * Deletes all selections with the id in the passed array.
+     * Deletes all selections whose id is present in passed array.
      * @return void
      */
     private function deleteSelections($selectionsToDelete)
@@ -27,9 +27,8 @@ class SelectionHelper
     }
 
     /**
-     * Returns an array for each indicator in $indicators with the $user's
-     * selection in the given $round, or null if the user has not responded.
-     * Array can be used in views in the format:
+     * Returns an array with $user's response for each indicator in $indicators
+     * in $round, or null if there is no response. Use in views:
      * @if($existingResponses[$indicator->id] == $choice->id) checked @endif
      * 
      * @return array
@@ -48,7 +47,8 @@ class SelectionHelper
     }
 
     /**
-     * Returns a key => value array of POST parameters where the key is numeric
+     * Returns a key => value array of POST parameters where key is numeric
+     * selection_id => choice_id
      * @return array
      */
     private function getSelectionsFromRequest()
@@ -64,8 +64,7 @@ class SelectionHelper
     }
 
     /**
-     * Gets any selections from the current POST request and inserts them
-     * for the $user in the current $round
+     * Updates $user's database selections for the $round based on POSTed data.
      * @return void
      */
     public function insertOrUpdateSelections($round, $user)

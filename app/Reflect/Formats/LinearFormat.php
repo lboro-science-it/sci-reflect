@@ -8,7 +8,7 @@ use stdClass;
 
 class LinearFormat extends BaseFormat
 {
-    protected $request;
+    protected $activity, $selectionHelper, $reflect, $request;
 
     /**
      * Register format-specific actions (i.e. other than next, prev, done, resume)
@@ -28,6 +28,7 @@ class LinearFormat extends BaseFormat
     {
         $this->request = $request;
         $this->actions = array_merge($this->actions, $this->formatActions);
+        $this->activity = $request->route('activity');
         $this->selectionHelper = app('SelectionHelper');
         $this->reflect = app('Reflect');
     }
@@ -38,6 +39,10 @@ class LinearFormat extends BaseFormat
         // return the chart view with data
     }
 
+    /**
+     * Prepares $page data specific to $round, with $user's responses.
+     * @return Object
+     */
     public function getData($round, $page, $user)
     {
         $data = new stdClass();
@@ -57,6 +62,10 @@ class LinearFormat extends BaseFormat
         return $data;
     }
 
+    /**
+     * Returns the next page in the round.
+     * @return Page
+     */
     public function getNextPage($page, $round)
     {
         if ($this->hasNextPage($page, $round)) {
@@ -66,6 +75,10 @@ class LinearFormat extends BaseFormat
         return $page;
     }
 
+    /**
+     * Returns the previous page in the round.
+     * @return Page
+     */
     public function getPrevPage($page, $round)
     {
         if ($this->hasPrevPage($page, $round)) {
@@ -75,26 +88,51 @@ class LinearFormat extends BaseFormat
         return $page;
     }
 
+    /**
+     * Returns true if $page has a next page in $round.
+     * @return bool
+     */
     public function hasNextPage($page, $round)
     {
         return $page->pivot->page_number < $round->pages->count();
     }
 
+    /**
+     * Returns the true if $page has a prev page in $round.
+     * @return bool
+     */
     public function hasPrevPage($page, $round)
     {
         return $page->pivot->page_number > 1;
     }
 
+    /**
+     * Action for when 'next' is clicked
+     * @return View
+     */
     public function next($round, $page, $user)
     {
+        // todo: update user pivot table
         $nextPage = $this->getNextPage($page, $round);
+        $user->activities()->updateExistingPivot($this->activity->id, [
+            'current_round' => $round->round_number,
+            'current_page' => $nextPage->pivot->page_number
+        ]);
         return view('page.linear.show')
         ->with('pageData', $this->getData($round, $nextPage, $user));
     }
 
+    /**
+     * Action for when 'prev' is clicked
+     * @return View
+     */
     public function prev($round, $page, $user)
     {
         $prevPage = $this->getPrevPage($page, $round);
+        $user->activities()->updateExistingPivot($this->activity->id, [
+            'current_round' => $round->round_number,
+            'current_page' => $prevPage->pivot->page_number
+        ]);
         return view('page.linear.show')
         ->with('pageData', $this->getData($round, $prevPage, $user));
     }
@@ -112,6 +150,10 @@ class LinearFormat extends BaseFormat
         return $this->$action($round, $page, $user);
     }
 
+    /**
+     * Action for when 'resume' is clicked.
+     * @return View
+     */
     public function resume($round, $page, $user)
     {
         return view('page.linear.show')
