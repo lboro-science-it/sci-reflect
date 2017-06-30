@@ -15,6 +15,11 @@ class Activity extends Model
         'consumer_pk', 'resource_link_record_id', 'status'
     ];
 
+    public function choices()
+    {
+        return $this->hasMany('App\Choice');
+    }
+
     public function isOpen()
     {
         if ($this->status == 'open') {

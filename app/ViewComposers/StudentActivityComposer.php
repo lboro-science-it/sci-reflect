@@ -23,12 +23,12 @@ class StudentActivityComposer
         // for the view i.e. multiple categories w/ resume links or just the round resume link
         // get percentage completion, selections, etc.
 
-        $currentRound = $this->activity->pivot->current_round;
-        $currentPage = $this->activity->pivot->current_page;
-        if (is_null($currentRound) || is_null($currentPage)) {
+        $currentRoundNumber = $this->activity->pivot->current_round;
+        $currentPageNumber = $this->activity->pivot->current_page;
+        if (is_null($currentRoundNumber) || is_null($currentPageNumber)) {
             $resumeLink = false;
         } else {
-            $resumeLink = url('a/' . $this->activity->id . '/student/r/' . $currentRound . '/p/' . $currentPage);
+            $resumeLink = url('a/' . $this->activity->id . '/student/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
         }
         $view->with('resumeLink', $resumeLink);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\ViewComposers;
 
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ActivityFormatComposer

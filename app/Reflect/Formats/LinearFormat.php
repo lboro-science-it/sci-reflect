@@ -4,6 +4,7 @@ namespace App\Reflect\Formats;
 
 use App\Reflect\Formats\BaseFormat;
 use Illuminate\Http\Request;
+use stdClass;
 
 class LinearFormat extends BaseFormat
 {
@@ -28,6 +29,7 @@ class LinearFormat extends BaseFormat
         $this->request = $request;
         $this->actions = array_merge($this->actions, $this->formatActions);
         $this->selectionHelper = app('SelectionHelper');
+        $this->reflect = app('Reflect');
     }
 
     public function done()
@@ -38,19 +40,63 @@ class LinearFormat extends BaseFormat
 
     public function getData($round, $page, $user)
     {
+        $data = new stdClass();
 
+        $indicators = $page->getIndicatorIds();
+
+        $data->selections = $this->selectionHelper->getSelectionsFromIndicators($indicators, $round, $user);
+        $data->choices = $this->reflect->getChoices();
+        $data->content = $page->getContent();
+        $data->hasNext = $this->hasNextPage($page, $round);
+        $data->hasPrev = $this->hasPrevPage($page, $round);
+        $data->hasDone = $round->isComplete($user);
+        $data->roundNumber = $round->round_number;
+        $data->pageNumber = $page->pivot->page_number;
+        $data->totalPages = $round->pages->count();
+
+        return $data;
     }
 
-    public function next()
+    public function getNextPage($page, $round)
     {
-        // use current round / page to determine next page
-        // return view + any of user's existing responses etc
+        if ($this->hasNextPage($page, $round)) {
+            return $round->pages->where('pivot.page_number', $page->pivot->page_number + 1)->first();
+        }
+
+        return $page;
     }
 
-    public function prev()
+    public function getPrevPage($page, $round)
     {
-        // use current round / page to determine prev page
-        // return view + user's existing responses
+        if ($this->hasPrevPage($page, $round)) {
+            return $round->pages->where('pivot.page_number', $page->pivot->page_number - 1)->first();
+        }
+
+        return $page;
+    }
+
+    public function hasNextPage($page, $round)
+    {
+        return $page->pivot->page_number < $round->pages->count();
+    }
+
+    public function hasPrevPage($page, $round)
+    {
+        return $page->pivot->page_number > 1;
+    }
+
+    public function next($round, $page, $user)
+    {
+        $nextPage = $this->getNextPage($page, $round);
+        return view('page.linear.show')
+        ->with('pageData', $this->getData($round, $nextPage, $user));
+    }
+
+    public function prev($round, $page, $user)
+    {
+        $prevPage = $this->getPrevPage($page, $round);
+        return view('page.linear.show')
+        ->with('pageData', $this->getData($round, $prevPage, $user));
     }
 
     /**
@@ -68,7 +114,7 @@ class LinearFormat extends BaseFormat
 
     public function resume($round, $page, $user)
     {
-        return view('page.show')
+        return view('page.linear.show')
         ->with('pageData', $this->getData($round, $page, $user));
     }
 }

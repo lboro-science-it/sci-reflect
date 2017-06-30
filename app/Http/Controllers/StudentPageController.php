@@ -20,6 +20,6 @@ class StudentPageController extends Controller
     {
         $formatClass = app($round->format);
         // todo: check role / permissions
-        return $formatClass->processAction($round, $page, Auth::user());
+        return $formatClass->process($round, $page, Auth::user());
     }
 }

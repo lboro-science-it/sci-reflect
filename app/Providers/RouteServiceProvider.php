@@ -40,7 +40,13 @@ class RouteServiceProvider extends ServiceProvider
         // bind round based on round number in activity
         Route::bind('round', function($value) {
             $activity = $this->app->request->route('activity');
-            $round = $activity->rounds()->where('round_number', '=', $value)->with('pages')->first();
+            $round = $activity->rounds()->where('round_number', '=', $value)
+                                        ->with([
+                                            'pages',
+                                            'pages.blocks',
+                                            'pages.skills',
+                                            'pages.skills.indicators'
+                                        ])->first();
             return $round;
         });
 

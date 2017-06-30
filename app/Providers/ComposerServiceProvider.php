@@ -25,6 +25,10 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer(
             'activity.partials._format', 'App\Http\ViewComposers\ActivityFormatComposer'
         );
+
+        View::composer(
+            'page.*', 'App\Http\ViewComposers\PageComposer'
+        );
     }
 
     /**
