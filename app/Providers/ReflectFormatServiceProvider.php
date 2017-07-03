@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ReflectFormatProvider extends ServiceProvider
+class ReflectFormatServiceProvider extends ServiceProvider
 {
     /**
      * Binds each Format Class from App\Reflect\Reflect.php's $formats
