@@ -80,7 +80,7 @@ class RatingsHelper
         $ratings = $this->getRatings();
         $ratingsArray = $ratings->toArray();
 
-        $chartData->values = array_column($ratingsArray, 'value');
+        $chartData->values = array_column($ratingsArray, 'rating');
 
         $skills = array_column($ratingsArray, 'skill');
         $chartData->labels = array_column($skills, 'title');

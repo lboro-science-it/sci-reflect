@@ -15,7 +15,7 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer(
-            'activity.*', 'App\Http\ViewComposers\ActivityComposer'
+            '*', 'App\Http\ViewComposers\ActivityComposer'
         );
 
         View::composer(

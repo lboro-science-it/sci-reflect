@@ -14,6 +14,8 @@ class ActivityComposer
 
     public function compose(View $view)
     {
-        $view->with('activity', $this->activity);
+        $canEdit = $this->activity->role == 'staff' ? true : false;
+        $view->with('activity', $this->activity)
+             ->with('canEdit', $canEdit);
     }
 }
