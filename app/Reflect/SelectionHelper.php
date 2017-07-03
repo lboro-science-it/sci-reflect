@@ -3,6 +3,7 @@
 namespace App\Reflect;
 
 use DB;
+use Debugbar;
 use Illuminate\Http\Request;
 
 class SelectionHelper
@@ -19,12 +20,10 @@ class SelectionHelper
      * $user->selections relationship to match the database.
      * @return void
      */
-    private function deleteSelections($selectionsToDelete, $user)
+    private function deleteSelections($selectionsToDelete)
     {
         if (count($selectionsToDelete) > 0) {
             DB::table('selections')->whereIn('id', $selectionsToDelete)->delete();
-            $userSelections = $user->selections;
-            $user->setRelation('selections', $userSelections->except($selectionsToDelete));
         }
     }
 
@@ -38,6 +37,9 @@ class SelectionHelper
     public function getSelectionsFromIndicators($indicators, $round, $user)
     {
         $userSelections = $user->selections->where('round_id', '=', $round->id);
+
+        Debugbar::addMessage('$user->selections as in getSelectionsFromIndicators');
+        Debugbar::info($user->selections);
 
         $existingSelections = array();
         foreach ($indicators as $indicatorId) {
@@ -81,7 +83,7 @@ class SelectionHelper
 
         $existingSelections = $user->selections->where('round_id', '=', $round->id);
 
-        $selectionsToInsert = collect(array());
+        $selectionsToInsert = array();
         $selectionsToDelete = array();
 
         foreach($selections as $indicatorId => $choiceId) {
@@ -94,14 +96,6 @@ class SelectionHelper
 
             // if there is no response the same as the new response, insert it
             if (!($existingSelection && $existingSelection->choice_id == $choiceId)) {
-                $selection = new \App\Selection;
-                $selection->round_id = $round->id;
-                $selection->indicator_id = $indicatorId;
-                $selection->user_id = $user->id;
-                $selection->choice_id = $choiceId;
-                $selectionsToInsert->push($selection);
-
-/*
                 array_push($selectionsToInsert, [
                     'round_id' => $round->id,
                     'indicator_id' => $indicatorId,
@@ -109,13 +103,16 @@ class SelectionHelper
                     'choice_id' => $choiceId,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
-                ]);*/
+                ]);
             }
 
         }
 
-        $this->deleteSelections($selectionsToDelete, $user);
-        $this->insertSelections($selectionsToInsert, $user);
+        $this->deleteSelections($selectionsToDelete);
+        $this->insertSelections($selectionsToInsert);
+        $user->load(['selections' => function ($q) use ($round) {
+            $q->where('round_id', '=', $round->id);
+        }]);
     }
 
     /**
@@ -123,12 +120,10 @@ class SelectionHelper
      * $user->selections to match updated database record.
      * @return void
      */
-    public function insertSelections($selectionsToInsert, $user)
+    public function insertSelections($selectionsToInsert)
     {
-        if ($selectionsToInsert->count() > 0) {
-            DB::table('selections')->insert($selectionsToInsert->toArray());
-            $userSelections = $user->selections;
-            $user->setRelation('selections', $userSelections->merge($selectionsToInsert));
+        if (count($selectionsToInsert) > 0) {
+            DB::table('selections')->insert($selectionsToInsert);
         }
     }
 }
