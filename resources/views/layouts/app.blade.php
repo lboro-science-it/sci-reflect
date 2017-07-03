@@ -27,10 +27,12 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('a/' . $activity->id) }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
+                    @if($activity)
+                        <!-- Branding Image -->
+                        <a class="navbar-brand" href="{{ url('a/' . $activity->id) }}">
+                            {{ config('app.name', 'Laravel') }}
+                        </a>
+                    @endif
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -41,10 +43,9 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
+                        <h4 class="navbar-text">@yield('title')</h4>
 
-                        @else
+                        @if ($canEdit)
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -52,8 +53,10 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-
-
+                                        Edit Activity
+                                    </li>
+                                    <li>
+                                        Rate students
                                     </li>
                                 </ul>
                             </li>

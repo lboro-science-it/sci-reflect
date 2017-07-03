@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('title')
+
+{{ $activity->name }}
+
+@endsection
+
 @section('content')
 
 Staff view of activity.
