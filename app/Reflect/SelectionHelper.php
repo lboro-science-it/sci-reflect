@@ -2,8 +2,8 @@
 
 namespace App\Reflect;
 
-use Illuminate\Http\Request;
 use DB;
+use Illuminate\Http\Request;
 
 class SelectionHelper
 {
@@ -15,14 +15,16 @@ class SelectionHelper
     }
 
     /**
-     * Deletes all selections whose id is present in passed array.
+     * Deletes selections whose id is in $selectionsToDelete. Manually updates
+     * $user->selections relationship to match the database.
      * @return void
      */
-    private function deleteSelections($selectionsToDelete)
+    private function deleteSelections($selectionsToDelete, $user)
     {
         if (count($selectionsToDelete) > 0) {
-            DB::table('selections')->whereIn('id', $selectionsToDelete)
-            ->delete();
+            DB::table('selections')->whereIn('id', $selectionsToDelete)->delete();
+            $userSelections = $user->selections;
+            $user->setRelation('selections', $userSelections->except($selectionsToDelete));
         }
     }
 
@@ -79,7 +81,7 @@ class SelectionHelper
 
         $existingSelections = $user->selections->where('round_id', '=', $round->id);
 
-        $selectionsToInsert = array();
+        $selectionsToInsert = collect(array());
         $selectionsToDelete = array();
 
         foreach($selections as $indicatorId => $choiceId) {
@@ -92,6 +94,14 @@ class SelectionHelper
 
             // if there is no response the same as the new response, insert it
             if (!($existingSelection && $existingSelection->choice_id == $choiceId)) {
+                $selection = new \App\Selection;
+                $selection->round_id = $round->id;
+                $selection->indicator_id = $indicatorId;
+                $selection->user_id = $user->id;
+                $selection->choice_id = $choiceId;
+                $selectionsToInsert->push($selection);
+
+/*
                 array_push($selectionsToInsert, [
                     'round_id' => $round->id,
                     'indicator_id' => $indicatorId,
@@ -99,22 +109,26 @@ class SelectionHelper
                     'choice_id' => $choiceId,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
-                ]);
+                ]);*/
             }
+
         }
 
-        $this->deleteSelections($selectionsToDelete);
-        $this->insertSelections($selectionsToInsert);
+        $this->deleteSelections($selectionsToDelete, $user);
+        $this->insertSelections($selectionsToInsert, $user);
     }
 
     /**
-     * Inserts selections from passed array.
+     * Inserts selections based on models in $selectionsToInsert. Updates
+     * $user->selections to match updated database record.
      * @return void
      */
-    public function insertSelections($selectionsToInsert)
+    public function insertSelections($selectionsToInsert, $user)
     {
-        if (count($selectionsToInsert) > 0) {
-            DB::table('selections')->insert($selectionsToInsert);
+        if ($selectionsToInsert->count() > 0) {
+            DB::table('selections')->insert($selectionsToInsert->toArray());
+            $userSelections = $user->selections;
+            $user->setRelation('selections', $userSelections->merge($selectionsToInsert));
         }
     }
 }
