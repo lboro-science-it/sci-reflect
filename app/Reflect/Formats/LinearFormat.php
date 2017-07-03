@@ -38,9 +38,10 @@ class LinearFormat extends BaseFormat
 
     public function done()
     {
+        // todo: test for completion
         $chartData = $this->ratingsHelper->getChartData($this->round, $this->user);
 
-        // todo increment round on done.
+        $this->user->incrementRound();
 
         return view('chart.single')
         ->with('chartData', $chartData);

@@ -34,7 +34,27 @@ class User extends Authenticatable
 
     public function incrementRound()
     {
-        dd($this);
+        // todo: only do below if pivot exists (and other tests)
+
+        $currentRoundNumber = $this->pivot->current_round;
+
+        $activity = request()->route('activity')->with('rounds')->first();
+
+        $complete = true;
+        $roundNumber = null;
+        $pageNumber = null;
+
+        if ($currentRoundNumber < $activity->rounds->count()) {
+            $complete = false;
+            $roundNumber = $currentRoundNumber + 1;
+            $pageNumber = 1;
+        }
+
+        $this->activities()->updateExistingPivot($activity->id, [
+            'current_round' => $roundNumber,
+            'current_page' => $pageNumber,
+            'complete' => $complete
+        ]);
     }
 
     public function ratings()
