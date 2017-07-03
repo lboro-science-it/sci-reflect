@@ -15,4 +15,9 @@ class Selection extends Model
     {
         return $this->belongsTo('App\Indicator');
     }
+
+    public function round()
+    {
+        return $this->belongsTo('App\Round');
+    }
 }
