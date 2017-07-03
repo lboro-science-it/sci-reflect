@@ -38,10 +38,12 @@ class LinearFormat extends BaseFormat
 
     public function done()
     {
-        $data = $this->ratingsHelper->getChartData($this->round, $this->user);
+        $chartData = $this->ratingsHelper->getChartData($this->round, $this->user);
+
+        // todo increment round on done.
 
         return view('chart.single')
-        ->with('data', $data);
+        ->with('chartData', $chartData);
     }
 
     /**
@@ -52,16 +54,15 @@ class LinearFormat extends BaseFormat
     {
         $data = new stdClass();
 
-        $indicators = $page->getIndicatorIds();
-
-        $data->selections = $this->selectionHelper->getSelectionsFromIndicators($indicators, $this->round, $this->user);
         $data->choices = $this->reflect->getChoices();
         $data->content = $page->getContent();
+        $data->hasDone = $this->round->isComplete($this->user);
         $data->hasNext = $this->hasNextPage($page);
         $data->hasPrev = $this->hasPrevPage($page);
-        $data->hasDone = $this->round->isComplete($this->user);
-        $data->roundNumber = $this->round->round_number;
         $data->pageNumber = $page->pivot->page_number;
+        $data->pageTitle = $page->title;
+        $data->roundNumber = $this->round->round_number;
+        $data->selections = $this->selectionHelper->getSelectionsFromIndicators($page->getIndicatorIds(), $this->round, $this->user);
         $data->totalPages = $this->round->pages->count();
 
         return $data;
@@ -111,6 +112,12 @@ class LinearFormat extends BaseFormat
         return $page->pivot->page_number > 1;
     }
 
+    public function makeView($page)
+    {
+        return view($this->view)
+        ->with('pageData', $this->getData($page));
+    }
+
     /**
      * Action for when 'next' is clicked.
      * @return View
@@ -120,8 +127,7 @@ class LinearFormat extends BaseFormat
         $nextPage = $this->getNextPage($this->page);
         $this->updateUserPivot($nextPage);
 
-        return view($this->view)
-        ->with('pageData', $this->getData($nextPage));
+        return $this->makeView($nextPage);
     }
 
     /**
@@ -133,8 +139,7 @@ class LinearFormat extends BaseFormat
         $prevPage = $this->getPrevPage($this->page);
         $this->updateUserPivot($prevPage);
 
-        return view($this->view)
-        ->with('pageData', $this->getData($prevPage));
+        return $this->makeView($prevPage);
     }
 
     /**
@@ -162,8 +167,7 @@ class LinearFormat extends BaseFormat
      */
     public function resume()
     {
-        return view($this->view)
-        ->with('pageData', $this->getData($this->page));
+        return $this->makeView($this->page);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 @section('title')
 
-{{ $page->title }}
+{{ $pageData->pageTitle }}
 
 @endsection
 
