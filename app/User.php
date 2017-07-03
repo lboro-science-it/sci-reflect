@@ -32,6 +32,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Activity')->withPivot(['complete', 'current_page', 'current_round', 'lti_user_id', 'role'])->withTimestamps();
     }
 
+    public function ratings()
+    {
+        return $this->hasMany('App\Rating');
+    }
+
     public function selections()
     {
         return $this->hasMany('App\Selection');

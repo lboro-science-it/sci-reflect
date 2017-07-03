@@ -22,3 +22,6 @@ Route::get('eject', 'ActivityController@eject');
 
 // student page routes
 Route::post('a/{activity}/student/r/{round}/p/{page}', 'StudentPageController@process');
+
+// chart routes
+Route::get('a/{activity}/student/r/{round}/chart', 'StudentChartController@show');

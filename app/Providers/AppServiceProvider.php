@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind('SelectionHelper', function($app) {
+        $this->app->bind('RatingsHelper', function() {
+            return new \App\Reflect\RatingsHelper();
+        });
+
+        $this->app->singleton('SelectionHelper', function($app) {
             return new \App\Reflect\SelectionHelper($app->request);
         });
     }
