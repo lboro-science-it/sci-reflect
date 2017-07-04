@@ -25,6 +25,11 @@ class Reflect
         $this->request = $request;
     }
 
+    /**
+     * Returns a collection of choice options for users to choose between.
+     * Globally at present, todo: make these configurable (in sets) per-skill.
+     * @return collection
+     */
     public function getChoices()
     {
         $activity = $this->request->route('activity');

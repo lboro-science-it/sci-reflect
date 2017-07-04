@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
+    /**
+     * Returns the percentage complete (as a decimal) of the round,
+     * calculating how many selections the user has made versus how many
+     * total indicators are present in the round.
+     * @return integer
+     */
     public function getCompletion($user)
     {
         $selectionsHelper = app('SelectionsHelper');
@@ -19,6 +25,11 @@ class Round extends Model
         return $totalSelected / count($indicators);
     }
 
+    /**
+     * Returns an array of all indicators present in the round (via pages,
+     * skills, indicators)
+     * @return array
+     */
     public function getIndicators()
     {
         $indicators = array();
@@ -30,6 +41,11 @@ class Round extends Model
         return $indicators;
     }
 
+    /**
+     * Returns true if the user has made a selection for all indicators in the
+     * round.
+     * @return bool
+     */
     public function isComplete($user)
     {
         $selectionsHelper = app('SelectionsHelper');
@@ -38,6 +54,12 @@ class Round extends Model
         return !$selections->contains(null);
     }
 
+    /**
+     * Rounds are only visible if previous rounds have been completed, and 
+     * the current date is within their date boundaries (if set) OR if the
+     * round is in the past, if keep_visible is set to true. 
+     * @return bool
+     */
     public function isViewable($user)
     {
         $now = new DateTime();
@@ -72,6 +94,11 @@ class Round extends Model
         return $this->belongsToMany('App\Page')->withPivot(['page_number']);
     }
 
+    /**
+     * Returns true if the previous round is complete, and also returns true
+     * if current round is the first round.
+     * @return bool
+     */
     public function previousRoundComplete($user)
     {
         if ($this->round_number > 1) {

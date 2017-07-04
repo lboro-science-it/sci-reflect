@@ -12,6 +12,12 @@ class ActivityComposer
         $this->activity = $request->route('activity');
     }
 
+    /**
+     * Composes all views with $activity, based on route parameters, +
+     * $canEdit, based on Authed user's role within $activity. 
+     * 
+     * @return view
+     */
     public function compose(View $view)
     {
         $canEdit = false;
