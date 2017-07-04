@@ -19,17 +19,29 @@ class LinearFormatActivity
     public function getActivityViewData()
     {
         // get last chart
-        // get strongest skills
-        // get improve links for weakest skills
-        // get closed message
-
+        // get strongest skills from previous round
+        // get improve links for weakest skills from previous round
         $activityData = new stdClass();
 
         $activityData->activityView = $this->view;
         $activityData->rounds = $this->getRounds();
         $activityData->resumeLink = $this->getResumeLink();
+        $activityData->chartData = $this->getChartData();
 
         return $activityData;
+    }
+
+    private function getChartData()
+    {
+        $currentRoundNumber = $this->activity->pivot->current_round;
+
+        if ($currentRoundNumber > 1) {
+            $previousRound = $this->activity->rounds->where('round_number', $currentRoundNumber - 1)->first();
+            $ratingsHelper = app('RatingsHelper');
+            return $ratingsHelper->getChartData($previousRound, $this->user);
+        }
+
+        return null;
     }
 
     private function getResumeLink()

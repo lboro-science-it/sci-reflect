@@ -2,7 +2,7 @@
     <div class="col-md-3">
         @include('activity.linear.partials._sidebar', ['rounds' => $activityData->rounds])
     </div>
-    <div class="col-md-9">
+    <div class="col-md-6">
         @if(!is_null($activityData->rounds->current))
             <h3>{{ $activityData->rounds->current->title }}</h3>
             @if($activityData->rounds->current->viewable)
@@ -24,6 +24,14 @@
             Strongest Skills | 
             Skills to Improve
         </p>
+    </div>
+    <div class="col-md-3">
+        @if(!is_null($activityData->chartData))
+            <h3>
+                Current skills
+            </h3>
+            @include('chart.partials._chart', ['chartData' => $activityData->chartData])
+        @endif
     </div>
 </div>
 

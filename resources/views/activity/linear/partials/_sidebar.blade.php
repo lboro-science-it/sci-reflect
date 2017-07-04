@@ -1,15 +1,15 @@
 @if($rounds->completed->count() > 0)
-    <h4>Completed Rounds</h4>
+    <h3>Completed Rounds</h3>
     <ul>
         @foreach($rounds->completed as $completedRound)
             <li>
-                {{ $completedRound->title }} ({{ $completedRound->completion }}%) ** link **
+                {{ $completedRound->title }} ({{ $completedRound->completion }}%) ** link to chart / stats **
             </li>
         @endforeach
     </ul>
 @endif
 @if(!is_null($rounds->current))
-    <h4>In Progress</h4>
+    <h3>In Progress</h3>
     <ul>
         <li>
             {{ $rounds->current->title }} ({{ $rounds->current->completion }}%)
@@ -17,7 +17,7 @@
     </ul>
 @endif
 @if($rounds->future->count() > 0)
-    <h4>Coming Up</h4>
+    <h3>Coming Up</h3>
     <ul>
         @foreach($rounds->future as $futureRound)
             <li>

@@ -8,9 +8,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Insert chart heading</div>
                 <div class="panel-body">
-                    <polar-chart :labels="{{ json_encode($chartData->labels) }}" 
-                                 :values="{{ json_encode($chartData->values) }}">
-                    </polar-chart>
+                    @include('chart.partials._chart', ['chartData' => $chartData])
                 </div>
             </div>
         </div>
