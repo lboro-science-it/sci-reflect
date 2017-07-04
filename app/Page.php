@@ -47,6 +47,7 @@ class Page extends Model
 
         if (count($indicators) > 0) {
             $selections = collect($selectionsHelper->getSelectionsFromIndicators($indicators, $round, $user));
+            return !$selections->contains(null);
         }
 
         return null;

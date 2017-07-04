@@ -19,8 +19,9 @@ class StudentPageController extends Controller
     public function process(Activity $activity, Round $round, Page $page)
     {
         $formatClass = app($round->format);
+
         // todo: check role / permissions
-        return $formatClass->process($round, $page, Auth::user());
+        return $formatClass->processPage($round, $page, Auth::user());
     }
 
 }

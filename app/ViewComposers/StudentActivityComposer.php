@@ -2,6 +2,7 @@
 
 namespace App\Http\ViewComposers;
 
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -19,17 +20,30 @@ class StudentActivityComposer
      */
     public function compose(View $view)
     {
-        // todo: get current round object, depending on format get the content
-        // for the view i.e. multiple categories w/ resume links or just the round resume link
-        // get percentage completion, selections, etc.
+        $this->eagerLoad();
 
-        $currentRoundNumber = $this->activity->pivot->current_round;
-        $currentPageNumber = $this->activity->pivot->current_page;
-        if (is_null($currentRoundNumber) || is_null($currentPageNumber)) {
-            $resumeLink = false;
+        // get current round format class
+        $round = $this->activity->rounds->where('round_number', $this->activity->pivot->current_round)->first();
+
+        if (!is_null($round)) {
+            $formatClass = app($round->format);
         } else {
-            $resumeLink = url('a/' . $this->activity->id . '/student/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
+            $formatClass = app($this->activity->format);
         }
-        $view->with('resumeLink', $resumeLink);
+
+        $activityData = $formatClass->composeActivity($this->activity, Auth::user());
+
+        $view->with('activityData', $activityData);
+    }
+
+    private function eagerLoad()
+    {
+        // load stuff required for calculating round completion status, etc.
+        $this->activity->load([
+            'rounds',
+            'rounds.pages',
+            'rounds.pages.skills',
+            'rounds.pages.skills.indicators'
+        ]);
     }
 }

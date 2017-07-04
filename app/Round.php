@@ -6,6 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
+    public function getCompletion($user)
+    {
+        $selectionsHelper = app('SelectionsHelper');
+        $indicators = $this->getIndicators();
+        $selections = collect($selectionsHelper->getSelectionsFromIndicators($indicators, $this, $user));
+        $totalSelected = $selections->filter(function ($value) {
+            return !is_null($value);
+        })->count();
+
+        return $totalSelected / count($indicators);
+    }
 
     public function getIndicators()
     {

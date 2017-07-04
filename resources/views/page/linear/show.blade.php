@@ -10,7 +10,9 @@
 
 <div class="row">
     <div class="col-md-3">
-
+        @include('page.linear.partials._sidebar', [
+            'pages' => $pageData->sidebar
+        ])
     </div>
     <div class="col-md-9">
 
@@ -20,9 +22,15 @@
 
         @foreach($pageData->content as $contentItem)
             @if($contentItem instanceof \App\Skill)
-                @include('page.partials._skill', ['skill' => $contentItem, 'choices' => $pageData->choices, 'selections' => $pageData->selections])
+                @include('page.linear.partials._skill', [
+                    'skill' => $contentItem,
+                    'choices' => $pageData->choices,
+                    'selections' => $pageData->selections
+                ])
             @elseif($contentItem instanceof \App\Block)
-                @include('page.partials._block', ['block' => $contentItem])
+                @include('page.partials._block', [
+                    'block' => $contentItem
+                ])
             @endif
         @endforeach
 
