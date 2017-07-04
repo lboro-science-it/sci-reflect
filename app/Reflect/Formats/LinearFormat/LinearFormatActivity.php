@@ -55,6 +55,7 @@ class LinearFormatActivity
         $roundsData->current = null;
 
         foreach($rounds as $round) {
+            $round->viewable = $round->isViewable($this->user);
             if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
                 $round->completion = 100.0;
                 $roundsData->completed->push($round);
