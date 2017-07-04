@@ -14,7 +14,12 @@ class ActivityComposer
 
     public function compose(View $view)
     {
-        $canEdit = $this->activity->role == 'staff' ? true : false;
+        $canEdit = false;
+
+        if (!is_null($this->activity)) {
+            $canEdit = $this->activity->pivot->role == 'staff' ? true : false;
+        }
+
         $view->with('activity', $this->activity)
              ->with('canEdit', $canEdit);
     }
