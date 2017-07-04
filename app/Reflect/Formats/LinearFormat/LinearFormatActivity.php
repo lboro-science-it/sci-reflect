@@ -52,6 +52,7 @@ class LinearFormatActivity
         $roundsData = new stdClass();
         $roundsData->completed = collect(array());
         $roundsData->future = collect(array());
+        $roundsData->current = null;
 
         foreach($rounds as $round) {
             if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
