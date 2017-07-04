@@ -20,7 +20,6 @@ class Round extends Model
 
     public function getIndicators()
     {
-        // todo: refactor.
         $indicators = array();
 
         foreach($this->pages as $page) {

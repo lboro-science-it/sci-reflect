@@ -18,7 +18,6 @@ class LinearFormatActivity
 
     public function getActivityViewData()
     {
-
         // get last chart
         // get strongest skills
         // get improve links for weakest skills
@@ -51,31 +50,23 @@ class LinearFormatActivity
         $currentRoundNumber = $this->activity->pivot->current_round;
 
         $roundsData = new stdClass();
-        $roundsData->completed = array();
-        $roundsData->future = array();
+        $roundsData->completed = collect(array());
+        $roundsData->future = collect(array());
 
         foreach($rounds as $round) {
             if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
-                $round->completion = "100";
-                array_push($roundsData->completed, $round);
+                $round->completion = 100.0;
+                $roundsData->completed->push($round);
             } elseif ($round->round_number == $currentRoundNumber) {
-                $round->completion = $round->getCompletion($this->user);
+                $round->completion = $round->getCompletion($this->user) * 100;
                 $roundsData->current = $round;
             } else {
                 $round->completion = null;
-                array_push($roundsData->future, $round);
+                $roundsData->future->push($round);
             }
         }
 
         return $roundsData;
-    }
-
-    private function getSidebar()
-    {
-        // get all $this->activity's rounds
-        // mark all rounds < current round complete
-        // get current round progress
-
     }
 
 }

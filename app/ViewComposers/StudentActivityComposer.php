@@ -25,11 +25,7 @@ class StudentActivityComposer
         // get current round format class
         $round = $this->activity->rounds->where('round_number', $this->activity->pivot->current_round)->first();
 
-        if (!is_null($round)) {
-            $formatClass = app($round->format);
-        } else {
-            $formatClass = app($this->activity->format);
-        }
+        $formatClass = !is_null($round) ? app($round->format) : app($this->activity->format);
 
         $activityData = $formatClass->composeActivity($this->activity, Auth::user());
 
