@@ -26,11 +26,6 @@ class Page extends Model
         return $content->sortBy('pivot.position');
     }
 
-    public function getIndicatorIds()
-    {
-        return array_column($this->getIndicators(), 'id');
-    }
-
     public function getIndicators()
     {
         // todo: refactor.
@@ -43,6 +38,18 @@ class Page extends Model
         }
 
         return $indicators;
+    }
+
+    public function isComplete($round, $user)
+    {
+        $selectionsHelper = app('SelectionsHelper');
+        $indicators = $this->getIndicators();
+
+        if (count($indicators) > 0) {
+            $selections = collect($selectionsHelper->getSelectionsFromIndicators($indicators, $round, $user));
+        }
+
+        return null;
     }
 
     public function skills()

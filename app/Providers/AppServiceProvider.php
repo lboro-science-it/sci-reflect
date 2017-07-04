@@ -17,8 +17,8 @@ class AppServiceProvider extends ServiceProvider
             return new \App\Reflect\RatingsHelper();
         });
 
-        $this->app->singleton('SelectionHelper', function($app) {
-            return new \App\Reflect\SelectionHelper($app->request);
+        $this->app->singleton('SelectionsHelper', function($app) {
+            return new \App\Reflect\SelectionsHelper($app->request);
         });
     }
 

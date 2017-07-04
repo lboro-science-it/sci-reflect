@@ -6,10 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
-    public function getIndicatorIds()
-    {
-        return array_column($this->getIndicators(), 'id');
-    }
 
     public function getIndicators()
     {
@@ -25,9 +21,9 @@ class Round extends Model
 
     public function isComplete($user)
     {
-        $selectionHelper = app('SelectionHelper');
-        $indicators = $this->getIndicatorIds();
-        $selections = collect($selectionHelper->getSelectionsFromIndicators($indicators, $this, $user));
+        $selectionsHelper = app('SelectionsHelper');
+        $indicators = $this->getIndicators();
+        $selections = collect($selectionsHelper->getSelectionsFromIndicators($indicators, $this, $user));
         return !$selections->contains(null);
     }
 

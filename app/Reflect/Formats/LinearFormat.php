@@ -8,7 +8,7 @@ use stdClass;
 
 class LinearFormat extends BaseFormat
 {
-    protected $activity, $selectionHelper, $reflect, $request;
+    protected $activity, $selectionsHelper, $reflect, $request;
 
     /**
      * Register format-specific actions (i.e. other than next, prev, done, resume)
@@ -32,7 +32,7 @@ class LinearFormat extends BaseFormat
         $this->actions = array_merge($this->actions, $this->formatActions);
         $this->activity = $request->route('activity');
         $this->ratingsHelper = app('RatingsHelper');
-        $this->selectionHelper = app('SelectionHelper');
+        $this->selectionsHelper = app('SelectionsHelper');
         $this->reflect = app('Reflect');
     }
 
@@ -63,7 +63,8 @@ class LinearFormat extends BaseFormat
         $data->pageNumber = $page->pivot->page_number;
         $data->pageTitle = $page->title;
         $data->roundNumber = $this->round->round_number;
-        $data->selections = $this->selectionHelper->getSelectionsFromIndicators($page->getIndicatorIds(), $this->round, $this->user);
+        $data->selections = $this->selectionsHelper->getSelectionsFromIndicators($page->getIndicators(), $this->round, $this->user);
+        $data->sidebar = $this->getSidebar($page);
         $data->totalPages = $this->round->pages->count();
 
         return $data;
@@ -93,6 +94,20 @@ class LinearFormat extends BaseFormat
         }
 
         return $page;
+    }
+
+    public function getSidebar($page)
+    {
+        $sidebar = collect(array());
+        $pages = $this->round->pages->sortBy('pivot.page_number');
+        
+        foreach($pages as $page) {
+            $page->complete = $page->isComplete($this->round, $this->user);
+            $page->pageNumber = $page->pivot->page_number;
+            $sidebar->push($page);
+        }
+
+        return $sidebar;
     }
 
     /**
@@ -154,7 +169,7 @@ class LinearFormat extends BaseFormat
         $this->page = $page;
         $this->user = $user;
 
-        $this->selectionHelper->insertOrUpdateSelections($round, $user);
+        $this->selectionsHelper->insertOrUpdateSelections($round, $user);
 
         // action can be 'done', 'next', 'prev', 'resume' depending on which
         // submit button was clicked, calls relevant class method to deal with.

@@ -6,7 +6,7 @@ use DB;
 use Debugbar;
 use Illuminate\Http\Request;
 
-class SelectionHelper
+class SelectionsHelper
 {
     protected $request;
 
@@ -38,13 +38,10 @@ class SelectionHelper
     {
         $userSelections = $user->selections->where('round_id', '=', $round->id);
 
-        Debugbar::addMessage('$user->selections as in getSelectionsFromIndicators');
-        Debugbar::info($user->selections);
-
         $existingSelections = array();
-        foreach ($indicators as $indicatorId) {
-            $selection = $userSelections->where('indicator_id', $indicatorId)->first();
-            $existingSelections[$indicatorId] = ($selection) ? $selection->choice_id : null;
+        foreach ($indicators as $indicator) {
+            $selection = $userSelections->where('indicator_id', $indicator->id)->first();
+            $existingSelections[$indicator->id] = ($selection) ? $selection->choice_id : null;
         }
 
         return $existingSelections;
