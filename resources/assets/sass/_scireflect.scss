@@ -1,4 +1,12 @@
 // make page link buttons look like regular links
+.btn-pagelink:hover {
+    color: darken($text-color, 25%);
+}
+
+.btn-pagelink:active {
+    box-shadow: none;
+}
+
 .btn-pagelink {
     background: none;
     color: $text-color;
@@ -9,6 +17,3 @@
     cursor: pointer;
 }
 
-.btn-pagelink:hover {
-    color: darken($text-color, 25%);
-}
