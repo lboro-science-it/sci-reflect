@@ -3,6 +3,7 @@
 namespace App\Reflect\Formats;
 
 use Illuminate\Http\Request;
+use stdClass;
 
 class BaseFormat
 {
@@ -25,7 +26,11 @@ class BaseFormat
     {
         foreach ($this->actions as $action => $actionMethod) {
             if ($this->request->input($action)) {
-                return $actionMethod;
+                $actionObj = new stdClass();
+                $actionObj->action = $action;
+                $actionObj->param = $this->request->input($action);
+
+                return $actionObj;
             }
         }
 
