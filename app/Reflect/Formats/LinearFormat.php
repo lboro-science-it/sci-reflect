@@ -18,7 +18,7 @@ class LinearFormat extends BaseFormat
      *
      */
     protected $formatActions = [
-
+        'page' => 'page'
     ];
 
     /**
@@ -57,7 +57,10 @@ class LinearFormat extends BaseFormat
         $pageProcessor = new LinearFormatPage($round, $page, $user);
         $action = $this->getAction();
 
-        return $pageProcessor->$action();
+        $actionMethod = $action->action;
+        $actionParam = $action->param;
+
+        return $pageProcessor->$actionMethod($actionParam);
     }
 
 }

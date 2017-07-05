@@ -137,6 +137,18 @@ class LinearFormatPage
     }
 
     /**
+     * Action for when a specific page link is clicked.
+     * @return View
+     */
+    public function page($pageNumber)
+    {
+        $page = $this->round->pages->where('pivot.page_number', $pageNumber)->first();
+        $this->updateUserPivot($page);
+
+        return $this->makePageView($page);
+    }
+
+    /**
      * Action for when 'prev' is clicked.
      * @return View
      */
