@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->integer('activity_id')->nullable();
             $table->string('name', 30);
-            $table->string('color', 6);
+            $table->string('color', 7);
             $table->string('icon_href', 191);
             $table->timestamps();
         });
