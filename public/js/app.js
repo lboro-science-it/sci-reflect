@@ -57581,7 +57581,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['labels', 'max', 'values'],
+    props: ['backgrounds', 'labels', 'max', 'values'],
 
     mounted: function mounted() {
         new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(document.getElementById(this._uid).getContext('2d'), {
@@ -57589,10 +57589,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             data: {
                 labels: this.labels,
                 datasets: [{
-                    data: this.values
+                    data: this.values,
+                    backgroundColor: this.backgrounds
                 }]
             },
             options: {
+                layout: {
+                    padding: 5
+                },
                 legend: {
                     display: false
                 },

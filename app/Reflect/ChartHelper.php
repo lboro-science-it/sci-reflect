@@ -5,7 +5,7 @@ namespace App\Reflect;
 use DB;
 use stdClass;
 
-class RatingsHelper
+class ChartHelper
 {
 
     /**

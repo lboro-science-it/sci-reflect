@@ -21,14 +21,14 @@ class LinearFormatPage
         $this->page = $page;
         $this->user = $user;
 
-        $this->ratingsHelper = app('RatingsHelper');
+        $this->chartHelper = app('ChartHelper');
         $this->selectionsHelper = app('SelectionsHelper');
         $this->reflect = app('Reflect');
     }
 
     public function done()
     {
-        $chartData = $this->ratingsHelper->getChartData($this->round, $this->user);
+        $chartData = $this->chartHelper->getChartData($this->round, $this->user);
 
         $this->user->incrementRound();
 

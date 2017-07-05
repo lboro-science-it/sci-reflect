@@ -45,8 +45,8 @@ class LinearFormatActivity
             } else if (is_null($currentRoundNumber)) {
                 $previousRound = $this->activity->rounds->where('round_number', $this->activity->rounds->count())->first();
             }
-            $ratingsHelper = app('RatingsHelper');
-            return $ratingsHelper->getChartData($previousRound, $this->user);
+            $chartHelper = app('ChartHelper');
+            return $chartHelper->getChartData($previousRound, $this->user);
         }
 
         return null;

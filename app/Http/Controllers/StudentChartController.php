@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
-use App\Reflect\RatingsHelper;
+use App\Reflect\ChartHelper;
 use App\Round;
 use Auth;
 use Illuminate\Http\Request;
 
 class StudentChartController extends Controller
 {
-    protected $ratingsHelper;
+    protected $chartHelper;
 
-    public function __construct(RatingsHelper $ratingsHelper)
+    public function __construct(ChartHelper $chartHelper)
     {
-        $this->ratingsHelper = $ratingsHelper;
+        $this->chartHelper = $chartHelper;
     }
 
     public function show(Activity $activity, Round $round)
     {
-        $chartData = $this->ratingsHelper->getChartData($round, Auth::user());
+        $chartData = $this->chartHelper->getChartData($round, Auth::user());
 
         return view('chart.single')
         ->with('chartData', $chartData);
