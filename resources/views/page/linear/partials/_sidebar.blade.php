@@ -1,19 +1,18 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        <ul>
-            @foreach($pages as $page)
-                <li>
-                    <a href="{{ url('a/' . $activity->id . '/student/r/' . $pageData->roundNumber . '/p/' . $page->pageNumber) }}">
-                        {{ $page->title }}
-                    </a>
-                    @if($page->complete)
-                        ** COMPLETE **
-                    @endif
-                    @if($page->current)
-                        ** CURRENT **
-                    @endif
-                </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
+<h3>
+    Contents <small>** todo **</small>
+</h3>
+<ul>
+    @foreach($pages as $page)
+        <li>
+            <a href="{{ url('a/' . $activity->id . '/student/r/' . $pageData->roundNumber . '/p/' . $page->pageNumber) }}">
+                {{ $page->title }}
+            </a>
+            @if($page->complete)
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            @endif
+            @if($page->current)
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            @endif
+        </li>
+    @endforeach
+</ul>
