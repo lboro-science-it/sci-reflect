@@ -11,11 +11,11 @@ class IndicatorTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($skillId = 1; $skillId <= 2; $skillId++) {
+        for ($skillId = 1; $skillId <= 4; $skillId++) {
             for ($ind = 1; $ind <= 2; $ind++) {
                 DB::table('indicators')->insert([
                     'skill_id' => $skillId,
-                    'text' => 'Indicator ' . $ind . ' for Attribute ' . $skillId,
+                    'text' => 'Indicator ' . $ind . ' for Skill ' . $skillId,
                 ]);
             }
         }

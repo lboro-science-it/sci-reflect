@@ -16,6 +16,9 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('activity_id')->nullable();
+            $table->string('name', 30);
+            $table->string('color', 6);
+            $table->string('icon_href', 191);
             $table->timestamps();
         });
     }

@@ -12,19 +12,21 @@ class SkillTableSeeder extends Seeder
     public function run()
     {
         $pageId = 4;
-        for ($skillId = 1; $skillId <= 2; $skillId++) {
+
+        for ($skillId = 1; $skillId <= 4; $skillId++) {
             
             DB::table('skills')->insertGetId([
                 'activity_id' => 1,
-                'title' => 'Attribute ' . $skillId,
-                'description' => 'Description for Attribute ' . $skillId,
+                'category_id' => $skillId % 2 + 1,
+                'title' => 'Skill ' . $skillId,
+                'description' => 'Description for Skill ' . $skillId,
                 'info_link' => 'https://google.co.uk/search?q=attribute+' . $skillId,
             ]);
 
             DB::table('page_skill')->insert([
                 'skill_id' => $skillId,
                 'page_id' => $pageId,
-                'position' => 2 - ($skillId % 2),
+                'position' => $skillId
             ]);
         }
     }

@@ -7,6 +7,7 @@
     
     export default {
         props: [
+            'backgrounds',
             'labels',
             'max',
             'values'
@@ -18,10 +19,14 @@
                 data: {
                     labels: this.labels,
                     datasets: [{
-                        data: this.values
+                        data: this.values,
+                        backgroundColor: this.backgrounds
                     }]
                 },
                 options: {
+                    layout: {
+                        padding: 5
+                    },
                     legend: {
                         display: false
                     },

@@ -89,6 +89,12 @@ class RatingsHelper
 
         $chartData->max = $reflect->getChoices()->max('value');
 
+        $categories = array_column($skills, 'category');
+        $backgrounds = array_column($categories, 'color');
+
+        $chartData->backgrounds = $backgrounds;
+        // so for each skill we need to find that skill's category so we can get the color, name, icon (?)
+
         return $chartData;
     }
 
@@ -116,6 +122,7 @@ class RatingsHelper
     {
         return $this->user->ratings()->where('round_id', '=', $this->round->id)
         ->with('skill')
+        ->with('skill.category')
         ->get();
     }
 }
