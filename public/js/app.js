@@ -57587,7 +57587,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mounted: function mounted() {
-        new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(document.getElementById("polar-chart").getContext('2d'), {
+        new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(document.getElementById(this._uid).getContext('2d'), {
             type: 'polarArea',
             data: {
                 labels: this.labels,
@@ -70351,7 +70351,7 @@ module.exports = function(Chart) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('canvas', {
     attrs: {
-      "id": "polar-chart"
+      "id": _vm._uid
     }
   })
 },staticRenderFns: []}

@@ -1,5 +1,5 @@
 <template>
-    <canvas id="polar-chart"></canvas>
+    <canvas :id="_uid"></canvas>
 </template>
 
 <script>
@@ -12,7 +12,7 @@
         },
 
         mounted() {
-            new Chart(document.getElementById("polar-chart").getContext('2d'), {
+            new Chart(document.getElementById(this._uid).getContext('2d'), {
                 type: 'polarArea',
                 data: {
                     labels: this.labels,
