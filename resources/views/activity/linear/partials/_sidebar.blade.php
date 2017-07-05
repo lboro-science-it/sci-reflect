@@ -12,7 +12,9 @@
     <ul>
         @foreach($rounds->completed as $completedRound)
             <li>
-                {{ $completedRound->title }} ({{ $completedRound->completion }}%) ** link to chart / stats **
+                <a href="{{ url('a/' . $activity->id . '/student/r/' . $completedRound->round_number . '/chart') }}">
+                    {{ $completedRound->title }} ({{ $completedRound->completion }}%)
+                </a>
             </li>
         @endforeach
     </ul>

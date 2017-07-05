@@ -52,6 +52,7 @@ class LinearFormatPage
         $data->pageNumber = $page->pivot->page_number;
         $data->pageTitle = $page->title;
         $data->roundNumber = $this->round->round_number;
+        $data->roundTitle = $this->round->title;
         $data->selections = $this->selectionsHelper->getSelectionsFromIndicators($page->getIndicators(), $this->round, $this->user);
         $data->sidebar = $this->getSidebar($page);
         $data->totalPages = $this->round->pages->count();

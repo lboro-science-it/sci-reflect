@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Activity;
 use App\Reflect\RatingsHelper;
 use App\Round;
+use Auth;
 use Illuminate\Http\Request;
 
 class StudentChartController extends Controller
@@ -16,12 +17,12 @@ class StudentChartController extends Controller
         $this->ratingsHelper = $ratingsHelper;
     }
 
-    public function show(Round $round)
+    public function show(Activity $activity, Round $round)
     {
-        $data = $this->ratingsHelper->getChartData($round, Auth::user());
+        $chartData = $this->ratingsHelper->getChartData($round, Auth::user());
 
         return view('chart.single')
-        ->with('data', $data);
+        ->with('chartData', $chartData);
     }
 
 }

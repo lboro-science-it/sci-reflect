@@ -2,7 +2,7 @@
 
 @section('title')
 
-{{ $pageData->pageTitle }}
+{{ $pageData->roundTitle }}: {{ $pageData->pageTitle }}
 
 @endsection
 
@@ -19,8 +19,6 @@
             ])
         </div>
         <div class="col-md-9">
-
-
 
             @foreach($pageData->content as $contentItem)
                 @if($contentItem instanceof \App\Skill)

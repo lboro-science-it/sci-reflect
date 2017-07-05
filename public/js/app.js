@@ -57581,14 +57581,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        labels: {},
-        values: {}
-    },
+    props: ['labels', 'max', 'values'],
 
     mounted: function mounted() {
         new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(document.getElementById(this._uid).getContext('2d'), {
-            type: 'polarArea',
+            type: "polarArea",
             data: {
                 labels: this.labels,
                 datasets: [{
@@ -57599,9 +57596,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 legend: {
                     display: false
                 },
-                responsive: false
-            }
+                responsive: true,
+                scale: {
+                    ticks: {
+                        max: this.max, // todo get this into the data
+                        min: 0,
+                        stepSize: 1,
+                        display: false
+                    } /*,
+                      tooltips: {
+                         custom: function(tooltip) {
+                             console.log(tooltip);
+                             // todo: action to display info
+                         },
+                         enabled: false
+                      }*/
+                } }
         });
+        console.log("Max is " + this.max);
     }
 });
 

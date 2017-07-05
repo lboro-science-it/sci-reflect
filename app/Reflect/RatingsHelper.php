@@ -75,6 +75,8 @@ class RatingsHelper
         $this->round = $round;
         $this->user = $user;
 
+        $reflect = app('Reflect');
+
         $chartData = new stdClass();
 
         $ratings = $this->getRatings();
@@ -84,6 +86,8 @@ class RatingsHelper
 
         $skills = array_column($ratingsArray, 'skill');
         $chartData->labels = array_column($skills, 'title');
+
+        $chartData->max = $reflect->getChoices()->max('value');
 
         return $chartData;
     }

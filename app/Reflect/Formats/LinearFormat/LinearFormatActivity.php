@@ -31,6 +31,10 @@ class LinearFormatActivity
         return $activityData;
     }
 
+    /**
+     * Returns data for displaying the last completed chart.
+     *
+     */
     private function getChartData()
     {
         $currentRoundNumber = $this->activity->pivot->current_round;
