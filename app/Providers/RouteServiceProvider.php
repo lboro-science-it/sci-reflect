@@ -28,9 +28,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        // For any route with {activity}, we want to get the Authed user's
-        // relationship, role, etc to it,
-        // This means current_round, current_page, role are available.
+        // Load {activity} with pivot relative to Authed user's relation to it.
+        // Also sets pivot fields directly on Auth::user model for access in app.
         Route::bind('activity', function($value) {
             $activity = Auth::user()->activities()->where('activity_id', '=', $value)->first();
 
@@ -41,20 +40,22 @@ class RouteServiceProvider extends ServiceProvider
             return $activity;
         });
 
-        // {round} in a route refers to a round number in {activity} so we
-        // use route('activity') to get the correct round model, this also
-        // loads all rounds on the route('activity') model
+        // Load {round} based on number of {round} in {activity}
         Route::bind('round', function($value) {
             $activity = $this->app->request->route('activity');
             $round = $activity->rounds->where('round_number', '=', $value)->first();
             return $round;
         });
 
-        // {page} in a route refers to a page number in a {round} so we use
-        // route('round') to get it - we also load round's pages which is
-        // helpful for drawing tables of contents, etc
+        // Load {page} based on number of {page} in {round}.
+        // Also load all round's pages' indicators, required for table of
+        // contents & navigation buttons, etc
         Route::bind('page', function($value) {
             $round = $this->app->request->route('round');
+            $round->load([
+                'pages.skills.indicators'
+            ]);
+
             $page = $round->pages->where('pivot.page_number', $value)->first();
             return $page;
         });
