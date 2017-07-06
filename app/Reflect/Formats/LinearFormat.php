@@ -24,10 +24,10 @@ class LinearFormat extends BaseFormat
     /**
      * Returns data to render Linear format Activity dashboard. We know that
      * the StudentActivityComposer will provide us access to $activity->pivot,
-     * $activity->rounds, $round->pages, $page->skills, $skill-indicators. 
+     * $activity->rounds, $round->pages, $page->skills, $skill->indicators. 
      * @return bool
      */
-    public function composeActivity($activity, $user)
+    public function getActivityData($activity, $user)
     {
         $activityComposer = new LinearFormatActivity($activity, $user);
 

@@ -18,7 +18,6 @@ class LinearFormatActivity
 
     public function getActivityViewData()
     {
-        // get last chart
         // get strongest skills from previous round
         // get improve links for weakest skills from previous round
         $activityData = new stdClass();

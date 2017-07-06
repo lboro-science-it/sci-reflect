@@ -29,14 +29,14 @@ class User extends Authenticatable
 
     public function activities()
     {
-        return $this->belongsToMany('App\Activity')->withPivot(['complete', 'current_page', 'current_round', 'lti_user_id', 'role'])->withTimestamps();
+        return $this->belongsToMany('App\Activity')->withPivot([
+            'complete', 'current_page', 'current_round', 'lti_user_id', 'role'
+        ])->withTimestamps();
     }
 
     public function incrementRound()
     {
         // todo: only do below if pivot exists (and other tests)
-
-        $currentRoundNumber = $this->currentRound;
 
         $activity = request()->route('activity')->with('rounds')->first();
 
@@ -46,7 +46,7 @@ class User extends Authenticatable
 
         if ($currentRoundNumber < $activity->rounds->count()) {
             $complete = false;
-            $roundNumber = $currentRoundNumber + 1;
+            $roundNumber = $this->currentRound + 1;
             $pageNumber = 1;
         }
 

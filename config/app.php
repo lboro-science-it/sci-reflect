@@ -178,7 +178,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\LtiServiceProvider::class,
-        App\Providers\ReflectFormatServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],

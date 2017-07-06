@@ -42,9 +42,10 @@ class BaseFormat
             $this->actions = array_merge($this->actions, $this->formatActions);
         }
 
+        $actionObj = new stdClass();
+
         foreach ($this->actions as $action => $actionMethod) {
             if ($this->request->input($action)) {
-                $actionObj = new stdClass();
                 $actionObj->action = $action;
                 $actionObj->param = $this->request->input($action);
 
@@ -52,7 +53,9 @@ class BaseFormat
             }
         }
 
-        return $this->actions['default'];
+        $actionObj->action = 'default';
+        $actionObj->param = '';
+        return $actionObj;
     }
 
 }

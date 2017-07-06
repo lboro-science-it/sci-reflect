@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class StudentPageController extends Controller
 {
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     /**
      * Processes submitted data, updating student data in DB,
      * returns view according to the action submitted & the round format.
@@ -18,7 +25,8 @@ class StudentPageController extends Controller
      */
     public function process(Activity $activity, Round $round, Page $page)
     {
-        $formatClass = app($round->format);
+        $formatClassName = '\App\Reflect\Formats\\' . $round->format;
+        $formatClass = new $formatClassName($this->request);
 
         // todo: check role / permissions
         return $formatClass->processPage($round, $page, Auth::user());
