@@ -22,16 +22,6 @@ class LinearFormat extends BaseFormat
     ];
 
     /**
-     * Merges format-specific actions with base actions.
-     *
-     */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-        $this->actions = array_merge($this->actions, $this->formatActions);
-    }
-
-    /**
      * Returns data to render Linear format Activity dashboard. We know that
      * the StudentActivityComposer will provide us access to $activity->pivot,
      * $activity->rounds, $round->pages, $page->skills, $skill-indicators. 

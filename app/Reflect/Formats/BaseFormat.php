@@ -22,8 +22,26 @@ class BaseFormat
         $this->request = $request;
     }
 
+    /**
+     * Redirects the user to the activity home if action isn't understood.
+     *
+     */
+    public function default()
+    {
+        return redirect('a/' . $this->request->route('activity')->id);
+    }
+
+    /**
+     * Checks the HTTP POST request for an action present in either $this->actions
+     * or subclass' $formatActions
+     *
+     */
     public function getAction()
     {
+        if (isset($this->formatActions)) {
+            $this->actions = array_merge($this->actions, $this->formatActions);
+        }
+
         foreach ($this->actions as $action => $actionMethod) {
             if ($this->request->input($action)) {
                 $actionObj = new stdClass();
@@ -37,12 +55,4 @@ class BaseFormat
         return $this->actions['default'];
     }
 
-    /**
-     * Redirects the user to the activity home if action isn't understood.
-     *
-     */
-    public function default()
-    {
-        return redirect('a/' . $this->request->route('activity')->id);
-    }
 }
