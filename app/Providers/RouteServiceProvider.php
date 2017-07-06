@@ -41,22 +41,18 @@ class RouteServiceProvider extends ServiceProvider
             return $activity;
         });
 
-        // bind round based on round number in activity
+        // {round} in a route refers to a round number in {activity} so we
+        // use route('activity') to get the correct round model, this also
+        // loads all rounds on the route('activity') model
         Route::bind('round', function($value) {
             $activity = $this->app->request->route('activity');
-            $round = $activity->rounds()->where('round_number', '=', $value)
-                                        ->with([
-                                            'pages',
-                                            'pages.blocks',
-                                            'pages.skills',
-                                            'pages.skills.indicators'
-                                        ])->first();
+            $round = $activity->rounds->where('round_number', '=', $value)->first();
             return $round;
         });
 
-        // bind page based on page number in round
-        // todo: if in category format, may need to rethink this.
-        // potentially conditional based on presence of category in route.
+        // {page} in a route refers to a page number in a {round} so we use
+        // route('round') to get it - we also load round's pages which is
+        // helpful for drawing tables of contents, etc
         Route::bind('page', function($value) {
             $round = $this->app->request->route('round');
             $page = $round->pages->where('pivot.page_number', $value)->first();
