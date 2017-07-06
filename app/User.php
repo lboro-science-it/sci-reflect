@@ -36,7 +36,7 @@ class User extends Authenticatable
     {
         // todo: only do below if pivot exists (and other tests)
 
-        $currentRoundNumber = $this->pivot->current_round;
+        $currentRoundNumber = $this->currentRound;
 
         $activity = request()->route('activity')->with('rounds')->first();
 

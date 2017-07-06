@@ -28,11 +28,15 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        // bind the activity_user pivot to both $activity and Auth::user()
-        // therefore by accessing Auth::user(), current_round, current_page, and role are available
+        // For any route with {activity}, we want to get the Authed user's
+        // relationship, role, etc to it,
+        // This means current_round, current_page, role are available.
         Route::bind('activity', function($value) {
             $activity = Auth::user()->activities()->where('activity_id', '=', $value)->first();
-            Auth::user()->setRelation('pivot', $activity->pivot);
+
+            Auth::user()->role = $activity->pivot->role;
+            Auth::user()->currentRound = $activity->pivot->current_round;
+            Auth::user()->currentPage = $activity->pivot->current_page;
 
             return $activity;
         });

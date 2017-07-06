@@ -84,7 +84,7 @@ class ActivityController extends Controller
      */
     public function show(Activity $activity)
     {
-        if (Auth::user()->pivot->role == 'staff') {
+        if (Auth::user()->role == 'staff') {
             if ($activity->status == 'new') {
                 return view('activity.new');
             }
@@ -94,7 +94,7 @@ class ActivityController extends Controller
             return view('activity.staff');
         }
 
-        if (Auth::user()->pivot->role == 'student') {
+        if (Auth::user()->role == 'student') {
             if ($activity->isOpen()) {
                 return view('activity.student');
             }
