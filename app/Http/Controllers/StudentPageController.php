@@ -25,7 +25,7 @@ class StudentPageController extends Controller
      */
     public function process(Activity $activity, Round $round, Page $page)
     {
-        $formatClassName = '\App\Reflect\Formats\\' . $round->format;
+        $formatClassName = '\App\Reflect\Formats\\' . $round->format . '\\Page';
         $formatClass = new $formatClassName($this->request);
 
         // todo: check role / permissions

@@ -45,7 +45,7 @@ class StudentActivityComposer
         $round = $this->activity->rounds->where('round_number', Auth::user()->currentRound)->first();
 
         $formatClassName = isset($round) ? $round->format : $this->activity->format;
-        $formatClassName = '\App\Reflect\Formats\\' . $formatClassName;
+        $formatClassName = '\App\Reflect\Formats\\' . $formatClassName . '\\Activity';
 
         return new $formatClassName($this->request);
     }
