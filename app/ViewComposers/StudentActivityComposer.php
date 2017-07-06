@@ -38,9 +38,6 @@ class StudentActivityComposer
     {
         // load stuff required for calculating round completion status, etc.
         $this->activity->load([
-            'rounds',
-            'rounds.pages',
-            'rounds.pages.skills',
             'rounds.pages.skills.indicators'
         ]);
     }
