@@ -44,7 +44,7 @@ class User extends Authenticatable
         $roundNumber = null;
         $pageNumber = null;
 
-        if ($currentRoundNumber < $activity->rounds->count()) {
+        if ($this->currentRound < $activity->rounds->count()) {
             $complete = false;
             $roundNumber = $this->currentRound + 1;
             $pageNumber = 1;
