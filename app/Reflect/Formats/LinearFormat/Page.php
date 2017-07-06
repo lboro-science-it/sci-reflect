@@ -2,11 +2,18 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
+use App\Reflect\Formats\BaseFormat;
+use Auth;
+use Illuminate\Http\Request;
 use stdClass;
 
-class LinearFormatPage
+class Page extends BaseFormat
 {
-    protected $activity, $round, $page, $user;
+    protected $activity, $page, $request, $round, $user;
+
+    protected $formatActions = [
+        'page' => 'page'
+    ];
 
     protected $view = 'page.linear.show';
 
@@ -14,12 +21,13 @@ class LinearFormatPage
      * Merges format-specific actions with base actions.
      *
      */
-    public function __construct($round, $page, $user)
+    public function __construct(Request $request)
     {
-        $this->activity = request()->route('activity');
-        $this->round = $round;
-        $this->page = $page;
-        $this->user = $user;
+        $this->request = $request;
+        $this->activity = $request->route('activity');
+        $this->round = $request->route('round');
+        $this->page = $request->route('page');
+        $this->user = Auth::user();
 
         $this->chartHelper = app('ChartHelper');
         $this->selectionsHelper = app('SelectionsHelper');
@@ -159,6 +167,24 @@ class LinearFormatPage
         $this->updateUserPivot($prevPage);
 
         return $this->makePageView($prevPage);
+    }
+
+    /**
+     * Stores the selections in database, determines the action from the HTTP
+     * POST request, calls the relevant function which will return a view or redirect.
+     *
+     */
+    public function processPage($round, $page, $user)
+    {
+        $selectionsHelper = app('SelectionsHelper');
+        $selectionsHelper->insertOrUpdateSelections($round, $user);
+
+        $action = $this->getAction();
+
+        $actionMethod = $action->action;
+        $actionParam = $action->param;
+
+        return $this->$actionMethod($actionParam);
     }
 
     /**

@@ -2,21 +2,31 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
+use App\Reflect\Formats\BaseFormat;
+use Auth;
+use Illuminate\Http\Request;
 use stdClass;
 
-class LinearFormatActivity
+class Activity extends BaseFormat
 {
     protected $activity, $user;
 
     protected $view = 'activity.linear.show';
 
-    public function __construct($activity, $user)
+    public function __construct(Request $request)
     {
-        $this->activity = $activity;
-        $this->user = $user;
+        $this->request = $request;
+        $this->activity = $request->route('activity');
+        $this->user = Auth::user();
     }
 
-    public function getActivityViewData()
+    /**
+     * Returns data to render Linear format Activity dashboard. We know that
+     * the StudentActivityComposer will provide us access to $activity->pivot,
+     * $activity->rounds, $round->pages, $page->skills, $skill->indicators. 
+     * @return bool
+     */
+    public function getActivityData()
     {
         // get strongest skills from previous round
         // get improve links for weakest skills from previous round
