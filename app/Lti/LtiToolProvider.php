@@ -20,6 +20,7 @@ class LtiToolProvider extends ToolProvider
      */
     function onLaunch() 
     {
+        dd($this);
         // find or create the user based on launcher email
         $user = User::firstOrCreate([
             'email' => $this->user->email
@@ -67,7 +68,9 @@ class LtiToolProvider extends ToolProvider
     {
         $this->ok = false;
         Log::info('LTI Launch Failure: ');
-        Log::debug($this);
+        Log::info($this->message);
+        Log::info($this->reason);
+        Log::info($this->details);
         return true;
     }
 }
