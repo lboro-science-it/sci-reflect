@@ -5,8 +5,6 @@ namespace App\Lti;
 use App\Activity;
 use App\User;
 use Auth;
-use DateTime;
-use Illuminate\Support\Facades\Log;
 use IMSGlobal\LTI\ToolProvider\ToolProvider;
 
 class LtiToolProvider extends ToolProvider
@@ -67,11 +65,6 @@ class LtiToolProvider extends ToolProvider
     function onError() 
     {
         $this->ok = false;
-        $now = new DateTime();
-        Log::info('LTI Launch Failure: ' . $now->format('Y-m-d H:i:s'));
-        Log::info($this->message);
-        Log::info($this->reason);
-        Log::info($this->details);
         return true;
     }
 }

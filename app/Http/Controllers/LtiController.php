@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use Illuminate\Http\Request;
 use App\Lti\LtiToolProvider;
+use Auth;
+use DateTime;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LtiController extends Controller
 {
@@ -26,6 +28,12 @@ class LtiController extends Controller
                 Auth::loginUsingId($tool->user_id);
                 return redirect('a/' . $tool->activity_id);
             } else {
+
+                $now = new DateTime();
+                Log::info('LTI Launch Failure: ' . $now->format('Y-m-d H:i:s'));
+                Log::info($tool->reason);
+                Log::info(json_encode($request));
+                Log::info(json_encode($tool));
                 return view('lti.error');
             }
         } else {                // No cookies, show splash to force creation
