@@ -120,6 +120,7 @@ class ChartHelper
      */
     private function queryRatings()
     {
+        // todo: remove with skill, instead load via activity
         return $this->user->ratings()->where('round_id', '=', $this->round->id)
         ->with('skill')
         ->with('skill.category')

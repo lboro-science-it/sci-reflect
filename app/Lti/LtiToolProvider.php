@@ -5,6 +5,7 @@ namespace App\Lti;
 use App\Activity;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Log;
 use IMSGlobal\LTI\ToolProvider\ToolProvider;
 
 class LtiToolProvider extends ToolProvider
@@ -65,6 +66,8 @@ class LtiToolProvider extends ToolProvider
     function onError() 
     {
         $this->ok = false;
+        Log::info('LTI Launch Failure: ');
+        Log::debug($this);
         return true;
     }
 }

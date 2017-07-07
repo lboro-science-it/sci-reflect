@@ -54,15 +54,15 @@ class Page extends BaseFormat
 
         $data->choices = $this->reflect->getChoices();
         $data->content = $page->getContent();
-        $data->hasDone = $this->round->isComplete($this->user);
+        $data->hasDone = $this->round->isComplete($this->user);     // todo: refactor as it will call getSelectionsFromIndicators
         $data->hasNext = $this->hasNextPage($page);
         $data->hasPrev = $this->hasPrevPage($page);
         $data->pageNumber = $page->pivot->page_number;
         $data->pageTitle = $page->title;
         $data->roundNumber = $this->round->round_number;
-        $data->roundTitle = $this->round->title;
+        $data->roundTitle = $this->round->title;                    // todo: refactor below
         $data->selections = $this->selectionsHelper->getSelectionsFromIndicators($page->getIndicators(), $this->round, $this->user);
-        $data->sidebar = $this->getSidebar($page);
+        $data->sidebar = $this->getSidebar($page);                  // todo: refactor as it will call getSelectionsFromIndicators for each page
         $data->totalPages = $this->round->pages->count();
 
         return $data;
