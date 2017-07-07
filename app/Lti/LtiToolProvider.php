@@ -5,6 +5,7 @@ namespace App\Lti;
 use App\Activity;
 use App\User;
 use Auth;
+use DateTime;
 use Illuminate\Support\Facades\Log;
 use IMSGlobal\LTI\ToolProvider\ToolProvider;
 
@@ -20,7 +21,6 @@ class LtiToolProvider extends ToolProvider
      */
     function onLaunch() 
     {
-        dd($this);
         // find or create the user based on launcher email
         $user = User::firstOrCreate([
             'email' => $this->user->email
@@ -67,7 +67,8 @@ class LtiToolProvider extends ToolProvider
     function onError() 
     {
         $this->ok = false;
-        Log::info('LTI Launch Failure: ');
+        $now = new DateTime();
+        Log::info('LTI Launch Failure: ' . $now->format('Y-m-d H:i:s'));
         Log::info($this->message);
         Log::info($this->reason);
         Log::info($this->details);
