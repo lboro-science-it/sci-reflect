@@ -32,7 +32,7 @@ class LtiController extends Controller
                 $now = new DateTime();
                 Log::info('LTI Launch Failure: ' . $now->format('Y-m-d H:i:s'));
                 Log::info($tool->reason);
-                Log::info(json_encode($request));
+                Log::info(json_encode($request->input()));
                 Log::info(json_encode($tool));
                 return view('lti.error');
             }
