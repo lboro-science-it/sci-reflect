@@ -49,25 +49,6 @@ class Page extends Model
         return $indicators;
     }
 
-    /**
-     * Returns true if user has a selection for each indicator on the page,
-     * false if there are indicators the user hasn't responded to, or null
-     * if the page has no indicators (i.e. content only page)
-     * @return bool
-     */
-    public function isComplete($round, $user)
-    {
-        $selectionsHelper = app('SelectionsHelper');
-        $indicators = $this->getIndicators();
-
-        if (count($indicators) > 0) {
-            $selections = collect($selectionsHelper->getSelectionsFromIndicators($indicators, $round, $user));
-            return !$selections->contains(null);
-        }
-
-        return null;
-    }
-
     public function skills()
     {
         return $this->belongsToMany('App\Skill')->withPivot('position');

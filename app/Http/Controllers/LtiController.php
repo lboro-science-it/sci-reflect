@@ -30,6 +30,8 @@ class LtiController extends Controller
                 return view('lti.error');
             }
         } else {                // No cookies, show splash to force creation
+            // todo: if failed to set cookie (i.e. would show splash twice)
+            // show a link to open the tool in a new window instead
             $request->session()->put('live', 1);
             return view('lti.splash')
             ->with('params', $request->input());

@@ -54,15 +54,15 @@ class Page extends BaseFormat
 
         $data->choices = $this->reflect->getChoices();
         $data->content = $page->getContent();
-        $data->hasDone = $this->round->isComplete($this->user);     // todo: refactor as it will call getSelectionsFromIndicators
+        $data->hasDone = $this->user->hasCompleted($this->round);
         $data->hasNext = $this->hasNextPage($page);
         $data->hasPrev = $this->hasPrevPage($page);
         $data->pageNumber = $page->pivot->page_number;
         $data->pageTitle = $page->title;
         $data->roundNumber = $this->round->round_number;
-        $data->roundTitle = $this->round->title;                    // todo: refactor below
+        $data->roundTitle = $this->round->title;
         $data->selections = $this->selectionsHelper->getSelectionsFromIndicators($page->getIndicators(), $this->round, $this->user);
-        $data->sidebar = $this->getSidebar($page);                  // todo: refactor as it will call getSelectionsFromIndicators for each page
+        $data->sidebar = $this->getSidebar($page);
         $data->totalPages = $this->round->pages->count();
 
         return $data;
@@ -100,7 +100,7 @@ class Page extends BaseFormat
         $pages = $this->round->pages->sortBy('pivot.page_number');
         
         foreach($pages as $sidebarPage) {
-            $sidebarPage->complete = $sidebarPage->isComplete($this->round, $this->user);
+            $sidebarPage->complete = $this->user->hasCompleted($this->round, $sidebarPage);
             $sidebarPage->current = $sidebarPage->id == $page->id ? true : false;
             $sidebarPage->pageNumber = $sidebarPage->pivot->page_number;
             $sidebar->push($sidebarPage);
@@ -174,10 +174,10 @@ class Page extends BaseFormat
      * POST request, calls the relevant function which will return a view or redirect.
      *
      */
-    public function processPage($round, $page, $user)
+    public function processPage()
     {
         $selectionsHelper = app('SelectionsHelper');
-        $selectionsHelper->insertOrUpdateSelections($round, $user);
+        $selectionsHelper->insertOrUpdateSelections($this->round, $this->user);
 
         $action = $this->getAction();
 

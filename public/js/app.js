@@ -57594,6 +57594,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }]
             },
             options: {
+                animation: {
+                    animateRotate: false
+                },
                 layout: {
                     padding: 5
                 },
@@ -57603,7 +57606,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 responsive: true,
                 scale: {
                     ticks: {
-                        max: this.max, // todo get this into the data
+                        max: this.max,
                         min: 0,
                         stepSize: 1,
                         display: false
@@ -57617,7 +57620,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                       }*/
                 } }
         });
-        console.log("Max is " + this.max);
     }
 });
 

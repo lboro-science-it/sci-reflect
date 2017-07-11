@@ -9,7 +9,9 @@ use stdClass;
 
 class Activity extends BaseFormat
 {
-    protected $activity, $user;
+    protected $activity = null;
+
+    protected $user = null;
 
     protected $view = 'activity.linear.show';
 
@@ -28,14 +30,14 @@ class Activity extends BaseFormat
      */
     public function getActivityData()
     {
-        // get strongest skills from previous round
-        // get improve links for weakest skills from previous round
+        //todo: get strongest skills from previous round
+        //todo: get improve links for weakest skills from previous round
         $activityData = new stdClass();
 
         $activityData->activityView = $this->view;
-        $activityData->rounds = $this->getRounds();
-        $activityData->resumeLink = $this->getResumeLink();
         $activityData->chartData = $this->getChartData();
+        $activityData->resumeLink = $this->getResumeLink();
+        $activityData->rounds = $this->getRounds();
 
         return $activityData;
     }
@@ -46,7 +48,7 @@ class Activity extends BaseFormat
      */
     private function getChartData()
     {
-        $currentRoundNumber = $this->activity->pivot->current_round;
+        $currentRoundNumber = $this->user->currentRound;
 
         if ($currentRoundNumber != 1) {
             if ($currentRoundNumber > 1) {
@@ -63,8 +65,8 @@ class Activity extends BaseFormat
 
     private function getResumeLink()
     {
-        $currentRoundNumber = $this->activity->pivot->current_round;
-        $currentPageNumber = $this->activity->pivot->current_page;
+        $currentRoundNumber = $this->user->currentRound;
+        $currentPageNumber = $this->user->currentPage;
 
         if (is_null($currentRoundNumber) || is_null($currentPageNumber)) {
             return false;
@@ -76,9 +78,10 @@ class Activity extends BaseFormat
     private function getRounds()
     {
         $rounds = $this->activity->rounds->sortBy('round_number');
-        $currentRoundNumber = $this->activity->pivot->current_round;
+        $currentRoundNumber = $this->user->currentRound;
 
         $roundsData = new stdClass();
+
         $roundsData->completed = collect(array());
         $roundsData->future = collect(array());
         $roundsData->current = null;
@@ -89,7 +92,7 @@ class Activity extends BaseFormat
                 $round->completion = 100.0;
                 $roundsData->completed->push($round);
             } elseif ($round->round_number == $currentRoundNumber) {
-                $round->completion = $round->getCompletion($this->user) * 100;
+                $round->completion = $this->user->getCompletion($round) * 100;
                 $roundsData->current = $round;
             } else {
                 $round->completion = null;

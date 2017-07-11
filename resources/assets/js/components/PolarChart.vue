@@ -36,7 +36,7 @@
                     responsive: true,
                     scale: {
                         ticks: {
-                            max: this.max,              // todo get this into the data
+                            max: this.max,
                             min: 0,
                             stepSize: 1,
                             display: false

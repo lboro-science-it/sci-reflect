@@ -8,24 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Round extends Model
 {
     /**
-     * Returns the percentage complete (as a decimal) of the round,
-     * calculating how many selections the user has made versus how many
-     * total indicators are present in the round.
-     * @return integer
-     */
-    public function getCompletion($user)
-    {
-        $selectionsHelper = app('SelectionsHelper');
-        $indicators = $this->getIndicators();
-        $selections = collect($selectionsHelper->getSelectionsFromIndicators($indicators, $this, $user));
-        $totalSelected = $selections->filter(function ($value) {
-            return !is_null($value);
-        })->count();
-
-        return $totalSelected / count($indicators);
-    }
-
-    /**
      * Returns an array of all indicators present in the round (via pages,
      * skills, indicators)
      * @return array
@@ -39,19 +21,6 @@ class Round extends Model
         }
 
         return $indicators;
-    }
-
-    /**
-     * Returns true if the user has made a selection for all indicators in the
-     * round.
-     * @return bool
-     */
-    public function isComplete($user)
-    {
-        $selectionsHelper = app('SelectionsHelper');
-        $indicators = $this->getIndicators();
-        $selections = collect($selectionsHelper->getSelectionsFromIndicators($indicators, $this, $user));
-        return !$selections->contains(null);
     }
 
     /**
@@ -105,7 +74,7 @@ class Round extends Model
             $activity = request()->route('activity');
             $previousRound = $activity->rounds->where('round_number', $this->round_number - 1)->first();
 
-            return $previousRound->isComplete($user);
+            $user->hasCompleted($previousRound);
         }
 
         return true;

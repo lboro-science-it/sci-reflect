@@ -34,6 +34,37 @@ class User extends Authenticatable
         ])->withTimestamps();
     }
 
+    /**
+     * Gets completion (as a decimal between 0 and 1) of $round or $page within $round
+     *
+     * @return decimal
+     */
+    public function getCompletion($round, $page = null)
+    {
+        // get the necessary indicators
+        if (is_null($page)) {
+            $indicators = $round->getIndicators();
+        } else {
+            $indicators = $page->getIndicators();
+        }
+
+        // get the user's selections for the above indicators
+        $selections = $this->selections->where('round_id', $round->id)
+                                       ->whereIn('indicator_id', array_column($indicators, 'id'));
+
+        if (count($indicators) > 0) {
+            return $selections->count() / count($indicators);
+        }
+
+        // if there are 0 indicators then it's not completable
+        return null;
+    }
+
+    public function hasCompleted($round, $page = null)
+    {
+        return $this->getCompletion($round, $page) == 1;
+    }
+
     public function incrementRound()
     {
         // todo: only do below if pivot exists (and other tests)

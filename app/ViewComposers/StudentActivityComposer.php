@@ -14,6 +14,7 @@ class StudentActivityComposer
     {
         $this->request = $request;
         $this->activity = $request->route('activity');
+        $this->user = Auth::user();
     }
 
     /**
@@ -24,13 +25,18 @@ class StudentActivityComposer
      */
     public function compose(View $view)
     {
-        // load stuff required for calculating round completion status, etc.
+        // we will need all rounds' content to calculate completion
         $this->activity->load([
             'rounds.pages.skills.indicators'
         ]);
 
+        // we will need user's selections to calculate completion
+        $this->user->load([
+            'selections'
+        ]);
+
         $formatClass = $this->getFormatClass();
-        $activityData = $formatClass->getActivityData($this->activity, Auth::user());
+        $activityData = $formatClass->getActivityData($this->activity, $this->user);
 
         $view->with('activityData', $activityData);
     }
@@ -42,7 +48,7 @@ class StudentActivityComposer
      */
     private function getFormatClass()
     {
-        $round = $this->activity->rounds->where('round_number', Auth::user()->currentRound)->first();
+        $round = $this->activity->rounds->where('round_number', $this->user->currentRound)->first();
 
         $formatClassName = isset($round) ? $round->format : $this->activity->format;
         $formatClassName = '\App\Reflect\Formats\\' . $formatClassName . '\\Activity';
