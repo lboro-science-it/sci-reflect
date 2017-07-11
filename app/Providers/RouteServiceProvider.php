@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Activity;
 use Auth;
+use Debugbar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -31,7 +32,7 @@ class RouteServiceProvider extends ServiceProvider
         // Load {activity} with pivot relative to Authed user's relation to it.
         // Also sets pivot fields directly on Auth::user model for access in app.
         Route::bind('activity', function($value) {
-            $activity = Auth::user()->activities()->where('activity_id', '=', $value)->first();
+            $activity = Auth::user()->activities->where('pivot.activity_id', $value)->first();
 
             Auth::user()->role = $activity->pivot->role;
             Auth::user()->currentRound = $activity->pivot->current_round;

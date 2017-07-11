@@ -46,7 +46,7 @@ class Page extends Model
             }
         }
 
-        return $indicators;
+        return array_unique($indicators);
     }
 
     public function skills()

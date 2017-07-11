@@ -20,7 +20,7 @@ class Round extends Model
             $indicators = array_merge($indicators, $page->getIndicators());
         }
 
-        return $indicators;
+        return array_unique($indicators);
     }
 
     /**
