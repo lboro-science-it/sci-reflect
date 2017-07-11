@@ -68,8 +68,7 @@ class User extends Authenticatable
     public function incrementRound()
     {
         // todo: only do below if pivot exists (and other tests)
-
-        $activity = request()->route('activity')->with('rounds')->first();
+        $activity = request()->route('activity');
 
         $complete = true;
         $roundNumber = null;
