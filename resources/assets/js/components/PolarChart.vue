@@ -24,6 +24,9 @@
                     }]
                 },
                 options: {
+                    animation: {
+                        animateRotate: false
+                    },
                     layout: {
                         padding: 5
                     },
@@ -48,7 +51,6 @@
                     }*/
                 }
             });
-            console.log("Max is " + this.max);
         }
     }
 </script>
