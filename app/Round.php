@@ -14,13 +14,17 @@ class Round extends Model
      */
     public function getIndicators()
     {
-        $indicators = array();
+        if (!isset($this->indicators)) {
+            $indicators = array();
 
-        foreach($this->pages as $page) {
-            $indicators = array_merge($indicators, $page->getIndicators());
+            foreach($this->pages as $page) {
+                $indicators = array_merge($indicators, $page->getIndicators());
+            }
+
+            $this->indicators = array_unique($indicators);
         }
 
-        return array_unique($indicators);
+        return $this->indicators;
     }
 
     /**

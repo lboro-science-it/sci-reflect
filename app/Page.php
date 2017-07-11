@@ -37,16 +37,19 @@ class Page extends Model
      */
     public function getIndicators()
     {
-        // todo: refactor.
-        $indicators = array();
+        if (!isset($this->indicators)) {
+            $indicators = array();
 
-        foreach($this->skills as $skill) {
-            foreach($skill->indicators as $indicator) {
-                array_push($indicators, $indicator);
+            foreach($this->skills as $skill) {
+                foreach($skill->indicators as $indicator) {
+                    array_push($indicators, $indicator);
+                }
             }
+
+            $this->indicators = array_unique($indicators);
         }
 
-        return array_unique($indicators);
+        return $this->indicators;
     }
 
     public function skills()
