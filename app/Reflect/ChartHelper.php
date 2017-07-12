@@ -11,9 +11,17 @@ class ChartHelper
 
     protected $user;
 
-    public function __construct()
+    protected $ratings;
+
+    public function __construct($round, $user)
     {
         $this->reflect = app('Reflect');
+        $this->round = $round;
+        $this->user = $user;
+
+        $this->ratings = $this->getRatings();
+        $this->skills = $this->getSkillsFromIds($this->ratings->pluck('skill_id'));
+        $this->categories = $this->skills->pluck('category');
     }
 
     /**
@@ -83,30 +91,15 @@ class ChartHelper
      * Returns Ratings data formatted for rendering in a chart view.
      * @return obj $chartData
      */
-    public function getChartData($round, $user)
+    public function getChartData()
     {
-        $this->round = $round;
-        $this->user = $user;
-
         $chartData = new stdClass();
-
-        $ratings = $this->getRatings();
-        $ratingsArray = $ratings->toArray();
-
-        $chartData->values = array_column($ratingsArray, 'rating');
-
-        $skillIds = array_column($ratingsArray, 'skill_id');
-        $skills = $this->getSkillsFromIds($skillIds);
-
-        $chartData->labels = array_column($skills->toArray(), 'title');
-
+        
+        $chartData->backgrounds = $this->categories->pluck('color');
+        $chartData->labels = $this->skills->pluck('title');
+        $chartData->values = $this->ratings->pluck('rating');
+        
         $chartData->max = $this->reflect->getChoices()->max('value');
-
-        $categories = array_column($skills->toArray(), 'category');
-        $backgrounds = array_column($categories, 'color');
-
-        $chartData->backgrounds = $backgrounds;
-        // so for each skill we need to find that skill's category so we can get the color, name, icon (?)
 
         return $chartData;
     }
@@ -127,6 +120,10 @@ class ChartHelper
         return $ratings;
     }
 
+    /**
+     * Returns collection of Skills with categories from an array of IDs.
+     * @return collection
+     */
     private function getSkillsFromIds($skillIds)
     {
         $skills = collect(array());

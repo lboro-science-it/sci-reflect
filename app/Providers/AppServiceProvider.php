@@ -13,10 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind('ChartHelper', function() {
-            return new \App\Reflect\ChartHelper();
-        });
-
         $this->app->singleton('SelectionsHelper', function($app) {
             return new \App\Reflect\SelectionsHelper($app->request);
         });

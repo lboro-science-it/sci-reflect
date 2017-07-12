@@ -10,16 +10,10 @@ use Illuminate\Http\Request;
 
 class StudentChartController extends Controller
 {
-    protected $chartHelper;
-
-    public function __construct(ChartHelper $chartHelper)
-    {
-        $this->chartHelper = $chartHelper;
-    }
-
     public function show(Activity $activity, Round $round)
     {
-        $chartData = $this->chartHelper->getChartData($round, Auth::user());
+        $chartHelper = new ChartHelper($round, Auth::user());
+        $chartData = $chartHelper->getChartData();
 
         return view('chart.single')
         ->with('chartData', $chartData);

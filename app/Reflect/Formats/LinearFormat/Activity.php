@@ -2,6 +2,7 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
+use App\Reflect\ChartHelper;
 use App\Reflect\Formats\BaseFormat;
 use Auth;
 use Illuminate\Http\Request;
@@ -56,8 +57,10 @@ class Activity extends BaseFormat
             } else if (is_null($currentRoundNumber)) {
                 $previousRound = $this->activity->rounds->where('round_number', $this->activity->rounds->count())->first();
             }
-            $chartHelper = app('ChartHelper');
-            return $chartHelper->getChartData($previousRound, $this->user);
+
+            $chartHelper = new ChartHelper($previousRound, $this->user);
+
+            return $chartHelper->getChartData();
         }
 
         return null;

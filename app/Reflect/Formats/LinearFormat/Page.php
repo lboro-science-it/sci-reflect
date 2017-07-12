@@ -2,6 +2,7 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
+use App\Reflect\ChartHelper;
 use App\Reflect\Formats\BaseFormat;
 use Auth;
 use Illuminate\Http\Request;
@@ -29,14 +30,14 @@ class Page extends BaseFormat
         $this->page = $request->route('page');
         $this->user = Auth::user();
 
-        $this->chartHelper = app('ChartHelper');
+        $this->chartHelper = new ChartHelper($this->round, $this->user);
         $this->selectionsHelper = app('SelectionsHelper');
         $this->reflect = app('Reflect');
     }
 
     public function done()
     {
-        $chartData = $this->chartHelper->getChartData($this->round, $this->user);
+        $chartData = $this->chartHelper->getChartData();
 
         $this->user->incrementRound();
 
