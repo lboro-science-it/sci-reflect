@@ -29,14 +29,28 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        // Load {activity} with pivot relative to Authed user's relation to it.
-        // Also sets pivot fields directly on Auth::user model for access in app.
+        // Load {activity} with pivot related to Auth::user, save pivot data
+        // to Auth::user, and eager load Auth::user's selections for activity
         Route::bind('activity', function($value) {
             $activity = Auth::user()->activities->where('pivot.activity_id', $value)->first();
 
+            // $activity->rounds are required globally
+            $activity->load([
+                'rounds'
+            ]);
+
+            // store pivot data for Auth::user's relationship to $activity
             Auth::user()->role = $activity->pivot->role;
             Auth::user()->currentRound = $activity->pivot->current_round;
             Auth::user()->currentPage = $activity->pivot->current_page;
+
+            // global eager load Auth::user's selections
+            Auth::user()->load([
+                'selections' => function($q) use ($activity) {
+                    $roundIds = array_column($activity->rounds->toArray(), 'id');
+                    $q->whereIn('round_id', $roundIds);
+                }
+            ]);
 
             return $activity;
         });
@@ -45,6 +59,11 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('round', function($value) {
             $activity = $this->app->request->route('activity');
             $round = $activity->rounds->where('round_number', '=', $value)->first();
+
+            // globally eager load round's pages & data - used in pages + charts
+            $round->load([
+                'pages.skills.indicators'
+            ]);
             return $round;
         });
 
@@ -53,9 +72,6 @@ class RouteServiceProvider extends ServiceProvider
         // contents & navigation buttons, etc
         Route::bind('page', function($value) {
             $round = $this->app->request->route('round');
-            $round->load([
-                'pages.skills.indicators'
-            ]);
 
             $page = $round->pages->where('pivot.page_number', $value)->first();
             return $page;
