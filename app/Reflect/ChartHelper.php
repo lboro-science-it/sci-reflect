@@ -7,6 +7,9 @@ use stdClass;
 
 class ChartHelper
 {
+    protected $round;
+
+    protected $user;
 
     /**
      * Returns an array of skills with averageValues for $this->user's
@@ -15,25 +18,30 @@ class ChartHelper
      */
     private function getAverageSkillValues()
     {
-        $selections = $this->user->selections()->where('round_id', '=', $this->round->id)->with('indicator')->with('choice')->get();
+        $selections = $this->user->selections->where('round_id', $this->round->id);
+
+        $indicators = $this->round->getIndicators();
+        $choices = app('Reflect')->getChoices();
 
         $skills = array();
         foreach($selections as $selection) {
-            $id = $selection->indicator->skill_id;
+            $indicator = $indicators->where('id', $selection->indicator_id)->first();
+            $skillId = $indicator->skill_id;
+            $choice = $choices->where('id', $selection->choice_id)->first();
 
-            if (!array_key_exists($id, $skills)) {
+            if (!array_key_exists($skillId, $skills)) {
                 $skill = new stdClass();
-                $skill->id = $id;
+                $skill->id = $skillId;
                 $skill->totalIndicators = 0;
                 $skill->totalValue = 0;
                 $skill->averageValue = 0;
 
-                $skills[$id] = $skill;
+                $skills[$skillId] = $skill;
             }
 
-            $skills[$id]->totalIndicators++;
-            $skills[$id]->totalValue += $selection->choice->value;
-            $skills[$id]->averageValue = $skills[$id]->totalValue / $skills[$id]->totalIndicators;
+            $skills[$skillId]->totalIndicators++;
+            $skills[$skillId]->totalValue += $choice->value;
+            $skills[$skillId]->averageValue = floor($skills[$skillId]->totalValue / $skills[$skillId]->totalIndicators);
         }
 
         return $skills;
