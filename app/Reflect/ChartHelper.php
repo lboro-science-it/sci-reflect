@@ -25,11 +25,11 @@ class ChartHelper
     }
 
     /**
-     * Returns an array of skills with averageValues for $this->user's
+     * Returns an array of skills with average Values for $this->user's
      * selections in $this->round.
      * @return array
      */
-    private function getAverageSkillValues()
+    private function getSkillValues()
     {
         $selections = $this->user->selections->where('round_id', $this->round->id);
 
@@ -67,7 +67,7 @@ class ChartHelper
      */
     private function createRatings()
     {
-        $averageSkillValues = $this->getAverageSkillValues();
+        $averageSkillValues = $this->getSkillValues();
 
         $ratingsToInsert = array();
         $ratingsCollection = collect(array());

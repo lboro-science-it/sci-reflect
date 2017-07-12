@@ -21,6 +21,7 @@ class SkillTableSeeder extends Seeder
                 'title' => 'Skill ' . $skillId,
                 'description' => 'Description for Skill ' . $skillId,
                 'info_link' => 'https://google.co.uk/search?q=attribute+' . $skillId,
+                'number' => $skillId,
             ]);
 
             DB::table('page_skill')->insert([
