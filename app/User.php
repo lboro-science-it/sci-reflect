@@ -50,10 +50,10 @@ class User extends Authenticatable
 
         // get the user's selections for the above indicators
         $selections = $this->selections->where('round_id', $round->id)
-                                       ->whereIn('indicator_id', array_column($indicators, 'id'));
+                                       ->whereIn('indicator_id', $indicators->pluck('id'));
 
-        if (count($indicators) > 0) {
-            return $selections->count() / count($indicators);
+        if ($indicators->count() > 0) {
+            return $selections->count() / $indicators->count();
         }
 
         // if there are 0 indicators then it's not completable

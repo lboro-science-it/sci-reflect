@@ -38,15 +38,15 @@ class Page extends Model
     public function getIndicators()
     {
         if (!isset($this->indicators)) {
-            $indicators = array();
+            $indicators = collect(array());
 
             foreach($this->skills as $skill) {
                 foreach($skill->indicators as $indicator) {
-                    array_push($indicators, $indicator);
+                    $indicators->push($indicator);
                 }
             }
 
-            $this->indicators = array_unique($indicators);
+            $this->indicators = $indicators->unique();
         }
 
         return $this->indicators;

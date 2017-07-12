@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 // helper functions
 class Reflect
 {
+    protected $activity;
+
     /**
      * Register Format classes and their display name (for forms)
      * ClassName => DisplayName
@@ -23,6 +25,7 @@ class Reflect
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->activity = $request->route('activity');
     }
 
     /**
@@ -32,8 +35,15 @@ class Reflect
      */
     public function getChoices()
     {
-        $activity = $this->request->route('activity');
-        return $activity->choices()->orderBy('value')->get();
+        if (!isset($this->activity->choices)) {
+            $this->activity->load([
+                'choices' => function($q) {
+                    $q->orderBy('value');
+                }
+            ]);
+        }
+
+        return $this->activity->choices;
     }
 
     /**
