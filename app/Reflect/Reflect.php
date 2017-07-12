@@ -25,7 +25,6 @@ class Reflect
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->activity = $request->route('activity');
     }
 
     /**
@@ -35,15 +34,17 @@ class Reflect
      */
     public function getChoices()
     {
-        if (!isset($this->activity->choices)) {
-            $this->activity->load([
+        $activity = $this->request->route('activity');
+
+        if (!isset($activity->choices)) {
+            $activity->load([
                 'choices' => function($q) {
                     $q->orderBy('value');
                 }
             ]);
         }
 
-        return $this->activity->choices;
+        return $activity->choices;
     }
 
     /**

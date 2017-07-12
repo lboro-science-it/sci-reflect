@@ -27,6 +27,21 @@ class Round extends Model
         return $this->indicators;
     }
 
+    public function getSkills()
+    {
+        if (!isset($this->skills)) {
+            $skills = collect(array());
+
+            foreach($this->pages as $page) {
+                $skills = $skills->merge($page->skills);
+            }
+
+            $this->skills = $skills->unique();
+        }
+
+        return $this->skills;
+    }
+
     /**
      * Rounds are only visible if previous rounds have been completed, and 
      * the current date is within their date boundaries (if set) OR if the

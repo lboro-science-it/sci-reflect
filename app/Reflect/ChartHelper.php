@@ -11,6 +11,11 @@ class ChartHelper
 
     protected $user;
 
+    public function __construct()
+    {
+        $this->reflect = app('Reflect');
+    }
+
     /**
      * Returns an array of skills with averageValues for $this->user's
      * selections in $this->round.
@@ -21,7 +26,7 @@ class ChartHelper
         $selections = $this->user->selections->where('round_id', $this->round->id);
 
         $indicators = $this->round->getIndicators();
-        $choices = app('Reflect')->getChoices();
+        $choices = $this->reflect->getChoices();
 
         $skills = array();
         foreach($selections as $selection) {
@@ -71,7 +76,7 @@ class ChartHelper
         }
 
         DB::table('ratings')->insert($ratingsToInsert);
-        return $this->queryRatings();
+        return $this->user->ratings()->where('round_id', $this->round->id)->get();
     }
 
     /**
@@ -83,8 +88,6 @@ class ChartHelper
         $this->round = $round;
         $this->user = $user;
 
-        $reflect = app('Reflect');
-
         $chartData = new stdClass();
 
         $ratings = $this->getRatings();
@@ -92,12 +95,14 @@ class ChartHelper
 
         $chartData->values = array_column($ratingsArray, 'rating');
 
-        $skills = array_column($ratingsArray, 'skill');
-        $chartData->labels = array_column($skills, 'title');
+        $skillIds = array_column($ratingsArray, 'skill_id');
+        $skills = $this->getSkillsFromIds($skillIds);
 
-        $chartData->max = $reflect->getChoices()->max('value');
+        $chartData->labels = array_column($skills->toArray(), 'title');
 
-        $categories = array_column($skills, 'category');
+        $chartData->max = $this->reflect->getChoices()->max('value');
+
+        $categories = array_column($skills->toArray(), 'category');
         $backgrounds = array_column($categories, 'color');
 
         $chartData->backgrounds = $backgrounds;
@@ -113,7 +118,7 @@ class ChartHelper
      */
     private function getRatings()
     {
-        $ratings = $this->queryRatings();
+        $ratings = $this->user->ratings()->where('round_id', $this->round->id)->get();
         
         if (!$ratings->count()) {
             $ratings = $this->createRatings();
@@ -122,16 +127,22 @@ class ChartHelper
         return $ratings;
     }
 
-    /**
-     * Queries $this->user's ratings in $this->round
-     * @return collection
-     */
-    private function queryRatings()
+    private function getSkillsFromIds($skillIds)
     {
-        // todo: remove with skill, instead load via activity
-        return $this->user->ratings()->where('round_id', '=', $this->round->id)
-        ->with('skill')
-        ->with('skill.category')
-        ->get();
+        $skills = collect(array());
+
+        $categories = request()->route('activity')->categories;
+
+        $roundSkills = $this->round->getSkills();
+
+        foreach ($skillIds as $skillId) {
+            $skill = $roundSkills->where('id', $skillId)->first();
+            $skill->setRelation('category', $categories->where('id', $skill->category_id)->first());
+
+            $skills->push($roundSkills->where('id', $skillId)->first());
+        }
+
+        return $skills;
     }
+
 }
