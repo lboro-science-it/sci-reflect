@@ -25,6 +25,21 @@ class Activity extends Model
         return $this->hasMany('App\Choice');
     }
 
+    public function getSkills()
+    {
+        if (!isset($this->skills)) {
+            $skills = collect(array());
+
+            foreach($this->rounds as $round) {
+                $skills = $skills->merge($round->getSkills());
+            }
+
+            $this->skills = $skills->unique();
+        }
+
+        return $this->skills;
+    }
+
     /**
      * Returns true if the current date falls within the activity's open_date
      * and close_date, if they are set, or true if they are not set.
