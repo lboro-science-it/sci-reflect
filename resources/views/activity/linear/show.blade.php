@@ -8,18 +8,29 @@
                 @include('activity.linear.partials._current')
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Your strongest skills...</h3>
-                <p>** include top 3 (or whatever number) skills with progress bars **</p>
+        @isset($activityData->strongestSkills)
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Your strongest skills...</h3>
+                    
+                    @foreach($activityData->strongestSkills as $skill)
+                        @include('skills.partials._skill', ['skill' => $skill])
+                    @endforeach
+                    
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Want to improve?</h3>
-                <p>** include bottom 3 (or whatever number) skills + links to further info **</p>
+        @endisset
+        @isset($activityData->weakestSkills)
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Want to improve?</h3>
+                    
+                    @foreach($activityData->weakestSkills as $skill)
+                        @include('skills.partials._skill', ['skill' => $skill])
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @endisset
     </div>
     <div class="col-md-3">
         @include('activity.linear.partials._chart')

@@ -3,6 +3,7 @@
 namespace App\Reflect\Formats\LinearFormat;
 
 use App\Reflect\ChartHelper;
+use App\Reflect\SkillsHelper;
 use App\Reflect\Formats\BaseFormat;
 use Auth;
 use Illuminate\Http\Request;
@@ -21,6 +22,16 @@ class Activity extends BaseFormat
         $this->request = $request;
         $this->activity = $request->route('activity');
         $this->user = Auth::user();
+
+        $this->previousRound = $this->getPreviousRound();
+
+        if (isset($this->previousRound)) {
+            $this->user->load([
+                'ratings' => function($q) {
+                    $q->whereIn('round_id', $this->activity->rounds->pluck('id'));
+                }
+            ]);
+        }
     }
 
     /**
@@ -40,6 +51,11 @@ class Activity extends BaseFormat
         $activityData->resumeLink = $this->getResumeLink();
         $activityData->rounds = $this->getRounds();
 
+        $skillsHelper = new SkillsHelper($this->previousRound, $this->user);
+
+        $activityData->strongestSkills = $skillsHelper->getStrongestSkills();
+        $activityData->weakestSkills = $skillsHelper->getWeakestSkills();
+
         return $activityData;
     }
 
@@ -49,18 +65,25 @@ class Activity extends BaseFormat
      */
     private function getChartData()
     {
+        if (isset($this->previousRound)) {
+            $chartHelper = new ChartHelper($this->previousRound, $this->user);
+
+            return $chartHelper->getChartData();
+        }
+
+        return null;
+    }
+
+    private function getPreviousRound()
+    {
         $currentRoundNumber = $this->user->currentRound;
 
         if ($currentRoundNumber != 1) {
             if ($currentRoundNumber > 1) {
-                $previousRound = $this->activity->rounds->where('round_number', $currentRoundNumber - 1)->first();
+                return $this->activity->rounds->where('round_number', $currentRoundNumber - 1)->first();
             } else if (is_null($currentRoundNumber)) {
-                $previousRound = $this->activity->rounds->where('round_number', $this->activity->rounds->count())->first();
+                return $this->activity->rounds->where('round_number', $this->activity->rounds->count())->first();
             }
-
-            $chartHelper = new ChartHelper($previousRound, $this->user);
-
-            return $chartHelper->getChartData();
         }
 
         return null;

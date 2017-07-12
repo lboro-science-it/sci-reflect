@@ -12,8 +12,18 @@
     </div>
 
     <div class="col-md-6">
-        <h3>Your best skills</h3>
-        <h3>Areas for improvement</h3>
+        @isset($strongestSkills)
+            <h3>Your best skills</h3>
+            @foreach($strongestSkills as $skill)
+                @include('skills.partials._skill', ['skill' => $skill])
+            @endforeach
+        @endisset
+        @isset($weakestSkills)
+            <h3>Areas for improvement</h3>
+            @foreach($weakestSkills as $skill)
+                @include('skills.partials._skill', ['skill' => $skill])
+            @endforeach
+        @endisset
     </div>
 </div>
 

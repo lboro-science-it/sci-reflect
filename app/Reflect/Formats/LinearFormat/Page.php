@@ -30,19 +30,15 @@ class Page extends BaseFormat
         $this->page = $request->route('page');
         $this->user = Auth::user();
 
-        $this->chartHelper = new ChartHelper($this->round, $this->user);
         $this->selectionsHelper = app('SelectionsHelper');
         $this->reflect = app('Reflect');
     }
 
     public function done()
     {
-        $chartData = $this->chartHelper->getChartData();
-
         $this->user->incrementRound();
 
-        return view('chart.single')
-        ->with('chartData', $chartData);
+        return redirect('a/' . $this->activity->id . '/student/r/' . $this->round->round_number . '/chart');
     }
 
     /**

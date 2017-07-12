@@ -70,21 +70,27 @@ class ChartHelper
         $averageSkillValues = $this->getAverageSkillValues();
 
         $ratingsToInsert = array();
+        $ratingsCollection = collect(array());
         foreach ($averageSkillValues as $skill) {
-            $rating = array(
-                'user_id' => $this->user->id,
-                'rater_id' => $this->user->id,
-                'round_id' => $this->round->id,
-                'skill_id' => $skill->id,
-                'rating' => $skill->averageValue,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            );
-            array_push($ratingsToInsert, $rating);
+            $rating = new \App\Rating;
+            $rating->user_id = $this->user->id;
+            $rating->rater_id = $this->user->id;
+            $rating->round_id = $this->round->id;
+            $rating->skill_id = $skill->id;
+            $rating->rating = $skill->averageValue;
+            $rating->created_at = date('Y-m-d H:i:s');
+            $rating->updated_at = date('Y-m-d H:i:s');
+
+            array_push($ratingsToInsert, $rating->toArray());
+
+            $ratingsCollection->push($rating);
         }
 
+        // save updated ratings in user model without having to select them again
+        $this->user->setRelation('ratings', $ratingsCollection->merge($this->user->ratings));
+
         DB::table('ratings')->insert($ratingsToInsert);
-        return $this->user->ratings()->where('round_id', $this->round->id)->get();
+        return $this->user->ratings->where('round_id', $this->round->id);
     }
 
     /**
@@ -111,7 +117,7 @@ class ChartHelper
      */
     private function getRatings()
     {
-        $ratings = $this->user->ratings()->where('round_id', $this->round->id)->get();
+        $ratings = $this->user->ratings->where('round_id', $this->round->id);
         
         if (!$ratings->count()) {
             $ratings = $this->createRatings();
