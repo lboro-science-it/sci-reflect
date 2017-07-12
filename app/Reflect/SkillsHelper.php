@@ -18,6 +18,29 @@ class SkillsHelper
         $this->reflect = app('Reflect');
     }
 
+    public function getSkills()
+    {
+        if (isset($this->round)) {
+            $ratings = $this->user->ratings->where('round_id', $this->round->id)
+                                           ->sortByDesc('rating');
+
+            $skills = collect(array());
+            $roundSkills = $this->round->getSkills();
+            $max = $this->reflect->getChoices()->max('value');
+
+            foreach($ratings as $rating) {
+                $skill = $roundSkills->where('id', $rating->skill_id)->first();
+                $skill->rating = $rating->rating;
+                $skill->max = $max;
+                $skills->push($skill);
+            }
+
+            return $skills;
+        }
+
+        return null;
+    }
+
     public function getStrongestSkills()
     {
         if (isset($this->round)) {
@@ -26,11 +49,12 @@ class SkillsHelper
             
             $strongestSkills = collect(array());
             $roundSkills = $this->round->getSkills();
+            $max = $this->reflect->getChoices()->max('value');
 
             foreach ($ratings as $rating) {
                 $skill = $roundSkills->where('id', $rating->skill_id)->first();
                 $skill->rating = $rating->rating;
-                $skill->max = $this->reflect->getChoices()->max('value');
+                $skill->max = $max;
                 $strongestSkills->push($skill);
             }
 
@@ -48,11 +72,12 @@ class SkillsHelper
             
             $weakestSkills = collect(array());
             $roundSkills = $this->round->getSkills();
+            $max = $this->reflect->getChoices()->max('value');
 
             foreach ($ratings as $rating) {
                 $skill = $roundSkills->where('id', $rating->skill_id)->first();
                 $skill->rating = $rating->rating;
-                $skill->max = $this->reflect->getChoices()->max('value');
+                $skill->max = $max;
                 $weakestSkills->push($skill);
             }
 

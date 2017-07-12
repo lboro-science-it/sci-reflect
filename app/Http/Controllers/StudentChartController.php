@@ -19,11 +19,13 @@ class StudentChartController extends Controller
         $skillsHelper = new SkillsHelper($round, Auth::user());
         $strongestSkills = $skillsHelper->getStrongestSkills();
         $weakestSkills = $skillsHelper->getWeakestSkills();
+        $skills = $skillsHelper->getSkills();
 
         return view('chart.single')
         ->with('chartData', $chartData)
-        ->with('strongestSkills', $strongestSkills)
-        ->with('weakestSkills', $weakestSkills);
+        ->with('skills', $skills);
+//        ->with('strongestSkills', $strongestSkills)
+//        ->with('weakestSkills', $weakestSkills);
     }
 
 }

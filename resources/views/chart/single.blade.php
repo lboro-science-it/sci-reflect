@@ -12,9 +12,9 @@
     </div>
 
     <div class="col-md-6">
-        @isset($strongestSkills)
+        @isset($skills)
             <h3>Your best skills</h3>
-            @foreach($strongestSkills as $skill)
+            @foreach($skills as $skill)
                 @include('skills.partials._skill', ['skill' => $skill])
             @endforeach
         @endisset
