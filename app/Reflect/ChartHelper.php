@@ -16,12 +16,10 @@ class ChartHelper
     public function __construct($round, $user)
     {
         $this->reflect = app('Reflect');
+        $this->activity = request()->route('activity');
+
         $this->round = $round;
         $this->user = $user;
-
-        $this->ratings = $this->getRatings();
-        $this->skills = $this->getSkillsFromIds($this->ratings->pluck('skill_id'));
-        $this->categories = $this->skills->pluck('category');
     }
 
     /**
@@ -100,6 +98,10 @@ class ChartHelper
     public function getChartData()
     {
         $chartData = new stdClass();
+
+        $this->ratings = $this->getRatings();
+        $this->skills = $this->getSkillsFromIds($this->ratings->pluck('skill_id'));
+        $this->categories = $this->skills->pluck('category');        
         
         $chartData->backgrounds = $this->categories->pluck('color');
         $chartData->labels = $this->skills->pluck('title');
@@ -115,6 +117,7 @@ class ChartHelper
      * already exist, or calculating and inserting them first if not.
      * @return collection
      */
+    // todo: order ratings by related skill's number
     private function getRatings()
     {
         $ratings = $this->user->ratings->where('round_id', $this->round->id);
@@ -134,7 +137,7 @@ class ChartHelper
     {
         $skills = collect(array());
 
-        $categories = request()->route('activity')->categories;
+        $categories = $this->activity->categories;
 
         $roundSkills = $this->round->getSkills();
 
