@@ -2,6 +2,7 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
+use App\Reflect\BlockContentParser;
 use App\Reflect\ChartHelper;
 use App\Reflect\SkillsHelper;
 use App\Reflect\Formats\BaseFormat;
@@ -48,6 +49,7 @@ class Activity extends BaseFormat
 
         $activityData->activityView = $this->view;
         $activityData->chartData = $this->getChartData();
+        $activityData->roundContent = $this->getRoundContent();
         $activityData->resumeLink = $this->getResumeLink();
         $activityData->rounds = $this->getRounds();
 
@@ -99,6 +101,18 @@ class Activity extends BaseFormat
         }
 
         return url('a/' . $this->activity->id . '/student/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
+    }
+
+    private function getRoundContent()
+    {
+        $currentRound = $this->activity->rounds->where('round_number', $this->user->currentRound)->first();
+
+        if (isset($currentRound->block)) {
+            $blockContentParser = new BlockContentParser();
+            return $blockContentParser->parse($currentRound->block->content);
+        }
+
+        return null;
     }
 
     private function getRounds()

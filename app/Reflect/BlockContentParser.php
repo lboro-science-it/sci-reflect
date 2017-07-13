@@ -15,7 +15,6 @@ class BlockContentParser {
     {
         $this->tags = [
             'username' => Auth::user()->name,
-            'round' => request()->route('round')->round_number,
         ];
     }
 

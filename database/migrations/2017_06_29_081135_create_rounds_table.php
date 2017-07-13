@@ -23,6 +23,7 @@ class CreateRoundsTable extends Migration
             $table->dateTime('close_date')->nullable();
             $table->integer('round_number')->nullable();
             $table->string('title', 50)->nullable();
+            $table->integer('block_id')->nullable();
             $table->timestamps();
         });
     }

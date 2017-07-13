@@ -11,12 +11,10 @@
     <h3>Activity complete!</h3>
     <p>You have completed this activity. ** Add links to view previous charts, skills, etc **</p>
 @endif
-<p>
-    Student view. Todo:
-</p>
-<ul>
-    <li>** Explanatory Text (from Round model?) **</li>
-    <li>** Encouraging messages etc "Well done on reflecting on x..."
-        "Pick up where you left off..."
-        "There are only a few days left..." **</li>
-</ul>
+@isset($activityData->roundContent)
+        {!! $activityData->roundContent !!}
+@endisset
+<li>** Encouraging messages etc "Well done on reflecting on x..."
+"Pick up where you left off..."
+"There are only a few days left..." **</li>
+
