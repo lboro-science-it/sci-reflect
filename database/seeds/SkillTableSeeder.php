@@ -11,8 +11,6 @@ class SkillTableSeeder extends Seeder
      */
     public function run()
     {
-        $pageId = 4;
-
         for ($skillId = 1; $skillId <= 4; $skillId++) {
             
             DB::table('skills')->insertGetId([
@@ -26,9 +24,17 @@ class SkillTableSeeder extends Seeder
 
             DB::table('page_skill')->insert([
                 'skill_id' => $skillId,
-                'page_id' => $pageId,
+                'page_id' => 4,
                 'position' => $skillId
             ]);
+
+            if ($skillId % 2 == 1) {
+                DB::table('page_skill')->insert([
+                    'skill_id' => $skillId,
+                    'page_id' => 5,
+                    'position' => $skillId
+                ]);
+            }
         }
     }
 }
