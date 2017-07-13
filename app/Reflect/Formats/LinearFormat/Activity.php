@@ -29,6 +29,11 @@ class Activity extends BaseFormat
 
     private function eagerLoad()
     {
+        $this->activity->rounds->load([
+            'pages.skills.indicators',
+            'pages.skills.category'
+        ]);
+        
         if (isset($this->previousRound)) {
             $this->user->load([
                 'ratings' => function($q) {

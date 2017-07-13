@@ -13,6 +13,11 @@ class StudentChartController extends Controller
 {
     public function show(Activity $activity, Round $round)
     {
+        $activity->rounds->load([
+            'pages.skills.indicators',
+            'pages.skills.category'
+        ]);
+
         $chartHelper = app('ChartHelper');
         $chartData = $chartHelper->getChartData($round, Auth::user());
 
