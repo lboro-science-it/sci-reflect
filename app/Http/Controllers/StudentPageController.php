@@ -18,8 +18,8 @@ class StudentPageController extends Controller
     }
 
     /**
-     * Handle a post to a/{activity}/student/r/{round}/p/{page} by looking up
-     * $round's format and redirecting the request there.
+     * Handle a post to a/{activity}/student/r/{round}/p/{page}
+     * Creates an instance of $round's Format Page class to process + render.
      *
      * @return View
      */

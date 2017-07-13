@@ -11,8 +11,15 @@ use Illuminate\Http\Request;
 
 class StudentChartController extends Controller
 {
+
+    /**
+     * Eager load necessary data then render the single chart view.
+     *
+     * @return View
+     */    
     public function show(Activity $activity, Round $round)
     {
+        // todo: moving this into a central location called from both helpers
         $activity->rounds->load([
             'pages.skills.indicators',
             'pages.skills.category'

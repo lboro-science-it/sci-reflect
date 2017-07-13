@@ -34,7 +34,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('activity', function($value) {
             $activity = Auth::user()->activities->where('pivot.activity_id', $value)->first();
 
-            // $activity->rounds always required when $activity is in the route
+            // globally eager load $activity's rounds
             $activity->load([
                 'rounds'
             ]);
@@ -44,18 +44,20 @@ class RouteServiceProvider extends ServiceProvider
             Auth::user()->currentRound = $activity->pivot->current_round;
             Auth::user()->currentPage = $activity->pivot->current_page;
 
-            // global eager load Auth::user's selections
-            Auth::user()->load([
-                'selections' => function($q) use ($activity) {
-                    $roundIds = array_column($activity->rounds->toArray(), 'id');
-                    $q->whereIn('round_id', $roundIds);
-                }
-            ]);
+            // globally eager load Auth::user's selections
+            if (Auth::user()->role == 'student') {
+                Auth::user()->load([
+                    'selections' => function($q) use ($activity) {
+                        $roundIds = array_column($activity->rounds->toArray(), 'id');
+                        $q->whereIn('round_id', $roundIds);
+                    }
+                ]);
+            }
 
             return $activity;
         });
 
-        // Load {round} based on number of {round} in {activity}
+        // Load $round model based on {round_number} in {activity}
         Route::bind('round_number', function($value) {
             $activity = $this->app->request->route('activity');
             $round = $activity->rounds->where('round_number', '=', $value)->first();
@@ -63,13 +65,11 @@ class RouteServiceProvider extends ServiceProvider
             return $round;
         });
 
-        // Load {page} based on number of {page} in {round}.
-        // Also load all round's pages' indicators, required for table of
-        // contents & navigation buttons, etc
+        // Load $page model based on {page_number} in {round_number}
         Route::bind('page_number', function($value) {
             $round = $this->app->request->route('round_number');
-
             $page = $round->pages->where('pivot.page_number', $value)->first();
+
             return $page;
         });
 

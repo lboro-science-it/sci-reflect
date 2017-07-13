@@ -14,11 +14,18 @@ class SkillsHelper
         $this->reflect = $reflect;
     }
 
+    /**
+     * Returns a collection of $skills for the given $user in the given $round
+     * based only on the skills in the $round.
+     * todo: base skills on activity's skills, not rounds
+     *
+     * @return View
+     */
     public function getSkills($round, $user)
     {
         if (isset($round)) {
-            $ratings = $user->ratings->where('round_id', $round->id)
-                                           ->sortByDesc('rating');
+            $ratings = $this->getUserRatings($round, $user)
+                            ->sortByDesc('rating');
 
             $skills = collect(array());
             $roundSkills = $round->getSkills();
@@ -40,8 +47,8 @@ class SkillsHelper
     public function getStrongestSkills($round, $user)
     {
         if (isset($round)) {
-            $ratings = $user->ratings->where('round_id', $round->id)
-                                           ->sortByDesc('rating')->splice(0, 3);
+            $ratings = $this->getUserRatings($round, $user)
+                            ->sortByDesc('rating')->splice(0, 3);
             
             $strongestSkills = collect(array());
             $roundSkills = $round->getSkills();
@@ -63,9 +70,9 @@ class SkillsHelper
     public function getWeakestSkills($round, $user)
     {
         if (isset($round)) {
-            $ratings = $user->ratings->where('round_id', $round->id)
-                                           ->sortBy('rating')->splice(0, 3);
-            
+            $ratings = $this->getUserRatings($round, $user)
+                            ->sortBy('rating')->splice(0, 3);
+
             $weakestSkills = collect(array());
             $roundSkills = $round->getSkills();
             $max = $this->reflect->getChoices()->max('value');
@@ -81,6 +88,13 @@ class SkillsHelper
         }
 
         return null;
+    }
+
+    private function getUserRatings($round, $user)
+    {
+        if (isset($round)) {
+            return $user->ratings->where('round_id', $round->id);
+        }
     }
 
 }
