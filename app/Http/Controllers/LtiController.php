@@ -27,7 +27,6 @@ class LtiController extends Controller
                 Auth::loginUsingId($tool->user_id);
                 return redirect('a/' . $tool->activity_id);
             } else {
-                dd($tool);
                 return view('lti.error');
             }
         } else {                // No cookies, show splash to force creation
