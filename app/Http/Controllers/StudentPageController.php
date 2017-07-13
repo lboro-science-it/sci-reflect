@@ -18,8 +18,8 @@ class StudentPageController extends Controller
     }
 
     /**
-     * Processes submitted data, updating student data in DB,
-     * returns view according to the action submitted & the round format.
+     * Handle a post to a/{activity}/student/r/{round}/p/{page} by looking up
+     * $round's format and redirecting the request there.
      *
      * @return View
      */

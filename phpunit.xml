@@ -27,5 +27,8 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="DB_DATABASE" value="scireflect_testing"/>
+        <env name="DB_USERNAME" value="scireflect_testing"/>
+        <env name="DB_PASSWORD" value="scireflect_testing"/>
     </php>
 </phpunit>
