@@ -16,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('SelectionsHelper', function($app) {
             return new \App\Reflect\SelectionsHelper($app->request);
         });
+
+        $this->app->bind('ChartHelper', function($app) {
+            return new \App\Reflect\ChartHelper($app->request);
+        });
     }
 
     /**
@@ -25,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('Reflect', function($app) {
+        $this->app->bind('Reflect', function($app) {
             return new \App\Reflect\Reflect($app->request);
         });
     }

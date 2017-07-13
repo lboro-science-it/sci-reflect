@@ -68,9 +68,9 @@ class Activity extends BaseFormat
     private function getChartData()
     {
         if (isset($this->previousRound)) {
-            $chartHelper = new ChartHelper($this->previousRound, $this->user);
+            $chartHelper = app('ChartHelper');
 
-            return $chartHelper->getChartData();
+            return $chartHelper->getChartData($this->previousRound, $this->user);
         }
 
         return null;

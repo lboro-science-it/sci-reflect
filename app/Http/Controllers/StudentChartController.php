@@ -13,8 +13,8 @@ class StudentChartController extends Controller
 {
     public function show(Activity $activity, Round $round)
     {
-        $chartHelper = new ChartHelper($round, Auth::user());
-        $chartData = $chartHelper->getChartData();
+        $chartHelper = app('ChartHelper');
+        $chartData = $chartHelper->getChartData($round, Auth::user());
 
         $skillsHelper = new SkillsHelper($round, Auth::user());
         $skills = $skillsHelper->getSkills();

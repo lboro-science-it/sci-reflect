@@ -3,6 +3,7 @@
 namespace App\Reflect;
 
 use DB;
+use Illuminate\Http\Request;
 use stdClass;
 
 class ChartHelper
@@ -13,13 +14,10 @@ class ChartHelper
 
     protected $ratings;
 
-    public function __construct($round, $user)
+    public function __construct(Request $request)
     {
         $this->reflect = app('Reflect');
-        $this->activity = request()->route('activity');
-
-        $this->round = $round;
-        $this->user = $user;
+        $this->activity = $request->route('activity');
     }
 
     /**
@@ -95,30 +93,46 @@ class ChartHelper
      * Returns Ratings data formatted for rendering in a chart view.
      * @return obj $chartData
      */
-    public function getChartData()
+    public function getChartData($round, $user)
     {
+        $this->round = $round;
+        $this->user = $user;
+
         $chartData = new stdClass();
 
-        $this->ratings = $this->getRatings();
-        $this->skills = $this->getSkillsFromIds($this->ratings->pluck('skill_id'));
-        $this->categories = $this->skills->pluck('category');        
-        
-        $chartData->backgrounds = $this->categories->pluck('color');
-        $chartData->labels = $this->skills->pluck('title');
-        $chartData->values = $this->ratings->pluck('rating');
-        
+        $skills = $this->getActivitySkills();
+
+        $chartData->backgrounds = $skills->pluck('category')->pluck('color');
+        $chartData->labels = $skills->pluck('title');
+        $chartData->values = $this->getRatings($skills);
+
         $chartData->max = $this->reflect->getChoices()->max('value');
 
         return $chartData;
     }
 
+    private function getActivitySkills()
+    {
+        $activitySkills = $this->activity->getSkills()->sortBy('number');
+
+        // manually relate the categories from the activity model
+        foreach ($activitySkills as $activitySkill) {
+            $activitySkill->setRelation(
+                'category',
+                $this->activity->categories->where('id', $activitySkill->category_id)->first()
+            );
+        }
+
+        return $activitySkills;
+    }
+
     /**
      * Returns $this->user's ratings in $this->round, getting them if they
      * already exist, or calculating and inserting them first if not.
+     * Ratings are mapped against $skills
      * @return collection
      */
-    // todo: order ratings by related skill's number
-    private function getRatings()
+    private function getRatings($skills)
     {
         $ratings = $this->user->ratings->where('round_id', $this->round->id);
         
@@ -126,29 +140,17 @@ class ChartHelper
             $ratings = $this->createRatings();
         }
 
-        return $ratings;
-    }
+        $ratingsArray = array();
 
-    /**
-     * Returns collection of Skills with categories from an array of IDs.
-     * @return collection
-     */
-    private function getSkillsFromIds($skillIds)
-    {
-        $skills = collect(array());
+        foreach ($skills as $skill) {
+            $rating = $ratings->where('skill_id', $skill->id)->first();
+            
+            $ratingValue = is_null($rating) ? 0 : $rating->rating;
 
-        $categories = $this->activity->categories;
-
-        $roundSkills = $this->round->getSkills();
-
-        foreach ($skillIds as $skillId) {
-            $skill = $roundSkills->where('id', $skillId)->first();
-            $skill->setRelation('category', $categories->where('id', $skill->category_id)->first());
-
-            $skills->push($roundSkills->where('id', $skillId)->first());
+            array_push($ratingsArray, $ratingValue);
         }
 
-        return $skills;
+        return $ratingsArray;
     }
 
 }

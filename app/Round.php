@@ -41,7 +41,7 @@ class Round extends Model
                 $skills = $skills->merge($page->skills);
             }
 
-            $this->skills = $skills->unique();
+            $this->skills = $skills->unique('id');
         }
 
         return $this->skills;

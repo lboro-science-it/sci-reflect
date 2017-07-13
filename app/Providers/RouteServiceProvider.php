@@ -34,7 +34,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('activity', function($value) {
             $activity = Auth::user()->activities->where('pivot.activity_id', $value)->first();
 
-            // $activity->rounds are required globally
+            // $activity->rounds always required when $activity is in the route
             $activity->load([
                 'rounds'
             ]);
@@ -60,10 +60,6 @@ class RouteServiceProvider extends ServiceProvider
             $activity = $this->app->request->route('activity');
             $round = $activity->rounds->where('round_number', '=', $value)->first();
 
-            // globally eager load round's pages & data - used in pages + charts
-            $round->load([
-                'pages.skills.indicators'
-            ]);
             return $round;
         });
 

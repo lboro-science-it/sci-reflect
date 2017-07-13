@@ -34,7 +34,7 @@ class Activity extends Model
                 $skills = $skills->merge($round->getSkills());
             }
 
-            $this->skills = $skills->unique();
+            $this->skills = $skills->unique('id');
         }
 
         return $this->skills;
