@@ -132,7 +132,7 @@ class Page extends BaseFormat
      */
     public function hasSave($page)
     {
-        return $page->pivot->page_number == $this->round->pages->count() && $page->skills->count() > 1;
+        return !$this->hasNextPage($page) && $page->skills->count() > 1;
     }
 
     public function makePageView($page)
