@@ -13,9 +13,7 @@ class CreateActivitiesTable extends Migration
      */
     public function up()
     {
-        $formatClasses = app('Reflect')->getFormatClassNames();
-
-        Schema::create('activities', function (Blueprint $table) use ($formatClasses) {
+        Schema::create('activities', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 255)->nullable();
             $table->integer('resource_link_record_id')->nullable();

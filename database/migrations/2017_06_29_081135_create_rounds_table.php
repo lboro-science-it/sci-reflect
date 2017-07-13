@@ -13,9 +13,7 @@ class CreateRoundsTable extends Migration
      */
     public function up()
     {
-        $formatClasses = app('Reflect')->getFormatClassNames();
-
-        Schema::create('rounds', function (Blueprint $table) use ($formatClasses) {
+        Schema::create('rounds', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('activity_id')->nullable();
             $table->integer('inherit_from_round_id')->nullable();

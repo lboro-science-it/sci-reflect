@@ -12,7 +12,6 @@ class Reflect
     /**
      * Register Format classes and their display name (for forms)
      * ClassName => DisplayName
-     * These will be bound into the service container in ReflectFormatProvider.php
      *
      */
     protected $formats = [
@@ -45,16 +44,6 @@ class Reflect
         }
 
         return $activity->choices;
-    }
-
-    /**
-     * Returns array of class names from $this->formats.
-     *
-     * @return array
-     */
-    public function getFormatClassNames()
-    {
-        return array_keys($this->formats);
     }
 
     /**

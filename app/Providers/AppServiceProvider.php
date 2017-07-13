@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('Reflect', function($app) {
+        $this->app->singleton('Reflect', function($app) {
             return new \App\Reflect\Reflect($app->request);
         });
     }
