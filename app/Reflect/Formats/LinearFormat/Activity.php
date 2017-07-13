@@ -25,7 +25,10 @@ class Activity extends BaseFormat
         $this->user = Auth::user();
 
         $this->previousRound = $this->getPreviousRound();
+    }
 
+    private function eagerLoad()
+    {
         if (isset($this->previousRound)) {
             $this->user->load([
                 'ratings' => function($q) {
@@ -43,7 +46,8 @@ class Activity extends BaseFormat
      */
     public function getActivityData()
     {
-        //todo: get strongest skills from previous round
+        $this->eagerLoad();
+
         //todo: get improve links for weakest skills from previous round
         $activityData = new stdClass();
 

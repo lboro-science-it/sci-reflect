@@ -31,6 +31,8 @@ class Page extends BaseFormat
         $this->page = $request->route('page_number');
         $this->user = Auth::user();
 
+        $this->eagerLoad();
+
         $this->selectionsHelper = app('SelectionsHelper');
         $this->reflect = app('Reflect');
     }
@@ -40,6 +42,13 @@ class Page extends BaseFormat
         $this->user->incrementRound();
 
         return redirect('a/' . $this->activity->id . '/student/r/' . $this->round->round_number . '/chart');
+    }
+
+    private function eagerLoad()
+    {
+        $this->round->pages->load([
+            'skills.indicators'
+        ]);
     }
 
     /**

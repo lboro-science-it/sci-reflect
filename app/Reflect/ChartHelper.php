@@ -20,6 +20,14 @@ class ChartHelper
         $this->activity = $request->route('activity');
     }
 
+    private function eagerLoad()
+    {
+        $this->activity->rounds->load([
+            'pages.skills.indicators',
+            'pages.skills.category'
+        ]);
+    }
+
     /**
      * Returns an array of skills with average Values for $this->user's
      * selections in $this->round.
@@ -98,6 +106,8 @@ class ChartHelper
         $this->round = $round;
         $this->user = $user;
 
+        $this->eagerLoad();
+
         $chartData = new stdClass();
 
         $skills = $this->getActivitySkills();
@@ -114,14 +124,6 @@ class ChartHelper
     private function getActivitySkills()
     {
         $activitySkills = $this->activity->getSkills()->sortBy('number');
-
-        // manually relate the categories from the activity model
-        foreach ($activitySkills as $activitySkill) {
-            $activitySkill->setRelation(
-                'category',
-                $this->activity->categories->where('id', $activitySkill->category_id)->first()
-            );
-        }
 
         return $activitySkills;
     }

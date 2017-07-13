@@ -25,11 +25,6 @@ class StudentActivityComposer
      */
     public function compose(View $view)
     {
-        // we will need all rounds' content to calculate completions
-        $this->activity->rounds->load([
-            'pages.skills.indicators'
-        ]);
-
         $formatClass = $this->getFormatClass();
         $activityData = $formatClass->getActivityData($this->activity, $this->user);
 
