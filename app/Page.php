@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Reflect\BlockContentParser;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
@@ -24,7 +25,10 @@ class Page extends Model
             $content->push($item);
         });
 
-        $this->blocks->each(function ($item) use ($content) {
+        $blockContentParser = new BlockContentParser();
+
+        $this->blocks->each(function ($item) use ($content, $blockContentParser) {
+            $item->content = $blockContentParser->parse($item->content);
             $content->push($item);
         });
 
