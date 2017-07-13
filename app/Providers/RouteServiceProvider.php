@@ -56,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         // Load {round} based on number of {round} in {activity}
-        Route::bind('round', function($value) {
+        Route::bind('round_number', function($value) {
             $activity = $this->app->request->route('activity');
             $round = $activity->rounds->where('round_number', '=', $value)->first();
 
@@ -66,8 +66,8 @@ class RouteServiceProvider extends ServiceProvider
         // Load {page} based on number of {page} in {round}.
         // Also load all round's pages' indicators, required for table of
         // contents & navigation buttons, etc
-        Route::bind('page', function($value) {
-            $round = $this->app->request->route('round');
+        Route::bind('page_number', function($value) {
+            $round = $this->app->request->route('round_number');
 
             $page = $round->pages->where('pivot.page_number', $value)->first();
             return $page;

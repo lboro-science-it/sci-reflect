@@ -21,7 +21,7 @@ Route::put('a/{activity}/open', 'ActivityController@open');
 Route::get('eject', 'ActivityController@eject');
 
 // student page routes
-Route::post('a/{activity}/student/r/{round}/p/{page}', 'StudentPageController@process');
+Route::post('a/{activity}/student/r/{round_number}/p/{page_number}', 'StudentPageController@process');
 
 // chart routes
-Route::get('a/{activity}/student/r/{round}/chart', 'StudentChartController@show');
+Route::get('a/{activity}/student/r/{round_number}/chart', 'StudentChartController@show');
