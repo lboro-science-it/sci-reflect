@@ -13,7 +13,8 @@ class Page extends BaseFormat
     protected $activity, $page, $request, $round, $user;
 
     protected $formatActions = [
-        'page' => 'page'
+        'page' => 'page',
+        'save' => 'save'
     ];
 
     protected $view = 'page.linear.show';
@@ -54,6 +55,7 @@ class Page extends BaseFormat
         $data->hasDone = $this->user->hasCompleted($this->round);
         $data->hasNext = $this->hasNextPage($page);
         $data->hasPrev = $this->hasPrevPage($page);
+        $data->hasSave = $this->hasSave($page);
         $data->pageNumber = $page->pivot->page_number;
         $data->pageTitle = $page->title;
         $data->roundNumber = $this->round->round_number;
@@ -124,6 +126,15 @@ class Page extends BaseFormat
         return $page->pivot->page_number > 1;
     }
 
+    /**
+     * Returns the true if $page doesn't have a next page and has skills.
+     * @return bool
+     */
+    public function hasSave($page)
+    {
+        return $page->pivot->page_number == $this->round->pages->count() && $page->skills->count() > 1;
+    }
+
     public function makePageView($page)
     {
         return view($this->view)
@@ -189,6 +200,11 @@ class Page extends BaseFormat
      * @return View
      */
     public function resume()
+    {
+        return $this->makePageView($this->page);
+    }
+
+    public function save()
     {
         return $this->makePageView($this->page);
     }

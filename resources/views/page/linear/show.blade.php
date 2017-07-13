@@ -38,6 +38,7 @@
 
             @include('page.partials._prev')
             @include('page.partials._next')
+            @include('page.partials._save')
             @include('page.partials._done')
 
         </div>
