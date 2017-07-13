@@ -21,8 +21,8 @@ class StudentChartController extends Controller
         $chartHelper = app('ChartHelper');
         $chartData = $chartHelper->getChartData($round, Auth::user());
 
-        $skillsHelper = new SkillsHelper($round, Auth::user());
-        $skills = $skillsHelper->getSkills();
+        $skillsHelper = app('SkillsHelper');
+        $skills = $skillsHelper->getSkills($round, Auth::user());
 
         return view('chart.single')
         ->with('chartData', $chartData)

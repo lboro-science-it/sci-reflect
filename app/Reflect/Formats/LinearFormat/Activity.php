@@ -33,7 +33,7 @@ class Activity extends BaseFormat
             'pages.skills.indicators',
             'pages.skills.category'
         ]);
-        
+
         if (isset($this->previousRound)) {
             $this->user->load([
                 'ratings' => function($q) {
@@ -62,10 +62,10 @@ class Activity extends BaseFormat
         $activityData->resumeLink = $this->getResumeLink();
         $activityData->rounds = $this->getRounds();
 
-        $skillsHelper = new SkillsHelper($this->previousRound, $this->user);
+        $skillsHelper = app('SkillsHelper');
 
-        $activityData->strongestSkills = $skillsHelper->getStrongestSkills();
-        $activityData->weakestSkills = $skillsHelper->getWeakestSkills();
+        $activityData->strongestSkills = $skillsHelper->getStrongestSkills($this->previousRound, $this->user);
+        $activityData->weakestSkills = $skillsHelper->getWeakestSkills($this->previousRound, $this->user);
 
         return $activityData;
     }
