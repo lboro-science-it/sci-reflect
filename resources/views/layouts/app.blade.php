@@ -45,7 +45,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <h4 class="navbar-text">@yield('title')</h4>
 
-                        @if ($canEdit)
+                        @if (Auth::check() && Auth::user()->role == 'staff')
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
