@@ -100,7 +100,7 @@ class ChartHelper
 
         $chartData = new stdClass();
 
-        $skills = $this->getActivitySkills();
+        $skills = $this->activity->getSkills()->sortBy('number');
 
         $chartData->backgrounds = $skills->pluck('category')->pluck('color');
         $chartData->labels = $skills->pluck('title');
@@ -109,13 +109,6 @@ class ChartHelper
         $chartData->max = $this->reflect->getChoices()->max('value');
 
         return $chartData;
-    }
-
-    private function getActivitySkills()
-    {
-        $activitySkills = $this->activity->getSkills()->sortBy('number');
-
-        return $activitySkills;
     }
 
     /**

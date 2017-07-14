@@ -10,7 +10,11 @@ use stdClass;
 
 class Page extends BaseFormat
 {
-    protected $activity, $page, $request, $round, $user;
+    protected $activity;
+    protected $page;
+    protected $request;
+    protected $round;
+    protected $user;
 
     protected $formatActions = [
         'page' => 'page',
@@ -37,6 +41,11 @@ class Page extends BaseFormat
         $this->reflect = app('Reflect');
     }
 
+    /**
+     * Increments user's round and redirects user to chart route for round.
+     *
+     * @return Redirect
+     */
     public function done()
     {
         $this->user->incrementRound();

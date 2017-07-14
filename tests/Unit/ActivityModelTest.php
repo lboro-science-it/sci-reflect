@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ActivityTest extends TestCase
+class ActivityModelTest extends TestCase
 {
     use DatabaseTransactions;
     

@@ -15,15 +15,9 @@ class Activity extends Model
         'consumer_pk', 'resource_link_record_id', 'status'
     ];
 
-    public function categories()
-    {
-        return $this->hasMany('App\Category');
-    }
-
-    public function choices()
-    {
-        return $this->hasMany('App\Choice');
-    }
+    /**
+     * functions
+     */
 
     public function getSkills()
     {
@@ -57,6 +51,20 @@ class Activity extends Model
         }
 
         return false;
+    }
+
+    /**
+     * Relationships
+     */
+
+    public function categories()
+    {
+        return $this->hasMany('App\Category');
+    }
+
+    public function choices()
+    {
+        return $this->hasMany('App\Choice');
     }
 
     public function pages()
