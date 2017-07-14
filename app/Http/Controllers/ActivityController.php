@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class ActivityController extends Controller
 {
-
     /**
      * Set status of activity to closed, returns activity dashboard view.
      *

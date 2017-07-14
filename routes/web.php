@@ -14,20 +14,26 @@
 // lti launch route
 Route::post('launch', 'LtiController@launch');
 
-// staff activity routes
-Route::get('a/{activity}', 'ActivityController@show');
-Route::put('a/{activity}', 'ActivityController@create');
-Route::put('a/{activity}/close', 'ActivityController@close');
-Route::put('a/{activity}/open', 'ActivityController@open');
+Route::group(['middleware' => ['staff']], function() {
+
+    // staff activity routes
+    Route::get('a/{activity}', 'ActivityController@show');
+    Route::put('a/{activity}', 'ActivityController@create');
+    Route::put('a/{activity}/close', 'ActivityController@close');
+    Route::put('a/{activity}/open', 'ActivityController@open');
+
+});
+
+Route::group(['middleware' => ['student']], function() {
+    // student activity routes
+    Route::get('a/{activity}/student', 'StudentActivityController@show');
+
+    // student page routes
+    Route::post('a/{activity}/student/r/{round_number}/p/{page_number}', 'StudentPageController@process');
+
+    // student chart routes
+    Route::get('a/{activity}/student/r/{round_number}/chart', 'StudentChartController@show');
+});
 
 // security routes
 Route::get('eject', 'ActivityController@eject');
-
-// student activity routes
-Route::get('a/{activity}/student', 'StudentActivityController@show');
-
-// student page routes
-Route::post('a/{activity}/student/r/{round_number}/p/{page_number}', 'StudentPageController@process');
-
-// student chart routes
-Route::get('a/{activity}/student/r/{round_number}/chart', 'StudentChartController@show');

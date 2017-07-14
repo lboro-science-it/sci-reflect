@@ -32,6 +32,7 @@ class RouteServiceProvider extends ServiceProvider
         // Load {activity} with pivot related to Auth::user, save pivot data
         // to Auth::user, and eager load Auth::user's selections for activity
         Route::bind('activity', function($value) {
+            // todo: handle not authed users more elegantly than just crashing when this is reached
             $activity = Auth::user()->activities->where('pivot.activity_id', $value)->first();
 
             // globally eager load $activity's rounds
