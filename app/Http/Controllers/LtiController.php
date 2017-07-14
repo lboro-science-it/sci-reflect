@@ -23,9 +23,17 @@ class LtiController extends Controller
 
         if ($request->session()->has('live')) {     // cookies are working
             $tool->handleRequest();
+
             if ($tool->ok) {
-                Auth::loginUsingId($tool->user_id);
-                return redirect('a/' . $tool->activity_id);
+                if (!Auth::check() || Auth::user()->id != $tool->activity_id) {
+                    Auth::loginUsingId($tool->user_id);
+                }
+
+                if ($tool->role == 'staff') {
+                    return redirect('a/' . $tool->activity_id);
+                }
+
+                return redirect('a/' . $tool->activity_id . '/student');
             } else {
                 return view('lti.error');
             }

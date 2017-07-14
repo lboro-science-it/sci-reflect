@@ -40,6 +40,8 @@ class LtiToolProvider extends ToolProvider
 
         // set user role in the pivot table
         $role = $this->user->isStaff() ? 'staff' : 'student';
+        $this->role = $role;
+
         if (!$user->activities()->where('activity_id', '=', $this->activity_id)->count()) {
             $user->activities()->attach($activity, [
                 'role' => $role,

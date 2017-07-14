@@ -78,28 +78,20 @@ class ActivityController extends Controller
     }
 
     /**
-     * Returns activity view according to status of activity and user's role.
+     * Returns activity view according to status of activity.
      *
      * @return View
      */
     public function show(Activity $activity)
     {
-        if (Auth::user()->role == 'staff') {
-            if ($activity->status == 'new') {
-                return view('activity.new');
-            }
-            if ($activity->status == 'design') {
-                return view('activity.design');
-            }
-            return view('activity.staff');
+        if ($activity->status == 'new') {
+            return view('activity.new');
         }
 
-        if (Auth::user()->role == 'student') {
-            if ($activity->isOpen()) {
-                return view('activity.student');
-            }
+        if ($activity->status == 'design') {
+            return view('activity.design');
         }
 
-        return view('activity.closed');
+        return view('activity.staff');
     }
 }
