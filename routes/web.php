@@ -26,11 +26,10 @@ Route::group(['middleware' => ['staff']], function() {
 
 Route::group(['middleware' => ['student']], function() {
     // student activity routes
-    Route::get('a/{activity}/{format}', 'StudentActivityController@show');
+    Route::get('a/{activity}/linear', 'LinearController@dashboard');
 
     // student page routes
-    Route::post('a/{activity}/{format}/r/{round_number}/p/{page_number}', 'StudentPageController@process');
-    Route::post('a/{activity}/{format}/r/{round_number}/c/{category}/p/{category_page}', 'StudentPageController@process');
+    Route::post('a/{activity}/linear/r/{round_number}/p/{page_number}', 'LinearController@page');
 
     // student chart routes
     Route::get('a/{activity}/student/r/{round_number}/chart', 'StudentChartController@show');
