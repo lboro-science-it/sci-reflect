@@ -49,7 +49,7 @@ class Activity extends BaseFormat
      * $activity->rounds, $round->pages, $page->skills, $skill->indicators. 
      * @return bool
      */
-    public function getActivityData()
+    public function getData()
     {
         $this->eagerLoad();
 
@@ -155,7 +155,7 @@ class Activity extends BaseFormat
     public function processActivity($activity)
     {
         return view($this->activityView)
-               ->with('activityData', $this->getActivityData());
+               ->with('activityData', $this->getData());
     }
 
 }

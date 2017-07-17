@@ -203,8 +203,7 @@ class Page extends BaseFormat
      */
     public function processPage()
     {
-        $selectionsHelper = app('SelectionsHelper');
-        $selectionsHelper->insertOrUpdateSelections($this->round, $this->user);
+        $this->selectionsHelper->insertOrUpdateSelections($this->round, $this->user);
 
         $action = $this->getAction();
 
