@@ -42,18 +42,24 @@ class LtiToolProvider extends ToolProvider
         $role = $this->user->isStaff() ? 'staff' : 'student';
         $this->role = $role;
 
-        if (!$user->activities()->where('activity_id', '=', $this->activity_id)->count()) {
+        $user->load('activities.rounds');
+
+        if (!$user->activities->where('id', '=', $this->activity_id)->count()) {
             $user->activities()->attach($activity, [
                 'role' => $role,
                 'lti_user_id' => $this->user->ltiUserId,
-                'current_page' => $role == 'staff' ? null : 1,
-                'current_round' => $role == 'staff' ? null : 1
+                'current_page' => 1,
+                'current_round' => 1
             ]);
+            $currentRound = 1;
         } else {
             $user->activities()->updateExistingPivot($this->activity_id, [
                 'role' => $role
             ]);
+            $currentRound = $user->activities->where('id', $this->activity_id)->first()->pivot->current_round;
         }
+
+        $this->currentRound = $currentRound;
     }
 
     /**
