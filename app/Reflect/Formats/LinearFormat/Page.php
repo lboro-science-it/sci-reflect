@@ -2,8 +2,8 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
-use App\Reflect\ChartHelper;
 use App\Reflect\Formats\BaseFormat;
+use App\Reflect\Reflect;
 use Auth;
 use Illuminate\Http\Request;
 use stdClass;
@@ -27,7 +27,7 @@ class Page extends BaseFormat
      * Merges format-specific actions with base actions.
      *
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, Reflect $reflect)
     {
         $this->request = $request;
         $this->activity = $request->route('activity');
@@ -38,7 +38,7 @@ class Page extends BaseFormat
         $this->eagerLoad();
 
         $this->selectionsHelper = app('SelectionsHelper');
-        $this->reflect = app('Reflect');
+        $this->reflect = $reflect;
     }
 
     /**

@@ -15,7 +15,6 @@
 Route::post('launch', 'LtiController@launch');
 
 Route::group(['middleware' => ['staff']], function() {
-
     // staff activity routes
     Route::get('a/{activity}', 'ActivityController@show');
     Route::put('a/{activity}', 'ActivityController@create');
@@ -25,10 +24,8 @@ Route::group(['middleware' => ['staff']], function() {
 });
 
 Route::group(['middleware' => ['student']], function() {
-    // student activity routes
+    // student linear routes
     Route::get('a/{activity}/linear', 'LinearController@dashboard');
-
-    // student page routes
     Route::post('a/{activity}/linear/r/{round_number}/p/{page_number}', 'LinearController@page');
 
     // student chart routes

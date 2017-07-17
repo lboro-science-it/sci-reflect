@@ -16,13 +16,12 @@ class LinearController extends Controller
      *
      * @return View or Redirect
      */
-    public function dashboard(Activity $activity, Request $request, Reflect $reflect)
+    public function dashboard(Activity $activity)
     {
         if ($activity->isOpen()) {
+            $linearActivity = app('LinearActivity');
 
-            $formatClass = $reflect->getActivityFormatClass('linear');
-
-            return $formatClass->processActivity($activity);
+            return $linearActivity->processActivity($activity);
         }
 
         // todo: move to middleware affecting all student activity routes
@@ -34,10 +33,10 @@ class LinearController extends Controller
      *
      * @return View or Redirect
      */
-    public function page(Activity $activity, Round $round, Page $page, Reflect $reflect)
+    public function page(Activity $activity, Round $round, Page $page)
     {
-        $formatClass = $reflect->getPageFormatClass('linear');
-
-        return $formatClass->processPage($round, $page, Auth::user());
+        $linearPage = app('LinearPage');
+        
+        return $linearPage->processPage($round, $page, Auth::user());
     }
 }

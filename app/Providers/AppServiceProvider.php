@@ -24,6 +24,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('SkillsHelper', function($app) {
             return new \App\Reflect\SkillsHelper($app->make('Reflect'));
         });
+
+        $this->app->bind('LinearActivity', function($app) {
+            return new \App\Reflect\Formats\LinearFormat\Activity($app->request);
+        });
+        $this->app->bind('LinearPage', function($app) {
+            return new \App\Reflect\Formats\LinearFormat\Page($app->request, $app->make('Reflect'));
+        });
     }
 
     /**

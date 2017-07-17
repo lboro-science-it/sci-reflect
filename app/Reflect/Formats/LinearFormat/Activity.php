@@ -3,8 +3,6 @@
 namespace App\Reflect\Formats\LinearFormat;
 
 use App\Reflect\BlockContentParser;
-use App\Reflect\ChartHelper;
-use App\Reflect\SkillsHelper;
 use App\Reflect\Formats\BaseFormat;
 use Auth;
 use Illuminate\Http\Request;

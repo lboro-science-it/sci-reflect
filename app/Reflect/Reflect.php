@@ -15,16 +15,8 @@ class Reflect
      *
      */
     protected $formats = [
-        'linear' => [
-            'activity' => \App\Reflect\Formats\LinearFormat\Activity::class,
-            'page' => \App\Reflect\Formats\LinearFormat\Page::class,
-            'display_name' => 'Linear'
-        ],
-        'nonlinear' => [
-            'activity' => \App\Reflect\Formats\NonLinearFormat\Activity::class,
-            'page' => \App\Reflect\Formats\NonLinearFormat\Page::class,
-            'display_name' => 'NonLinear'
-        ]
+        'linear' => 'Linear',
+        'nonlinear' => 'NonLinear'
     ];
 
     protected $request;
@@ -54,11 +46,6 @@ class Reflect
         return $activity->choices;
     }
 
-    public function getActivityFormatClass($format)
-    {
-        return new $this->formats[$format]['activity']($this->request);
-    }
-
     public function getCurrentRoundFormat()
     {
         $activity = $this->request->route('activity');
@@ -69,11 +56,6 @@ class Reflect
         return $format;
     }
 
-    public function getPageFormatClass($format)
-    {
-        return new $this->formats[$format]['page']($this->request);
-    }
-
     /**
      * Returns array of formats: ClassName => DisplayName.
      *
@@ -81,12 +63,7 @@ class Reflect
      */
     public function getFormatDisplayNames()
     {
-        $returnFormats = [];
-        foreach ($this->formats as $formatName => $data) {
-            $returnFormats[$formatName] = $data['display_name'];
-        }
-
-        return $returnFormats;
+        return $this->formats;
     }
 
 }
