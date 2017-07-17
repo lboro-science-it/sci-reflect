@@ -1,13 +1,3 @@
-@extends('layouts.app')
-
-@section('title')
-
-{{ $pageData->roundTitle }}: {{ $pageData->pageTitle }}
-
-@endsection
-
-@section('content')
-
 <form id="page-selections-form" action="{{ url('a/' . $activity->id . '/student/r/' . $pageData->roundNumber . '/p/' . $pageData->pageNumber) }}" method="POST">
     {{ csrf_field() }}
     {{ method_field('POST') }}
@@ -44,5 +34,3 @@
         </div>
     </div>
 </form>
-
-@endsection

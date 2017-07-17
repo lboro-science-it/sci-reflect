@@ -17,6 +17,9 @@ class BaseFormat
         'default' => 'default'
     ];
 
+    protected $activityView = 'activity.student';
+    protected $pageView = 'page.student';
+
     public function __construct(Request $request)
     {
         $this->request = $request;

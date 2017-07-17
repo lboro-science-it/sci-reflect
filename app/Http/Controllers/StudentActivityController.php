@@ -13,10 +13,17 @@ class StudentActivityController extends Controller
      *
      * @return View
      */
-    public function show(Activity $activity)
+    public function show(Activity $activity, Request $request)
     {
         if ($activity->isOpen()) {
-            return view('activity.student');
+            $round = $activity->rounds->where('round_number', Auth::user()->currentRound)->first();
+
+            $formatName = isset($round) ? $round->format : $activity->format;
+            $formatClassName = "\App\Reflect\Formats\\$formatName\Activity";
+
+            $formatClass = new $formatClassName($request);
+
+            return $formatClass->processActivity($activity);
         }
 
         return view('activity.closed');

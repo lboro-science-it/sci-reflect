@@ -56,7 +56,7 @@ class Activity extends BaseFormat
         //todo: get improve links for weakest skills from previous round
         $activityData = new stdClass();
 
-        $activityData->activityView = $this->view;
+        $activityData->view = $this->view;
         $activityData->chartData = $this->getChartData();
         $activityData->roundContent = $this->getRoundContent();
         $activityData->resumeLink = $this->getResumeLink();
@@ -150,6 +150,12 @@ class Activity extends BaseFormat
         }
 
         return $roundsData;
+    }
+
+    public function processActivity($activity)
+    {
+        return view($this->activityView)
+               ->with('activityData', $this->getActivityData());
     }
 
 }

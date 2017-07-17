@@ -81,6 +81,7 @@ class Page extends BaseFormat
         $data->selections = $this->selectionsHelper->getSelectionsFromIndicators($page->getIndicators(), $this->round, $this->user);
         $data->sidebar = $this->getSidebar($page);
         $data->totalPages = $this->round->pages->count();
+        $data->view = $this->view;
 
         return $data;
     }
@@ -155,7 +156,7 @@ class Page extends BaseFormat
 
     public function makePageView($page)
     {
-        return view($this->view)
+        return view($this->pageView)
         ->with('pageData', $this->getData($page));
     }
 

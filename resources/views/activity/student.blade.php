@@ -8,6 +8,6 @@
 
 @section('content')
 
-@include($activityData->activityView, ['activityData' => $activityData])
+@include($activityData->view, ['activityData' => $activityData])
 
 @endsection
