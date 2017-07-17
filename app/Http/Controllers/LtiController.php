@@ -25,7 +25,7 @@ class LtiController extends Controller
             $tool->handleRequest();
 
             if ($tool->ok) {
-                if (!Auth::check() || Auth::user()->id != $tool->activity_id) {
+                if (!Auth::check() || Auth::user()->id != $tool->user_id) {
                     Auth::loginUsingId($tool->user_id);
                 }
 
