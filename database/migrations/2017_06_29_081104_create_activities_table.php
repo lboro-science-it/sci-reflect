@@ -21,7 +21,7 @@ class CreateActivitiesTable extends Migration
             $table->dateTime('open_date')->nullable();
             $table->dateTime('close_date')->nullable();
             $table->enum('status', ['new', 'design', 'open', 'closed'])->default('new');
-            $table->enum('format', ['LinearFormat', 'NonLinearFormat'])->default('LinearFormat');
+            $table->enum('format', ['linear', 'nonlinear'])->default('linear');
             $table->timestamps();
         });
     }

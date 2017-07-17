@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Page;
+use App\Reflect\Reflect;
 use App\Round;
 use Auth;
 use Illuminate\Http\Request;
@@ -18,15 +19,14 @@ class StudentPageController extends Controller
     }
 
     /**
-     * Handle a post to a/{activity}/student/r/{round}/p/{page}
+     * Handle a post to a/{activity}/{format}/r/{round}/p/{page}
      * Creates an instance of $round's Format Page class to process + render.
      *
      * @return View
      */
-    public function process(Activity $activity, Round $round, Page $page)
+    public function process(Activity $activity, $format, Round $round, Page $page, Reflect $reflect)
     {
-        $formatClassName = '\App\Reflect\Formats\\' . $round->format . '\\Page';
-        $formatClass = new $formatClassName($this->request);
+        $formatClass = $reflect->getPageFormatClass($format);
 
         // todo: check role / permissions
         return $formatClass->processPage($round, $page, Auth::user());

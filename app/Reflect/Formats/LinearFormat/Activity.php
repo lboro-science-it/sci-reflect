@@ -109,7 +109,7 @@ class Activity extends BaseFormat
             return false;
         }
 
-        return url('a/' . $this->activity->id . '/student/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
+        return url('a/' . $this->activity->id . '/linear/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
     }
 
     private function getRoundContent()

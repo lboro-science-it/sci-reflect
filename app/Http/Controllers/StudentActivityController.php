@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Reflect\Reflect;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -13,19 +14,16 @@ class StudentActivityController extends Controller
      *
      * @return View
      */
-    public function show(Activity $activity, Request $request)
+    public function show(Activity $activity, $format, Request $request, Reflect $reflect)
     {
         if ($activity->isOpen()) {
-            $round = $activity->rounds->where('round_number', Auth::user()->currentRound)->first();
 
-            $formatName = isset($round) ? $round->format : $activity->format;
-            $formatClassName = "\App\Reflect\Formats\\$formatName\Activity";
-
-            $formatClass = new $formatClassName($request);
+            $formatClass = $reflect->getActivityFormatClass($format);
 
             return $formatClass->processActivity($activity);
         }
 
         return view('activity.closed');
     }
+
 }

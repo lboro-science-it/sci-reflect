@@ -1,4 +1,4 @@
-<form id="page-selections-form" action="{{ url('a/' . $activity->id . '/student/r/' . $pageData->roundNumber . '/p/' . $pageData->pageNumber) }}" method="POST">
+<form id="page-selections-form" action="{{ url('a/' . $activity->id . '/linear/r/' . $pageData->roundNumber . '/p/' . $pageData->pageNumber) }}" method="POST">
     {{ csrf_field() }}
     {{ method_field('POST') }}
 

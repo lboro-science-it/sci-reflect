@@ -2,6 +2,7 @@
 
 namespace App\Reflect;
 
+use Auth;
 use Illuminate\Http\Request;
 
 // helper functions
@@ -10,13 +11,20 @@ class Reflect
     protected $activity;
 
     /**
-     * Register Format classes and their display name (for forms)
-     * ClassName => DisplayName
+     * Register format classes.
      *
      */
     protected $formats = [
-        'LinearFormat' => 'Linear',
-        'NonLinearFormat' => 'Nonlinear'
+        'linear' => [
+            'activity' => \App\Reflect\Formats\LinearFormat\Activity::class,
+            'page' => \App\Reflect\Formats\LinearFormat\Page::class,
+            'display_name' => 'Linear'
+        ],
+        'nonlinear' => [
+            'activity' => \App\Reflect\Formats\NonLinearFormat\Activity::class,
+            'page' => \App\Reflect\Formats\NonLinearFormat\Page::class,
+            'display_name' => 'NonLinear'
+        ]
     ];
 
     protected $request;
@@ -46,14 +54,39 @@ class Reflect
         return $activity->choices;
     }
 
+    public function getActivityFormatClass($format)
+    {
+        return new $this->formats[$format]['activity']($this->request);
+    }
+
+    public function getCurrentRoundFormat()
+    {
+        $activity = $this->request->route('activity');
+        $round = $activity->rounds->where('round_number', Auth::user()->currentRound)->first();
+
+        $format = isset($round->format) ? $round->format : $activity->format;
+
+        return $format;
+    }
+
+    public function getPageFormatClass($format)
+    {
+        return new $this->formats[$format]['page']($this->request);
+    }
+
     /**
      * Returns array of formats: ClassName => DisplayName.
      *
      * @return array
      */
-    public function getFormats()
+    public function getFormatDisplayNames()
     {
-        return $this->formats;
+        $returnFormats = [];
+        foreach ($this->formats as $formatName => $data) {
+            $returnFormats[$formatName] = $data['display_name'];
+        }
+
+        return $returnFormats;
     }
 
 }

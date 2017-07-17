@@ -17,6 +17,6 @@ class ActivityFormatComposer
      */
     public function compose(View $view)
     {
-        $view->with('formats', $this->reflect->getFormats());
+        $view->with('formats', $this->reflect->getFormatDisplayNames());
     }
 }

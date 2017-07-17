@@ -17,7 +17,7 @@ class CreateRoundsTable extends Migration
             $table->increments('id');
             $table->integer('activity_id')->nullable();
             $table->integer('inherit_from_round_id')->nullable();
-            $table->enum('format', ['LinearFormat', 'NonLinearFormat'])->default('LinearFormat');
+            $table->enum('format', ['linear', 'nonlinear'])->default('linear')->nullable();
             $table->boolean('keep_visible')->default(true);
             $table->dateTime('open_date')->nullable();
             $table->dateTime('close_date')->nullable();

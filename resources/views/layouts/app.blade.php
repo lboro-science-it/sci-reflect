@@ -28,11 +28,7 @@
                     </button>
 
                     @if($activity)
-                        @if(Auth::user()->role == 'staff')
-                        <a class="navbar-brand" href="{{ url('a/' . $activity->id) }}">
-                        @else
-                        <a class="navbar-brand" href="{{ url('a/' . $activity->id . '/student') }}">
-                        @endif
+                        <a class="navbar-brand" href="{{ url($homeUrl) }}">
                             {{ config('app.name', 'Laravel') }}
                         </a>
                     @endif
