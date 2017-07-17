@@ -15,7 +15,6 @@ class ActivityController extends Controller
      */
     public function close(Activity $activity)
     {
-        // todo: checking user role
         $activity->status = 'closed';
         $activity->save();
 
@@ -29,7 +28,6 @@ class ActivityController extends Controller
      */
     public function create(Request $request, Activity $activity)
     {
-        // todo: checking user role
         $activity->update($request->input());
         $activity->status = 'design';
         
@@ -69,7 +67,6 @@ class ActivityController extends Controller
      */
     public function open(Activity $activity)
     {
-        // todo: checking user role
         $activity->status = 'open';
         $activity->save();
 
