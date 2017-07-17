@@ -21,6 +21,7 @@ Route::group(['middleware' => ['staff']], function() {
     Route::put('a/{activity}/close', 'ActivityController@close');
     Route::put('a/{activity}/open', 'ActivityController@open');
 
+    Route::post('a/{activity}/students', 'UserController@postStudents');
 });
 
 Route::group(['middleware' => ['student']], function() {
