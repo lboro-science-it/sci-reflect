@@ -33,7 +33,8 @@ class LtiController extends Controller
                     return redirect('a/' . $tool->activity_id);
                 }
 
-                return redirect('a/' . $tool->activity_id . '/student');
+                // here we need to know the format
+                return redirect('a/' . $tool->activity_id . '/' . $tool->format);
             } else {
                 return view('lti.error');
             }

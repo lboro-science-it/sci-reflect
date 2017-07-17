@@ -9,6 +9,64 @@ use IMSGlobal\LTI\ToolProvider\ToolProvider;
 
 class LtiToolProvider extends ToolProvider
 {
+
+    private function createOrUpdatePivot($user, $activity, $role)
+    {
+        $userActivity = $user->activities->where('id', $this->activity_id)->first();
+
+        if (is_null($userActivity)) {
+            // create the relationship
+            $user->activities()->attach($activity, [
+                'role' => $role,
+                'lti_user_id' => $this->user->ltiUserId,
+                'current_page' => 1,
+                'current_round' => 1
+            ]);
+        } else {
+            // just need to update the role
+            $user->activities()->updateExistingPivot($this->activity_id, [
+                'role' => $role
+            ]);
+        }
+    }
+
+    private function getCurrentRoundNumber($user)
+    {
+        $userActivity = $user->activities->where('id', $this->activity_id)->first();
+        if (is_null($userActivity)) {
+            return 1;
+        } else {
+            return $userActivity->pivot->current_round;
+        }
+    }
+
+    private function getOrCreateActivity()
+    {
+        // find or create an activity record based on launch
+        $activity = Activity::firstOrCreate([
+            'resource_link_record_id' => $this->resourceLink->getRecordId(),
+            'consumer_pk' => $this->consumer->getRecordId()
+        ]);
+        if ($activity->wasRecentlyCreated) {
+            $activity->name = $this->resourceLink->title . ' (' . $this->context->title . ')';
+            $activity->save();
+        }
+
+        return $activity;
+    }
+
+    private function getOrCreateUser()
+    {
+        // find or create the user based on launcher email
+        $user = User::firstOrCreate([
+            'email' => $this->user->email
+        ]);
+        $user->name = $this->user->fullname;
+        $user->save();
+
+        return $user;
+    }
+
     /**
      * Identifies our User and Activity models based on the launching data,
      * creating them if necessary, and setting pivot data.
@@ -19,47 +77,22 @@ class LtiToolProvider extends ToolProvider
      */
     function onLaunch() 
     {
-        // find or create the user based on launcher email
-        $user = User::firstOrCreate([
-            'email' => $this->user->email
-        ]);
-        $user->name = $this->user->fullname;
-        $user->save();
+        $user = $this->getOrCreateUser();
         $this->user_id = $user->id;
 
-        // find or create an activity record based on launch
-        $activity = Activity::firstOrCreate([
-            'resource_link_record_id' => $this->resourceLink->getRecordId(),
-            'consumer_pk' => $this->consumer->getRecordId()
-        ]);
-        if ($activity->wasRecentlyCreated) {
-            $activity->name = $this->resourceLink->title . ' (' . $this->context->title . ')';
-            $activity->save();
-        }
+        $activity = $this->getOrCreateActivity();
         $this->activity_id = $activity->id;
 
-        // set user role in the pivot table
+        // get user role for pivot table
         $role = $this->user->isStaff() ? 'staff' : 'student';
         $this->role = $role;
 
-        $user->load('activities.rounds');
+        $this->createOrUpdatePivot($user, $activity, $role);
 
-        if (!$user->activities->where('id', '=', $this->activity_id)->count()) {
-            $user->activities()->attach($activity, [
-                'role' => $role,
-                'lti_user_id' => $this->user->ltiUserId,
-                'current_page' => 1,
-                'current_round' => 1
-            ]);
-            $currentRound = 1;
-        } else {
-            $user->activities()->updateExistingPivot($this->activity_id, [
-                'role' => $role
-            ]);
-            $currentRound = $user->activities->where('id', $this->activity_id)->first()->pivot->current_round;
-        }
+        $currentRoundNumber = $this->getCurrentRoundNumber($user);
+        $currentRound = $activity->rounds->where('round_number', $currentRoundNumber)->first();
 
-        $this->currentRound = $currentRound;
+        $this->format = isset($currentRound->format) ? $currentRound->format : $activity->format;
     }
 
     /**
