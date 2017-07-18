@@ -35,12 +35,12 @@ class Reflect
     {
         $activity = $this->request->route('activity');
 
-        if (!isset($activity->choices)) {
+        if (!$activity->relationLoaded('choices')) {
             $activity->load([
                 'choices' => function($q) {
                     $q->orderBy('value');
                 }
-            ]);
+            ]);            
         }
 
         return $activity->choices;

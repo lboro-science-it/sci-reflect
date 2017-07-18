@@ -18,11 +18,14 @@ class StudentChartController extends Controller
      */    
     public function show(Activity $activity, Round $round)
     {
-        // todo: moving this into a central location called from both helpers
+        // eager load necessary stuff for completions, chart rendering
         $activity->rounds->load([
             'pages.skills.indicators',
             'pages.skills.category'
         ]);
+
+        // get the round object with the eager loaded data
+        $round = $activity->rounds->where('id', $round->id)->first();
 
         $chartHelper = app('ChartHelper');
         $chartData = $chartHelper->getChartData($round, Auth::user());
