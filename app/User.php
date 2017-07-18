@@ -41,7 +41,13 @@ class User extends Authenticatable
      */
     public function getCompletion($round, $page = null)
     {
-        return $this->getCompletionDecimal($round, $page) * 100 . '%';
+        $completion = $this->getCompletionDecimal($round, $page);
+
+        if (is_null($completion)) {
+            return null;
+        }
+
+        return $completion * 100 . '%';
     }
 
     /**
