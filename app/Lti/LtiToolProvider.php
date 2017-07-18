@@ -23,9 +23,10 @@ class LtiToolProvider extends ToolProvider
                 'current_round' => 1
             ]);
         } else {
-            // just need to update the role
+            // just need to update the pivot
             $user->activities()->updateExistingPivot($this->activity_id, [
-                'role' => $role
+                'role' => $role,
+                'lti_user_id' => $this->user->ltiUserId
             ]);
         }
     }

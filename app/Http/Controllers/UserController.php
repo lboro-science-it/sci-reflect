@@ -4,47 +4,73 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\User;
+use DB;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     /**
-     * Register a bunch of users to the activity with the student role.
+     * Register a bunch of users to the activity as students from a pasted
+     * textarea input of email addresses on newlines.
      *
      * @return View or Redirect
      */
     public function postStudents(Request $request, Activity $activity)
     {
-        $students = collect(preg_split('/\r\n|[\r\n]/', $request->input('students')));
+        // split the textarea students input into an array of email addresses
+        $studentEmails = collect(preg_split('/\r\n|[\r\n]/', $request->input('students')));
 
-        $activityUsers = $activity->users()->get();
+        // get users who already exist in the database
+        $existingUsers = User::whereIn('email', $studentEmails)->get();
 
-        // todo:
-        // compare submitted students to activity's existing users
-        // compare submitted students to User database to find which need creating
-        // create submitted students that need creating
-        // compare submitted students to activity's existing users to find which need relating
-        // create pivot tables that need creating
+        // get existing users who need to be related to this activity
+        $existingActivityUsers = $activity->users()->whereIn('user_id', $existingUsers->pluck('id'))->get();
+        $usersToRelate = $existingUsers->diff($existingActivityUsers);
 
+        // get emails of users we need to create (+ relate to this activity)
+        $usersToCreate = $studentEmails->diff($existingUsers->pluck('email'));
 
+        $createdUsers = collect(array());
 
+        // insert all $usersToCreate in a single insert statement
+        if ($usersToCreate->count() > 0) {
+            $usersToInsert = [];
+            foreach($usersToCreate as $userEmail) {
+                array_push($usersToInsert, [
+                    'email' => $userEmail,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+            DB::table('users')->insert($usersToInsert);
+            
+            $createdUsers = User::whereIn('email', $usersToCreate)->get();
+        }
 
+        // merge with the pre-existing users to relate
+        $usersToRelate = $createdUsers->merge($usersToRelate);
 
+        // insert all relationships in a single insert statement
+        if ($usersToRelate->count() > 0) {
+            $pivotsToInsert = [];
+            foreach($usersToRelate as $user) {
+                array_push($pivotsToInsert, [
+                    'activity_id' => $activity->id,
+                    'user_id' => $user->id,
+                    'role' => 'student',
+                    'current_page' => 1,
+                    'current_round' => 1,
+                    'complete' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+            DB::table('activity_user')->insert($pivotsToInsert);
+        }
 
-        // emails that aren't current users associated with this activity
-        $usersToCreate = $students->diff($activityUsers->pluck('email'));
+        return redirect('a/' . $activity->id)
+             ->with('message', 'Student records created successfully');
 
-
-        // get users who exist but need to be related to this activity
-        $usersToRelate = User::whereIn('email', $usersToCreate)->get();
-
-        // insert users that need creating, getting their ids
-
-        // todo:
-
-
-        // insert all users that need creating, get their ids
-        // probably the way to do this is to insert them then select them
 
         // todo:
         // insert all pivot tables that need creating wth user_id, activity_id, role = student

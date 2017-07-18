@@ -65,6 +65,11 @@
             </div>
         </nav>
         <div class="container-fluid">
+            @if(session('message'))
+                <div class="alert alert-info">
+                    {{ session('message') }}
+                </div>
+            @endif
             @yield('content')
         </div>
     </div>
