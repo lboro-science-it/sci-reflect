@@ -34,15 +34,11 @@ class ActivityComposer
 
     private function getHomeUrl()
     {
-        $homeUrl = 'a/' . $this->activity->id;
+        $homeUrl = isset($this->activity) ? 'a/' . $this->activity->id : '';
 
-        if (Auth::user()->role != 'staff') {
-            if (isset($this->format)) {
-                $format = $this->format;
-            } else {
-                $format = $this->reflect->getCurrentRoundFormat();
-            }
-            
+        if (Auth::check() && Auth::user()->role != 'staff') {
+            $format = isset($this->format) ? $this->format : $this->reflect->getCurrentRoundFormat();
+
             $homeUrl .= '/' . $format;
         }
 

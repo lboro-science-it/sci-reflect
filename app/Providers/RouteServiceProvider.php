@@ -32,27 +32,32 @@ class RouteServiceProvider extends ServiceProvider
         // Load {activity} with pivot related to Auth::user, save pivot data
         // to Auth::user, and eager load Auth::user's selections for activity
         Route::bind('activity', function($value) {
-            // todo: handle not authed users more elegantly than just crashing when this is reached
-            $activity = Auth::user()->activities->where('pivot.activity_id', $value)->first();
-
-            // globally eager load $activity's rounds
-            $activity->load([
-                'rounds'
-            ]);
-
-            // store pivot data for Auth::user's relationship to $activity
-            Auth::user()->role = $activity->pivot->role;
-            Auth::user()->currentRound = $activity->pivot->current_round;
-            Auth::user()->currentPage = $activity->pivot->current_page;
-
-            // globally eager load Auth::user's selections
-            if (Auth::user()->role == 'student') {
-                Auth::user()->load([
-                    'selections' => function($q) use ($activity) {
-                        $roundIds = array_column($activity->rounds->toArray(), 'id');
-                        $q->whereIn('round_id', $roundIds);
-                    }
+            if (Auth::check()) {
+                $activity = Auth::user()->activities->where('pivot.activity_id', $value)->first();
+            }
+            
+            if (isset($activity)) {
+                // globally eager load $activity's rounds
+                $activity->load([
+                    'rounds'
                 ]);
+
+                // store pivot data for Auth::user's relationship to $activity
+                Auth::user()->role = $activity->pivot->role;
+                Auth::user()->currentRound = $activity->pivot->current_round;
+                Auth::user()->currentPage = $activity->pivot->current_page;
+
+                // globally eager load Auth::user's selections
+                if (Auth::user()->role == 'student') {
+                    Auth::user()->load([
+                        'selections' => function($q) use ($activity) {
+                            $roundIds = array_column($activity->rounds->toArray(), 'id');
+                            $q->whereIn('round_id', $roundIds);
+                        }
+                    ]);
+                }
+            } else {
+                $activity = Activity::where('id', $value)->first();
             }
 
             return $activity;

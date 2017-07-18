@@ -70,12 +70,5 @@ class UserController extends Controller
 
         return redirect('a/' . $activity->id)
              ->with('message', 'Student records created successfully');
-
-
-        // todo:
-        // insert all pivot tables that need creating wth user_id, activity_id, role = student
-        // (ensure everything else can be null until user logs in... therefore needs to be set on LTI launch)
-        // (i.e. lti_user_id, perhaps setting current_page/round/complete is ok here though...)
-
     }
 }
