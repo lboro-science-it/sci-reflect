@@ -27,7 +27,12 @@ class StaffActivityComposer
 
         foreach ($students as $student) {
             $round = $rounds->where('round_number', $student->pivot->current_round)->first();
-            $student->completion = $student->getCompletion($round) * 100 . '%';
+            if (isset($round)) {
+                $student->completion = $student->getCompletion($round);
+            } else {
+                $student->completion = '100%';
+            }
+
             $student->group = $groups->where('id', $student->pivot->group_id)->first();
         }
 

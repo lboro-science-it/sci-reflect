@@ -35,22 +35,28 @@ class User extends Authenticatable
     }
 
     /**
-     * Gets completion (as a decimal between 0 and 1) of $round or $page within $round
+     * Gets completion (as percentage) of $round or $page within $round
      *
      * @return decimal
      */
     public function getCompletion($round, $page = null)
     {
-        // get the necessary indicators
-        if (is_null($page)) {
-            $indicators = $round->getIndicators();
-        } else {
-            $indicators = $page->getIndicators();
-        }
+        return $this->getCompletionDecimal($round, $page) * 100 . '%';
+    }
 
-        // get the user's selections for the above indicators
+    /**
+     * Gets completion (as a decimal between 0 and 1) of $round or $page within $round
+     *
+     * @return decimal
+     */
+    private function getCompletionDecimal($round, $page = null)
+    {
+        // get the indicators of either the page or round
+        $indicators = is_null($page) ? $round->getIndicators() : $page->getIndicators();
+
+        // get the user's selections for the indicators in $round
         $selections = $this->selections->where('round_id', $round->id)
-                                       ->whereIn('indicator_id', $indicators->pluck('id'));
+                                     ->whereIn('indicator_id', $indicators->pluck('id'));
 
         if ($indicators->count() > 0) {
             return $selections->count() / $indicators->count();
@@ -62,7 +68,7 @@ class User extends Authenticatable
 
     public function hasCompleted($round, $page = null)
     {
-        return $this->getCompletion($round, $page) == 1;
+        return $this->getCompletionDecimal($round, $page) == 1;
     }
 
     public function incrementRound()

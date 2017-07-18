@@ -136,10 +136,10 @@ class Activity extends BaseFormat
         foreach($rounds as $round) {
             $round->viewable = $round->isViewable($this->user);
             if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
-                $round->completion = 100.0;
+                $round->completion = '100%';
                 $roundsData->completed->push($round);
             } elseif ($round->round_number == $currentRoundNumber) {
-                $round->completion = $this->user->getCompletion($round) * 100;
+                $round->completion = $this->user->getCompletion($round);
                 $roundsData->current = $round;
             } else {
                 $round->completion = null;
