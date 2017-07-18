@@ -20,7 +20,15 @@ class StaffActivityComposer
      */
     public function compose(View $view)
     {
+        // todo: sort eager loading below
         $students = $this->activity->users->where('pivot.role', 'student')->sortBy('email');
+        $rounds = $this->activity->rounds;
+
+        foreach ($students as $student) {
+            $round = $rounds->where('round_number', $student->pivot->current_round)->first();
+            $student->completion = $student->getCompletion($round) * 100 . '%';
+        }
+
         $view->with('students', $students);
     }
 }
