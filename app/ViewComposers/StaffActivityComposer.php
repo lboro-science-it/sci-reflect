@@ -20,13 +20,19 @@ class StaffActivityComposer
      */
     public function compose(View $view)
     {
-        // todo: sort eager loading below
         $students = $this->activity->users->where('pivot.role', 'student')->sortBy('email');
+        $students->load([
+            'selections'
+        ]);
+
         $rounds = $this->activity->rounds->sortBy('title');
+        $rounds->load([
+            'pages.skills.indicators'
+        ]);
+
         $groups = $this->activity->groups;
 
         foreach ($students as $student) {
-            $round = $rounds->where('round_number', $student->pivot->current_round)->first();
             $student->group = $groups->where('id', $student->pivot->group_id)->first();
         }
 
