@@ -16,6 +16,7 @@ class UserController extends Controller
      * @return View or Redirect
      */
     // todo: validate email before adding
+    // todo: refactor out into helpers
     public function postStudents(Request $request, Activity $activity)
     {
         // split the textarea students input into an array of email addresses
@@ -69,7 +70,11 @@ class UserController extends Controller
             DB::table('activity_user')->insert($pivotsToInsert);
         }
 
+        $message = $usersToCreate->count() . ' students created.';
+        $message .= ' ' . $existingUsers->count() . ' students already existed.';
+        $message .= ' ' . $usersToRelate->count() . ' students linked.';
+
         return redirect('a/' . $activity->id)
-             ->with('message', 'Student records created successfully');
+             ->with('message', $message);
     }
 }
