@@ -21,6 +21,11 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer(
             'activity.partials._format', 'App\Http\ViewComposers\ActivityFormatComposer'
         );
+
+        View::composer(
+            ['activity.design', 'activity.staff'],
+            'App\Http\ViewComposers\StaffActivityComposer'
+        );
     }
 
     /**

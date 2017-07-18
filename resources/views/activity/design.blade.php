@@ -8,8 +8,10 @@
 
     @include('activity.partials._studentupload')
 
+    @include('activity.partials._studentlist')
+
     Todo: <br>
-    <li>Add students (CSV / Paste)</li>
+    <li><strike>Add students (CSV / Paste)</strike></li>
     <li>Add/Delete/Rearrange rounds</li>
     <li>A/D/R skills</li>
     <li>A/D/R indicators</li>

@@ -15,6 +15,7 @@ class UserController extends Controller
      *
      * @return View or Redirect
      */
+    // todo: validate email before adding
     public function postStudents(Request $request, Activity $activity)
     {
         // split the textarea students input into an array of email addresses
