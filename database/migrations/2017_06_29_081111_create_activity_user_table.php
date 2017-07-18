@@ -22,6 +22,7 @@ class CreateActivityUserTable extends Migration
             $table->integer('current_page')->default(1)->nullable();
             $table->integer('current_round')->default(1)->nullable();
             $table->boolean('complete')->default(false);
+            $table->integer('group_id')->nullable();
             $table->timestamps();
         });
     }

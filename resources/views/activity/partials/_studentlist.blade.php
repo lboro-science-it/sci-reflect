@@ -14,7 +14,11 @@
         <tbody>
             @foreach($students as $student)
                 <tr>
-                    <td>** todo insert group **</td>
+                    <td>
+                        @isset($student->group)
+                            {{ $student->group->name }}
+                        @endisset
+                    </td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->email }}</td>
                     <td>{{ $student->pivot->current_round }}</td>

@@ -23,10 +23,12 @@ class StaffActivityComposer
         // todo: sort eager loading below
         $students = $this->activity->users->where('pivot.role', 'student')->sortBy('email');
         $rounds = $this->activity->rounds;
+        $groups = $this->activity->groups;
 
         foreach ($students as $student) {
             $round = $rounds->where('round_number', $student->pivot->current_round)->first();
             $student->completion = $student->getCompletion($round) * 100 . '%';
+            $student->group = $groups->where('id', $student->pivot->group_id)->first();
         }
 
         $view->with('students', $students);

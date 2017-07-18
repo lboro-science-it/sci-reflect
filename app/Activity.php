@@ -67,6 +67,11 @@ class Activity extends Model
         return $this->hasMany('App\Choice');
     }
 
+    public function groups()
+    {
+        return $this->hasMany('App\Group');
+    }
+
     public function pages()
     {
         return $this->hasMany('App\Page');
@@ -79,6 +84,8 @@ class Activity extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User')->withPivot(['complete', 'current_page', 'current_round', 'lti_user_id', 'role'])->withTimestamps();
+        return $this->belongsToMany('App\User')->withPivot([
+            'complete', 'current_page', 'current_round', 'group_id', 'lti_user_id', 'role'
+        ])->withTimestamps();
     }
 }
