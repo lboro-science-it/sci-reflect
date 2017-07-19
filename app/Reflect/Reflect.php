@@ -24,6 +24,7 @@ class Reflect
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->activity = $request->route('activity');
     }
 
     /**
@@ -33,25 +34,19 @@ class Reflect
      */
     public function getChoices()
     {
-        $activity = $this->request->route('activity');
-
-        if (!$activity->relationLoaded('choices')) {
-            $activity->load([
-                'choices' => function($q) {
-                    $q->orderBy('value');
-                }
-            ]);            
-        }
-
-        return $activity->choices;
+        return $this->activity->choices->sortBy('value');
     }
 
+    /**
+     * Returns the format of the Auth::user()'s current round, or the $activity
+     * format failing that.
+     * @return String $format
+     */
     public function getCurrentRoundFormat()
     {
-        $activity = $this->request->route('activity');
-        $round = $activity->rounds->where('round_number', Auth::user()->currentRound)->first();
+        $round = $this->activity->rounds->where('round_number', Auth::user()->currentRound)->first();
 
-        $format = isset($round->format) ? $round->format : $activity->format;
+        $format = isset($round->format) ? $round->format : $this->activity->format;
 
         return $format;
     }
