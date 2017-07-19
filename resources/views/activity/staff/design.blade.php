@@ -8,9 +8,7 @@ Design: {{ $activity->name }}
 
 @section('content')
 
-todo: add sequence buttons in following format to navigate between design setup etc:<br><br>
-
-Create Activity (ticked) -> Set up activity (ticked) -> Add students (unticked) -> Add groups (unticked) -> Add attributes (unticked) -> Set up structure (unticked) -> Open
+    @include('activity.partials._tasks')
     
     @include('activity.partials._openclose')
 

@@ -8369,3 +8369,54 @@ button.close {
   cursor: pointer;
 }
 
+.task-circle {
+  background-color: #ffffff;
+  border: 1px dashed #361163;
+  border-radius: 50%;
+  color: #361163;
+  height: 80px;
+  margin-left: 25px;
+  width: 80px;
+}
+
+.task-circle span {
+  font-size: 40px;
+  padding-top: 17px;
+}
+
+.task-circle .glyphicon-plus {
+  padding-left: 3px;
+}
+
+.task-circle .glyphicon-cog {
+  padding-top: 19px;
+}
+
+.task-circle-done {
+  background-color: #361163;
+  color: #ffffff;
+}
+
+.task-label {
+  padding-top: 10px;
+}
+
+.task-list {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  min-width: 780px;
+}
+
+.task-list-item {
+  display: inline-block;
+  vertical-align: top;
+  width: 130px;
+}
+
+@media (max-width: 870px) {
+  .task-list-item {
+    display: block;
+  }
+}
+
