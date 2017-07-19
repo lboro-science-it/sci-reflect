@@ -18,7 +18,7 @@ class ActivityController extends Controller
         $activity->status = 'closed';
         $activity->save();
 
-        return view('activity.staff');
+        return view('activity.staff.dashboard');
     }
 
     /**
@@ -44,7 +44,7 @@ class ActivityController extends Controller
 
         $activity->save();
 
-        return view('activity.design');
+        return view('activity.staff.design');
     }
 
     /**
@@ -70,7 +70,7 @@ class ActivityController extends Controller
         $activity->status = 'open';
         $activity->save();
 
-        return view('activity.staff');
+        return view('activity.staff.dashboard');
     }
 
     /**
@@ -81,13 +81,13 @@ class ActivityController extends Controller
     public function show(Activity $activity)
     {
         if ($activity->status == 'new') {
-            return view('activity.new');
+            return view('activity.staff.new');
         }
 
         if ($activity->status == 'design') {
-            return view('activity.design');
+            return view('activity.staff.design');
         }
 
-        return view('activity.staff');
+        return view('activity.staff.dashboard');
     }
 }

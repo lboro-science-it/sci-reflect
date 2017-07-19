@@ -23,7 +23,7 @@ class ComposerServiceProvider extends ServiceProvider
         );
 
         View::composer(
-            ['activity.design', 'activity.staff'],
+            ['activity.staff.design', 'activity.staff.dashboard'],
             'App\Http\ViewComposers\StaffActivityComposer'
         );
     }
