@@ -27,10 +27,7 @@ class Activity extends BaseFormat
 
     private function eagerLoad()
     {
-        $this->activity->rounds->load([
-            'pages.skills.indicators',
-            'pages.skills.category'
-        ]);
+        $this->activity->loadIndicatorsWithCategory();
 
         if (isset($this->previousRound)) {
             $this->user->load([

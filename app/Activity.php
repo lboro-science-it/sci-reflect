@@ -19,6 +19,33 @@ class Activity extends Model
      * functions
      */
 
+    protected $loadedIndicators = false;
+    protected $loadedCategories = false;
+
+    public function loadIndicatorsWithCategory()
+    {
+        if (!$this->loadedIndicators || !$this->loadedCategories) {
+            $this->rounds->load([
+                'pages.skills.indicators',
+                'pages.skills.category'
+            ]);
+
+            $this->loadedCategories = true;
+            $this->loadedIndicators = true;
+        }
+    }
+
+    public function loadIndicators()
+    {
+        if (!$this->loadedIndicators) {
+            $this->rounds->load([
+                'pages.skills.indicators'
+            ]);
+            
+            $this->loadedIndicators = true;
+        }
+    }
+
     public function getSkills()
     {
         if (!isset($this->skills)) {

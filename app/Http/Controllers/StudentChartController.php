@@ -18,11 +18,7 @@ class StudentChartController extends Controller
      */    
     public function show(Activity $activity, Round $round)
     {
-        // eager load necessary stuff for completions, chart rendering
-        $activity->rounds->load([
-            'pages.skills.indicators',
-            'pages.skills.category'
-        ]);
+        $activity->loadIndicatorsWithCategory();
 
         // get the round object with the eager loaded data
         $round = $activity->rounds->where('id', $round->id)->first();

@@ -25,10 +25,8 @@ class StaffActivityComposer
             'selections'
         ]);
 
+        $this->activity->loadIndicators();
         $rounds = $this->activity->rounds->sortBy('title');
-        $rounds->load([
-            'pages.skills.indicators'
-        ]);
 
         $groups = $this->activity->groups;
 
