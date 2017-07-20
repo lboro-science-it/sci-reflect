@@ -2,26 +2,47 @@
 
 namespace App\Reflect\Formats\NonLinearFormat;
 
-use App\Reflect\Formats\BaseFormat;
+use App\Reflect\Formats\BaseActivity;
 use Illuminate\Http\Request;
+use stdClass;
 
-class Activity extends BaseFormat
+class Activity extends BaseActivity
 {
-    protected $request;
-
     protected $view = 'activity.nonlinear.show';
 
-    public function __construct(Request $request)
+    private function eagerLoad()
     {
-        $this->request = $request;
+        $this->activity->loadIndicatorsWithCategory();
     }
 
-    public function processActivity($activity)
+    private function getCategories()
     {
-        // get the current round
-        // get all the skills which are visible in the current round (via round->pages->skills)
-        // get the categories of said skills
-        // order the categories into their proper order
+        $skills = $this->currentRound->getSkills();
+        // gets all of the categories in the current round sorted by their number...
+        $categories = $skills->pluck('category')->unique()->sortBy('number');
+
+        // now calculate completion of each category
+
+
+        return $categories;
+        // todo get completion
+    }
+
+    private function getData()
+    {
+        $this->eagerLoad();
+
+        $activityData = new stdClass();
+
+        $activityData->view = $this->view;
+        $activityData->categories = $this->getCategories();
+        $activityData->chartData = $this->getChartData();
+
+        return $activityData;
+    }
+
+    public function processActivity()
+    {
         // draw a box for each of them
         // calculate category's completion based on selections & indicators (per calculating round completion / page completion)
         // so todo: move completion into a comparison between selections and indicators, called from page/round/whatever

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
+use App\Category;
+use App\Page;
+use App\Round;
 use Illuminate\Http\Request;
 
 class NonLinearController extends Controller
@@ -16,7 +20,7 @@ class NonLinearController extends Controller
         if ($activity->isOpen()) {
             $nonLinearActivity = app('NonLinearActivity');
 
-            return $nonLinearActivity->processActivity($activity);
+            return $nonLinearActivity->processActivity();
         }
 
         // todo: move to middleware affecting all student activity routes

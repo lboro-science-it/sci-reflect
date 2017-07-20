@@ -3,27 +3,14 @@
 namespace App\Reflect\Formats\LinearFormat;
 
 use App\Reflect\BlockContentParser;
-use App\Reflect\Formats\BaseFormat;
+use App\Reflect\Formats\BaseActivity;
 use Auth;
 use Illuminate\Http\Request;
 use stdClass;
 
-class Activity extends BaseFormat
+class Activity extends BaseActivity
 {
-    protected $activity = null;
-
-    protected $user = null;
-
     protected $view = 'activity.linear.show';
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-        $this->activity = $request->route('activity');
-        $this->user = Auth::user();
-
-        $this->previousRound = $this->getPreviousRound();
-    }
 
     private function eagerLoad()
     {
@@ -65,36 +52,6 @@ class Activity extends BaseFormat
         return $activityData;
     }
 
-    /**
-     * Returns data for displaying the last completed chart.
-     *
-     */
-    private function getChartData()
-    {
-        if (isset($this->previousRound)) {
-            $chartHelper = app('ChartHelper');
-
-            return $chartHelper->getChartData($this->previousRound, $this->user);
-        }
-
-        return null;
-    }
-
-    private function getPreviousRound()
-    {
-        $currentRoundNumber = $this->user->currentRound;
-
-        if ($currentRoundNumber != 1) {
-            if ($currentRoundNumber > 1) {
-                return $this->activity->rounds->where('round_number', $currentRoundNumber - 1)->first();
-            } else if (is_null($currentRoundNumber)) {
-                return $this->activity->rounds->where('round_number', $this->activity->rounds->count())->first();
-            }
-        }
-
-        return null;
-    }
-
     private function getResumeLink()
     {
         $currentRoundNumber = $this->user->currentRound;
@@ -109,9 +66,7 @@ class Activity extends BaseFormat
 
     private function getRoundContent()
     {
-        $currentRound = $this->activity->rounds->where('round_number', $this->user->currentRound)->first();
-
-        if (isset($currentRound->block)) {
+        if (isset($this->currentRound->block)) {
             $blockContentParser = new BlockContentParser();
             return $blockContentParser->parse($currentRound->block->content);
         }
@@ -147,7 +102,7 @@ class Activity extends BaseFormat
         return $roundsData;
     }
 
-    public function processActivity($activity)
+    public function processActivity()
     {
         return view($this->activityView)
                ->with('activityData', $this->getData());

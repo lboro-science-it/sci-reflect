@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Page;
-use App\Reflect\Reflect;
 use App\Round;
 use Auth;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class LinearController extends Controller
         if ($activity->isOpen()) {
             $linearActivity = app('LinearActivity');
 
-            return $linearActivity->processActivity($activity);
+            return $linearActivity->processActivity();
         }
 
         // todo: move to middleware affecting all student activity routes

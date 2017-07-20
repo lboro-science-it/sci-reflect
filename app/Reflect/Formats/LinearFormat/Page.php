@@ -2,13 +2,13 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
-use App\Reflect\Formats\BaseFormat;
+use App\Reflect\Formats\BasePage;
 use App\Reflect\Reflect;
 use Auth;
 use Illuminate\Http\Request;
 use stdClass;
 
-class Page extends BaseFormat
+class Page extends BasePage
 {
     protected $activity;
     protected $page;
@@ -32,7 +32,7 @@ class Page extends BaseFormat
         $this->request = $request;
         $this->activity = $request->route('activity');
         $this->round = $request->route('round');
-        $this->page = $request->route('page_round');
+        $this->page = $request->route('pageInRound');
         $this->user = Auth::user();
 
         $this->eagerLoad();

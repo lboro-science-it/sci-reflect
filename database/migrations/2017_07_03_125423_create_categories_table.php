@@ -19,6 +19,8 @@ class CreateCategoriesTable extends Migration
             $table->string('name', 30);
             $table->string('color', 7);
             $table->string('icon_href', 191);
+            $table->string('slug')->default('null');
+            $table->integer('number')->nullable();
             $table->timestamps();
         });
     }

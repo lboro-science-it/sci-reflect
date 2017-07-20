@@ -2,10 +2,10 @@
 
 namespace App\Reflect\Formats\NonLinearFormat;
 
-use App\Reflect\Formats\BaseFormat;
+use App\Reflect\Formats\BasePage;
 use Illuminate\Http\Request;
 
-class Page extends BaseFormat
+class Page extends BasePage
 {
     protected $request;
 

@@ -5,7 +5,7 @@
         @if($activity->pivot->current_page == 1)
             Start
         @else
-            Resume ({{ $activityData->rounds->current->completion }}%)
+            Resume ({{ $activityData->rounds->current->completion }})
         @endif
         </button>
     </form>

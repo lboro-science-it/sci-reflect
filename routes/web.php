@@ -31,11 +31,11 @@ Route::group(['middleware' => ['staff']], function() {
 Route::group(['middleware' => ['student']], function() {
     // student linear routes
     Route::get('a/{activity}/linear', 'LinearController@dashboard');
-    Route::post('a/{activity}/linear/r/{round}/p/{page_round}', 'LinearController@page');
+    Route::post('a/{activity}/linear/r/{round}/p/{pageInRound}', 'LinearController@page');
 
     // student nonlinear routes
     Route::get('a/{activity}/nonlinear', 'NonLinearController@dashboard');
-    Route::post('a/{activity}/nonlinear/r/{round}/c/{category}', 'NonLinearController@page');
+    Route::post('a/{activity}/nonlinear/r/{round}/c/{category}/p/{pageNumber}', 'NonLinearController@page');
 
     // student chart routes
     Route::get('a/{activity}/student/r/{round}/chart', 'StudentChartController@show');

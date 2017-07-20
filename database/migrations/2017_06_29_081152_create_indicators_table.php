@@ -17,6 +17,7 @@ class CreateIndicatorsTable extends Migration
             $table->increments('id');
             $table->integer('skill_id');
             $table->text('text');
+            $table->integer('number')->nullable();
             $table->timestamps();
         });
     }

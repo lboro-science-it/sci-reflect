@@ -5,7 +5,7 @@ namespace App\Reflect\Formats;
 use Illuminate\Http\Request;
 use stdClass;
 
-class BaseFormat
+class BasePage
 {
     protected $request;
 
@@ -17,7 +17,6 @@ class BaseFormat
         'default' => 'default'
     ];
 
-    protected $activityView = 'activity.student';
     protected $pageView = 'page.student';
 
     public function __construct(Request $request)
