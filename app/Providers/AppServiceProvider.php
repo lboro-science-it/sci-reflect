@@ -31,6 +31,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('LinearPage', function($app) {
             return new \App\Reflect\Formats\LinearFormat\Page($app->request, $app->make('Reflect'));
         });
+
+        $this->app->bind('NonLinearActivity', function($app) {
+            return new \App\Reflect\Formats\NonLinearFormat\Activity($app->request);
+        });
+        $this->app->bind('NonLinearPage', function($app) {
+            return new \App\Reflect\Formats\NonLinearFormat\Page($app->request, $app->make('Reflect'));
+        });
     }
 
     /**

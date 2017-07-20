@@ -2,7 +2,7 @@
     <h3>In Progress</h3>
     <ul>
         <li>
-            {{ $rounds->current->title }} ({{ $rounds->current->completion }}%)
+            {{ $rounds->current->title }} ({{ $rounds->current->completion }})
         </li>
     </ul>
 @endif

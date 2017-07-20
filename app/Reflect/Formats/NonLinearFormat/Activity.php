@@ -16,8 +16,9 @@ class Activity extends BaseFormat
         $this->request = $request;
     }
 
-    public function getActivityData()
+    public function processActivity($activity)
     {
-        // insert stuff for handling an activity in nonlinear format 
+        return view($this->activityView)
+               ->with('activityData', $this->getData());
     }
 }
