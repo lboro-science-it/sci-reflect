@@ -29,7 +29,7 @@ class BlockTableSeeder extends Seeder
 
         DB::table('block_page')->insert([
             'block_id' => $blockId,
-            'page_id' => 6,
+            'page_id' => 5,
             'position' => 1,
         ]);
 

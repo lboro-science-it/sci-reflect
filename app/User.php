@@ -51,6 +51,12 @@ class User extends Authenticatable
         return number_format($completion * 100, 1) . '%';
     }
 
+    public function getCompletionDecimal($round, $page = null)
+    {
+        $indicators = is_null($page) ? $round->getIndicators() : $page->getIndicators();
+        return $this->getIndicatorsCompletionDecimal($indicators, $round);
+    }
+
     /**
      * Gets completion (as a decimal between 0 and 1) of indicators within round
      *
@@ -86,7 +92,7 @@ class User extends Authenticatable
 
     public function hasCompleted($round, $page = null)
     {
-        return $this->getCompletion($round, $page) == '100%';
+        return $this->getCompletionDecimal($round, $page) == 1;
     }
 
     public function incrementRound()
