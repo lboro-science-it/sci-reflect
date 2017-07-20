@@ -90,4 +90,9 @@ class ActivityController extends Controller
 
         return view('activity.staff.dashboard');
     }
+
+    public function showSetup(Activity $activity)
+    {
+        return dd('showSetup view');
+    }
 }

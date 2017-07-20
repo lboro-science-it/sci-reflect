@@ -7,22 +7,29 @@
             Create activity
         </div>
     </li>
-    <li class="task-list-item">
-        <div class="task-circle">
-            <span class="glyphicon glyphicon-cog"></span>
-        </div>
-        <div class="task-label">
-            Set up activity
-        </div>
-    </li>
-    <li class="task-list-item">
-        <div class="task-circle">
-            <span class="glyphicon glyphicon-user"></span>
-        </div>
-        <div class="task-label">
-            Add students / staff / groups (optional)
-        </div>
-    </li>
+
+    <a href="{{ url('a/' . $activity->id . '/setup') }}">
+        <li class="task-list-item">
+            <div class="task-circle">
+                <span class="glyphicon glyphicon-cog"></span>
+            </div>
+            <div class="task-label">
+                Setup activity
+            </div>
+        </li>
+    </a>
+
+    <a href="{{ url('a/' . $activity->id . '/add-students') }}">
+        <li class="task-list-item">
+            <div class="task-circle">
+                <span class="glyphicon glyphicon-user"></span>
+            </div>
+            <div class="task-label">
+                Add students / staff / groups (optional)
+            </div>
+        </li>
+    </a>
+
     <li class="task-list-item">
         <div class="task-circle">
             <span class="glyphicon glyphicon-plus"></span>
@@ -31,6 +38,7 @@
             Add skills
         </div>
     </li>
+
     <li class="task-list-item">
         <div class="task-circle">
             <span class="glyphicon glyphicon-tasks"></span>
@@ -39,6 +47,7 @@
             Create structure
         </div>
     </li>
+
     <li class="task-list-item">
         <div class="task-circle">
             <span class="glyphicon glyphicon-off"></span>

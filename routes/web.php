@@ -21,7 +21,11 @@ Route::group(['middleware' => ['staff']], function() {
     Route::put('a/{activity}/close', 'ActivityController@close');
     Route::put('a/{activity}/open', 'ActivityController@open');
 
+    Route::get('a/{activity}/add-students', 'UserController@showAddStudents');
+    Route::get('a/{activity}/setup', 'ActivityController@showSetup');
+
     Route::post('a/{activity}/students', 'UserController@postStudents');
+    Route::post('a/{activity}/staff'. 'UserController@postStaff');
 });
 
 Route::group(['middleware' => ['student']], function() {

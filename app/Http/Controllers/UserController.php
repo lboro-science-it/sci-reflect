@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function postStaff(Request $request, Activity $activity)
+    {
+        // function to parse a list of staff, create user accounts where needed
+        // relate to the activity record where needed.
+    }
+
     /**
      * Register a bunch of users to the activity as students from a pasted
      * textarea input of email addresses on newlines.
@@ -76,5 +82,10 @@ class UserController extends Controller
 
         return redirect('a/' . $activity->id)
              ->with('message', $message);
+    }
+
+    public function showAddStudents(Activity $activity)
+    {
+        return dd('showAddStudents view here');
     }
 }
