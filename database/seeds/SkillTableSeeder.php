@@ -11,30 +11,26 @@ class SkillTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($skillId = 1; $skillId <= 4; $skillId++) {
-            
+        $categories = [];
+
+        for ($skillId = 1; $skillId <= 12; $skillId++) {
+            $catId = rand(1, 6);
+            $categories[$catId] = isset($categories[$catId]) ? $categories[$catId] + 1 : 1;
+
             DB::table('skills')->insertGetId([
                 'activity_id' => 1,
-                'category_id' => $skillId % 2 + 1,
+                'category_id' => $catId,
                 'title' => 'Skill ' . $skillId,
                 'description' => 'Description for Skill ' . $skillId,
                 'info_link' => 'https://google.co.uk/search?q=attribute+' . $skillId,
-                'number' => $skillId,
+                'number' => $categories[$catId],
             ]);
 
             DB::table('page_skill')->insert([
                 'skill_id' => $skillId,
                 'page_id' => 4,
-                'position' => $skillId
+                'position' => rand(1, 12)
             ]);
-
-            if ($skillId % 2 == 1) {
-                DB::table('page_skill')->insert([
-                    'skill_id' => $skillId,
-                    'page_id' => 5,
-                    'position' => $skillId
-                ]);
-            }
         }
     }
 }
