@@ -31,8 +31,8 @@ class Page extends BaseFormat
     {
         $this->request = $request;
         $this->activity = $request->route('activity');
-        $this->round = $request->route('round_number');
-        $this->page = $request->route('page_number');
+        $this->round = $request->route('round');
+        $this->page = $request->route('page_round');
         $this->user = Auth::user();
 
         $this->eagerLoad();

@@ -15,7 +15,8 @@ class StaffActivityComposer
     }
 
     /**
-     * Composes view with a HTML-form friendly list of the available formats.
+     * Composes view with a list of $activity's students, rounds, groups 
+     * for rendering purposes.
      * @return view
      */
     public function compose(View $view)

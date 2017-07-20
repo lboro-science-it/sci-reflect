@@ -70,19 +70,26 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         // Load $round model based on {round_number} in {activity}
-        Route::bind('round_number', function($value) {
+        Route::bind('round', function($value) {
             $activity = $this->app->request->route('activity');
-            $round = $activity->rounds->where('round_number', '=', $value)->first();
+            $round = $activity->rounds->where('round_number', $value)->first();
 
             return $round;
         });
 
-        // Load $page model based on {page_number} in {round_number}
-        Route::bind('page_number', function($value) {
-            $round = $this->app->request->route('round_number');
+        // Load $page model based on number in {round}
+        Route::bind('page_round', function($value) {
+            $round = $this->app->request->route('round');
             $page = $round->pages->where('pivot.page_number', $value)->first();
 
             return $page;
+        });
+
+        Route::bind('category', function($value) {
+            $activity = $this->app->request->route('activity');
+            $category = $activity->categories->where('slug', $value)->first();
+
+            return $category;
         });
 
     }
