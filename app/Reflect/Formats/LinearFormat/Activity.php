@@ -74,34 +74,6 @@ class Activity extends BaseActivity
         return null;
     }
 
-    private function getRounds()
-    {
-        $rounds = $this->activity->rounds->sortBy('round_number');
-        $currentRoundNumber = $this->user->currentRound;
-
-        $roundsData = new stdClass();
-
-        $roundsData->completed = collect(array());
-        $roundsData->future = collect(array());
-        $roundsData->current = null;
-
-        foreach($rounds as $round) {
-            $round->viewable = $round->isViewable($this->user);
-            if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
-                $round->completion = '100%';
-                $roundsData->completed->push($round);
-            } elseif ($round->round_number == $currentRoundNumber) {
-                $round->completion = $this->user->getCompletion($round);
-                $roundsData->current = $round;
-            } else {
-                $round->completion = null;
-                $roundsData->future->push($round);
-            }
-        }
-
-        return $roundsData;
-    }
-
     public function processActivity()
     {
         return view($this->activityView)

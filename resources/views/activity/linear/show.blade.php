@@ -2,7 +2,7 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-4">
-                @include('activity.linear.partials._sidebar', ['rounds' => $activityData->rounds])
+                @include('activity.partials._sidebar', ['rounds' => $activityData->rounds])
             </div>
             <div class="col-md-8">
                 @include('activity.linear.partials._current')
@@ -39,22 +39,6 @@
         </div>
     </div>
     <div class="col-md-3">
-        @include('activity.linear.partials._chart')
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-12">
-            </div>
-        </div>
-
-
-    </div>
-    <div class="col-md-3">
+        @include('activity.partials._chart')
     </div>
 </div>

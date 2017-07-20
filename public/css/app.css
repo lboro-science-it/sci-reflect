@@ -8369,6 +8369,10 @@ button.close {
   cursor: pointer;
 }
 
+.progress-reflect {
+  margin-bottom: 0;
+}
+
 .task-circle {
   background-color: #ffffff;
   border: 1px dashed #361163;

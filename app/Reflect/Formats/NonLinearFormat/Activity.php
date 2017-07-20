@@ -21,11 +21,19 @@ class Activity extends BaseActivity
         // gets all of the categories in the current round sorted by their number...
         $categories = $skills->pluck('category')->unique()->sortBy('number');
 
-        // now calculate completion of each category
+        foreach ($categories as $category) {
+            $categorySkills = $skills->where('category_id', $category->id);
+            $indicators = collect(array());
+            foreach($categorySkills as $skill) {
+                $indicators = $indicators->merge($skill->indicators);
+            }
 
+            $category->completion = $this->user->getIndicatorsCompletion($indicators, $this->currentRound);
+            $category->decCompletion = $this->user->getIndicatorsCompletionDecimal($indicators, $this->currentRound);
+            $category->totalSkills = $categorySkills->count();
+        }
 
         return $categories;
-        // todo get completion
     }
 
     private function getData()
@@ -37,16 +45,13 @@ class Activity extends BaseActivity
         $activityData->view = $this->view;
         $activityData->categories = $this->getCategories();
         $activityData->chartData = $this->getChartData();
+        $activityData->rounds = $this->getRounds();
 
         return $activityData;
     }
 
     public function processActivity()
     {
-        // draw a box for each of them
-        // calculate category's completion based on selections & indicators (per calculating round completion / page completion)
-        // so todo: move completion into a comparison between selections and indicators, called from page/round/whatever
-        // that's it really
         return view($this->activityView)
                ->with('activityData', $this->getData());
     }

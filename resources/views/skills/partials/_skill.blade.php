@@ -4,7 +4,7 @@
             {{ $skill->title }}
         </div>
         <div class="col-xs-8">
-            <div class="progress">
+            <div class="progress progress-reflect">
                 <div class="progress-bar" 
                      role="progressbar" 
                      aria-valuenow="{{ $skill->rating }}" 

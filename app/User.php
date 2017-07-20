@@ -41,7 +41,8 @@ class User extends Authenticatable
      */
     public function getCompletion($round, $page = null)
     {
-        $completion = $this->getCompletionDecimal($round, $page);
+        $indicators = is_null($page) ? $round->getIndicators() : $page->getIndicators();
+        $completion = $this->getIndicatorsCompletionDecimal($indicators, $round);
 
         if (is_null($completion)) {
             return null;
@@ -51,30 +52,41 @@ class User extends Authenticatable
     }
 
     /**
-     * Gets completion (as a decimal between 0 and 1) of $round or $page within $round
+     * Gets completion (as a decimal between 0 and 1) of indicators within round
      *
      * @return decimal
      */
-    private function getCompletionDecimal($round, $page = null)
+    public function getIndicatorsCompletion($indicators, $round)
     {
-        // get the indicators of either the page or round
-        $indicators = is_null($page) ? $round->getIndicators() : $page->getIndicators();
+        $completion = $this->getIndicatorsCompletionDecimal($indicators, $round);
 
-        // get the user's selections for the indicators in $round
-        $selections = $this->selections->where('round_id', $round->id)
-                                     ->whereIn('indicator_id', $indicators->pluck('id'));
+        if (is_null($completion)) {
+            return null;
+        }
 
+        return $completion * 100 . '%';
+    }
+
+    /**
+     * Gets completion (as a decimal between 0 and 1) of indicators within round
+     *
+     * @return decimal
+     */
+    public function getIndicatorsCompletionDecimal($indicators, $round)
+    {
         if ($indicators->count() > 0) {
+            $selections = $this->selections->where('round_id', $round->id)
+                                         ->whereIn('indicator_id', $indicators->pluck('id'));
+
             return $selections->count() / $indicators->count();
         }
 
-        // if there are 0 indicators then it's not completable
         return null;
     }
 
     public function hasCompleted($round, $page = null)
     {
-        return $this->getCompletionDecimal($round, $page) == 1;
+        return $this->getCompletion($round, $page) == '100%';
     }
 
     public function incrementRound()
