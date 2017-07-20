@@ -2,7 +2,6 @@
 
 namespace App\Reflect\Formats\LinearFormat;
 
-use App\Reflect\BlockContentParser;
 use App\Reflect\Formats\BaseActivity;
 use Auth;
 use Illuminate\Http\Request;
@@ -62,16 +61,6 @@ class Activity extends BaseActivity
         }
 
         return url('a/' . $this->activity->id . '/linear/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
-    }
-
-    private function getRoundContent()
-    {
-        if (isset($this->currentRound->block)) {
-            $blockContentParser = new BlockContentParser();
-            return $blockContentParser->parse($currentRound->block->content);
-        }
-
-        return null;
     }
 
     public function processActivity()

@@ -17,6 +17,14 @@
     cursor: pointer;
 }
 
+.category-link {
+    color: $text-color;
+}
+
+.category-link:hover {
+    text-decoration: none;
+}
+
 .progress-reflect {
     margin-bottom: 0;
 }

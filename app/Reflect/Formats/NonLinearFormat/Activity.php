@@ -19,7 +19,7 @@ class Activity extends BaseActivity
     {
         $skills = $this->currentRound->getSkills();
         // gets all of the categories in the current round sorted by their number...
-        $categories = $skills->pluck('category')->unique()->sortBy('number');
+        $categories = $skills->pluck('category')->unique()->sortBy('name')->sortBy('number');
 
         foreach ($categories as $category) {
             $categorySkills = $skills->where('category_id', $category->id);
@@ -45,7 +45,9 @@ class Activity extends BaseActivity
         $activityData->view = $this->view;
         $activityData->categories = $this->getCategories();
         $activityData->chartData = $this->getChartData();
+        $activityData->roundContent = $activityData->roundContent = $this->getRoundContent();
         $activityData->rounds = $this->getRounds();
+        $activityData->roundViewable = isset($activityData->rounds->current) && $activityData->rounds->current->viewable;
 
         return $activityData;
     }

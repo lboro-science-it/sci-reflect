@@ -48,7 +48,7 @@ class User extends Authenticatable
             return null;
         }
 
-        return $completion * 100 . '%';
+        return number_format($completion * 100, 1) . '%';
     }
 
     /**
@@ -64,7 +64,7 @@ class User extends Authenticatable
             return null;
         }
 
-        return $completion * 100 . '%';
+        return number_format($completion * 100, 1) . '%';
     }
 
     /**

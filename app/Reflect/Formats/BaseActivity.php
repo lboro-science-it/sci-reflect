@@ -2,6 +2,7 @@
 
 namespace App\Reflect\Formats;
 
+use App\Reflect\BlockContentParser;
 use Auth;
 use Illuminate\Http\Request;
 use stdClass;
@@ -49,6 +50,16 @@ class BaseActivity
             return $this->activity->rounds->where('round_number', $currentRoundNumber - 1)->first();
         } else if (is_null($currentRoundNumber)) {
             return $this->activity->rounds->where('round_number', $this->activity->rounds->count())->first();
+        }
+
+        return null;
+    }
+
+    public function getRoundContent()
+    {
+        if (isset($this->currentRound->block)) {
+            $blockContentParser = new BlockContentParser();
+            return $blockContentParser->parse($currentRound->block->content);
         }
 
         return null;

@@ -8369,6 +8369,14 @@ button.close {
   cursor: pointer;
 }
 
+.category-link {
+  color: #636b6f;
+}
+
+.category-link:hover {
+  text-decoration: none;
+}
+
 .progress-reflect {
   margin-bottom: 0;
 }
