@@ -100,13 +100,16 @@ class ChartHelper
 
         $chartData = new stdClass();
 
-        $skills = $this->activity->getSkills()->sortBy('number');
+        $skills = $this->getSkills();
 
         $chartData->backgrounds = $skills->pluck('category')->pluck('color');
+        $chartData->borders = $skills->pluck('category')->pluck('color');
         $chartData->labels = $skills->pluck('title');
         $chartData->values = $this->getRatings($skills);
 
         $chartData->max = $this->reflect->getChoices()->max('value');
+
+        $chartData = $this->styleZeroes($chartData);
 
         return $chartData;
     }
@@ -136,6 +139,34 @@ class ChartHelper
         }
 
         return $ratingsArray;
+    }
+
+    private function getSkills()
+    {
+        $skills = $this->activity->getSkills();
+
+        $categories = $skills->pluck('category')->unique()->sortBy('name')->sortBy('number');
+        $sortedSkills = collect(array());
+        foreach ($categories as $category) {
+            $sortedSkills = $sortedSkills->merge($skills->where('category_id', $category->id)->sortBy('title')->sortBy('number'));
+        }
+        return $sortedSkills;
+    }
+
+    private function styleZeroes($chartData)
+    {
+        // overwrites empty values with greyed out full values...
+        // not the most elegant solution but otherwise there are empty areas of the chart which can't be 
+        // hovered over to reveal what skills are supposed to go there.
+        foreach ($chartData->values as $key => $value) {
+            if ($value == 0) {
+                $disabledColor = '#e5e5e5';
+                $chartData->values[$key] = 1;
+                $chartData->backgrounds[$key] = $disabledColor;
+            }
+        }
+
+        return $chartData;
     }
 
 }

@@ -33,13 +33,13 @@ class BaseActivity
      */
     public function getChartData()
     {
-        if (isset($this->previousRound)) {
-            $chartHelper = app('ChartHelper');
+        $chartHelper = app('ChartHelper');
 
+        if (isset($this->previousRound)) {
             return $chartHelper->getChartData($this->previousRound, $this->user);
         }
 
-        return null;
+        return $chartHelper->getChartData($this->currentRound, $this->user);
     }
 
     private function getPreviousRound()

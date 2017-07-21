@@ -39,11 +39,6 @@ class PageTableSeeder extends Seeder
                 'page_number' => 3
             ]);
 
-            DB::table('page_round')->insert([
-                'page_id' => 4,
-                'round_id' => $roundId,
-                'page_number' => 2,
-            ]);
         }
 
         DB::table('pages')->insertGetId([
@@ -51,6 +46,21 @@ class PageTableSeeder extends Seeder
             'title' => 'Skills page',
         ]);
 
+        DB::table('page_round')->insert([
+            'page_id' => 5,
+            'round_id' => 1,
+            'page_number' => 2,
+        ]);
 
+        DB::table('pages')->insert([
+            'activity_id' => 1,
+            'title' => 'Another skills page'
+        ]);
+
+        DB::table('page_round')->insert([
+            'page_id' => 4,
+            'round_id' => 2,
+            'page_number' => 2,
+        ]);
     }
 }
