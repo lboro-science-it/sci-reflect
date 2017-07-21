@@ -1,33 +1,32 @@
 <div class="row">
-    @include('activity.linear.partials._current')
+    <div class="col-md-12">
+        @include('activity.linear.partials._current')
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        @isset($activityData->strongestSkills)
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Your strongest skills...</h3>
-                    
-                    @foreach($activityData->strongestSkills as $skill)
-                        @include('skills.partials._skill', ['skill' => $skill])
-                    @endforeach
-                    
+@if(isset($activityData->strongestSkills) || isset($activityData->weakestSkills))
+    <div class="panel panel-default">
+        <div class="panel-body">
+            @isset($activityData->strongestSkills)
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Your strongest skills...</h3>
+                        @foreach($activityData->strongestSkills as $skill)
+                            @include('skills.partials._skill', ['skill' => $skill])
+                        @endforeach                                
+                    </div>
                 </div>
-            </div>
-        @endisset
-    </div>
-    <div class="col-md-6">
-        @isset($activityData->weakestSkills)
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Want to improve?</h3>
-                    
-                    @foreach($activityData->weakestSkills as $skill)
-                        @include('skills.partials._skill', ['skill' => $skill])
-                    @endforeach
+            @endisset
+            @isset($activityData->weakestSkills)
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Want to improve?</h3>
+                        @foreach($activityData->weakestSkills as $skill)
+                            @include('skills.partials._skill', ['skill' => $skill])
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        @endisset
+            @endisset
+        </div>
     </div>
-</div>
+@endif

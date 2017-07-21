@@ -9,14 +9,12 @@
 @section('content')
 
 <div class="row">
-    <div class="col-md-2">
-        @include('activity.partials._sidebar', ['rounds' => $activityData->rounds])
-    </div>
-    <div class="col-md-7">
+    <div class="col-md-5 col-md-offset-2">
         @include($activityData->view, ['activityData' => $activityData])
     </div>
     <div class="col-md-3">
         @include('activity.partials._chart')
+        @include('activity.partials._sidebar', ['rounds' => $activityData->rounds])
     </div>
 </div>
 
