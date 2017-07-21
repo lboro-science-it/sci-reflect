@@ -1,27 +1,27 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        @if($rounds->completed->count() > 0)
+<ul class="list-group">
+    @if($rounds->completed->count() > 0)
+        <li class="list-group-item">
             <h3>Completed Rounds</h3>
-            <div class="list-group">
-                @foreach($rounds->completed as $completedRound)
-                    <div class="list-group-item">
-                        <a href="{{ url('a/' . $activity->id . '/student/r/' . $completedRound->round_number . '/chart') }}">
-                            {{ $completedRound->title }} ({{ $completedRound->completion }})
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+        </li>
+        @foreach($rounds->completed as $completedRound)
+            <li class="list-group-item">
+                <a href="{{ url('a/' . $activity->id . '/student/r/' . $completedRound->round_number . '/chart') }}">
+                    {{ $completedRound->title }} ({{ $completedRound->completion }})
+                </a>
+            </li>
+        @endforeach
+    @endif
+</ul>
 
-        @if($rounds->future->count() > 0)
+<ul class="list-group">
+    @if($rounds->future->count() > 0)
+        <li class="list-group-item">
             <h3>Coming Up</h3>
-            <div class="list-group">
-                @foreach($rounds->future as $futureRound)
-                    <div class="list-group-item">
-                        {{ $futureRound->title }}
-                    </div>
-                @endforeach
-            </div>
-        @endif
-    </div>
-</div>
+        </li>
+        @foreach($rounds->future as $futureRound)
+            <li class="list-group-item">
+                {{ $futureRound->title }}
+            </li>
+        @endforeach
+    @endif
+</ul>
