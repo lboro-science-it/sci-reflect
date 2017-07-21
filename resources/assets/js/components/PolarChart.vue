@@ -35,9 +35,6 @@
                     },
                     responsive: true,
                     scale: {
-                        angleLines: {
-                            display: true
-                        },
                         ticks: {
                             max: this.max,
                             min: 0,
