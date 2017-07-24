@@ -53,7 +53,7 @@ class Activity extends BaseActivity
 
     private function hasDone()
     {
-        if ($this->user->hasCompleted($this->currentRound)) {
+        if (isset($this->currentRound) && $this->user->hasCompleted($this->currentRound)) {
             return true;
         }
 
