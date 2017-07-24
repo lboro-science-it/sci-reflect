@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
             return new \App\Reflect\ChartHelper($app->request, $app->make('Reflect'));
         });
 
+        $this->app->bind('RatingsHelper', function($app) {
+            return new \App\Reflect\RatingsHelper($app->request, $app->make('Reflect'));
+        });
+
         $this->app->bind('SkillsHelper', function($app) {
             return new \App\Reflect\SkillsHelper($app->make('Reflect'));
         });

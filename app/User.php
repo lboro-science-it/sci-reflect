@@ -90,6 +90,22 @@ class User extends Authenticatable
         return null;
     }
 
+    /**
+     * Returns ratings for the given round creating if none exist
+     *
+     * @return decimal
+     */
+    public function getRatings($round)
+    {
+        $ratings = $this->ratings->where('round_id', $round->id);
+
+        if (!$ratings->count()) {
+            $ratings = app('RatingsHelper')->createRatings($round, $this);
+        }
+
+        return $ratings;
+    }
+
     public function hasCompleted($round, $page = null)
     {
         return $this->getCompletionDecimal($round, $page) == 1;
