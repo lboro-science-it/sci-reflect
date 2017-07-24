@@ -7,7 +7,9 @@
                     {!! $activityData->roundContent !!}
                 @endisset
                 ** encouraging message e.g. "Well done on reflecting..." "Welcome back, pick up where you left off...", "There are only a few days..." etc
-                @include('activity.linear.partials._start_resume', ['resumeLink' => $activityData->resumeLink])
+                @if($activityData->resumeLink)
+                    @include('activity.linear.partials._start_resume')
+                @endif
             @else
                 <button type="unavailable" class="btn btn-danger disabled">
                     {{ $activityData->rounds->current->notViewableReason }}

@@ -30,11 +30,3 @@
         @endif
     @endforeach
 </div>
-
-<p>
-    ** todo: **<br>
-    <strike>add links</strike><br>
-    <strike>display when completed</strike><br>
-    display which have skills/questions<br>
-    <strike>display currently being viewed</strike>
-</p>

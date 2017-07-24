@@ -38,6 +38,7 @@ class Activity extends BaseActivity
 
         $activityData->view = $this->view;
         $activityData->chartData = $this->getChartData();
+        $activityData->hasDone = $this->hasDone();
         $activityData->roundContent = $this->getRoundContent();
         $activityData->resumeLink = $this->getResumeLink();
         $activityData->rounds = $this->getRounds();
@@ -48,6 +49,15 @@ class Activity extends BaseActivity
         $activityData->weakestSkills = $skillsHelper->getWeakestSkills($this->previousRound, $this->user);
 
         return $activityData;
+    }
+
+    private function hasDone()
+    {
+        if ($this->user->hasCompleted($this->currentRound)) {
+            return true;
+        }
+
+        return false;
     }
 
     private function getResumeLink()
