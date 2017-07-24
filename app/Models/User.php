@@ -58,7 +58,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Gets completion (as a decimal between 0 and 1) of indicators within round
+     * Gets completion (as a percentage) of indicators within round
      *
      * @return decimal
      */

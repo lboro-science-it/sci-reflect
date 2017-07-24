@@ -119,6 +119,7 @@ class Page extends BasePage
         
         foreach($pages as $sidebarPage) {
             $sidebarPage->complete = $this->user->hasCompleted($this->round, $sidebarPage);
+            $sidebarPage->hasIndicators = $sidebarPage->indicators->count() > 0;
             $sidebarPage->current = $sidebarPage->id == $page->id ? true : false;
             $sidebarPage->pageNumber = $sidebarPage->pivot->page_number;
             $sidebar->push($sidebarPage);

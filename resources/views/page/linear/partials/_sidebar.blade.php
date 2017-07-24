@@ -20,6 +20,9 @@
             @if($page->complete)
                 <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
             @endif
+            @if($page->hasIndicators)
+                <span class="glyphicon glyphicon-eye-open pull-right" aria-hidden="true"></span>
+            @endif
         @if(!$page->current)
             </button>
         @else
