@@ -2,21 +2,20 @@
 
 namespace App\Reflect;
 
+use App\Reflect\Reflect;
 use DB;
 use Illuminate\Http\Request;
 use stdClass;
 
 class ChartHelper
 {
+    protected $reflect;
     protected $round;
-
     protected $user;
 
-    protected $ratings;
-
-    public function __construct(Request $request)
+    public function __construct(Request $request, Reflect $reflect)
     {
-        $this->reflect = app('Reflect');
+        $this->reflect = $reflect;
         $this->activity = $request->route('activity');
     }
 
