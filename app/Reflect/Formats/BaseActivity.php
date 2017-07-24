@@ -39,7 +39,7 @@ class BaseActivity
             return $chartHelper->getChartData($this->previousRound, $this->user);
         }
 
-        return $chartHelper->getPlaceholderData($this->currentRound);
+        return $chartHelper->getPlaceholderData();
     }
 
     private function getPreviousRound()

@@ -10,8 +10,6 @@ use stdClass;
 class ChartHelper
 {
     protected $reflect;
-    protected $round;
-    protected $user;
 
     public function __construct(Request $request, Reflect $reflect)
     {
@@ -82,10 +80,8 @@ class ChartHelper
      * todo: obviously this whole class needs a refactor now.
      * @return obj $chartData
      */
-    public function getPlaceholderData($round)
+    public function getPlaceholderData()
     {
-        $this->round = $round;
-
         $chartData = new stdClass();
 
         $skills = $this->getSkills();
