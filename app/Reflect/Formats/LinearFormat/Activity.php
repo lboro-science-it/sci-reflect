@@ -25,10 +25,9 @@ class Activity extends BaseActivity
     }
 
     /**
-     * Returns data to render Linear format Activity dashboard. We know that
-     * the StudentActivityComposer will provide us access to $activity->pivot,
-     * $activity->rounds, $round->pages, $page->skills, $skill->indicators. 
-     * @return bool
+     * Returns data to render Linear format Activity dashboard. 
+     *
+     * @return stdClass
      */
     public function getData()
     {

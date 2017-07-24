@@ -21,42 +21,6 @@ class ChartHelper
     }
 
     /**
-     * Returns an array of skills with average Values for $this->user's
-     * selections in $this->round.
-     * @return array
-     */
-    private function getSkillValues()
-    {
-        $selections = $this->user->selections->where('round_id', $this->round->id);
-
-        $indicators = $this->round->getIndicators();
-        $choices = $this->reflect->getChoices();
-
-        $skills = array();
-        foreach($selections as $selection) {
-            $indicator = $indicators->where('id', $selection->indicator_id)->first();
-            $skillId = $indicator->skill_id;
-            $choice = $choices->where('id', $selection->choice_id)->first();
-
-            if (!array_key_exists($skillId, $skills)) {
-                $skill = new stdClass();
-                $skill->id = $skillId;
-                $skill->totalIndicators = 0;
-                $skill->totalValue = 0;
-                $skill->averageValue = 0;
-
-                $skills[$skillId] = $skill;
-            }
-
-            $skills[$skillId]->totalIndicators++;
-            $skills[$skillId]->totalValue += $choice->value;
-            $skills[$skillId]->averageValue = floor($skills[$skillId]->totalValue / $skills[$skillId]->totalIndicators);
-        }
-
-        return $skills;
-    }
-
-    /**
      * Calculates averages for each of $this->user's skills in $this->round,
      * adds them to database and returns the resulting collection.
      * @return collection
@@ -115,6 +79,35 @@ class ChartHelper
     }
 
     /**
+     * Returns data for rendering a placeholder chart with no ratings.
+     * todo: obviously this whole class needs a refactor now.
+     * @return obj $chartData
+     */
+    public function getPlaceholderData($round)
+    {
+        $this->round = $round;
+
+        $chartData = new stdClass();
+
+        $skills = $this->getSkills();
+        $chartData->backgrounds = $skills->pluck('category')->pluck('color');
+        $chartData->borders = $skills->pluck('category')->pluck('color');
+        $chartData->labels = $skills->pluck('title');
+
+        $chartData->values = array();
+
+        for ($i = 0; $i < $skills->count(); $i++) {
+            array_push($chartData->values, 0);
+        }
+
+        $chartData->max = $this->reflect->getChoices()->max('value');
+
+        $chartData = $this->styleZeroes($chartData);
+
+        return $chartData;
+    }
+
+    /**
      * Returns $this->user's ratings in $this->round, getting them if they
      * already exist, or calculating and inserting them first if not.
      * Ratings are mapped against $skills
@@ -151,6 +144,42 @@ class ChartHelper
             $sortedSkills = $sortedSkills->merge($skills->where('category_id', $category->id)->sortBy('title')->sortBy('number'));
         }
         return $sortedSkills;
+    }
+
+    /**
+     * Returns an array of skills with average Values for $this->user's
+     * selections in $this->round.
+     * @return array
+     */
+    private function getSkillValues()
+    {
+        $selections = $this->user->selections->where('round_id', $this->round->id);
+
+        $indicators = $this->round->getIndicators();
+        $choices = $this->reflect->getChoices();
+
+        $skills = array();
+        foreach($selections as $selection) {
+            $indicator = $indicators->where('id', $selection->indicator_id)->first();
+            $skillId = $indicator->skill_id;
+            $choice = $choices->where('id', $selection->choice_id)->first();
+
+            if (!array_key_exists($skillId, $skills)) {
+                $skill = new stdClass();
+                $skill->id = $skillId;
+                $skill->totalIndicators = 0;
+                $skill->totalValue = 0;
+                $skill->averageValue = 0;
+
+                $skills[$skillId] = $skill;
+            }
+
+            $skills[$skillId]->totalIndicators++;
+            $skills[$skillId]->totalValue += $choice->value;
+            $skills[$skillId]->averageValue = floor($skills[$skillId]->totalValue / $skills[$skillId]->totalIndicators);
+        }
+
+        return $skills;
     }
 
     private function styleZeroes($chartData)
