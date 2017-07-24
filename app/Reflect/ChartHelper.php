@@ -61,7 +61,7 @@ class ChartHelper
 
         $chartData = new stdClass();
 
-        $skills = $this->getSkills();
+        $skills = $this->activity->getSkills();
 
         $chartData->backgrounds = $skills->pluck('category')->pluck('color');
         $chartData->borders = $skills->pluck('category')->pluck('color');
@@ -84,7 +84,7 @@ class ChartHelper
     {
         $chartData = new stdClass();
 
-        $skills = $this->getSkills();
+        $skills = $this->activity->getSkills();
         $chartData->backgrounds = $skills->pluck('category')->pluck('color');
         $chartData->borders = $skills->pluck('category')->pluck('color');
         $chartData->labels = $skills->pluck('title');
@@ -127,18 +127,6 @@ class ChartHelper
         }
 
         return $ratingsArray;
-    }
-
-    private function getSkills()
-    {
-        $skills = $this->activity->getSkills();
-
-        $categories = $skills->pluck('category')->unique()->sortBy('name')->sortBy('number');
-        $sortedSkills = collect(array());
-        foreach ($categories as $category) {
-            $sortedSkills = $sortedSkills->merge($skills->where('category_id', $category->id)->sortBy('title')->sortBy('number'));
-        }
-        return $sortedSkills;
     }
 
     /**

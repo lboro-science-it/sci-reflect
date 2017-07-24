@@ -23,7 +23,7 @@ class Activity extends Model
     protected $loadedCategories = false;
 
     /**
-     * Aggregates each of $this->rounds' skills
+     * Returns a collection of activity's skills in render order
      * @return Collection
      */
     public function getSkills()
@@ -35,7 +35,15 @@ class Activity extends Model
                 $skills = $skills->merge($round->getSkills());
             }
 
-            $this->skills = $skills->unique('id');
+            $skills = $skills->unique('id');
+            $categories = $skills->pluck('category')->unique()->sortBy('name')->sortBy('number');
+            $sortedSkills = collect(array());
+
+            foreach ($categories as $category) {
+                $sortedSkills = $sortedSkills->merge($skills->where('category_id', $category->id)->sortBy('title')->sortBy('number'));
+            }
+            $this->skills = $sortedSkills;
+
         }
 
         return $this->skills;
