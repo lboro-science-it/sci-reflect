@@ -24,7 +24,7 @@
         @endisset
     </div>
 </div>
-
+<!--
 <div class="panel panel-default">
     <div class="panel-body">
         ** todo: insert stats about current round **
@@ -36,3 +36,4 @@
         <li>Current page title</li>
     </div>
 </div>
+-->

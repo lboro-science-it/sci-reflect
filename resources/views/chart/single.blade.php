@@ -15,7 +15,7 @@
         @isset($skills)
             <h3>Your skills</h3>
             @foreach($skills as $skill)
-                @include('skills.partials._skill', ['skill' => $skill])
+                @include('skills.partials._skill_horizontal', ['skill' => $skill])
             @endforeach
         @endisset
     </div>

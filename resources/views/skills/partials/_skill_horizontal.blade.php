@@ -1,8 +1,16 @@
 <div class="row">
     <div class="col-xs-4">
-        {{ $skill->title }}
+        <h4 style="margin-top: 0;">
+            {{ $skill->title }}
+        </h4>
     </div>
-    <div class="col-xs-7">
+    <div class="
+        @isset($improve)
+            col-xs-5
+        @else
+            col-xs-8
+        @endisset
+    ">
         <div class="progress">
             <div class="progress-bar" 
                  role="progressbar" 
@@ -15,9 +23,20 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-1">
-        <a href="{{ $skill->info_link }}" target="_blank"><span class="glyphicon glyphicon-link pull-right"></span></a>
-    </div>
+    @isset($improve)
+        <div class="col-xs-3">
+            <span class="pull-right">
+                <button class="btn btn-default">
+                    Improve
+                </button>
+                <!--
+                    <a href="{{ $skill->info_link }}" target="_blank">
+                        <span class="glyphicon glyphicon-link pull-right"></span>
+                    </a>
+                -->
+            </span>
+        </div>
+    @endisset
 </div>
 
 @isset($showDescription)
