@@ -22,6 +22,7 @@ class Page extends Model
         $content = collect(array());
 
         $this->skills->each(function ($item) use ($content) {
+            // sort indicators by number, or name failing that
             $item->setRelation('indicators', $item->indicators->sortBy('text')->sortBy('number'));
             $content->push($item);
         });
@@ -33,6 +34,7 @@ class Page extends Model
             $content->push($item);
         });
 
+        // sort all content (blocks and skills) by position in page
         return $content->sortBy('pivot.position');
     }
 
