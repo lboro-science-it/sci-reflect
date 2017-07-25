@@ -22,9 +22,6 @@
             <h3>Improve your skills</h3>
             <p>Click for resources to help improve your weakest areas.</p>
             @foreach($activityData->weakestSkills as $skill)
-                <?php /*
-                @include('skills.partials._vertical', ['skill' => $skill, 'showDescription' => true])
-                */ ?>
                 @include('skills.partials._improve', ['skill' => $skill])
             @endforeach
         </div>
