@@ -22,6 +22,7 @@ class Page extends Model
         $content = collect(array());
 
         $this->skills->each(function ($item) use ($content) {
+            $item->setRelation('indicators', $item->indicators->sortBy('text')->sortBy('number'));
             $content->push($item);
         });
 
