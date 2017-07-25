@@ -45,8 +45,8 @@ class Activity extends BaseActivity
 
         $skillsHelper = app('SkillsHelper');
 
-        $activityData->strongestSkills = $skillsHelper->getStrongestSkills($this->previousRound, $this->user);
-        $activityData->weakestSkills = $skillsHelper->getWeakestSkills($this->previousRound, $this->user);
+        $activityData->strongestSkills = $skillsHelper->getSkills($this->previousRound, $this->user)->splice(0, 3);
+        $activityData->weakestSkills = $skillsHelper->getSkills($this->previousRound, $this->user)->sortBy('rating')->splice(0, 3);
 
         return $activityData;
     }

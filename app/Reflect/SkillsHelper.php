@@ -24,8 +24,7 @@ class SkillsHelper
     public function getSkills($round, $user)
     {
         if (isset($round)) {
-            $ratings = $this->getUserRatings($round, $user)
-                            ->sortByDesc('rating');
+            $ratings = $user->ratings->where('round_id', $round->id)->sortByDesc('rating');
 
             $skills = collect(array());
             $roundSkills = $round->getSkills();
@@ -35,6 +34,18 @@ class SkillsHelper
                 $skill = $roundSkills->where('id', $rating->skill_id)->first();
                 $skill->rating = $rating->rating;
                 $skill->max = $max;
+                $skill->percent = $skill->rating / $skill->max * 100;
+
+                if ($skill->percent > 80) {
+                    $skill->background = '#ffcf36';
+                } elseif ($skill->percent > 50) {
+                    $skill->background = '#f4a300';
+                } elseif ($skill->percent > 25) {
+                    $skill->background = '#ef7d00';
+                } else {
+                    $skill->background = '#ed6000';
+                }
+
                 $skills->push($skill);
             }
 
@@ -42,59 +53,6 @@ class SkillsHelper
         }
 
         return null;
-    }
-
-    public function getStrongestSkills($round, $user)
-    {
-        if (isset($round)) {
-            $ratings = $this->getUserRatings($round, $user)
-                            ->sortByDesc('rating')->splice(0, 3);
-            
-            $strongestSkills = collect(array());
-            $roundSkills = $round->getSkills();
-            $max = $this->reflect->getChoices()->max('value');
-
-            foreach ($ratings as $rating) {
-                $skill = $roundSkills->where('id', $rating->skill_id)->first();
-                $skill->rating = $rating->rating;
-                $skill->max = $max;
-                $strongestSkills->push($skill);
-            }
-
-            return $strongestSkills;
-        }
-
-        return null;
-    }
-
-    public function getWeakestSkills($round, $user)
-    {
-        if (isset($round)) {
-            $ratings = $this->getUserRatings($round, $user)
-                            ->sortBy('rating')->splice(0, 3);
-
-            $weakestSkills = collect(array());
-            $roundSkills = $round->getSkills();
-            $max = $this->reflect->getChoices()->max('value');
-
-            foreach ($ratings as $rating) {
-                $skill = $roundSkills->where('id', $rating->skill_id)->first();
-                $skill->rating = $rating->rating;
-                $skill->max = $max;
-                $weakestSkills->push($skill);
-            }
-
-            return $weakestSkills;
-        }
-
-        return null;
-    }
-
-    private function getUserRatings($round, $user)
-    {
-        if (isset($round)) {
-            return $user->ratings->where('round_id', $round->id);
-        }
     }
 
 }
