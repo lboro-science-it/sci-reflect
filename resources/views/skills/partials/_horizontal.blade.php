@@ -25,8 +25,10 @@
     </div>
     @isset($improve)
         <div class="col-xs-3">
-            <span class="pull-right">
-                <button class="btn btn-default">
+                <button class="btn btn-default" 
+                        style="width: 100%;"
+                        data-toggle="modal"
+                        data-target="#skill-{{ $skill->id }}">
                     Improve
                 </button>
                 <!--
@@ -34,8 +36,8 @@
                         <span class="glyphicon glyphicon-link pull-right"></span>
                     </a>
                 -->
-            </span>
         </div>
+        @include('skills.partials._modal', ['skill' => $skill])
     @endisset
 </div>
 

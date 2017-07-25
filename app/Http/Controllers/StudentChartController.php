@@ -31,7 +31,8 @@ class StudentChartController extends Controller
 
         return view('chart.single')
         ->with('chartData', $chartData)
-        ->with('skills', $skills);
+        ->with('skills', $skills)
+        ->with('round', $round);
     }
 
 }
