@@ -4,29 +4,27 @@
     </div>
 </div>
 
-@if(isset($activityData->strongestSkills) || isset($activityData->weakestSkills))
+@isset($activityData->strongestSkills)
     <div class="panel panel-default">
         <div class="panel-body">
-            @isset($activityData->strongestSkills)
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Your strongest skills...</h3>
-                        @foreach($activityData->strongestSkills as $skill)
-                            @include('skills.partials._skill', ['skill' => $skill])
-                        @endforeach                                
-                    </div>
-                </div>
-            @endisset
-            @isset($activityData->weakestSkills)
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Want to improve?</h3>
-                        @foreach($activityData->weakestSkills as $skill)
-                            @include('skills.partials._skill', ['skill' => $skill])
-                        @endforeach
-                    </div>
-                </div>
-            @endisset
+            <h3>Strongest skills</h3>
+            @foreach($activityData->strongestSkills as $skill)
+                @include('skills.partials._skill', ['skill' => $skill])
+            @endforeach
+            ** view all (link sorted by strongest) **
         </div>
     </div>
-@endif
+@endisset
+
+@isset($activityData->weakestSkills)
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Areas for improvement</h3>
+            @foreach($activityData->weakestSkills as $skill)
+                @include('skills.partials._skill', ['skill' => $skill, 'showDescription' => true])
+            @endforeach
+            ** view all (link sorted by weakest) **
+        </div>
+    </div>
+@endisset
+

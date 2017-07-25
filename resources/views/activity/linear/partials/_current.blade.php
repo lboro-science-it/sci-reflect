@@ -33,5 +33,6 @@
         <li>Total skills user responded max to</li>
         <li>Total skills user responded min to</li>
         <li>Total skills almost maxed</li>
+        <li>Current page title</li>
     </div>
 </div>
