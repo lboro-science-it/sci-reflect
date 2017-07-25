@@ -22,7 +22,8 @@
                 <label style="width: 100%; height: 100%;" for="{{ $indicator->id . '-' . $choice->id }}">
                     <input id="{{ $indicator->id . '-' . $choice->id }}" 
                            name="{{ $indicator->id }}" 
-                           value="{{ $choice->id }}" 
+                           value="{{ $choice->id }}"
+                           style="transform: scale(2);"
                            type="radio" 
                            @if($choice->id == $selections[$indicator->id])
                                 checked 

@@ -59,7 +59,7 @@ class BaseActivity
     {
         if (isset($this->currentRound->block)) {
             $blockContentParser = new BlockContentParser();
-            return $blockContentParser->parse($currentRound->block->content);
+            return $blockContentParser->parse($this->currentRound->block->content);
         }
 
         return null;
