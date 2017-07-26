@@ -1,16 +1,16 @@
-<div class="row">
-    <div class="col-xs-4">
-        <h4 style="margin-top: 0;">
-            {{ $skill->title }}
-        </h4>
-    </div>
-    <div class="
-        @isset($improve)
-            col-xs-5
-        @else
-            col-xs-8
-        @endisset
-    ">
+<div class="col-xs-4">
+    <h4>
+        {{ $skill->title }}
+    </h4>
+</div>
+<div class="
+    @isset($improve)
+        col-xs-5
+    @else
+        col-xs-8
+    @endisset
+">
+    <h4>
         <div class="progress">
             <div class="progress-bar" 
                  role="progressbar" 
@@ -22,19 +22,21 @@
                 {{ $skill->rating }}
             </div>
         </div>
-    </div>
-    @isset($improve)
-        <div class="col-xs-3">
+    </h4>
+</div>
+@isset($improve)
+    <div class="col-xs-3">
+        <h4>
             <button class="btn btn-default" 
                     style="width: 100%;"
                     data-toggle="modal"
                     data-target="#skill-{{ $skill->id }}">
                 Improve
             </button>
-        </div>
-        @include('skills.partials._modal', ['skill' => $skill])
-    @endisset
-</div>
+        </h4>
+    </div>
+    @include('skills.partials._modal', ['skill' => $skill])
+@endisset
 
 @isset($showDescription)
     <div class="row">

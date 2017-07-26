@@ -3,15 +3,22 @@
 namespace App\Reflect;
 
 use App\Reflect\Reflect;
+use Illuminate\Http\Request;
 use stdClass;
 
 class SkillsHelper
 {
+    protected $activity;
+
     protected $reflect;
 
-    public function __construct(Reflect $reflect)
+    protected $request;
+
+    public function __construct(Request $request, Reflect $reflect)
     {
+        $this->activity = $request->route('activity');
         $this->reflect = $reflect;
+        $this->request = $request;
     }
 
     /**
@@ -21,7 +28,7 @@ class SkillsHelper
      *
      * @return View
      */
-    public function getSkills($round, $user)
+    public function getUserSkills($round, $user)
     {
         $skills = collect(array());
 
@@ -36,22 +43,57 @@ class SkillsHelper
                 $skill->rating = $rating->rating;
                 $skill->max = $max;
                 $skill->percent = $skill->rating / $skill->max * 100;
-
-                if ($skill->percent > 80) {
-                    $skill->background = '#ffcf36';
-                } elseif ($skill->percent > 50) {
-                    $skill->background = '#f4a300';
-                } elseif ($skill->percent > 25) {
-                    $skill->background = '#ef7d00';
-                } else {
-                    $skill->background = '#ed6000';
-                }
+                $skill->background = $this->getBackgroundColor($skill->percent);
 
                 $skills->push($skill);
             }
         }
 
         return $skills;
+    }
+
+    /**
+     * Returns $user's skills in a given $round but with all $activity skills also
+     *
+     */
+    public function getActivitySkills($round, $user)
+    {
+        $skills = $this->activity->getSkills();
+
+        $ratings = $user->getRatings($round);
+
+        $max = $this->reflect->getChoices()->max('value');
+
+        foreach($skills as $skill) {
+            $rating = $ratings->where('skill_id', $skill->id)->first();
+
+            $skill->max = $max;
+
+            if (isset($rating)) {       // insert user rating data
+                $skill->rating = $rating->rating;
+                $skill->percent = $skill->rating / $max * 100;
+                $skill->background = $this->getBackgroundColor($skill->percent);
+            } else {                    // insert placeholder data
+                $skill->rating = 0;
+                $skill->percent = 0;
+                $skill->background = '#e5e5e5';
+            }
+        }
+
+        return $skills;
+    }
+
+    public function getBackgroundColor($percent)
+    {
+        if ($percent > 80) {
+            return '#ffcf36';
+        } elseif ($percent > 50) {
+            return '#f4a300';
+        } elseif ($percent > 25) {
+            return '#ef7d00';
+        }
+
+        return '#ed6000';
     }
 
 }

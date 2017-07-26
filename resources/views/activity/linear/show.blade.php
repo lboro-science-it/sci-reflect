@@ -8,9 +8,13 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <h3>Strongest skills</h3>
-            @foreach($activityData->strongestSkills as $skill)
-                @include('skills.partials._horizontal', ['skill' => $skill])
-            @endforeach
+            <div style="margin-top: 22px;">
+                @foreach($activityData->strongestSkills as $skill)
+                    <div class="col-sm-4">
+                        @include('skills.partials._pill', ['skill' => $skill, 'improve' => true])
+                    </div>
+                @endforeach
+            </div>
             ** view all (link sorted by strongest) **
         </div>
     </div>
@@ -21,9 +25,13 @@
         <div class="panel-body">
             <h3>Improve your skills</h3>
             <p>Click for resources to help improve your weakest areas.</p>
-            @foreach($activityData->weakestSkills as $skill)
-                @include('skills.partials._improve', ['skill' => $skill])
-            @endforeach
+            <div>
+                @foreach($activityData->weakestSkills as $skill)
+                    <div class="col-sm-4">
+                        @include('skills.partials._pill', ['skill' => $skill, 'improve' => true])
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 @endif

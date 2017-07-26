@@ -14,7 +14,9 @@
             <div class="panel-body">
                 <h3>Your skills</h3>
                 @foreach($skills as $skill)
+                <div class="row">
                     @include('skills.partials._horizontal', ['skill' => $skill, 'improve' => true])
+                </div>
                 @endforeach
             </div>
         </div>
