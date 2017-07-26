@@ -13,9 +13,10 @@ class LinearActivity extends BaseActivity
 
     private function eagerLoad()
     {
+        // todo: replace this block load with a load for block in the round +
+        // block for each skill that will be displayed, all in one go
         $this->activity->rounds->load([
             'pages.skills.indicators',
-            'pages.skills.category',
             'pages.skills.block'
         ]);
 

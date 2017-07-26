@@ -21,9 +21,9 @@ class Activity extends Model
 
     public function getCategories()
     {
-        if (!isset($this->categories)) {
+        if (!$this->relationLoaded('categories')) {
             $categories = $this->categories->sortBy('name')->sortBy('number');
-            $this->categories = $categories;
+            $this->setRelation('categories', $categories);
         }
 
         return $this->categories;
@@ -44,7 +44,6 @@ class Activity extends Model
 
             $skills = $skills->unique('id');
             $categories = $this->getCategories();
-//            $categories = $this->categories->sortBy('name')->sortBy('number');
             $sortedSkills = collect(array());
 
             foreach ($categories as $category) {
