@@ -17,16 +17,17 @@ class SkillsHelper
     /**
      * Returns a collection of $skills for the given $user in the given $round
      * based only on the skills in the $round.
-     * todo: base skills on activity's skills, not rounds
+     * todo: base skills on activity's skills, not rounds, with ones not in round grey 
      *
      * @return View
      */
     public function getSkills($round, $user)
     {
+        $skills = collect(array());
+
         if (isset($round)) {
             $ratings = $user->ratings->where('round_id', $round->id)->sortByDesc('rating');
 
-            $skills = collect(array());
             $roundSkills = $round->getSkills();
             $max = $this->reflect->getChoices()->max('value');
 
@@ -48,11 +49,9 @@ class SkillsHelper
 
                 $skills->push($skill);
             }
-
-            return $skills;
         }
 
-        return null;
+        return $skills;
     }
 
 }

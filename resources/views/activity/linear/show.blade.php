@@ -4,7 +4,7 @@
     </div>
 </div>
 
-@isset($activityData->strongestSkills)
+@if($activityData->strongestSkills->count() > 0)
     <div class="panel panel-default">
         <div class="panel-body">
             <h3>Strongest skills</h3>
@@ -14,9 +14,9 @@
             ** view all (link sorted by strongest) **
         </div>
     </div>
-@endisset
+@endif
 
-@isset($activityData->weakestSkills)
+@if($activityData->weakestSkills->count() > 0)
     <div class="panel panel-default">
         <div class="panel-body">
             <h3>Improve your skills</h3>
@@ -26,5 +26,5 @@
             @endforeach
         </div>
     </div>
-@endisset
+@endif
 

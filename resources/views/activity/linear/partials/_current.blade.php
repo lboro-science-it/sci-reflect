@@ -3,8 +3,8 @@
         @isset($activityData->rounds->current)
             <h3>{{ $activityData->rounds->current->title }}</h3>
             @if($activityData->rounds->current->viewable)
-                @isset($activityData->roundContent)
                 ** todo: insert encouragement messages / personalisation **
+                @isset($activityData->roundContent)
                 <div>
                     {!! $activityData->roundContent !!}
                 </div>
@@ -24,7 +24,7 @@
         @endisset
     </div>
 </div>
-<!--
+
 <div class="panel panel-default">
     <div class="panel-body">
         ** todo: insert stats about current round **
@@ -36,4 +36,3 @@
         <li>Current page title</li>
     </div>
 </div>
--->
