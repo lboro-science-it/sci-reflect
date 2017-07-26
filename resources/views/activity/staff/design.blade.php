@@ -8,13 +8,13 @@ Design: {{ $activity->name }}
 
 @section('content')
 
-    @include('activity.partials._tasks')
+    @include('activity.staff.partials._tasks')
     
-    @include('activity.partials._openclose')
+    @include('activity.staff.partials._openclose')
 
-    @include('activity.partials._studentupload')
+    @include('activity.staff.partials._studentupload')
 
-    @include('activity.partials._studentlist')
+    @include('activity.staff.partials._studentlist')
 
     Todo: <br>
     <li><strike>Add students (CSV / Paste)</strike></li>

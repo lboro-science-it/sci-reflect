@@ -17,7 +17,6 @@
         <tbody>
             @foreach($students as $student)
                 <tr>
-
                     <td>
                         @isset($student->group)
                             {{ $student->group->name }}
@@ -27,56 +26,33 @@
                     </td>
 
                     <td>{{ $student->name }}</td>
-
                     <td>{{ $student->email }}</td>
 
-                    @isset($student->pivot->current_round)
-                        <?php
-                            $currentRoundClass = '';
-                            $currentRoundText = $student->pivot->current_round;
-                        ?>
-                    @else
-                        <?php
-                            $currentRoundClass = 'success';
-                            $currentRoundText = 'Complete'
-                        ?>
-                    @endisset
+                    <?php
+                        $currentRoundNumber = $student->pivot->current_round;
+                        $currentRoundClass = isset($currentRoundNumber) ? '' : 'success';
+                        $currentRoundText = isset($currentRoundNumber) ? $rounds->where('round_number', $currentRoundNumber)->first()->title : 'Complete';
+                    ?>
+
                     <td class="{{ $currentRoundClass }}">{{ $currentRoundText }}</td>
                     
                     @foreach($rounds as $round)
                         <?php
-                            $class = '';
-                            if ($student->getCompletion($round) == '100%') {
-                                $class = 'success';
-                            }
+                            $class = ($student->getCompletion($round) == '100%') ? 'success' : '';
                         ?>
                         <td class="{{ $class }}">{{ $student->getCompletion($round) }}</td>
                     @endforeach
 
-                    @isset($student->pivot->lti_user_id)
-                        <?php
-                            $hasAccessedClass = 'success';
-                            $hasAccessedText = 'Yes';
-                        ?>
-                    @else
-                        <?php
-                            $hasAccessedClass = '';
-                            $hasAccessedText = 'No';
-                        ?>
-                    @endisset
+                    <?php
+                        $hasAccessedClass = isset($student->pivot->lti_user_id) ? 'success' : '';
+                        $hasAccessedText = isset($student->pivot->lti_user_id) ? 'Yes' : 'No';
+                    ?>
                     <td class="{{ $hasAccessedClass }}">{{ $hasAccessedText }}</td>
 
-                    @if($student->pivot->complete)
-                        <?php
-                            $completeClass = 'success';
-                            $completeText = 'Yes';
-                        ?>
-                    @else
-                        <?php
-                            $completeClass = '';
-                            $completeText = 'No';
-                        ?>
-                    @endif
+                    <?php
+                        $completeClass = ($student->pivot->complete) ? 'success' : '';
+                        $completeText = ($student->pivot->complete) ? 'Yes' : 'No';
+                    ?>
                     <td class="{{ $completeClass }}">{{ $completeText }}</td>
 
                     <td>
