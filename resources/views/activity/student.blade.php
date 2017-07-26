@@ -14,7 +14,8 @@
     </div>
     <div class="col-md-3">
         @include('activity.partials._chart')
-        @include('activity.partials._sidebar', ['rounds' => $activityData->rounds])
+        @include('rounds/partials/_completed', ['rounds' => $activityData->rounds->completed])
+        @include('rounds/partials/_future', ['rounds' => $activityData->rounds->future])
     </div>
 </div>
 
