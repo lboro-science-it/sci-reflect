@@ -8,7 +8,8 @@ use Closure;
 class Staff
 {
     /**
-     * Handle an incoming request.
+     * Redirect the user to the eject controller method if they are not
+     * staff in the current activity.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

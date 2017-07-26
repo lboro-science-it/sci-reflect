@@ -13,7 +13,8 @@ class LinearController extends Controller
     /**
      * Display the dashboard for the linear activity.
      *
-     * @return View or Redirect
+     * @param  App\Activity $activity
+     * @return View
      */
     public function dashboard(Activity $activity)
     {
@@ -30,6 +31,9 @@ class LinearController extends Controller
     /**
      * Process submitted data and return a single page as appropriate.
      *
+     * @param  App\Activity $activity
+     * @param  App\Round $round
+     * @param  App\Page $page
      * @return View or Redirect
      */
     public function page(Activity $activity, Round $round, Page $page)

@@ -11,28 +11,33 @@ class LtiController extends Controller
 {
 
     /**
-     * Handles LTI launch, returning either the activity or a form
-     * for manual resubmission to ensure cookie created in iframe.
+     * Handle LTI launch, return activity if we know cookies are fine,
+     * or a form to ensure cookies are created in iframe.
      *
+     * @param  Illuminate\Http\Request $request
+     * @param  App\Lti\LtiToolProvider $tool
      * @return View or Redirect
      */
     public function launch(Request $request, LtiToolProvider $tool)
     {
-        // todo: get activity record to see if it's open so we can
-        // display closed directly without showing the splash
+        // todo: get activity, display closed directly without splash if needed
 
-        if ($request->session()->has('live')) {     // cookies are working
+        // if session has the key it means cookies are working
+        if ($request->session()->has('live')) {
             $tool->handleRequest();
 
             if ($tool->ok) {
+                // auth the launching user if they aren't already launched
                 if (!Auth::check() || Auth::user()->id != $tool->user_id) {
                     Auth::loginUsingId($tool->user_id);
                 }
 
+                // redirect staff to their routes
                 if ($tool->role == 'staff') {
                     return redirect('a/' . $tool->activity_id);
                 }
 
+                // redirect students to their routes (depending on activity format)
                 return redirect('a/' . $tool->activity_id . '/' . $tool->format);
             } else {
                 return view('lti.error');
@@ -40,6 +45,8 @@ class LtiController extends Controller
         } else {                // No cookies, show splash to force creation
             // todo: if failed to set cookie (i.e. would show splash twice)
             // show a link to open the tool in a new window instead
+            // we put a key in the session which will still be present after 
+            // the user submits the form, if the cookies have worked
             $request->session()->put('live', 1);
             return view('lti.splash')
             ->with('params', $request->input());

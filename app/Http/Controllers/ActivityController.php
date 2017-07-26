@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 class ActivityController extends Controller
 {
     /**
-     * Set status of activity to closed, returns activity dashboard view.
+     * Set status of activity to closed and return activity dashboard view.
      *
+     * @param  App\Activity $activity
      * @return View
      */
     public function close(Activity $activity)
@@ -22,8 +23,10 @@ class ActivityController extends Controller
     }
 
     /**
-     * Handles a submitted activity create form, generating default content.
+     * Handle a submitted activity create form and generate default content.
      *
+     * @param  Illuminate\Http\Request $request
+     * @param  App\Activity $activity
      * @return View
      */
     public function create(Request $request, Activity $activity)
@@ -48,7 +51,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * Logs the authed user out of the application.
+     * Log the authed user out of the application.
      *
      * @return View
      */
@@ -61,8 +64,9 @@ class ActivityController extends Controller
     }
 
     /**
-     * Sets status of activity to open, returns staff activity dashboard.
+     * Set status of activity to open and return staff activity dashboard.
      *
+     * @param  App\Activity $activity
      * @return View
      */
     public function open(Activity $activity)
@@ -74,8 +78,9 @@ class ActivityController extends Controller
     }
 
     /**
-     * Returns activity view according to status of activity.
+     * Return activity view according to status of activity.
      *
+     * @param  App\Activity $activity
      * @return View
      */
     public function show(Activity $activity)
@@ -91,6 +96,12 @@ class ActivityController extends Controller
         return view('activity.staff.dashboard');
     }
 
+    /**
+     * Placeholder to show setup view (create prepopulated w/ existing data)
+     *
+     * @param  App\Activity $activity
+     * @return View
+     */
     public function showSetup(Activity $activity)
     {
         return dd('showSetup view');

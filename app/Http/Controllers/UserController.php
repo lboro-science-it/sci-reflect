@@ -9,20 +9,30 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    /**
+     * Placeholder for accepting a text list of staff email addresses to
+     * create as users and relate to the activity.
+     * todo: extract method to some kind of user creation method.
+     *
+     * @param  Illuminate\Http\Request $request
+     * @param  App\Activity $activity
+     * @return View
+     */    
     public function postStaff(Request $request, Activity $activity)
     {
-        // function to parse a list of staff, create user accounts where needed
-        // relate to the activity record where needed.
+
     }
 
     /**
      * Register a bunch of users to the activity as students from a pasted
      * textarea input of email addresses on newlines.
+     * todo: extract method refactoring so use in postStaff + postStudents
      *
-     * @return View or Redirect
+     * @param  Illuminate\Http\Request $request
+     * @param  App\Activity $activity
+     * @return Redirect
      */
     // todo: validate email before adding
-    // todo: refactor out into helpers
     public function postStudents(Request $request, Activity $activity)
     {
         // split the textarea students input into an array of email addresses
@@ -84,6 +94,12 @@ class UserController extends Controller
              ->with('message', $message);
     }
 
+    /**
+     * Placeholder for function to display the form for adding students.
+     *
+     * @param  App\Activity $activity
+     * @return View
+     */
     public function showAddStudents(Activity $activity)
     {
         return dd('showAddStudents view here');

@@ -13,7 +13,11 @@ class StudentChartController extends Controller
 {
     /**
      * Eager load necessary data then render the single chart view.
+     * Necessary data includes the data for the chart, the skills list, 
+     * and the completed rounds.
      *
+     * @param  App\Activity $activity
+     * @param  App\Round $round
      * @return View
      */    
     public function show(Activity $activity, Round $round)
