@@ -8,7 +8,7 @@ use Auth;
 use Illuminate\Http\Request;
 use stdClass;
 
-class Page extends BasePage
+class LinearPage extends BasePage
 {
     protected $activity;
     protected $page;

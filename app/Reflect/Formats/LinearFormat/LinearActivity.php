@@ -7,7 +7,7 @@ use Auth;
 use Illuminate\Http\Request;
 use stdClass;
 
-class Activity extends BaseActivity
+class LinearActivity extends BaseActivity
 {
     protected $view = 'activity.linear.show';
 

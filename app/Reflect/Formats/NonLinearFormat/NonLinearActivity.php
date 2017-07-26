@@ -6,7 +6,7 @@ use App\Reflect\Formats\BaseActivity;
 use Illuminate\Http\Request;
 use stdClass;
 
-class Activity extends BaseActivity
+class NonLinearActivity extends BaseActivity
 {
     protected $view = 'activity.nonlinear.show';
 

@@ -5,7 +5,7 @@ namespace App\Reflect\Formats\NonLinearFormat;
 use App\Reflect\Formats\BasePage;
 use Illuminate\Http\Request;
 
-class Page extends BasePage
+class NonLinearPage extends BasePage
 {
     protected $request;
 

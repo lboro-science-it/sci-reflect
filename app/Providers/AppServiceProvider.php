@@ -30,17 +30,17 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind('LinearActivity', function($app) {
-            return new \App\Reflect\Formats\LinearFormat\Activity($app->request);
+            return new \App\Reflect\Formats\LinearFormat\LinearActivity($app->request);
         });
         $this->app->bind('LinearPage', function($app) {
-            return new \App\Reflect\Formats\LinearFormat\Page($app->request, $app->make('Reflect'));
+            return new \App\Reflect\Formats\LinearFormat\LinearPage($app->request, $app->make('Reflect'));
         });
 
         $this->app->bind('NonLinearActivity', function($app) {
-            return new \App\Reflect\Formats\NonLinearFormat\Activity($app->request);
+            return new \App\Reflect\Formats\NonLinearFormat\NonLinearActivity($app->request);
         });
         $this->app->bind('NonLinearPage', function($app) {
-            return new \App\Reflect\Formats\NonLinearFormat\Page($app->request, $app->make('Reflect'));
+            return new \App\Reflect\Formats\NonLinearFormat\NonLinearPage($app->request, $app->make('Reflect'));
         });
     }
 
