@@ -12,7 +12,11 @@ class NonLinearActivity extends BaseActivity
 
     private function eagerLoad()
     {
-        $this->activity->loadIndicatorsWithCategory();
+        $this->activity->rounds->load([
+            'pages.skills.indicators',
+            'pages.skills.category',
+            'pages.skills.block'
+        ]);
     }
 
     private function getCategories()

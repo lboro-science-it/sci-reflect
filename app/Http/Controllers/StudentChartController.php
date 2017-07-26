@@ -18,7 +18,10 @@ class StudentChartController extends Controller
      */    
     public function show(Activity $activity, Round $round)
     {
-        $activity->loadIndicatorsWithCategory();
+        $activity->rounds->load([
+            'pages.skills.indicators',
+            'pages.skills.block'
+        ]);
 
         // get the round object with the eager loaded data
         $round = $activity->rounds->where('id', $round->id)->first();
@@ -27,11 +30,11 @@ class StudentChartController extends Controller
         $chartData = $chartHelper->getChartData($round, Auth::user());
 
         $skillsHelper = app('SkillsHelper');
-        $skills = $skillsHelper->getActivitySkills($round, Auth::user());
+        $categories = $skillsHelper->getActivitySkillsInCategories($round, Auth::user());
 
         return view('chart.single')
         ->with('chartData', $chartData)
-        ->with('skills', $skills)
+        ->with('categories', $categories)
         ->with('round', $round);
     }
 

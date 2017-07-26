@@ -19,8 +19,15 @@ class Activity extends Model
      * functions
      */
 
-    protected $loadedIndicators = false;
-    protected $loadedCategories = false;
+    public function getCategories()
+    {
+        if (!isset($this->categories)) {
+            $categories = $this->categories->sortBy('name')->sortBy('number');
+            $this->categories = $categories;
+        }
+
+        return $this->categories;
+    }
 
     /**
      * Returns a collection of activity's skills in render order
@@ -36,7 +43,8 @@ class Activity extends Model
             }
 
             $skills = $skills->unique('id');
-            $categories = $skills->pluck('category')->unique()->sortBy('name')->sortBy('number');
+            $categories = $this->getCategories();
+//            $categories = $this->categories->sortBy('name')->sortBy('number');
             $sortedSkills = collect(array());
 
             foreach ($categories as $category) {
@@ -47,6 +55,22 @@ class Activity extends Model
         }
 
         return $this->skills;
+    }
+
+    /**
+     * Returns a collection of categories containing skills for rendering
+     * @return Collection
+     */
+    public function getSkillsInCategories()
+    {
+        $skills = $this->getSkills();
+        $categories = $this->getCategories()->whereIn('id', $skills->pluck('category_id')->unique());
+
+        foreach($categories as $category) {
+            $category->setRelation('skills', $skills->where('category_id', $category->id));
+        }
+
+        return $categories;
     }
 
     /**
@@ -66,40 +90,6 @@ class Activity extends Model
         }
 
         return false;
-    }
-
-    /**
-     * Performs a lazy eager load of the required data for rendering charts
-     * or skills only if this data is not already loaded.
-     * @return void
-     */
-    public function loadIndicatorsWithCategory()
-    {
-        if (!$this->loadedIndicators || !$this->loadedCategories) {
-            $this->rounds->load([
-                'pages.skills.indicators',
-                'pages.skills.category',
-                'pages.skills.block'
-            ]);
-
-            $this->loadedIndicators = true;
-        }
-    }
-
-    /**
-     * Performs a lazy eager load of the required data for calculating
-     * round completions, only if this data is not already loaded.
-     * @return void
-     */
-    public function loadIndicators()
-    {
-        if (!$this->loadedIndicators) {
-            $this->rounds->load([
-                'pages.skills.indicators'
-            ]);
-
-            $this->loadedIndicators = true;
-        }
     }
 
     /**

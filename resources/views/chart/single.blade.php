@@ -13,10 +13,13 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h3>Your skills</h3>
-                @foreach($skills as $skill)
-                <div class="row">
-                    @include('skills.partials._horizontal', ['skill' => $skill, 'improve' => true])
-                </div>
+                @foreach($categories as $category)
+                    <h4>{{ $category->name }}</h4>
+                    @foreach($category->skills as $skill)
+                    <div class="row">
+                        @include('skills.partials._horizontal', ['skill' => $skill, 'category' => $category, 'improve' => true])
+                    </div>
+                    @endforeach
                 @endforeach
             </div>
         </div>

@@ -8,7 +8,7 @@
                      aria-valuemin="0"
                      aria-valuemax="{{ $skill->max }}"
                      style="height: {{ $skill->rating / $skill->max * 100 }}%;
-                            background-color: {{ $skill->category->color }};">
+                            background-color: {{ $category->color }};">
                     {{ $skill->rating }}
                 </div>
             </div>

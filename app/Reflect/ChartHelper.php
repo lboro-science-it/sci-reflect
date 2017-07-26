@@ -26,6 +26,7 @@ class ChartHelper
     {
         // get all the activity's skills in correct order
         $skills = $this->activity->getSkills();
+        $categories = $this->activity->getCategories();
 
         // get the user's ratings in this round (so some skills won't have a rating maybe)
         $ratings = isset($user) ? $user->getRatings($round) : collect(array());
@@ -40,10 +41,12 @@ class ChartHelper
         foreach ($skills as $skill) {
             $rating = $ratings->where('skill_id', $skill->id)->first();
 
+            $category = $categories->where('id', $skill->category_id)->first();
+
             if (isset($rating)) {       // insert user rating data
                 array_push($chartData->values, $rating->rating);
-                array_push($chartData->backgrounds, $skill->category->color);
-                array_push($chartData->borders, $skill->category->color);
+                array_push($chartData->backgrounds, $category->color);
+                array_push($chartData->borders, $category->color);
             } else {                    // insert placeholder data
                 array_push($chartData->values, 1);
                 array_push($chartData->backgrounds, '#e5e5e5');

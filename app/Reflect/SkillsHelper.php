@@ -56,31 +56,33 @@ class SkillsHelper
      * Returns $user's skills in a given $round but with all $activity skills also
      *
      */
-    public function getActivitySkills($round, $user)
+    public function getActivitySkillsInCategories($round, $user)
     {
-        $skills = $this->activity->getSkills();
+        $categories = $this->activity->getSkillsInCategories();
 
         $ratings = $user->getRatings($round);
 
         $max = $this->reflect->getChoices()->max('value');
 
-        foreach($skills as $skill) {
-            $rating = $ratings->where('skill_id', $skill->id)->first();
+        foreach($categories as $category) {
+            foreach($category->skills as $skill) {
+                $rating = $ratings->where('skill_id', $skill->id)->first();
 
-            $skill->max = $max;
+                $skill->max = $max;
 
-            if (isset($rating)) {       // insert user rating data
-                $skill->rating = $rating->rating;
-                $skill->percent = $skill->rating / $max * 100;
-                $skill->background = $this->getBackgroundColor($skill->percent);
-            } else {                    // insert placeholder data
-                $skill->rating = 0;
-                $skill->percent = 0;
-                $skill->background = '#e5e5e5';
+                if (isset($rating)) {       // insert user rating data
+                    $skill->rating = $rating->rating;
+                    $skill->percent = $skill->rating / $max * 100;
+                    $skill->background = $this->getBackgroundColor($skill->percent);
+                } else {                    // insert placeholder data
+                    $skill->rating = 0;
+                    $skill->percent = 0;
+                    $skill->background = '#e5e5e5';
+                }
             }
         }
 
-        return $skills;
+        return $categories;
     }
 
     public function getBackgroundColor($percent)
