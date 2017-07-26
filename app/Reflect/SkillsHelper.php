@@ -46,7 +46,7 @@ class SkillsHelper
                 $skill->max = $max;
                 $skill->percent = $skill->rating / $skill->max * 100;
                 $skill->background = $this->getBackgroundColor($skill->percent);
-                $skill->setRelation('category', $categories->where('category_id', $skill->category_id)->first());
+                $skill->setRelation('category', $categories->where('id', $skill->category_id)->first());
 
                 $skills->push($skill);
             }
