@@ -46,7 +46,7 @@ class LinearActivity extends BaseActivity
         $activityData->hasDone = $this->hasDone();
         $activityData->roundContent = $this->getRoundContent();
         $activityData->resumeLink = $this->getResumeLink();
-        $activityData->rounds = $this->getRounds();
+        $activityData->rounds = $this->activity->getRoundsData();
 
         $skillsHelper = app('SkillsHelper');
 

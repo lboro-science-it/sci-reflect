@@ -36,6 +36,15 @@
                 @include('chart.partials._chart', ['chartData' => $chartData])
             </div>
         </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>Other rounds</h3>
+                @foreach($rounds->completed as $completedRound)
+                    <li>{{ $completedRound->title }}</li>
+                @endforeach
+            </div>
+        </div>
     </div>
 </div>
 

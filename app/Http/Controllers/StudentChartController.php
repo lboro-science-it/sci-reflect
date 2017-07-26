@@ -35,7 +35,8 @@ class StudentChartController extends Controller
         return view('chart.single')
         ->with('chartData', $chartData)
         ->with('categories', $categories)
-        ->with('round', $round);
+        ->with('round', $round)
+        ->with('rounds', $activity->getRoundsData());
     }
 
 }
