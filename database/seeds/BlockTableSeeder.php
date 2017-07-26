@@ -54,5 +54,15 @@ class BlockTableSeeder extends Seeder
             'page_id' => 3,
             'position' => 1,
         ]);
+
+        DB::table('blocks')->insert([
+            'activity_id' => 1,
+            'content' => "This is the content for all skills' improve modals. Each can have its own but I haven't put that test data in."
+        ]);
+
+        DB::table('blocks')->insert([
+            'activity_id' => 1,
+            'content' => "This is content for the round intro page. Each round can have custom content."
+        ]);
     }
 }

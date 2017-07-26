@@ -6,7 +6,9 @@
                     Improve your skills at {{ $skill->title }}
                 </div>
                 <div class="modal-body">
-                    Insert stuff about improving at {{ $skill->title }}
+                    <p>
+                        {!! $skill->block->content !!}
+                    </p>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

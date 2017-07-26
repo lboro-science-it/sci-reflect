@@ -22,7 +22,7 @@ class SkillTableSeeder extends Seeder
                 'category_id' => $catId,
                 'title' => 'Skill ' . $skillId,
                 'description' => 'Description for Skill ' . $skillId,
-                'info_link' => 'https://google.co.uk/search?q=attribute+' . $skillId,
+                'block_id' => 5,
                 'number' => $categories[$catId],
             ]);
 

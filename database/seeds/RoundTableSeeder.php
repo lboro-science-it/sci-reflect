@@ -15,6 +15,7 @@ class RoundTableSeeder extends Seeder
             'activity_id' => 1,
             'round_number' => 2,
             'title' => 'Round 2',
+            'block_id' => 6
         ]);
     }
 }

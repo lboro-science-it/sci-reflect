@@ -19,7 +19,7 @@ class CreateSkillsTable extends Migration
             $table->integer('category_id')->nullable();
             $table->string('title', 50)->nullable();
             $table->text('description')->nullable();
-            $table->text('info_link')->nullable();
+            $table->integer('block_id')->nullable();
             $table->integer('number');
             $table->timestamps();
         });

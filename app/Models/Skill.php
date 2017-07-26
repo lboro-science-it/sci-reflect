@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Skill extends Model
 {
+    public function block()
+    {
+        return $this->belongsTo('App\Block');
+    }
+
     public function category()
     {
         return $this->belongsTo('App\Category');

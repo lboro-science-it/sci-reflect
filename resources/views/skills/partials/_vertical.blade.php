@@ -14,10 +14,19 @@
             </div>
         </div>
         <div class="col-xs-10">
-            <h3>{{ $skill->title }} <a href="{{ $skill->info_link }}" target="_blank"><span class="glyphicon glyphicon-link pull-right"></span></a></h3>
+            <h3>{{ $skill->title }}
+                <button class="btn btn-default" 
+                        style="width: 100%;"
+                        data-toggle="modal"
+                        data-target="#skill-{{ $skill->id }}">
+                    <span class="glyphicon glyphicon-link"></span>
+                </button>
+            </h3>
             @isset($showDescription)
                 <p>{{ $skill->description }}</p>
             @endisset
         </div>
     </div>
 </div>
+
+@include('skills.partials._modal', ['skill' => $skill])

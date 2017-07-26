@@ -78,10 +78,10 @@ class Activity extends Model
         if (!$this->loadedIndicators || !$this->loadedCategories) {
             $this->rounds->load([
                 'pages.skills.indicators',
-                'pages.skills.category'
+                'pages.skills.category',
+                'pages.skills.block'
             ]);
 
-            $this->loadedCategories = true;
             $this->loadedIndicators = true;
         }
     }
