@@ -58,9 +58,9 @@
                             },
                             label (tooltipItem, data) {
                                 if (vueInstance.enabled[tooltipItem.index]) {
-                                    return 'Your rating: ' + data.datasets[0].data[tooltipItem.index] + '/' + vueInstance.max;
+                                    return ' Your rating: ' + data.datasets[0].data[tooltipItem.index] + '/' + vueInstance.max;
                                 } else {
-                                    return 'Not available in this round';
+                                    return ' Not available in this round';
                                 }
                             } 
                         },
