@@ -74,7 +74,7 @@ class RatingsHelper
         // save updated ratings in user model without having to select them again
         $user->setRelation('ratings', $ratings->merge($user->ratings));
 
-        //DB::table('ratings')->insert($ratings->toArray());
+        DB::table('ratings')->insert($ratings->toArray());
         return $user->ratings->where('round_id', $round->id);
     }
 }
