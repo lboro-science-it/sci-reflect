@@ -50,7 +50,7 @@ class NonLinearActivity extends BaseActivity
         $activityData->categories = $this->getCategories();
         $activityData->chartData = $this->getChartData();
         $activityData->roundContent = $activityData->roundContent = $this->getRoundContent();
-        $activityData->rounds = $this->getRounds();
+        $activityData->rounds = $this->activity->getRoundsData();
         $activityData->roundViewable = isset($activityData->rounds->current) && $activityData->rounds->current->viewable;
 
         return $activityData;

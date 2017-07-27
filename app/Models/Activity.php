@@ -46,12 +46,15 @@ class Activity extends Model
             $round->viewable = $round->isViewable(Auth::user());
             if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
                 $round->completion = '100%';
+                $round->completionDecimal = 1.0;
                 $roundsData->completed->push($round);
             } elseif ($round->round_number == $currentRoundNumber) {
                 $round->completion = Auth::user()->getCompletion($round);
+                $round->completionDecimal = Auth::user()->getCompletionDecimal($round);
                 $roundsData->current = $round;
             } else {
                 $round->completion = null;
+                $round->completionDecimal = null;
                 $roundsData->future->push($round);
             }
         }

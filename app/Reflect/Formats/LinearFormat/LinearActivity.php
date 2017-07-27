@@ -3,6 +3,7 @@
 namespace App\Reflect\Formats\LinearFormat;
 
 use App\Reflect\Formats\BaseActivity;
+use App\Reflect\MessageHelper;
 use Auth;
 use Illuminate\Http\Request;
 use stdClass;
@@ -48,6 +49,8 @@ class LinearActivity extends BaseActivity
         $activityData->resumeLink = $this->getResumeLink();
         $activityData->rounds = $this->activity->getRoundsData();
 
+        $activityData->message = $this->getMessage($activityData->rounds->current);
+
         $skillsHelper = app('SkillsHelper');
 
         $activityData->strongestSkills = $skillsHelper->getUserSkills($this->previousRound, $this->user)->splice(0, 3);
@@ -63,6 +66,16 @@ class LinearActivity extends BaseActivity
         }
 
         return false;
+    }
+
+    private function getMessage($currentRound)
+    {
+        $completionMessage = MessageHelper::getCompletionMessage($currentRound->completionDecimal);
+        $timeMessage = MessageHelper::getTimeMessage($currentRound->close_date);
+
+        $message = $completionMessage . $timeMessage;
+
+        return $message;
     }
 
     private function getResumeLink()

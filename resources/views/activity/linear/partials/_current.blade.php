@@ -9,7 +9,12 @@
     <div class="panel-body">
         @isset($activityData->rounds->current)
             @if($activityData->rounds->current->viewable)
-                ** todo: insert encouragement messages / personalisation **
+                @isset($activityData->message)
+                <div>
+                    {{ $activityData->message }}
+                </div>
+                @endisset
+
                 @isset($activityData->roundContent)
                 <div>
                     {!! $activityData->roundContent !!}
