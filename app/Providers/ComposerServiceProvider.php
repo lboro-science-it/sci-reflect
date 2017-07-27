@@ -24,11 +24,15 @@ class ComposerServiceProvider extends ServiceProvider
             'activity.partials._format', 'App\Http\ViewComposers\ActivityFormatComposer'
         );
 
-
         View::composer(
             ['activity.staff.design', 'activity.staff.dashboard'],
             'App\Http\ViewComposers\StaffActivityComposer'
         );
+
+        View::composer(
+            'activity.student', 'App\Http\ViewComposers\StudentActivityComposer'
+       );
+
     }
 
     /**

@@ -16,6 +16,9 @@
         @include('activity.partials._chart')
         @include('rounds/partials/_completed', ['rounds' => $activityData->rounds->completed])
         @include('rounds/partials/_future', ['rounds' => $activityData->rounds->future])
+        @isset($knowledgeQuote)
+            @include('activity.partials._knowledge_quote', ['knowledgeQuote' => $knowledgeQuote])
+        @endisset
     </div>
 </div>
 
