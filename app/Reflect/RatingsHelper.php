@@ -60,7 +60,7 @@ class RatingsHelper
         $ratings = collect(array());
         foreach ($skillValues as $skill) {
             $rating = new \App\Rating;
-            $rating->user_id = $user->id;
+            $rating->rated_id = $user->id;
             $rating->rater_id = $user->id;
             $rating->round_id = $round->id;
             $rating->skill_id = $skill->id;
