@@ -54,6 +54,7 @@ class RouteServiceProvider extends ServiceProvider
                 Auth::user()->currentPage = $activity->pivot->current_page;
 
                 // globally eager load Auth::user's selections
+                // todo: move this elsewhere as we don't need for Chart view necessarily
                 if (Auth::user()->role == 'student') {
                     Auth::user()->load([
                         'selections' => function($q) use ($activity) {
@@ -78,7 +79,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         // Load $page model based on number in {round}
-        Route::bind('pageInRound', function($value) {
+        Route::bind('page', function($value) {
             $round = $this->app->request->route('round');
             $page = $round->pages->where('pivot.page_number', $value)->first();
 

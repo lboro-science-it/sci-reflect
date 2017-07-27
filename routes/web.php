@@ -31,7 +31,7 @@ Route::group(['middleware' => ['staff']], function() {
 Route::group(['middleware' => ['student']], function() {
     // student linear routes
     Route::get('a/{activity}/linear', 'LinearController@dashboard');
-    Route::post('a/{activity}/linear/r/{round}/p/{pageInRound}', 'LinearController@page');
+    Route::post('a/{activity}/linear/r/{round}/p/{page}', 'LinearController@page');
 
     // student nonlinear routes
     Route::get('a/{activity}/nonlinear', 'NonLinearController@dashboard');
