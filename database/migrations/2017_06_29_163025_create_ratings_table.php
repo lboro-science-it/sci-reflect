@@ -15,7 +15,7 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('rated_id');
             $table->integer('rater_id');
             $table->integer('round_id');
             $table->integer('skill_id');

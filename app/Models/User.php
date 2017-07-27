@@ -135,7 +135,7 @@ class User extends Authenticatable
 
     public function ratings()
     {
-        return $this->hasMany('App\Rating');
+        return $this->hasMany('App\Rating', 'rater_id');
     }
 
     public function selections()
