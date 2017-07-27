@@ -7,6 +7,7 @@
     
     export default {
         props: [
+            'enabled',
             'backgrounds',
             'labels',
             'max',
@@ -14,8 +15,10 @@
         ],
 
         mounted() {
+            var vueInstance = this;
             new Chart(document.getElementById(this._uid).getContext('2d'), {
                 type: "polarArea",
+
                 data: {
                     labels: this.labels,
                     datasets: [{
@@ -23,17 +26,22 @@
                         backgroundColor: this.backgrounds
                     }]
                 },
+
                 options: {
                     animation: {
                         animateRotate: false
                     },
+
                     layout: {
                         padding: 5
                     },
+
                     legend: {
                         display: false
                     },
+
                     responsive: true,
+
                     scale: {
                         ticks: {
                             max: this.max,
@@ -41,14 +49,26 @@
                             stepSize: 1,
                             display: false
                         }
-                    }/*,
+                    },
+
                     tooltips: {
-                        custom: function(tooltip) {
-                            console.log(tooltip);
-                            // todo: action to display info
+                        callbacks: {
+                            title (tooltipItem, data) {
+                                return data.labels[tooltipItem[tooltipItem[0].datasetIndex].index];
+                            },
+                            label (tooltipItem, data) {
+                                if (vueInstance.enabled[tooltipItem.index]) {
+                                    return 'Your rating: ' + data.datasets[0].data[tooltipItem.index] + '/' + vueInstance.max;
+                                } else {
+                                    return 'Not available in this round';
+                                }
+                            } 
                         },
-                        enabled: false
-                    }*/
+                        custom: function(tooltip) {
+                        //    console.log(tooltip);
+                            // todo: action to display info
+                        }
+                    }
                 }
             });
         }

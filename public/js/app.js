@@ -57581,11 +57581,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['backgrounds', 'labels', 'max', 'values'],
+    props: ['enabled', 'backgrounds', 'labels', 'max', 'values'],
 
     mounted: function mounted() {
+        var vueInstance = this;
         new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(document.getElementById(this._uid).getContext('2d'), {
             type: "polarArea",
+
             data: {
                 labels: this.labels,
                 datasets: [{
@@ -57593,32 +57595,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     backgroundColor: this.backgrounds
                 }]
             },
+
             options: {
                 animation: {
                     animateRotate: false
                 },
+
                 layout: {
                     padding: 5
                 },
+
                 legend: {
                     display: false
                 },
+
                 responsive: true,
+
                 scale: {
                     ticks: {
                         max: this.max,
                         min: 0,
                         stepSize: 1,
                         display: false
-                    } /*,
-                      tooltips: {
-                         custom: function(tooltip) {
-                             console.log(tooltip);
-                             // todo: action to display info
-                         },
-                         enabled: false
-                      }*/
-                } }
+                    }
+                },
+
+                tooltips: {
+                    callbacks: {
+                        title: function title(tooltipItem, data) {
+                            return data.labels[tooltipItem[tooltipItem[0].datasetIndex].index];
+                        },
+                        label: function label(tooltipItem, data) {
+                            if (vueInstance.enabled[tooltipItem.index]) {
+                                return 'Your rating: ' + data.datasets[0].data[tooltipItem.index] + '/' + vueInstance.max;
+                            } else {
+                                return 'Not available in this round';
+                            }
+                        }
+                    },
+                    custom: function custom(tooltip) {
+                        //    console.log(tooltip);
+                        // todo: action to display info
+                    }
+                }
+            }
         });
     }
 });
