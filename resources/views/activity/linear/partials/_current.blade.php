@@ -1,7 +1,13 @@
 <div class="panel panel-default">
-    <div class="panel-body">
+    <div class="panel-heading">
         @isset($activityData->rounds->current)
             <h3>{{ $activityData->rounds->current->title }}</h3>
+        @else
+            <h3>Activity complete!</h3>
+        @endisset
+    </div>
+    <div class="panel-body">
+        @isset($activityData->rounds->current)
             @if($activityData->rounds->current->viewable)
                 ** todo: insert encouragement messages / personalisation **
                 @isset($activityData->roundContent)
@@ -19,7 +25,6 @@
                 </button>
             @endif
         @else
-            <h3>Activity complete!</h3>
             <p>You have completed this activity. Well done! Now you can see how you progressed on your skills throughout...</p>
         @endisset
     </div>

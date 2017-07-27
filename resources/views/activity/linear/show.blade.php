@@ -6,8 +6,10 @@
 
 @if($activityData->strongestSkills->count() > 0)
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-heading">
             <h3>Strongest skills</h3>
+        </div>
+        <div class="panel-body">
             <div style="margin-top: 22px;">
                 @foreach($activityData->strongestSkills as $skill)
                     <div class="col-sm-4">
@@ -22,8 +24,10 @@
 
 @if($activityData->weakestSkills->count() > 0)
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-heading">
             <h3>Improve your skills</h3>
+        </div>
+        <div class="panel-body">
             <p>Click for resources to help improve your weakest areas.</p>
             <div>
                 @foreach($activityData->weakestSkills as $skill)
