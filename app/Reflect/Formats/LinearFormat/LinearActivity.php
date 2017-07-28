@@ -70,12 +70,16 @@ class LinearActivity extends BaseActivity
 
     private function getMessage($currentRound)
     {
-        $completionMessage = MessageHelper::getCompletionMessage($currentRound->completionDecimal);
-        $timeMessage = MessageHelper::getTimeMessage($currentRound->close_date);
+        if (isset($currentRound)) {
+            $completionMessage = MessageHelper::getCompletionMessage($currentRound->completionDecimal);
+            $timeMessage = MessageHelper::getTimeMessage($currentRound->close_date);
 
-        $message = $completionMessage . $timeMessage;
+            $message = $completionMessage . $timeMessage;
 
-        return $message;
+            return $message;
+        }
+
+        return null;
     }
 
     private function getResumeLink()

@@ -38,7 +38,7 @@ Route::group(['middleware' => ['student']], function() {
     Route::post('a/{activity}/nonlinear/r/{round}/c/{category}/p/{pageNumber}', 'NonLinearController@page');
 
     // student chart routes
-    Route::get('a/{activity}/student/r/{round}/chart', 'StudentChartController@show');
+    Route::get('a/{activity}/student/r/{round}/chart/{scope?}', 'StudentChartController@show');
 });
 
 // security routes

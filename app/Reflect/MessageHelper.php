@@ -49,7 +49,8 @@ class MessageHelper
             ["It takes considerable knowledge just to realise the extent of your own ignorance." => "Thomas Sowell"],
             ["Know yourself to improve yourself" => "Auguste Comte"],
             ["The most difficult thing in life is to know yourself." => "Thales"],
-            ["He who knows others is wise; he who knows himself is enlightened." => "Lao Tzu"]
+            ["He who knows others is wise; he who knows himself is enlightened." => "Lao Tzu"],
+            ["The only true wisdom is in knowing you know nothing" => "Socrates"]
         ];
 
         $quote = $quotes[array_rand($quotes)];

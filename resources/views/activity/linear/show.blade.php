@@ -17,7 +17,7 @@
                     </div>
                 @endforeach
             </div>
-            ** view all (link sorted by strongest) **
+            <a href="{{ url('a/' . $activity->id . '/student/r/' . $activityData->rounds->completed->last()->round_number . '/chart/strongest') }}">View all</a>
         </div>
     </div>
 @endif
