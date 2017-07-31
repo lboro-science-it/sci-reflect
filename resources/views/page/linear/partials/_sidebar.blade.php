@@ -1,31 +1,34 @@
-<h3>
-    Contents
-</h3>
-
-<div class="list-group">
-    @foreach($pages as $page)
-        @if($page->current)
-            <div class="list-group-item active">
-        @else
-            <button type="submit" name="page" value="{{ $page->pageNumber }}" class="list-group-item">
-        @endif
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>
+            Contents
+        </h3>
+    </div>
+    <div class="list-group">
+        @foreach($pages as $page)
             @if($page->current)
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <strong>
+                <div class="list-group-item active">
+            @else
+                <button type="submit" name="page" value="{{ $page->pageNumber }}" class="list-group-item">
             @endif
-            {{ $page->title }}
-            @if($page->current)
-                </strong>
+                @if($page->current)
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <strong>
+                @endif
+                {{ $page->title }}
+                @if($page->current)
+                    </strong>
+                @endif
+                @if($page->complete)
+                    <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+                @elseif($page->hasIndicators)
+                    <span class="glyphicon glyphicon-eye-open pull-right" aria-hidden="true"></span>
+                @endif
+            @if(!$page->current)
+                </button>
+            @else
+                </div>
             @endif
-            @if($page->complete)
-                <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
-            @elseif($page->hasIndicators)
-                <span class="glyphicon glyphicon-eye-open pull-right" aria-hidden="true"></span>
-            @endif
-        @if(!$page->current)
-            </button>
-        @else
-            </div>
-        @endif
-    @endforeach
+        @endforeach
+    </div>
 </div>
