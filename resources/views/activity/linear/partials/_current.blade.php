@@ -42,11 +42,13 @@
 <div class="panel panel-default">
     <div class="panel-body">
         ** todo: insert stats about current round **
-        <li>Total skills in round</li>
-        <li>Total skills user has responded to</li>
-        <li>Total skills user responded max to</li>
-        <li>Total skills user responded min to</li>
-        <li>Total skills almost maxed</li>
-        <li>Current page title</li>
+        <li>Total skills in round: {{ $activityData->totalSkills }}</li>
+        {{-- 
+        <li>Total skills user has responded to: {{ $activityData->totalSkillsResponded }}</li>
+        <li>Total skills user responded max to: {{ $activityData->totalSkillsRespondedMax }}</li>
+        <li>Total skills user responded min to: {{ $activityData->totalSkillsRespondedMin }}</li>
+        <li>Total skills almost maxed: {{ $activityData->totalSkillsRespondedNearMax }}</li>
+        --}}
+        <li>Current page title: {{ $activityData->currentPageTitle }}</li>
     </div>
 </div>

@@ -49,6 +49,19 @@ class LinearActivity extends BaseActivity
         $activityData->resumeLink = $this->getResumeLink();
         $activityData->rounds = $this->activity->getRoundsData();
 
+        $activityData->totalSkills = $this->getTotalSkills();
+        /* todo:
+         * calculating these == calculating ratings without persisting ratings in db
+         * need to look at refactoring RatingsHelper(?) a bit to provide this service
+         * for an array of skills & indicators
+            $activityData->totalSkillsResponded = 0;
+            $activityData->totalSkillsRespondedMax = 0;
+            $activityData->totalSkillsRespondedMin = 0;
+            $activityData->totalSkillsRespondedNearMax = 0;
+         */
+
+        $activityData->currentPageTitle = $this->getCurrentPageTitle();
+
         $activityData->statusMessage = $this->getStatusMessage($activityData->rounds->current);
 
         $skillsHelper = app('SkillsHelper');
@@ -68,6 +81,25 @@ class LinearActivity extends BaseActivity
         return false;
     }
 
+    private function getCurrentPageTitle()
+    {
+        if (isset($this->currentRound)) {
+            return $this->currentRound->pages->where('pivot.page_number', $this->user->currentPage)->first()->title;
+        }
+    }
+
+    private function getResumeLink()
+    {
+        $currentRoundNumber = $this->user->currentRound;
+        $currentPageNumber = $this->user->currentPage;
+
+        if (is_null($currentRoundNumber) || is_null($currentPageNumber)) {
+            return false;
+        }
+
+        return url('a/' . $this->activity->id . '/linear/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
+    }
+
     private function getStatusMessage($currentRound)
     {
         if (isset($currentRound)) {
@@ -81,17 +113,12 @@ class LinearActivity extends BaseActivity
 
         return null;
     }
-
-    private function getResumeLink()
+    
+    private function getTotalSkills()
     {
-        $currentRoundNumber = $this->user->currentRound;
-        $currentPageNumber = $this->user->currentPage;
-
-        if (is_null($currentRoundNumber) || is_null($currentPageNumber)) {
-            return false;
+        if (isset($this->currentRound)) {
+            return $this->currentRound->getSkills()->count();
         }
-
-        return url('a/' . $this->activity->id . '/linear/r/' . $currentRoundNumber . '/p/' . $currentPageNumber);
     }
 
     public function processActivity()
