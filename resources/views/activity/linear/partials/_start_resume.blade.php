@@ -1,7 +1,7 @@
 <form action="{{ $activityData->resumeLink }}" method="POST">
     {{ csrf_field() }}
     
-    <button type="submit" name="resume" value="resume" class="btn btn-primary">
+    <button type="submit" name="resume" value="resume" class="btn btn-primary btn-lg">
         @if($activity->pivot->current_page == 1)
             Start
         @else
@@ -14,7 +14,7 @@
     </button>
 
     @if($activityData->hasDone)
-        <button type="submit" name="done" value="done" class="btn btn-success">
+        <button type="submit" name="done" value="done" class="btn btn-success btn-lg">
             Submit your responses
         </button>
     @endif

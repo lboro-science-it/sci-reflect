@@ -9,23 +9,27 @@
     <div class="panel-body">
         @isset($activityData->rounds->current)
             @if($activityData->rounds->current->viewable)
-                @isset($activityData->message)
-                <div>
-                    {{ $activityData->message }}
-                </div>
+                @isset($activityData->roundContent)
+                <p>
+                    {{-- Include a content block linked to the round --}}
+                    {!! $activityData->roundContent !!}
+                </p>
                 @endisset
 
-                @isset($activityData->roundContent)
-                <div>
-                    {!! $activityData->roundContent !!}
-                </div>
+                @isset($activityData->statusMessage)
+                <p>
+                    {{-- Include a message related to completion status of round --}}
+                    {{ $activityData->statusMessage }}
+                </p>
                 @endisset
 
                 @if($activityData->resumeLink)
+                    {{-- Include required action buttons: start, resume, review/save --}}
                     @include('activity.linear.partials._start_resume')
                 @endif
             @else
                 <button type="unavailable" class="btn btn-danger disabled">
+                    {{-- Include a disabled button when round is not yet open, etc --}}
                     {{ $activityData->rounds->current->notViewableReason }}
                 </button>
             @endif

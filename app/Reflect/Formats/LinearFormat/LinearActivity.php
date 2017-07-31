@@ -49,7 +49,7 @@ class LinearActivity extends BaseActivity
         $activityData->resumeLink = $this->getResumeLink();
         $activityData->rounds = $this->activity->getRoundsData();
 
-        $activityData->message = $this->getMessage($activityData->rounds->current);
+        $activityData->statusMessage = $this->getStatusMessage($activityData->rounds->current);
 
         $skillsHelper = app('SkillsHelper');
 
@@ -68,7 +68,7 @@ class LinearActivity extends BaseActivity
         return false;
     }
 
-    private function getMessage($currentRound)
+    private function getStatusMessage($currentRound)
     {
         if (isset($currentRound)) {
             $completionMessage = MessageHelper::getCompletionMessage($currentRound->completionDecimal);
