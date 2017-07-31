@@ -22,6 +22,12 @@
         </div>
 
         @include('rounds.partials._completed', ['rounds' => $rounds->completed->whereNotIn('id', $round->id)])
+
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                 <a href="{{ url($homeUrl) }}" class="btn btn-primary btn-lg" role="button">Return to Dashboard</a>
+             </div>
+         </div>
     </div>
 
     <div class="col-md-5 col-md-pull-3 col-md-offset-2 col-sm-8 col-sm-pull-4">
