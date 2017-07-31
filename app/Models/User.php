@@ -86,8 +86,6 @@ class User extends Authenticatable
 
             return $selections->count() / $indicators->count();
         }
-
-        return null;
     }
 
     /**

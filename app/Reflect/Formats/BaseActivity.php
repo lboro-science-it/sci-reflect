@@ -51,8 +51,6 @@ class BaseActivity
         } else if (is_null($currentRoundNumber)) {
             return $this->activity->rounds->where('round_number', $this->activity->rounds->count())->first();
         }
-
-        return null;
     }
 
     public function getRoundContent()
@@ -61,8 +59,6 @@ class BaseActivity
             $blockContentParser = new BlockContentParser();
             return $blockContentParser->parse($this->currentRound->block->content);
         }
-
-        return null;
     }
     
 }

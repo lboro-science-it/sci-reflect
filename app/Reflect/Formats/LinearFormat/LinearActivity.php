@@ -110,8 +110,6 @@ class LinearActivity extends BaseActivity
 
             return $message;
         }
-
-        return null;
     }
     
     private function getTotalSkills()
