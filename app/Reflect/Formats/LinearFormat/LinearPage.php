@@ -32,7 +32,7 @@ class LinearPage extends BasePage
         $this->request = $request;
         $this->activity = $request->route('activity');
         $this->round = $request->route('round');
-        $this->page = $request->route('page');
+        $this->page = $request->route('roundPage');
         $this->user = Auth::user();
 
         $this->eagerLoad();
