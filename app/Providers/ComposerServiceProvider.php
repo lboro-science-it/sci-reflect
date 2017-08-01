@@ -30,6 +30,11 @@ class ComposerServiceProvider extends ServiceProvider
         );
 
         View::composer(
+            'activity.staff.partials._tasks',
+            'App\Http\ViewComposers\StaffTasksComposer'
+        );
+
+        View::composer(
             'activity.student', 'App\Http\ViewComposers\StudentActivityComposer'
        );
 

@@ -21,6 +21,12 @@ class StaffActivityComposer
      */
     public function compose(View $view)
     {
+        $this->activity->load([
+            'users' => function($q) {
+                $q->orderBy('email', 'asc');
+            }
+        ]);
+
         $students = $this->activity->users->where('pivot.role', 'student')->sortBy('email');
         $students->load([
             'selections'
@@ -33,11 +39,17 @@ class StaffActivityComposer
 
         $groups = $this->activity->groups;
 
+        $users = $this->activity->users->sortBy('email');
+        foreach ($users as $user) {
+            $user->setRelation('group', $groups->where('id', $user->pivot->group_id)->first());
+        }
+
         foreach ($students as $student) {
             $student->group = $groups->where('id', $student->pivot->group_id)->first();
         }
 
         $view->with('students', $students)
+             ->with('users', $users)
              ->with('rounds', $rounds)
              ->with('groups', $groups);
     }
