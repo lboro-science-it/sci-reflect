@@ -58,6 +58,20 @@
     transition: height 0.6s ease;
 }
 
+.splash-container {
+    height: -webkit-calc(100vh - 74px);
+    height: -moz-calc(100vh - 74px);
+    height: calc(100vh - 74px);
+}
+
+.splash-centre {
+    position: relative;
+    top: 40%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
 .task-circle {
     background-color: #ffffff;
     border: 1px dashed #361163;
