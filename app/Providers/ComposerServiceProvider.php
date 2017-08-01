@@ -16,26 +16,26 @@ class ComposerServiceProvider extends ServiceProvider
     {
         // make $activity available to all views
         View::composer(
-            '*', 'App\Http\ViewComposers\ActivityComposer'
+            '*', 'App\ViewComposers\ActivityComposer'
         );
 
         // make list of formats available to the format select drop down
         View::composer(
-            'activity.partials._format', 'App\Http\ViewComposers\ActivityFormatComposer'
+            'activity.partials._format', 'App\ViewComposers\ActivityFormatComposer'
         );
 
         View::composer(
             ['activity.staff.design', 'activity.staff.dashboard'],
-            'App\Http\ViewComposers\StaffActivityComposer'
+            'App\ViewComposers\StaffActivityComposer'
         );
 
         View::composer(
             'activity.staff.partials._tasks',
-            'App\Http\ViewComposers\StaffTasksComposer'
+            'App\ViewComposers\StaffTasksComposer'
         );
 
         View::composer(
-            'activity.student', 'App\Http\ViewComposers\StudentActivityComposer'
+            'activity.student', 'App\ViewComposers\StudentActivityComposer'
        );
 
     }

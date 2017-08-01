@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\ViewComposers;
+namespace App\ViewComposers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
