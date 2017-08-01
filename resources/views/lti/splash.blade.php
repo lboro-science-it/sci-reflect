@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('navbar-class')
-
+@section('navbar-header-class')
+navbar-transparent
 @endsection
 
 @section('title')

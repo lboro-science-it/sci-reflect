@@ -18,12 +18,17 @@
         <nav class="navbar navbar-default navbar-static-top @yield('navbar-header-class')">
             <div class="container-fluid">
                 <div class="navbar-header">
-
-                    @if($activity)
+                    @isset($activity)
                         <a class="navbar-brand" href="{{ url($homeUrl) }}">
-                            {{ config('app.name', 'sciReflect') }}
+                    @else
+                        <p class="navbar-brand">
+                    @endisset
+                        {{ config('app.name', 'sciReflect') }}
+                    @isset($activity)
                         </a>
-                    @endif
+                    @else
+                        </p>
+                    @endisset
                 </div>
 
                 <!-- Right Side Of Navbar -->

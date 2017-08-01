@@ -25,6 +25,15 @@
     text-decoration: none;
 }
 
+.navbar-brand {
+    font-size: 28px;
+}
+
+.navbar-transparent {
+    background-color: $body-bg;
+    border-color: $body-bg;
+}
+
 .progress-reflect {
     margin-bottom: 0;
 }

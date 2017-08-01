@@ -8377,6 +8377,15 @@ button.close {
   text-decoration: none;
 }
 
+.navbar-brand {
+  font-size: 28px;
+}
+
+.navbar-transparent {
+  background-color: #f5f8fa;
+  border-color: #f5f8fa;
+}
+
 .progress-reflect {
   margin-bottom: 0;
 }
