@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Staff dashboard: {{ $activity->name }}
+    Manage users: {{ $activity->name }}
 @endsection
 
 @section('content')

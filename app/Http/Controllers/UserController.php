@@ -22,15 +22,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show an index of users for the purpose of selecting groups
-     * 
-     */
-    public function groupIndex(Activity $activity)
-    {
-
-    }
-
-    /**
      * Creates staff and student users where required, creates relationships
      * with this activity where required, return redirect to activity view.
      *
