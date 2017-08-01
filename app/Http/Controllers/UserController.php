@@ -16,9 +16,18 @@ class UserController extends Controller
      * @param  App\Activity $activity
      * @return View
      */
-    public function showSetup(Activity $activity)
+    public function create(Activity $activity)
     {
         return view('activity.staff.users');
+    }
+
+    /**
+     * Show an index of users for the purpose of selecting groups
+     * 
+     */
+    public function groupIndex(Activity $activity)
+    {
+
     }
 
     /**

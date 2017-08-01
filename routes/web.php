@@ -21,8 +21,10 @@ Route::group(['middleware' => ['staff']], function() {
     Route::put('a/{activity}/close', 'ActivityController@close');
     Route::put('a/{activity}/open', 'ActivityController@open');
 
-    Route::get('a/{activity}/add-users', 'UserController@showSetup');
+    Route::get('a/{activity}/add-users', 'UserController@create');
     Route::post('a/{activity}/add-users', 'UserController@store');
+
+    Route::get('a/{activity}/groups', 'UserController@groupIndex');
 
     Route::get('a/{activity}/setup', 'ActivityController@showSetup');
 });

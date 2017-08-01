@@ -21,35 +21,29 @@ class StaffActivityComposer
      */
     public function compose(View $view)
     {
-        $this->activity->load([
-            'users' => function($q) {
-                $q->orderBy('email', 'asc');
-            }
-        ]);
+        // manually relate group to each user based on pivot to activity
+        $groups = $this->activity->groups;
+        foreach ($this->activity->users as $user) {
+            $user->setRelation('group', $groups->where('id', $user->pivot->group_id)->first());
+        }
 
+        // get activity students
         $students = $this->activity->users->where('pivot.role', 'student')->sortBy('email');
         $students->load([
             'selections'
         ]);
 
+        // get activity staff
+        $staff = $this->activity->users->where('pivot.role', 'staff')->sortBy('email');
+
+        // load indicators, required for completion data
         $this->activity->rounds->load([
             'pages.skills.indicators'
         ]);
         $rounds = $this->activity->rounds->sortBy('title');
 
-        $groups = $this->activity->groups;
-
-        $users = $this->activity->users->sortBy('email');
-        foreach ($users as $user) {
-            $user->setRelation('group', $groups->where('id', $user->pivot->group_id)->first());
-        }
-
-        foreach ($students as $student) {
-            $student->group = $groups->where('id', $student->pivot->group_id)->first();
-        }
-
         $view->with('students', $students)
-             ->with('users', $users)
+             ->with('staff', $staff)
              ->with('rounds', $rounds)
              ->with('groups', $groups);
     }
