@@ -8436,7 +8436,7 @@ button.close {
   border-radius: 50%;
   color: #361163;
   height: 80px;
-  margin-left: 25px;
+  margin: auto;
   width: 80px;
 }
 
@@ -8458,26 +8458,11 @@ button.close {
   color: #ffffff;
 }
 
+.task-col {
+  padding: 5px;
+}
+
 .task-label {
   padding-top: 10px;
-}
-
-.task-list {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  min-width: 780px;
-}
-
-.task-list-item {
-  display: inline-block;
-  vertical-align: top;
-  width: 130px;
-}
-
-@media (max-width: 870px) {
-  .task-list-item {
-    display: block;
-  }
 }
 

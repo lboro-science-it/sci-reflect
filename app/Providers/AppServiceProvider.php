@@ -13,9 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton('SelectionsHelper', function($app) {
-            return new \App\Reflect\SelectionsHelper($app->request);
-        });
 
         $this->app->bind('ChartHelper', function($app) {
             return new \App\Reflect\ChartHelper($app->request, $app->make('Reflect'));
@@ -25,8 +22,16 @@ class AppServiceProvider extends ServiceProvider
             return new \App\Reflect\RatingsHelper($app->request, $app->make('Reflect'));
         });
 
+        $this->app->singleton('SelectionsHelper', function($app) {
+            return new \App\Reflect\SelectionsHelper($app->request);
+        });
+
         $this->app->bind('SkillsHelper', function($app) {
             return new \App\Reflect\SkillsHelper($app->request, $app->make('Reflect'));
+        });
+
+        $this->app->bind('UserHelper', function($app) {
+            return new \App\Reflect\UserHelper();
         });
 
         $this->app->bind('LinearActivity', function($app) {

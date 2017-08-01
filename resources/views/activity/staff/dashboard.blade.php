@@ -6,8 +6,8 @@
 
 @section('content')
 
+    @include('activity.staff.partials._tasks')
     @include('activity.staff.partials._openclose')
-    @include('activity.staff.partials._studentupload')
     @include('activity.staff.partials._studentlist')
 
     Todo:<br>
