@@ -17,7 +17,10 @@
                         </thead>
                         <tbody>                
                             @foreach($groups as $group)
-                                <tr>
+                                <tr is="group-listing" 
+                                    name="{{ $group->name }}"
+                                    users="{{ $group->getUsers()->count() }}"
+                                    id="{{ $group->id }}">
                                     <td>{{ $group->name }}</td>
                                     <td>{{ $group->getUsers()->count() }}</td>
                                     <td>Edit</td>
