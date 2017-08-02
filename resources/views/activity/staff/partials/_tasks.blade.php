@@ -1,35 +1,34 @@
 <h3>Tasks</h3>
 <p>** will style this as icons once structure complete **</p>
-<li>Create activity: done</li>
-<li>Setup activity: </li>
+Create activity: done ** 
+Setup activity: **
 
 {{-- Add users --}}
-<li>
-    <a href="{{ url('a/' . $activity->id . '/add-users') }}"
-        {{-- will add this later
-           v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/add-users') }}')"
-        --}}
-        >
-       Add users:
-   </a>
-    @if($usersAdded)
-        done
-    @endif
-</li>
+<a href="{{ url('a/' . $activity->id . '/add-users') }}"
+    {{-- will add this later
+       v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/add-users') }}')"
+    --}}
+    >
+   Add users:
+</a>
+@if($usersAdded)
+    done
+@endif
+**
 
 {{-- Manage groups --}}
-<li>
-    <a href="{{ url('a/' . $activity->id . '/groups') }}"
-        {{-- will add this later
-            v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/groups') }}')"
-        --}}
-        >
-        Manage groups:
-    </a>
-</li>
-<li>Add skills: </li>
-<li>Create structure: </li>
-<li>Open activity: @include('activity.staff.partials._openclose') </li>
+<a href="{{ url('a/' . $activity->id . '/groups') }}"
+    {{-- will add this later
+        v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/groups') }}')"
+    --}}
+    >
+    Manage groups:
+</a>
+**
+
+Add skills: **
+Create structure: **
+Open activity: @include('activity.staff.partials._openclose')
 
 {{-- do this once all tasks are confirmed
 <div class="row">

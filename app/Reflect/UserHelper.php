@@ -16,7 +16,6 @@ class UserHelper
      */
     private function getEmailsFromText($text)
     {
-
         $emails = preg_split('/\r\n|[\r\n]|[,; ]/', strtolower($text));
 
         $validEmails = collect();

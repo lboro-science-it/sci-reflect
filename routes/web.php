@@ -25,6 +25,8 @@ Route::group(['middleware' => ['staff']], function() {
     Route::post('a/{activity}/add-users', 'UserController@store');
 
     Route::get('a/{activity}/groups', 'GroupController@index');
+    Route::post('a/{activity}/add-groups-bulk', 'GroupController@bulk');
+    Route::post('a/{activity}/add-groups-batch', 'GroupController@batch');
 
     Route::get('a/{activity}/setup', 'ActivityController@showSetup');
 });
