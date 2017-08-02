@@ -6,7 +6,10 @@
 {{-- Add users --}}
 <li>
     <a href="{{ url('a/' . $activity->id . '/add-users') }}"
-       v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/add-users') }}')">
+        {{-- will add this later
+           v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/add-users') }}')"
+        --}}
+        >
        Add users:
    </a>
     @if($usersAdded)
@@ -17,7 +20,10 @@
 {{-- Manage groups --}}
 <li>
     <a href="{{ url('a/' . $activity->id . '/groups') }}"
-        v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/groups') }}')">
+        {{-- will add this later
+            v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/groups') }}')"
+        --}}
+        >
         Manage groups:
     </a>
 </li>
