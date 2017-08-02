@@ -26,8 +26,8 @@ Setup activity: **
 </a>
 **
 
-Add skills: **
-Create structure: **
+Add skills: ** todo: only show if $activity->status == 'design' **
+Create structure: ** todo: only show if $activity->status == 'design' **
 Open activity: @include('activity.staff.partials._openclose')
 
 {{-- do this once all tasks are confirmed

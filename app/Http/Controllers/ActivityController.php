@@ -89,10 +89,6 @@ class ActivityController extends Controller
             return view('activity.staff.new');
         }
 
-        if ($activity->status == 'design') {
-            return view('activity.staff.design');
-        }
-
         return view('activity.staff.dashboard');
     }
 
