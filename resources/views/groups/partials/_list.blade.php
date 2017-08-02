@@ -10,7 +10,7 @@
                         <thead>
                             <tr>
                                 <th>Group</th>
-                                <th>Number</th>
+                                <th>Users in group</th>
                                 <th>{{-- edit --}}</th>
                                 <th>{{-- delete --}}</th>
                             </tr>
@@ -19,7 +19,7 @@
                             @foreach($groups as $group)
                                 <tr>
                                     <td>{{ $group->name }}</td>
-                                    <td>{{ $group->number }}</td>
+                                    <td>{{ $group->getUsers()->count() }}</td>
                                     <td>Edit</td>
                                     <td>Delete</td>
                                 </tr>

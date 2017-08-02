@@ -19,6 +19,7 @@ class GroupIndexComposer
     public function compose(View $view)
     {
         $groups = $this->activity->groups->sortBy('name');
+        $groups->load('activityUsers.user');
         $view->with('groups', $groups);
     }
 }
