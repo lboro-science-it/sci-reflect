@@ -65,7 +65,11 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{-- included JS varies depending on user role --}}
+    @if (Auth::check() && Auth::user()->role == 'staff')
+        <script src="{{ asset('js/app-admin.js') }}"></script>
+    @else
+        <script src="{{ asset('js/app.js') }}"></script>
+    @endif
 </body>
 </html>

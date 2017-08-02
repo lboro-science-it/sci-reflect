@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 203);
+/******/ 	return __webpack_require__(__webpack_require__.s = 206);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70367,19 +70367,22 @@ if (false) {
 }
 
 /***/ }),
-/* 203 */
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(204);
-module.exports = __webpack_require__(205);
+module.exports = __webpack_require__(207);
 
 
 /***/ }),
-/* 204 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
 /**
- * Load project JS requirements.
+ * Load JS dependencies
  */
 
 __webpack_require__(126);
@@ -70387,7 +70390,8 @@ __webpack_require__(126);
 window.Vue = __webpack_require__(150);
 
 /**
- * Initialise Vue instance for student-related stuff.
+ * Create Vue instance for staff-specific stuff. All staff views will have
+ * this instance.
  */
 
 Vue.component('polar-chart', __webpack_require__(151));
@@ -70395,12 +70399,6 @@ Vue.component('polar-chart', __webpack_require__(151));
 var app = new Vue({
   el: '#app'
 });
-
-/***/ }),
-/* 205 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

@@ -3,7 +3,8 @@
 <li>Create activity: done</li>
 <li>Setup activity: </li>
 <li>
-    <a href="{{ url('a/' . $activity->id . '/add-users') }}">Add users:</a>
+    <a href="{{ url('a/' . $activity->id . '/add-users') }}"
+       v-on:click.prevent="window.alert('add users clicked')">Add users:</a>
     @if($usersAdded)
         done
     @endif

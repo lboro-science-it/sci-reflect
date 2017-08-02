@@ -1,5 +1,6 @@
+
 /**
- * Load project JS requirements.
+ * Load JS dependencies
  */
 
 require('./bootstrap');
@@ -7,7 +8,8 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 /**
- * Initialise Vue instance for student-related stuff.
+ * Create Vue instance for staff-specific stuff. All staff views will have
+ * this instance.
  */
 
 Vue.component('polar-chart', require('./components/PolarChart.vue'));
