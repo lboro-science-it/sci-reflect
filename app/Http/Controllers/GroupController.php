@@ -35,9 +35,10 @@ class GroupController extends Controller
             $activity->load('groups');
         }
 
-        $message = 'Inserted ' . count($groupsToInsert) . ' groups';
-        $request->session()->flash('message', $message);
-        return view('groups.index');
+        $message = 'Added ' . count($groupsToInsert) . ' groups';
+
+        return view('groups.index')
+             ->with('message', $message);
     }
 
     /**
@@ -69,9 +70,10 @@ class GroupController extends Controller
             $activity->load('groups');       
         }
 
-        $message = 'Inserted ' . count($groupsToInsert) . ' groups';
-        $request->session()->flash('message', $message);
-        return view('groups.index');
+        $message = 'Added ' . count($groupsToInsert) . ' groups';
+
+        return view('groups.index')
+             ->with('message', $message);
     }
 
     /**

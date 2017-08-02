@@ -61,6 +61,11 @@
                     {{ session('message') }}
                 </div>
             @endif
+            @isset($message)
+                <div class="alert alert-info">
+                    {{ $message }}
+                </div>
+            @endisset
             @yield('content')
         </div>
     </div>
