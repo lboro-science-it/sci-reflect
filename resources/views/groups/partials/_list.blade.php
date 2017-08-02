@@ -1,11 +1,11 @@
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3>Groups</h3>
-            </div>
-            <div class="panel-body">
-                @isset($groups)
+@if($groups->count() > 0)
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Groups</h3>
+                </div>
+                <div class="panel-body">
                     <table class="table">
                         <thead>
                             <tr>
@@ -26,8 +26,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                @endisset
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endif
