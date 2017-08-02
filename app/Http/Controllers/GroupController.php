@@ -25,7 +25,6 @@ class GroupController extends Controller
                 array_push($groupsToInsert, [
                     'activity_id' => $activity->id,
                     'name' => $prefix . ' ' . ($i + 1),
-                    'number' => $totalGroups + (1 + $i),
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
@@ -59,7 +58,6 @@ class GroupController extends Controller
                     array_push($groupsToInsert, [
                         'activity_id' => $activity->id,
                         'name' => $groupName,
-                        'number' => $groupNumber,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
