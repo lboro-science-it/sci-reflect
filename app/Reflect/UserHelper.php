@@ -16,10 +16,12 @@ class UserHelper
      */
     private function getEmailsFromText($text)
     {
-        $emails = preg_split('/\r\n|[\r\n]|[,; ]/', $text);
+
+        $emails = preg_split('/\r\n|[\r\n]|[,; ]/', strtolower($text));
 
         $validEmails = collect();
         foreach($emails as $email) {
+            $email = $email;
             $validator = Validator::make(['email' => $email], [
                 'email' => 'email|required'
             ]);
