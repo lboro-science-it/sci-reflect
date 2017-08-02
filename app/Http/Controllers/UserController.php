@@ -16,8 +16,12 @@ class UserController extends Controller
      * @param  App\Activity $activity
      * @return View
      */
-    public function create(Activity $activity)
+    public function create(Activity $activity, Request $request)
     {
+        if ($request->ajax()) {
+            return view('activity.staff.partials._userupload');
+        }
+
         return view('activity.staff.users');
     }
 

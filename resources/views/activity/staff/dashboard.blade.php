@@ -10,6 +10,7 @@
     @include('activity.staff.partials._studentlist')
     @include('activity.staff.partials._stafflist')
 
+
     Todo:<br>
 
     <li><strike>List students</strike></li>

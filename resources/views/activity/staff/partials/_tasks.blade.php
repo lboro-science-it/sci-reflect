@@ -2,14 +2,25 @@
 <p>** will style this as icons once structure complete **</p>
 <li>Create activity: done</li>
 <li>Setup activity: </li>
+
+{{-- Add users --}}
 <li>
     <a href="{{ url('a/' . $activity->id . '/add-users') }}"
-       v-on:click.prevent="window.alert('add users clicked')">Add users:</a>
+       v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/add-users') }}')">
+       Add users:
+   </a>
     @if($usersAdded)
         done
     @endif
 </li>
-<li><a href="{{ url('a/' . $activity->id . '/groups') }}">Manage groups: </a></li>
+
+{{-- Manage groups --}}
+<li>
+    <a href="{{ url('a/' . $activity->id . '/groups') }}"
+        v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/groups') }}')">
+        Manage groups:
+    </a>
+</li>
 <li>Add skills: </li>
 <li>Create structure: </li>
 <li>Open activity: @include('activity.staff.partials._openclose') </li>

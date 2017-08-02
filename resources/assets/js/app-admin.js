@@ -13,7 +13,22 @@ window.Vue = require('vue');
  */
 
 Vue.component('polar-chart', require('./components/PolarChart.vue'));
+Vue.component('staff-partial', require('./components/StaffPartial.vue'));
+
+import 'axios';
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    data: {
+        partialContent: null
+    },
+
+    methods: {
+        getPartial (route, event) {
+            axios.get(route).then(response => {
+                console.log(response.data);
+            });
+        }
+    }
 });
