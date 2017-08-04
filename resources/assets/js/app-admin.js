@@ -20,9 +20,6 @@ Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 Vue.component('polar-chart', require('./components/PolarChart.vue'));
 Vue.component('staff-partial', require('./components/StaffPartial.vue'));
 
-Vue.component('user-row', require('./components/users/UserRow.vue'));
-Vue.component('user-table', require('./components/users/UserTable.vue'));
-
 import 'axios';
 
 
