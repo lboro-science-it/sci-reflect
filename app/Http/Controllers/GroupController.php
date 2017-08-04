@@ -10,13 +10,20 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     /**
      * Add a number of groups as specified by numberOfGroups with groupPrefix.
      */
-    public function batch(Activity $activity, Request $request)
+    public function batch(Activity $activity)
     {
-        $prefix = $request->input('groupPrefix');
-        $numberToCreate = $request->input('numberToCreate');
+        $prefix = $this->request->input('groupPrefix');
+        $numberToCreate = $this->request->input('numberToCreate');
 
         $groupsToInsert = [];
 
@@ -35,18 +42,28 @@ class GroupController extends Controller
             $activity->load('groups');
         }
 
-        $message = 'Added ' . count($groupsToInsert) . ' groups';
+        $groups = $activity->groups->sortBy('name');
+        $groups->load('activityUsers.user');
 
-        return view('groups.index')
-             ->with('message', $message);
+        // generate an array in the correct order
+        $groupsArray = [];
+        foreach($groups as $group) {
+            array_push($groupsArray, [
+                'id' => $group->id,
+                'name' => $group->name,
+                'userCount' => $group->getUsers()->count()
+            ]);
+        }
+
+        return $groupsArray;
     }
 
     /**
      * Add a bunch of groups passed in the request as a text string.
      */
-    public function bulk(Activity $activity, Request $request)
+    public function bulk(Activity $activity)
     {
-        $groupText = $request->input('groups');
+        $groupText = $this->request->input('groups');
         $groupNames = collect(preg_split('/\r\n|[\r\n]/', $groupText));
 
         $groupsToInsert = [];
@@ -69,38 +86,66 @@ class GroupController extends Controller
             $activity->load('groups');       
         }
 
-        $message = 'Added ' . count($groupsToInsert) . ' groups';
+        $groups = $activity->groups->sortBy('name');
+        $groups->load('activityUsers.user');
 
-        return view('groups.index')
-             ->with('message', $message);
+        // generate an array in the correct order
+        $groupsArray = [];
+        foreach($groups as $group) {
+            array_push($groupsArray, [
+                'id' => $group->id,
+                'name' => $group->name,
+                'userCount' => $group->getUsers()->count()
+            ]);
+        }
+
+        return $groupsArray;
+    }
+
+    /**
+     * Delete the group with the given ID, set any members of activity with
+     * that group ID's group to null.
+     */
+    public function delete(Activity $activity, $groupId)
+    {
+        DB::table('activity_user')->where('activity_id', $activity->id)->where('group_id', $groupId)->update(['group_id' => null]);
+        DB::table('groups')->where('activity_id', $activity->id)->where('id', $groupId)->delete();
+
+        return 'success';
     }
 
     /**
      * Display the form for managing groups.
      */
-    public function index(Request $request, Activity $activity)
+    public function index(Activity $activity)
     {
-        if ($request->ajax()) {
-            $groups = $activity->groups->sortBy('name');
-            $groups->load('activityUsers.user');
-            foreach($groups as $group) {
-                $group->userCount = $group->getUsers()->count();
-            }
-
-            return $groups;
-        }
-
-
         $groups = $activity->groups->sortBy('name');
         $groups->load('activityUsers.user');
-        foreach($groups as $group) {
-            $group->userCount = $group->getUsers()->count();
-        }
 
+        // generate an array in the correct order
+        $groupsArray = [];
+        foreach($groups as $group) {
+            array_push($groupsArray, [
+                'id' => $group->id,
+                'name' => $group->name,
+                'userCount' => $group->getUsers()->count()
+            ]);
+        }
+ 
         return view('groups.index')
-             ->with('groups', $groups);
+             ->with('groups', $groupsArray);
     }
 
-    // todo: decide on routes for server rendered partials and routes for API-ish AJAX requests.
+    /**
+     * Update the group name.
+     */
+    public function update(Activity $activity, $groupId)
+    {
+        $group = $activity->groups->where('id', $groupId)->first();
+        $group->name = $this->request->input('groupName');
+        $group->save();
+
+        return $group->name;
+    }
 
 }

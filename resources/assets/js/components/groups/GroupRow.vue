@@ -3,10 +3,10 @@
         <td style="width: 80%; height: 50px;">
             <p style="display: inline-block;"
                v-show="!edit">
-                {{ name }}
+                {{ editName }} 
             </p>
             <button class="pull-right"
-                    v-show="!edit"
+                    v-show="!edit && !saving"
                     v-on:click="editGroup">
                 Edit
             </button>
@@ -16,11 +16,12 @@
                    :id="id"
                    type="text" 
                    :name="id" 
-                   :value="name">
+                   v-on:keyup.enter="saveGroup"
+                   v-model="editName">
             <button class="pull-right"
-                    v-show="edit"
+                    v-show="edit || saving"
                     v-on:click="saveGroup">
-                Save
+                {{ saveText }}
             </button>
             <button class="pull-right"
                     v-show="edit"
@@ -39,14 +40,17 @@
     export default {
         data () {
             return {
-                'editName': this.name,
-                'edit': false,
-                'editButtonStyle': {
+                currentName: this.name,
+                editName: this.name,
+                edit: false,
+                editButtonStyle: {
                     display: 'inline-block'
                 },
-                'groupNameStyle': {
+                groupNameStyle: {
                     width: '80%'
-                }
+                },
+                saveText: 'Save',
+                saving: false
             }
         },
 
@@ -58,31 +62,36 @@
         ],
 
         methods: {
-            cancelEdit() {
+            cancelEdit() {      // revert edit name and turn off edit mode
+                this.editName = this.currentName;
                 this.edit = false;
             },
-            deleteGroup () {
-                console.log('delete group');
+            deleteGroup () {    // send a delete request
+                 axios.delete('groups/' + this.id).then(response => {
+                    this.$emit('delete-group', this.id);
+                });
             },
-            editGroup () {
+            editGroup () {      // set edit mode and focus the input
                 this.edit = true;
                 let editInput = document.getElementById(this.id);
                 Vue.nextTick(function() { 
                     editInput.focus();
                 });
             },
-            saveGroup () {
-                // check this.name has changed (so we need to store initial name somewhere...)
-                // so set a data from the prop on mount
-                // if it has changed then submit it plus id to the server.
-                // on server just check that the user submitting has a session, a relationship to this activity,
-                // and then update it.
-                // not to self - given that once a user has authed they have a session, can we not store in the session the fact that they have access to the activity...
+            saveGroup () {      // update the current name and send the put request
+                if (this.editName !== this.currentName) {
+                    this.edit = false;
+                    this.saving = true;
+                    this.saveText = 'Saving...';
+                    axios.put('groups/' + this.id, {
+                        groupName: this.editName
+                    }).then(response => {
+                        this.currentName = response.data;
+                        this.saving = false;
+                        this.saveText = 'Save';
+                    });
+                }
             }
-        },
-
-        mounted() {
-
         }
     }
 </script>

@@ -7,7 +7,7 @@
                 </div>
                 <div class="panel-body">
 
-                    <table class="table" v-show="groups">
+                    <table class="table" v-show="editGroups">
                         <thead>
                             <tr>
                                 <th>Group</th>
@@ -16,11 +16,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <group-row v-for="group in groups"
+                            <group-row v-for="(group, index) in editGroups"
                                        :key="group.id"
                                        :name="group.name"
                                        :users="group.userCount"
-                                       :id="group.id">
+                                       :id="group.id"
+                                       v-on:delete-group="deleteGroup(index)">
                             </group-row>
                         </tbody>
                     </table>
@@ -39,11 +40,28 @@
     import 'axios';
 
     export default {
-
+        data () {
+            return {
+                editGroups: this.groups
+            }
+        },
 
         props: [
             'groups'
-        ]
+        ],
 
+        methods: {
+            deleteGroup (index) {
+                this.editGroups.splice(index, 1);
+            }
+        },
+
+        created () {
+            let self = this;
+            this.$parent.$on('groups-added', function(groups) {
+                self.editGroups = groups;
+                //self.editGroups.splice(0, 0);
+            });
+        }
     }
 </script>

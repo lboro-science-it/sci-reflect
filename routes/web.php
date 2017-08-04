@@ -26,6 +26,7 @@ Route::group(['middleware' => ['staff']], function() {
 
     // Group routes
     Route::get('a/{activity}/groups', 'GroupController@index');
+    Route::delete('a/{activity}/groups/{groupId}', 'GroupController@delete');
     Route::post('a/{activity}/groups/bulk', 'GroupController@bulk');
     Route::post('a/{activity}/groups/batch', 'GroupController@batch');
     Route::put('a/{activity}/groups/{groupId}', 'GroupController@update');

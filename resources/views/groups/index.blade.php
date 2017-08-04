@@ -8,29 +8,35 @@
 
 @include('activity.staff.partials._tasks')
 
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <p>
-                    This page allows you to add, edit, delete and view groups. 
-                    Add students and staff to groups via the home page.
-                    If staff are members of a group, they will only have access to students in that group.
-                    If students are members of a group, they will be able to see which staff members are in that group.
-                </p>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p>
+                        This page allows you to add, edit, delete and view groups. 
+                        Add students and staff to groups via the home page.
+                        If staff are members of a group, they will only have access to students in that group.
+                        If students are members of a group, they will be able to see which staff members are in that group.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-@include('groups.partials._list')
-@include('groups.partials._add_bulk')
-@include('groups.partials._add_batch')
+    @if(count($groups))
+        @section('sciReflect')
+            sciReflect.groups = {!! json_encode($groups) !!};
+        @append
+        <group-table :groups="sciReflect.groups"></group-table>
+    @endif
+
+    <group-bulk></group-bulk>
+    <group-batch></group-batch>
 
     <h4>todo</h4>
     <li><strike>form for adding groups</strike></li>
-    <li>display existing groups</li>
-    <li>checkbox for deleting groups</li>
-    <li>form for editing group name</li>
-    <li>consider when deleting what happens to any users related to said group</li>
+    <li><strike>display existing groups</strike></li>
+    <li>checkbox for deleting groups</strike></li>
+    <li><strike>form for editing group name</strike></li>
+    <li><strike>consider when deleting what happens to any users related to said group</strike></li>
 @endsection

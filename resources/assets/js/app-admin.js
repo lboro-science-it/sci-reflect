@@ -12,12 +12,15 @@ window.Vue = require('vue');
  * this instance.
  */
 
+Vue.component('group-batch', require('./components/groups/GroupBatch.vue'));
+Vue.component('group-bulk', require('./components/groups/GroupBulk.vue'));
 Vue.component('group-row', require('./components/groups/GroupRow.vue'));
 Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 Vue.component('polar-chart', require('./components/PolarChart.vue'));
 Vue.component('staff-partial', require('./components/StaffPartial.vue'));
 
 import 'axios';
+
 
 const app = new Vue({
     el: '#app',

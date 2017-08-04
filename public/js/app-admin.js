@@ -70398,6 +70398,8 @@ window.Vue = __webpack_require__(150);
  * this instance.
  */
 
+Vue.component('group-batch', __webpack_require__(233));
+Vue.component('group-bulk', __webpack_require__(229));
 Vue.component('group-row', __webpack_require__(223));
 Vue.component('group-table', __webpack_require__(226));
 Vue.component('polar-chart', __webpack_require__(151));
@@ -70593,6 +70595,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -70623,13 +70626,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.edit = false;
         },
         deleteGroup: function deleteGroup() {
-            // send a delete request
+            var _this = this;
 
-            this.$emit('delete-group', this.id);
-            /*  axios.delete('groups/' + this.id).then(response => {
-                  this.$emit('deleteGroup', this.id);
-              });*/
-            console.log('delete group');
+            // send a delete request
+            axios.delete('groups/' + this.id).then(function (response) {
+                _this.$emit('delete-group', _this.id);
+            });
         },
         editGroup: function editGroup() {
             // set edit mode and focus the input
@@ -70640,23 +70642,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         saveGroup: function saveGroup() {
-            var _this = this;
+            var _this2 = this;
 
             // update the current name and send the put request
-            this.edit = false;
-            this.saving = true;
-            this.saveText = 'Saving...';
-            axios.put('groups/' + this.id, {
-                groupName: this.editName
-            }).then(function (response) {
-                _this.currentName = response.data;
-
-                var self = _this;
-                setTimeout(function () {
-                    self.saving = false;
-                    self.saveText = 'Save';
-                }, 2000);
-            });
+            if (this.editName !== this.currentName) {
+                this.edit = false;
+                this.saving = true;
+                this.saveText = 'Saving...';
+                axios.put('groups/' + this.id, {
+                    groupName: this.editName
+                }).then(function (response) {
+                    _this2.currentName = response.data;
+                    _this2.saving = false;
+                    _this2.saveText = 'Save';
+                });
+            }
         }
     }
 });
@@ -70716,6 +70716,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.editName)
     },
     on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.saveGroup($event)
+      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.editName = $event.target.value
@@ -70805,8 +70809,6 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 //
 //
 //
@@ -70859,13 +70861,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     props: ['groups'],
 
     methods: {
-        deleteGroup: function deleteGroup(id) {
-            console.log(_typeof(this.editGroups));
-
-            console.log('will delete group ' + id);
+        deleteGroup: function deleteGroup(index) {
+            this.editGroups.splice(index, 1);
         }
-    }
+    },
 
+    created: function created() {
+        var self = this;
+        this.$parent.$on('groups-added', function (groups) {
+            self.editGroups = groups;
+            //self.editGroups.splice(0, 0);
+        });
+    }
 });
 
 /***/ }),
@@ -70889,7 +70896,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "editGroups"
     }],
     staticClass: "table"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.editGroups), function(group) {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.editGroups), function(group, index) {
     return _c('group-row', {
       key: group.id,
       attrs: {
@@ -70899,7 +70906,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "delete-group": function($event) {
-          _vm.deleteGroup(group.id)
+          _vm.deleteGroup(index)
         }
       }
     })
@@ -70923,6 +70930,384 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-11690bee", module.exports)
+  }
+}
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(152)(
+  /* script */
+  __webpack_require__(230),
+  /* template */
+  __webpack_require__(231),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/groups/GroupBulk.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] GroupBulk.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-375ea7a7", Component.options)
+  } else {
+    hotAPI.reload("data-v-375ea7a7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 230 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            groups: '',
+            saveText: 'Save',
+            saving: false
+        };
+    },
+
+
+    methods: {
+        saveGroups: function saveGroups() {
+            var _this = this;
+
+            // update the current name and send the request
+            this.saving = true;
+            this.saveText = 'Saving...';
+            axios.post('groups/bulk', {
+                groups: this.groups
+            }).then(function (response) {
+                _this.$parent.$emit('groups-added', response.data);
+                _this.saving = false;
+                _this.saveText = 'Save';
+                _this.groups = '';
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.groups),
+      expression: "groups"
+    }],
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "name": "groups",
+      "rows": "5",
+      "placeholder": "Add a bunch of groups to the activity by typing here, on a new line for each."
+    },
+    domProps: {
+      "value": (_vm.groups)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.groups = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary btn-lg pull-right",
+    on: {
+      "click": _vm.saveGroups
+    }
+  }, [_vm._v("\n                    " + _vm._s(_vm.saveText) + "\n                ")])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Add groups")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-375ea7a7", module.exports)
+  }
+}
+
+/***/ }),
+/* 232 */,
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(152)(
+  /* script */
+  __webpack_require__(234),
+  /* template */
+  __webpack_require__(235),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/groups/GroupBatch.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] GroupBatch.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-337a7f75", Component.options)
+  } else {
+    hotAPI.reload("data-v-337a7f75", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 234 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            groupPrefix: '',
+            numberToCreate: 0,
+            saveText: 'Save',
+            saving: false
+        };
+    },
+
+
+    methods: {
+        saveGroups: function saveGroups() {
+            var _this = this;
+
+            // update the current name and send the request
+            this.saving = true;
+            this.saveText = 'Saving...';
+            if (this.numberToCreate > 0) {
+                axios.post('groups/batch', {
+                    groupPrefix: this.groupPrefix,
+                    numberToCreate: this.numberToCreate
+                }).then(function (response) {
+                    _this.$parent.$emit('groups-added', response.data);
+                    _this.saving = false;
+                    _this.saveText = 'Save';
+                    _this.groupPrefix = '';
+                    _this.numberToCreate = 0;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "groupPrefix"
+    }
+  }, [_vm._v("Prefix:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.groupPrefix),
+      expression: "groupPrefix"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "groupPrefix",
+      "placeholder": "Enter group prefix"
+    },
+    domProps: {
+      "value": (_vm.groupPrefix)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.groupPrefix = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "numberToCreate"
+    }
+  }, [_vm._v("Number to create:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.numberToCreate),
+      expression: "numberToCreate"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "width": "100px"
+    },
+    attrs: {
+      "type": "number",
+      "name": "numberToCreate"
+    },
+    domProps: {
+      "value": (_vm.numberToCreate)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.numberToCreate = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary btn-lg pull-right",
+    on: {
+      "click": _vm.saveGroups
+    }
+  }, [_vm._v("\n                    " + _vm._s(_vm.saveText) + "\n                ")])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Batch add groups")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-337a7f75", module.exports)
   }
 }
 
