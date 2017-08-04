@@ -42,18 +42,7 @@ class GroupController extends Controller
             $activity->load('groups');
         }
 
-        $groups = $activity->groups->sortBy('name');
-        $groups->load('activityUsers.user');
-
-        // generate an array in the correct order
-        $groupsArray = [];
-        foreach($groups as $group) {
-            array_push($groupsArray, [
-                'id' => $group->id,
-                'name' => $group->name,
-                'userCount' => $group->getUsers()->count()
-            ]);
-        }
+        $groupsArray = $activity->getGroupListArray();
 
         return $groupsArray;
     }
@@ -86,18 +75,7 @@ class GroupController extends Controller
             $activity->load('groups');       
         }
 
-        $groups = $activity->groups->sortBy('name');
-        $groups->load('activityUsers.user');
-
-        // generate an array in the correct order
-        $groupsArray = [];
-        foreach($groups as $group) {
-            array_push($groupsArray, [
-                'id' => $group->id,
-                'name' => $group->name,
-                'userCount' => $group->getUsers()->count()
-            ]);
-        }
+        $groupsArray = $activity->getGroupListArray();
 
         return $groupsArray;
     }
@@ -119,18 +97,7 @@ class GroupController extends Controller
      */
     public function index(Activity $activity)
     {
-        $groups = $activity->groups->sortBy('name');
-        $groups->load('activityUsers.user');
-
-        // generate an array in the correct order
-        $groupsArray = [];
-        foreach($groups as $group) {
-            array_push($groupsArray, [
-                'id' => $group->id,
-                'name' => $group->name,
-                'userCount' => $group->getUsers()->count()
-            ]);
-        }
+        $groupsArray = $activity->getGroupListArray();
  
         return view('groups.index')
              ->with('groups', $groupsArray);

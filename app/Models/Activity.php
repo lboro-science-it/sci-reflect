@@ -21,6 +21,9 @@ class Activity extends Model
      * functions
      */
 
+    /**
+     * Returns the categories within the activity, ordered for rendering
+     */
     public function getCategories()
     {
         if (!$this->relationLoaded('categories')) {
@@ -31,6 +34,29 @@ class Activity extends Model
         return $this->categories;
     }
 
+    /**
+     * Returns an array of the groups within the activity for rendering
+     */
+    public function getGroupListArray()
+    {
+        $groups = $this->groups->sortBy('name');
+        $groups->load('activityUsers.user');
+
+        $groupsArray = [];
+        foreach($groups as $group) {
+            array_push($groupsArray, [
+                'id' => $group->id,
+                'name' => $group->name,
+                'userCount' => $group->getUsers()->count()
+            ]);
+        }
+
+        return $groupsArray;
+    }
+
+    /**
+     * Returns an object of data about the state of user's progress in rounds
+     */
     public function getRoundsData()
     {
         $rounds = $this->rounds->sortBy('round_number');
