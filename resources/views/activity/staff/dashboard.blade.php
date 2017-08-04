@@ -7,6 +7,7 @@
 @section('content')
 
     @include('activity.staff.partials._tasks')
+
     @include('activity.staff.partials._studentlist')
     @include('activity.staff.partials._stafflist')
 
