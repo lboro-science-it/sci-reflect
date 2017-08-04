@@ -12,6 +12,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Global app data -->
+    <script>
+        window.sciReflect = {};
+        @yield('sciReflect')
+    </script>
 </head>
 <body>
     <div id="app">

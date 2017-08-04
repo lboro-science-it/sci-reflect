@@ -70393,7 +70393,11 @@ window.Vue = __webpack_require__(150);
 Vue.component('polar-chart', __webpack_require__(151));
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+
+  data: {
+    sciReflect: sciReflect
+  }
 });
 
 /***/ }),

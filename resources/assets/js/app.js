@@ -13,5 +13,9 @@ window.Vue = require('vue');
 Vue.component('polar-chart', require('./components/PolarChart.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    data: {
+        sciReflect: sciReflect
+    }
 });

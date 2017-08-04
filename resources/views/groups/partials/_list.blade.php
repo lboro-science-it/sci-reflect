@@ -1,4 +1,9 @@
 @if($groups->count() > 0)
+    @section('sciReflect')
+        sciReflect.groups = {!! $groups !!};
+    @endsection
+    <group-table :groups="sciReflect.groups"></group-table>
+{{-- swapping for reactive-only 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
@@ -11,8 +16,8 @@
                             <tr>
                                 <th>Group</th>
                                 <th>Users in group</th>
-                                <th>{{-- edit --}}</th>
-                                <th>{{-- delete --}}</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>                
@@ -33,4 +38,5 @@
             </div>
         </div>
     </div>
+--}}
 @endif

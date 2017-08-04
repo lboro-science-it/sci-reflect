@@ -70398,7 +70398,8 @@ window.Vue = __webpack_require__(150);
  * this instance.
  */
 
-Vue.component('group-listing', __webpack_require__(220));
+Vue.component('group-row', __webpack_require__(223));
+Vue.component('group-table', __webpack_require__(226));
 Vue.component('polar-chart', __webpack_require__(151));
 Vue.component('staff-partial', __webpack_require__(217));
 
@@ -70408,7 +70409,8 @@ var app = new Vue({
     el: '#app',
 
     data: {
-        partialContent: null
+        partialContent: null,
+        sciReflect: sciReflect
     },
 
     methods: {
@@ -70506,15 +70508,18 @@ if (false) {
 }
 
 /***/ }),
-/* 220 */
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(152)(
   /* script */
-  __webpack_require__(221),
+  __webpack_require__(224),
   /* template */
-  __webpack_require__(222),
+  __webpack_require__(225),
   /* styles */
   null,
   /* scopeId */
@@ -70522,9 +70527,9 @@ var Component = __webpack_require__(152)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/GroupListing.vue"
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/groups/GroupRow.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] GroupListing.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] GroupRow.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -70533,9 +70538,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-73ac9394", Component.options)
+    hotAPI.createRecord("data-v-49d54256", Component.options)
   } else {
-    hotAPI.reload("data-v-73ac9394", Component.options)
+    hotAPI.reload("data-v-49d54256", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -70546,11 +70551,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -70567,18 +70574,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            'edit': false
+            'editName': this.name,
+            'edit': false,
+            'editButtonStyle': {
+                display: 'inline-block'
+            },
+            'groupNameStyle': {
+                width: '80%'
+            }
         };
     },
 
 
-    props: ['name', 'users', 'id'],
+    props: ['display', 'id', 'name', 'users'],
 
     methods: {
+        cancelEdit: function cancelEdit() {
+            this.edit = false;
+        },
         deleteGroup: function deleteGroup() {
             console.log('delete group');
         },
@@ -70588,6 +70626,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             Vue.nextTick(function () {
                 editInput.focus();
             });
+        },
+        saveGroup: function saveGroup() {
+            // check this.name has changed (so we need to store initial name somewhere...)
+            // so set a data from the prop on mount
+            // if it has changed then submit it plus id to the server.
+            // on server just check that the user submitting has a session, a relationship to this activity,
+            // and then update it.
+            // not to self - given that once a user has authed they have a session, can we not store in the session the fact that they have access to the activity...
         }
     },
 
@@ -70595,24 +70641,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tr', [_c('td', [_c('p', {
+  return _c('tr', [_c('td', {
+    staticStyle: {
+      "width": "80%",
+      "height": "50px"
+    }
+  }, [_c('p', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (!_vm.edit),
       expression: "!edit"
-    }]
-  }, [_vm._v(_vm._s(_vm.name))]), _vm._v(" "), _c('input', {
+    }],
+    staticStyle: {
+      "display": "inline-block"
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.name) + "\n        ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.edit),
+      expression: "!edit"
+    }],
+    staticClass: "pull-right",
+    on: {
+      "click": _vm.editGroup
+    }
+  }, [_vm._v("\n            Edit\n        ")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.edit),
       expression: "edit"
     }],
+    staticStyle: {
+      "width": "60%"
+    },
     attrs: {
       "id": _vm.id,
       "type": "text",
@@ -70621,11 +70689,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "value": _vm.name
     }
-  })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.users))]), _vm._v(" "), _c('td', [_c('button', {
+  }), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.edit),
+      expression: "edit"
+    }],
+    staticClass: "pull-right",
     on: {
-      "click": _vm.editGroup
+      "click": _vm.saveGroup
     }
-  }, [_vm._v("Edit")])]), _vm._v(" "), _c('td', [_c('button', {
+  }, [_vm._v("\n            Save\n        ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.edit),
+      expression: "edit"
+    }],
+    staticClass: "pull-right",
+    on: {
+      "click": _vm.cancelEdit
+    }
+  }, [_vm._v("\n            Cancel\n        ")])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.users))]), _vm._v(" "), _c('td', [_c('button', {
     on: {
       "click": _vm.deleteGroup
     }
@@ -70635,7 +70721,154 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-73ac9394", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-49d54256", module.exports)
+  }
+}
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(152)(
+  /* script */
+  __webpack_require__(227),
+  /* template */
+  __webpack_require__(228),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/groups/GroupTable.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] GroupTable.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-11690bee", Component.options)
+  } else {
+    hotAPI.reload("data-v-11690bee", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 227 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['groups']
+
+});
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.groups),
+      expression: "groups"
+    }],
+    staticClass: "table"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.groups), function(group) {
+    return _c('group-row', {
+      key: group.id,
+      attrs: {
+        "name": group.name,
+        "users": group.userCount,
+        "id": group.id
+      }
+    })
+  }))]), _vm._v(" "), _c('p', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.groups),
+      expression: "!groups"
+    }]
+  }, [_vm._v("\n                    Loading groups.\n                ")])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Groups")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Users in group")]), _vm._v(" "), _c('th')])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-11690bee", module.exports)
   }
 }
 
