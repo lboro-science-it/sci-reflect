@@ -38,10 +38,6 @@ class ComposerServiceProvider extends ServiceProvider
             'activity.student', 'App\ViewComposers\StudentActivityComposer'
         );
 
-        View::composer(
-            'groups.index', 'App\ViewComposers\GroupIndexComposer'
-        );
-
     }
 
     /**

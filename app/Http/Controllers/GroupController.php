@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Group;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
 
@@ -77,8 +78,29 @@ class GroupController extends Controller
     /**
      * Display the form for managing groups.
      */
-    public function index(Activity $activity)
+    public function index(Request $request, Activity $activity)
     {
-        return view('groups.index');
+        if ($request->ajax()) {
+            $groups = $activity->groups->sortBy('name');
+            $groups->load('activityUsers.user');
+            foreach($groups as $group) {
+                $group->userCount = $group->getUsers()->count();
+            }
+
+            return $groups;
+        }
+
+
+        $groups = $activity->groups->sortBy('name');
+        $groups->load('activityUsers.user');
+        foreach($groups as $group) {
+            $group->userCount = $group->getUsers()->count();
+        }
+
+        return view('groups.index')
+             ->with('groups', $groups);
     }
+
+    // todo: decide on routes for server rendered partials and routes for API-ish AJAX requests.
+
 }
