@@ -5,7 +5,7 @@
                 <h3>Batch add groups</h3>
             </div>
             <div class="panel-body">
-                <form id="group-upload" action="{{ url('a/' . $activity->id . '/add-groups-batch') }}" method="POST">
+                <form id="group-upload" action="{{ url('a/' . $activity->id . '/groups/batch') }}" method="POST">
                     {{ csrf_field() }}
                     {{ method_field('POST') }}
                     <div class="form-group">

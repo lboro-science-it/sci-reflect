@@ -70599,14 +70599,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            'editName': this.name,
-            'edit': false,
-            'editButtonStyle': {
+            currentName: this.name,
+            editName: this.name,
+            edit: false,
+            editButtonStyle: {
                 display: 'inline-block'
             },
-            'groupNameStyle': {
+            groupNameStyle: {
                 width: '80%'
-            }
+            },
+            saveText: 'Save',
+            saving: false
         };
     },
 
@@ -70615,12 +70618,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         cancelEdit: function cancelEdit() {
+            // revert edit name and turn off edit mode
+            this.editName = this.currentName;
             this.edit = false;
         },
         deleteGroup: function deleteGroup() {
+            // send a delete request
+
+            this.$emit('delete-group', this.id);
+            /*  axios.delete('groups/' + this.id).then(response => {
+                  this.$emit('deleteGroup', this.id);
+              });*/
             console.log('delete group');
         },
         editGroup: function editGroup() {
+            // set edit mode and focus the input
             this.edit = true;
             var editInput = document.getElementById(this.id);
             Vue.nextTick(function () {
@@ -70628,16 +70640,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         saveGroup: function saveGroup() {
-            // check this.name has changed (so we need to store initial name somewhere...)
-            // so set a data from the prop on mount
-            // if it has changed then submit it plus id to the server.
-            // on server just check that the user submitting has a session, a relationship to this activity,
-            // and then update it.
-            // not to self - given that once a user has authed they have a session, can we not store in the session the fact that they have access to the activity...
-        }
-    },
+            var _this = this;
 
-    mounted: function mounted() {}
+            // update the current name and send the put request
+            this.edit = false;
+            this.saving = true;
+            this.saveText = 'Saving...';
+            axios.put('groups/' + this.id, {
+                groupName: this.editName
+            }).then(function (response) {
+                _this.currentName = response.data;
+
+                var self = _this;
+                setTimeout(function () {
+                    self.saving = false;
+                    self.saveText = 'Save';
+                }, 2000);
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -70660,12 +70681,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "display": "inline-block"
     }
-  }, [_vm._v("\n            " + _vm._s(_vm.name) + "\n        ")]), _vm._v(" "), _c('button', {
+  }, [_vm._v("\n            " + _vm._s(_vm.editName) + " \n        ")]), _vm._v(" "), _c('button', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (!_vm.edit),
-      expression: "!edit"
+      value: (!_vm.edit && !_vm.saving),
+      expression: "!edit && !saving"
     }],
     staticClass: "pull-right",
     on: {
@@ -70677,6 +70698,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-show",
       value: (_vm.edit),
       expression: "edit"
+    }, {
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editName),
+      expression: "editName"
     }],
     staticStyle: {
       "width": "60%"
@@ -70687,20 +70713,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": _vm.id
     },
     domProps: {
-      "value": _vm.name
+      "value": (_vm.editName)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editName = $event.target.value
+      }
     }
   }), _vm._v(" "), _c('button', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.edit),
-      expression: "edit"
+      value: (_vm.edit || _vm.saving),
+      expression: "edit || saving"
     }],
     staticClass: "pull-right",
     on: {
       "click": _vm.saveGroup
     }
-  }, [_vm._v("\n            Save\n        ")]), _vm._v(" "), _c('button', {
+  }, [_vm._v("\n            " + _vm._s(_vm.saveText) + "\n        ")]), _vm._v(" "), _c('button', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -70773,6 +70805,9 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//
 //
 //
 //
@@ -70814,8 +70849,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            editGroups: this.groups
+        };
+    },
 
-    props: ['groups']
+
+    props: ['groups'],
+
+    methods: {
+        deleteGroup: function deleteGroup(id) {
+            console.log(_typeof(this.editGroups));
+
+            console.log('will delete group ' + id);
+        }
+    }
 
 });
 
@@ -70836,17 +70885,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.groups),
-      expression: "groups"
+      value: (_vm.editGroups),
+      expression: "editGroups"
     }],
     staticClass: "table"
-  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.groups), function(group) {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.editGroups), function(group) {
     return _c('group-row', {
       key: group.id,
       attrs: {
         "name": group.name,
         "users": group.userCount,
         "id": group.id
+      },
+      on: {
+        "delete-group": function($event) {
+          _vm.deleteGroup(group.id)
+        }
       }
     })
   }))]), _vm._v(" "), _c('p', {

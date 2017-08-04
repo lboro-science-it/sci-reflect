@@ -24,9 +24,11 @@ Route::group(['middleware' => ['staff']], function() {
     Route::get('a/{activity}/add-users', 'UserController@create');
     Route::post('a/{activity}/add-users', 'UserController@store');
 
+    // Group routes
     Route::get('a/{activity}/groups', 'GroupController@index');
-    Route::post('a/{activity}/add-groups-bulk', 'GroupController@bulk');
-    Route::post('a/{activity}/add-groups-batch', 'GroupController@batch');
+    Route::post('a/{activity}/groups/bulk', 'GroupController@bulk');
+    Route::post('a/{activity}/groups/batch', 'GroupController@batch');
+    Route::put('a/{activity}/groups/{groupId}', 'GroupController@update');
 
     Route::get('a/{activity}/setup', 'ActivityController@showSetup');
 });
