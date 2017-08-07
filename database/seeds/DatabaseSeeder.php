@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             $this->call(IndicatorTableSeeder::class);
             $this->call(ChoiceTableSeeder::class);
             $this->call(CategoryTableSeeder::class);
+            $this->call(UserTableSeeder::class);
+            $this->call(SelectionTableSeeder::class);
         }
     }
 }

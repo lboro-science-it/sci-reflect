@@ -32,14 +32,11 @@ class SkillTableSeeder extends Seeder
                 'position' => rand(1, 12)
             ]);
 
-            // only include half of the skills in round 1
-            if ($skillId % 2 == 0) {
-                DB::table('page_skill')->insert([
-                    'skill_id' => $skillId,
-                    'page_id' => 4,
-                    'position' => rand(1, 12)
-                ]);
-            }
+            DB::table('page_skill')->insert([
+                'skill_id' => $skillId,
+                'page_id' => 4,
+                'position' => rand(1, 12)
+            ]);
         }
     }
 }
