@@ -70403,6 +70403,12 @@ Vue.component('group-bulk', __webpack_require__(211));
 Vue.component('group-row', __webpack_require__(214));
 Vue.component('group-table', __webpack_require__(217));
 
+Vue.component('staff-row', __webpack_require__(238));
+Vue.component('staff-table', __webpack_require__(241));
+
+Vue.component('student-row', __webpack_require__(232));
+Vue.component('student-table', __webpack_require__(235));
+
 Vue.component('polar-chart', __webpack_require__(152));
 Vue.component('staff-partial', __webpack_require__(220));
 
@@ -71296,6 +71302,592 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-73125bb2", module.exports)
+  }
+}
+
+/***/ }),
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(233),
+  /* template */
+  __webpack_require__(234),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/students/StudentRow.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StudentRow.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6bf23d15", Component.options)
+  } else {
+    hotAPI.reload("data-v-6bf23d15", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 233 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            currentGroupId: this.student.groupId,
+            editGroupId: this.student.groupId
+        };
+    },
+
+
+    props: ['filterGroup', 'filterText', 'groups', 'student'],
+
+    methods: {
+        changedGroup: function changedGroup() {
+            console.log('ok the group has changed');
+        },
+        showRow: function showRow() {
+            var filterGroupResult = false;
+            if (this.filterGroup == this.currentGroupId || this.filterGroup == 'all') {
+                filterGroupResult = true;
+            } else if (this.filterGroup == 'null' && this.currentGroupId == null) {
+                filterGroupResult = true;
+            }
+
+            if (filterGroupResult == true) {
+                if (this.student.name.toLowerCase().includes(this.filterText.toLowerCase()) || this.filterText == '') {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    },
+
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showRow()),
+      expression: "showRow()"
+    }]
+  }, [_c('td', [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentGroupId),
+      expression: "currentGroupId"
+    }],
+    on: {
+      "change": [function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.currentGroupId = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }, _vm.changedGroup]
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "null"
+    }
+  }, [_vm._v("No group")]), _vm._v(" "), _vm._l((_vm.groups), function(group) {
+    return _c('option', {
+      domProps: {
+        "value": group.id
+      }
+    }, [_vm._v(_vm._s(group.name))])
+  })], 2)]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.email))]), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.student.currentRoundNumber) ? _c('p', [_vm._v(_vm._s(_vm.student.currentRoundNumber))]) : _c('p', [_vm._v("Complete")])]), _vm._v(" "), _vm._l((_vm.student.rounds), function(round) {
+    return _c('td', {
+      staticClass: "todo"
+    }, [_vm._v(_vm._s(round.completion))])
+  }), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.student.complete) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.student.lastAccessed))]) : _vm._e()])], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6bf23d15", module.exports)
+  }
+}
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(236),
+  /* template */
+  __webpack_require__(237),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/students/StudentTable.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StudentTable.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-772c6f6e", Component.options)
+  } else {
+    hotAPI.reload("data-v-772c6f6e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 236 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            filterText: '',
+            filterGroup: 'all'
+        };
+    },
+
+
+    props: ['groups', 'rounds', 'students']
+});
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Students \n                    "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.filterText),
+      expression: "filterText"
+    }],
+    staticClass: "pull-right",
+    attrs: {
+      "type": "text",
+      "placeholder": "Name search..."
+    },
+    domProps: {
+      "value": (_vm.filterText)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.filterText = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.filterGroup),
+      expression: "filterGroup"
+    }],
+    staticClass: "pull-right",
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.filterGroup = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "all"
+    }
+  }, [_vm._v("All Groups")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "null"
+    }
+  }, [_vm._v("No Group")]), _vm._v(" "), _vm._l((_vm.groups), function(group) {
+    return _c('option', {
+      domProps: {
+        "value": group.id
+      }
+    }, [_vm._v(_vm._s(group.name))])
+  })], 2)])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table"
+  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Current round")]), _vm._v(" "), _vm._l((_vm.rounds), function(round) {
+    return _c('th', [_vm._v(_vm._s(round.title))])
+  }), _vm._v(" "), _c('th', [_vm._v("Accessed?")]), _vm._v(" "), _c('th', [_vm._v("Completed?")]), _vm._v(" "), _c('th', [_vm._v("Last access")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student) {
+    return _c('student-row', {
+      key: "student.id",
+      attrs: {
+        "student": student,
+        "groups": _vm.groups,
+        "filterText": _vm.filterText,
+        "filterGroup": _vm.filterGroup
+      }
+    })
+  }))])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-772c6f6e", module.exports)
+  }
+}
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(239),
+  /* template */
+  __webpack_require__(240),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/staff/StaffRow.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StaffRow.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7c1d6fcc", Component.options)
+  } else {
+    hotAPI.reload("data-v-7c1d6fcc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 239 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    },
+
+
+    props: ['staffMember'],
+
+    methods: {},
+
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [_c('td', [(_vm.staffMember.groupName) ? _c('p', [_vm._v(_vm._s(_vm.staffMember.groupName))]) : _c('p', [_vm._v("select")])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffMember.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffMember.email))]), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.staffMember.hasAccessed) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.staffMember.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.staffMember.lastAccessed))]) : _vm._e()])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7c1d6fcc", module.exports)
+  }
+}
+
+/***/ }),
+/* 241 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(242),
+  /* template */
+  __webpack_require__(243),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/staff/StaffTable.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StaffTable.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d25bb3e4", Component.options)
+  } else {
+    hotAPI.reload("data-v-d25bb3e4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 242 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['staff']
+});
+
+/***/ }),
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('table', {
+    staticClass: "table"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.staff), function(staffMember) {
+    return _c('staff-row', {
+      key: "staffMember.id",
+      attrs: {
+        "staffMember": staffMember
+      }
+    })
+  }))])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Staff")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Accessed?")]), _vm._v(" "), _c('th', [_vm._v("Last access")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-d25bb3e4", module.exports)
   }
 }
 

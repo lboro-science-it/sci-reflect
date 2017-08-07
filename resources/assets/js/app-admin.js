@@ -17,6 +17,12 @@ Vue.component('group-bulk', require('./components/groups/GroupBulk.vue'));
 Vue.component('group-row', require('./components/groups/GroupRow.vue'));
 Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 
+Vue.component('staff-row', require('./components/staff/StaffRow.vue'));
+Vue.component('staff-table', require('./components/staff/StaffTable.vue'));
+
+Vue.component('student-row', require('./components/students/StudentRow.vue'));
+Vue.component('student-table', require('./components/students/StudentTable.vue'));
+
 Vue.component('polar-chart', require('./components/PolarChart.vue'));
 Vue.component('staff-partial', require('./components/StaffPartial.vue'));
 

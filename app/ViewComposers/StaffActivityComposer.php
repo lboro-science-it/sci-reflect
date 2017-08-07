@@ -23,24 +23,9 @@ class StaffActivityComposer
     {
         // manually relate group to each user based on pivot to activity
         $groups = $this->activity->groups;
-        foreach ($this->activity->users as $user) {
-            $user->setRelation('group', $groups->where('id', $user->pivot->group_id)->first());
-        }
-
-        // get activity students
-        $students = $this->activity->users->where('pivot.role', 'student')->sortBy('email');
-        $students->load([
-            'selections'
-        ]);
-
-        // get activity staff
-        $staff = $this->activity->users->where('pivot.role', 'staff')->sortBy('email');
-
-        // load indicators, required for completion data
-        $this->activity->rounds->load([
-            'pages.skills.indicators'
-        ]);
-        $rounds = $this->activity->rounds->sortBy('title');
+        $rounds = $this->activity->getRoundsListArray();
+        $students = $this->activity->getStudentListArray();
+        $staff = $this->activity->getStaffListArray();
 
         $view->with('students', $students)
              ->with('staff', $staff)
