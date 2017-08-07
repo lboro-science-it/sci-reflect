@@ -71400,7 +71400,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['filterGroup', 'filterText', 'groups', 'student'],
+    props: ['filterGroup', 'filterText', 'groups', 'mode', 'student'],
 
     methods: {
         // when group drop down is changed, persist to database
@@ -71495,7 +71495,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  })]), _vm._v(" "), _c('td', [_c('select', {
+  })]), _vm._v(" "), _c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }]
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -71524,16 +71531,46 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v(_vm._s(group.name))])
   })], 2)]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.email))]), _vm._v(" "), _c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }],
     staticClass: "todo"
   }, [(_vm.student.currentRoundNumber) ? _c('p', [_vm._v(_vm._s(_vm.student.currentRoundNumber))]) : _c('p', [_vm._v("Complete")])]), _vm._v(" "), _vm._l((_vm.student.rounds), function(round) {
     return _c('td', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.mode == 'overview'),
+        expression: "mode == 'overview'"
+      }],
       staticClass: "todo"
     }, [_vm._v(_vm._s(round.completion))])
   }), _vm._v(" "), _c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }],
     staticClass: "todo"
   }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }],
     staticClass: "todo"
   }, [(_vm.student.complete) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }],
     staticClass: "todo"
   }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.student.lastAccessed))]) : _vm._e()])], 2)
 },staticRenderFns: []}
@@ -71648,19 +71685,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            activeBtnClass: 'btn btn-lg btn-success',
             bulkGroupId: null,
             checkedStudents: [],
             filterText: '',
-            filterGroup: 'all'
+            filterGroup: 'all',
+            inactiveBtnClass: 'btn btn-lg btn-info',
+            mode: 'overview'
         };
     },
 
+
+    computed: {
+        overviewClass: function overviewClass() {
+            return this.mode == 'overview' ? this.activeBtnClass : this.inactiveBtnClass;
+        },
+        rateClass: function rateClass() {
+            return this.mode == 'rate' ? this.activeBtnClass : this.inactiveBtnClass;
+        }
+    },
 
     props: ['groups', 'rounds', 'students'],
 
@@ -71685,6 +71748,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         checked: function checked(index) {
             this.checkedStudents.push(this.students[index].id);
         },
+        setMode: function setMode(mode) {
+            this.mode = mode;
+        },
         unchecked: function unchecked(index) {
             this.checkedStudents.splice(this.checkedStudents.indexOf(this.students[index].id), 1);
         }
@@ -71703,36 +71769,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('h3', [_vm._v("Students \n                    "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.filterText),
-      expression: "filterText"
-    }],
-    staticClass: "pull-right",
-    attrs: {
-      "type": "text",
-      "placeholder": "Name search..."
-    },
-    domProps: {
-      "value": (_vm.filterText)
-    },
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "form-inline"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('button', {
+    class: _vm.overviewClass,
     on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.filterText = $event.target.value
+      "click": function($event) {
+        _vm.setMode('overview')
       }
     }
-  }), _vm._v(" "), _c('select', {
+  }, [_vm._v("Overview")]), _vm._v(" "), _c('button', {
+    class: _vm.rateClass,
+    on: {
+      "click": function($event) {
+        _vm.setMode('rate')
+      }
+    }
+  }, [_vm._v("Rate")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.filterGroup),
       expression: "filterGroup"
     }],
-    staticClass: "pull-right",
+    staticClass: "form-control input-lg",
     on: {
       "change": function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
@@ -71758,20 +71823,88 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": group.id
       }
     }, [_vm._v(_vm._s(group.name))])
-  })], 2)])]), _vm._v(" "), _c('div', {
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.filterText),
+      expression: "filterText"
+    }],
+    staticClass: "form-control input-lg",
+    attrs: {
+      "type": "text",
+      "placeholder": "Name search..."
+    },
+    domProps: {
+      "value": (_vm.filterText)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.filterText = $event.target.value
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('table', {
     staticClass: "table"
-  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Current round")]), _vm._v(" "), _vm._l((_vm.rounds), function(round) {
-    return _c('th', [_vm._v(_vm._s(round.title))])
-  }), _vm._v(" "), _c('th', [_vm._v("Accessed?")]), _vm._v(" "), _c('th', [_vm._v("Completed?")]), _vm._v(" "), _c('th', [_vm._v("Last access")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student, index) {
+  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }]
+  }, [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }]
+  }, [_vm._v("Current round")]), _vm._v(" "), _vm._l((_vm.rounds), function(round) {
+    return _c('th', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.mode == 'overview'),
+        expression: "mode == 'overview'"
+      }]
+    }, [_vm._v(_vm._s(round.title))])
+  }), _vm._v(" "), _c('th', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }]
+  }, [_vm._v("Accessed?")]), _vm._v(" "), _c('th', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }]
+  }, [_vm._v("Completed?")]), _vm._v(" "), _c('th', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }]
+  }, [_vm._v("Last access")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student, index) {
     return _c('student-row', {
       key: student.id,
       attrs: {
         "student": student,
         "groups": _vm.groups,
         "filterText": _vm.filterText,
-        "filterGroup": _vm.filterGroup
+        "filterGroup": _vm.filterGroup,
+        "mode": _vm.mode
       },
       on: {
         "checked": function($event) {
@@ -71818,7 +71951,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.bulkGroup
     }
   }, [_vm._v("Add checked to group")])])])])])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Students")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

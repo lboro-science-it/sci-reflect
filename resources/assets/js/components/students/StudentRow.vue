@@ -6,7 +6,7 @@
                    v-bind:true-value="true"
                    v-bind:false-false="false">
         </td>
-        <td>
+        <td v-show="mode == 'overview'">
             <select v-model="editGroupId" v-on:change="changedGroup">
                 <option value="null">No group</option>
                 <option v-for="group in groups" :value="group.id">{{ group.name }}</option>
@@ -14,11 +14,11 @@
         </td>
         <td>{{ student.name }}</td>
         <td>{{ student.email }}</td>
-        <td class="todo"><p v-if="student.currentRoundNumber">{{ student.currentRoundNumber }}</p><p v-else>Complete</p></td>
-        <td v-for="round in student.rounds" class="todo">{{ round.completion }}</td>
-        <td class="todo"><p v-if="student.hasAccessed">Yes</p><p v-else>No</p></td>
-        <td class="todo"><p v-if="student.complete">Yes</p><p v-else>No</p></td>
-        <td class="todo"><p v-if="student.hasAccessed">{{ student.lastAccessed }}</p></td>
+        <td v-show="mode == 'overview'" class="todo"><p v-if="student.currentRoundNumber">{{ student.currentRoundNumber }}</p><p v-else>Complete</p></td>
+        <td v-show="mode == 'overview'" v-for="round in student.rounds" class="todo">{{ round.completion }}</td>
+        <td v-show="mode == 'overview'" class="todo"><p v-if="student.hasAccessed">Yes</p><p v-else>No</p></td>
+        <td v-show="mode == 'overview'" class="todo"><p v-if="student.complete">Yes</p><p v-else>No</p></td>
+        <td v-show="mode == 'overview'" class="todo"><p v-if="student.hasAccessed">{{ student.lastAccessed }}</p></td>
     </tr>
 </template>
 
@@ -38,6 +38,7 @@
             'filterGroup',
             'filterText',
             'groups',
+            'mode',
             'student'
         ],
 
