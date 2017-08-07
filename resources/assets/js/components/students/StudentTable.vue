@@ -19,6 +19,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Group</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -30,15 +31,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <student-row v-for="student in students"
-                                         key="student.id"
+                            <student-row v-for="(student, index) in students"
+                                         :key="student.id"
                                          :student="student"
                                          :groups="groups"
                                          :filterText="filterText"
-                                         :filterGroup="filterGroup">
+                                         :filterGroup="filterGroup"
+                                         v-on:checked="checked(index)"
+                                         v-on:unchecked="unchecked(index)">
                             </student-row>
                         </tbody>
                     </table>
+                    <label for="group-bulk-select">Bulk add to group</label>
+                    <select id="group-bulk-select" v-model="bulkGroupId">
+                        <option v-for="group in groups" :value="group.id">{{ group.name }}</option>
+                    </select>
+                    <button v-on:click="bulkGroup">Add checked to group</button>
                 </div>
             </div>
         </div>
@@ -46,9 +54,13 @@
 </template>
 
 <script>
+    import 'axios';
+
     export default {
         data () {
             return {
+                bulkGroupId: null,
+                checkedStudents: [],
                 filterText: '',
                 filterGroup: 'all'
             }
@@ -58,6 +70,34 @@
             'groups',
             'rounds',
             'students'
-        ]
+        ],
+
+        methods: {
+            bulkGroup() {
+                if (this.bulkGroupId != null && this.checkedStudents.length > 0) {
+                    axios.put('group/' + this.bulkGroupId, {
+                        students: this.checkedStudents
+                    })
+                    .then(response => {
+                        if (response.data == 'success') {
+                            // todo: update each row's group
+                            // uncheck all checkboxes
+                            this.checkedStudents = [];
+                            // reset the select
+                            this.bulkGroupId = null
+                        }
+                    });
+
+                }
+            },
+
+            checked(index) {
+                this.checkedStudents.push(this.students[index].id);
+            },
+
+            unchecked(index) {
+                this.checkedStudents.splice(this.checkedStudents.indexOf(this.students[index].id), 1);
+            }
+        }
     }
 </script>

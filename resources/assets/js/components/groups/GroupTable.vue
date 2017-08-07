@@ -60,7 +60,7 @@
             let self = this;
             this.$parent.$on('groups-added', function(groups) {
                 self.editGroups = groups;
-                //self.editGroups.splice(0, 0);
+                self.editGroups.splice(0, 0);
             });
         }
     }

@@ -31,6 +31,11 @@ Route::group(['middleware' => ['staff']], function() {
     Route::post('a/{activity}/groups/batch', 'GroupController@batch');
     Route::put('a/{activity}/groups/{groupId}', 'GroupController@update');
 
+    // Student User routes
+    Route::put('a/{activity}/student/{userId}/group', 'StudentUserController@updateGroup');
+    // bulk add students to group
+    Route::put('a/{activity}/group/{groupId}', 'StudentUserController@bulkGroup');
+
     Route::get('a/{activity}/setup', 'ActivityController@showSetup');
 });
 

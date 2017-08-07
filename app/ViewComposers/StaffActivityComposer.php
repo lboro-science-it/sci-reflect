@@ -21,7 +21,6 @@ class StaffActivityComposer
      */
     public function compose(View $view)
     {
-        // manually relate group to each user based on pivot to activity
         $groups = $this->activity->groups;
         $rounds = $this->activity->getRoundsListArray();
         $students = $this->activity->getStudentListArray();

@@ -15,7 +15,13 @@
 
     <!-- Global app data -->
     <script>
-        window.sciReflect = {};
+        window.sciReflect = {
+            @isset($activity)
+            'baseUrl': '{{ url('a/' . $activity->id) }}'
+            @else
+            'baseUrl': '{{ url('') }}'
+            @endisset
+        };
         @yield('sciReflect')
     </script>
 </head>

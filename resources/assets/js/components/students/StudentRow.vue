@@ -1,7 +1,13 @@
 <template>
     <tr v-show="showRow()">
+        <td><input type="checkbox"
+                   v-model="checked"
+                   v-on:change="checkboxChanged"
+                   v-bind:true-value="true"
+                   v-bind:false-false="false">
+        </td>
         <td>
-            <select v-model="currentGroupId" v-on:change="changedGroup">
+            <select v-model="editGroupId" v-on:change="changedGroup">
                 <option value="null">No group</option>
                 <option v-for="group in groups" :value="group.id">{{ group.name }}</option>
             </select>
@@ -22,6 +28,7 @@
     export default {
         data () {
             return {
+                checked: false,
                 currentGroupId: this.student.groupId,
                 editGroupId: this.student.groupId
             }
@@ -35,10 +42,28 @@
         ],
 
         methods: {
+            // when group drop down is changed, persist to database
             changedGroup() {
-                console.log('ok the group has changed');
+                if (this.editGroupId != this.currentGroupId) {
+                    axios.put('student/' + this.student.id + '/group', {
+                        groupId: this.editGroupId
+                    }).then(response => {
+                        this.currentGroupId = response.data;
+                        this.editGroupId = response.data;
+                    });
+                }
             },
 
+            // when checkbox is checked, store in parent array
+            checkboxChanged() {
+                if (this.checked) {
+                    this.$emit('checked', this.student.id);
+                } else {
+                    this.$emit('unchecked', this.student.id);
+                }
+            },
+
+            // only show row if it fits filter criteria
             showRow() {
                 let filterGroupResult = false;
                 if (this.filterGroup == this.currentGroupId || this.filterGroup == 'all') {
@@ -57,8 +82,5 @@
             }
         },
 
-        mounted () {
-
-        }
     }
 </script>

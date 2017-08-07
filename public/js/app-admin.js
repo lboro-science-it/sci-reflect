@@ -16968,6 +16968,7 @@ try {
 window.axios = __webpack_require__(2);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.baseURL = window.sciReflect.baseUrl;
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -71166,7 +71167,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var self = this;
         this.$parent.$on('groups-added', function (groups) {
             self.editGroups = groups;
-            //self.editGroups.splice(0, 0);
+            self.editGroups.splice(0, 0);
         });
     }
 });
@@ -71380,12 +71381,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            checked: false,
             currentGroupId: this.student.groupId,
             editGroupId: this.student.groupId
         };
@@ -71395,9 +71403,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['filterGroup', 'filterText', 'groups', 'student'],
 
     methods: {
+        // when group drop down is changed, persist to database
         changedGroup: function changedGroup() {
-            console.log('ok the group has changed');
+            var _this = this;
+
+            if (this.editGroupId != this.currentGroupId) {
+                axios.put('student/' + this.student.id + '/group', {
+                    groupId: this.editGroupId
+                }).then(function (response) {
+                    _this.currentGroupId = response.data;
+                    _this.editGroupId = response.data;
+                });
+            }
         },
+
+
+        // when checkbox is checked, store in parent array
+        checkboxChanged: function checkboxChanged() {
+            if (this.checked) {
+                this.$emit('checked', this.student.id);
+            } else {
+                this.$emit('unchecked', this.student.id);
+            }
+        },
+
+
+        // only show row if it fits filter criteria
         showRow: function showRow() {
             var filterGroupResult = false;
             if (this.filterGroup == this.currentGroupId || this.filterGroup == 'all') {
@@ -71414,9 +71445,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             return false;
         }
-    },
+    }
 
-    mounted: function mounted() {}
 });
 
 /***/ }),
@@ -71431,12 +71461,46 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.showRow()),
       expression: "showRow()"
     }]
-  }, [_c('td', [_c('select', {
+  }, [_c('td', [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.currentGroupId),
-      expression: "currentGroupId"
+      value: (_vm.checked),
+      expression: "checked"
+    }],
+    attrs: {
+      "type": "checkbox",
+      "true-value": true,
+      "false-false": false
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.checked) ? _vm._i(_vm.checked, null) > -1 : (_vm.checked)
+    },
+    on: {
+      "change": _vm.checkboxChanged,
+      "__c": function($event) {
+        var $$a = _vm.checked,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$c) {
+            $$i < 0 && (_vm.checked = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.checked = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.checked = $$c
+        }
+      }
+    }
+  })]), _vm._v(" "), _c('td', [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editGroupId),
+      expression: "editGroupId"
     }],
     on: {
       "change": [function($event) {
@@ -71446,7 +71510,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.currentGroupId = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.editGroupId = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }, _vm.changedGroup]
     }
   }, [_c('option', {
@@ -71527,6 +71591,16 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -71575,16 +71649,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            bulkGroupId: null,
+            checkedStudents: [],
             filterText: '',
             filterGroup: 'all'
         };
     },
 
 
-    props: ['groups', 'rounds', 'students']
+    props: ['groups', 'rounds', 'students'],
+
+    methods: {
+        bulkGroup: function bulkGroup() {
+            var _this = this;
+
+            if (this.bulkGroupId != null && this.checkedStudents.length > 0) {
+                axios.put('group/' + this.bulkGroupId, {
+                    students: this.checkedStudents
+                }).then(function (response) {
+                    if (response.data == 'success') {
+                        // todo: update each row's group
+                        // uncheck all checkboxes
+                        _this.checkedStudents = [];
+                        // reset the select
+                        _this.bulkGroupId = null;
+                    }
+                });
+            }
+        },
+        checked: function checked(index) {
+            this.checkedStudents.push(this.students[index].id);
+        },
+        unchecked: function unchecked(index) {
+            this.checkedStudents.splice(this.checkedStudents.indexOf(this.students[index].id), 1);
+        }
+    }
 });
 
 /***/ }),
@@ -71658,19 +71762,62 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-body"
   }, [_c('table', {
     staticClass: "table"
-  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Current round")]), _vm._v(" "), _vm._l((_vm.rounds), function(round) {
+  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Current round")]), _vm._v(" "), _vm._l((_vm.rounds), function(round) {
     return _c('th', [_vm._v(_vm._s(round.title))])
-  }), _vm._v(" "), _c('th', [_vm._v("Accessed?")]), _vm._v(" "), _c('th', [_vm._v("Completed?")]), _vm._v(" "), _c('th', [_vm._v("Last access")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student) {
+  }), _vm._v(" "), _c('th', [_vm._v("Accessed?")]), _vm._v(" "), _c('th', [_vm._v("Completed?")]), _vm._v(" "), _c('th', [_vm._v("Last access")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student, index) {
     return _c('student-row', {
-      key: "student.id",
+      key: student.id,
       attrs: {
         "student": student,
         "groups": _vm.groups,
         "filterText": _vm.filterText,
         "filterGroup": _vm.filterGroup
+      },
+      on: {
+        "checked": function($event) {
+          _vm.checked(index)
+        },
+        "unchecked": function($event) {
+          _vm.unchecked(index)
+        }
       }
     })
-  }))])])])])])
+  }))]), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "group-bulk-select"
+    }
+  }, [_vm._v("Bulk add to group")]), _vm._v(" "), _c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.bulkGroupId),
+      expression: "bulkGroupId"
+    }],
+    attrs: {
+      "id": "group-bulk-select"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.bulkGroupId = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.groups), function(group) {
+    return _c('option', {
+      domProps: {
+        "value": group.id
+      }
+    }, [_vm._v(_vm._s(group.name))])
+  })), _vm._v(" "), _c('button', {
+    on: {
+      "click": _vm.bulkGroup
+    }
+  }, [_vm._v("Add checked to group")])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
