@@ -19,6 +19,7 @@
         <td v-show="mode == 'overview'" class="todo"><p v-if="student.hasAccessed">Yes</p><p v-else>No</p></td>
         <td v-show="mode == 'overview'" class="todo"><p v-if="student.complete">Yes</p><p v-else>No</p></td>
         <td v-show="mode == 'overview'" class="todo"><p v-if="student.hasAccessed">{{ student.lastAccessed }}</p></td>
+        <td v-show="mode == 'rate'"><a class="btn btn-lg btn-success" :href="rateStudentLink" role="button">Rate</a></td>
     </tr>
 </template>
 
@@ -41,6 +42,12 @@
             'mode',
             'student'
         ],
+
+        computed: {
+            rateStudentLink () {
+                return window.sciReflect.baseUrl + '/rate/' + this.student.id;
+            }
+        },
 
         methods: {
             // when group drop down is changed, persist to database

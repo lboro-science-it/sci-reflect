@@ -41,6 +41,7 @@
                                 <th v-show="mode == 'overview'">Accessed?</th>
                                 <th v-show="mode == 'overview'">Completed?</th>
                                 <th v-show="mode == 'overview'">Last access</th>
+                                <th v-show="mode == 'rate'">Rate</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,11 +57,13 @@
                             </student-row>
                         </tbody>
                     </table>
-                    <label for="group-bulk-select">Bulk add to group</label>
-                    <select id="group-bulk-select" v-model="bulkGroupId">
-                        <option v-for="group in groups" :value="group.id">{{ group.name }}</option>
-                    </select>
-                    <button v-on:click="bulkGroup">Add checked to group</button>
+                    <div v-show="mode == 'overview'">
+                        <label for="group-bulk-select">Bulk add to group</label>
+                        <select id="group-bulk-select" v-model="bulkGroupId">
+                            <option v-for="group in groups" :value="group.id">{{ group.name }}</option>
+                        </select>
+                        <button v-on:click="bulkGroup">Add checked to group</button>
+                    </div>
                 </div>
             </div>
         </div>

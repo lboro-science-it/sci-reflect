@@ -71387,6 +71387,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -71401,6 +71402,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     props: ['filterGroup', 'filterText', 'groups', 'mode', 'student'],
+
+    computed: {
+        rateStudentLink: function rateStudentLink() {
+            return window.sciReflect.baseUrl + '/rate/' + this.student.id;
+        }
+    },
 
     methods: {
         // when group drop down is changed, persist to database
@@ -71572,7 +71579,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "mode == 'overview'"
     }],
     staticClass: "todo"
-  }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.student.lastAccessed))]) : _vm._e()])], 2)
+  }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.student.lastAccessed))]) : _vm._e()]), _vm._v(" "), _c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'rate'),
+      expression: "mode == 'rate'"
+    }]
+  }, [_c('a', {
+    staticClass: "btn btn-lg btn-success",
+    attrs: {
+      "href": _vm.rateStudentLink,
+      "role": "button"
+    }
+  }, [_vm._v("Rate")])])], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -71630,6 +71650,9 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
 //
 //
 //
@@ -71896,7 +71919,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.mode == 'overview'),
       expression: "mode == 'overview'"
     }]
-  }, [_vm._v("Last access")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student, index) {
+  }, [_vm._v("Last access")]), _vm._v(" "), _c('th', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'rate'),
+      expression: "mode == 'rate'"
+    }]
+  }, [_vm._v("Rate")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student, index) {
     return _c('student-row', {
       key: student.id,
       attrs: {
@@ -71915,7 +71945,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     })
-  }))]), _vm._v(" "), _c('label', {
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.mode == 'overview'),
+      expression: "mode == 'overview'"
+    }]
+  }, [_c('label', {
     attrs: {
       "for": "group-bulk-select"
     }
@@ -71950,7 +71987,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.bulkGroup
     }
-  }, [_vm._v("Add checked to group")])])])])])
+  }, [_vm._v("Add checked to group")])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
