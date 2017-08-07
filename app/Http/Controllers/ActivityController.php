@@ -47,7 +47,7 @@ class ActivityController extends Controller
 
         $activity->save();
 
-        return view('activity.staff.design');
+        return view('activity.staff.dashboard');
     }
 
     /**
