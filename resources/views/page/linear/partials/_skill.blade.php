@@ -23,7 +23,7 @@
                     <input id="{{ $indicator->id . '-' . $choice->id }}" 
                            name="{{ $indicator->id }}" 
                            value="{{ $choice->id }}"
-                           style="transform: scale(2);"
+                           class="scireflect-radio"
                            type="radio" 
                            @if($choice->id == $selections[$indicator->id])
                                 checked 

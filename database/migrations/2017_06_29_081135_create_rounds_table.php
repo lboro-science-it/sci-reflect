@@ -24,6 +24,8 @@ class CreateRoundsTable extends Migration
             $table->integer('round_number')->nullable();
             $table->string('title', 50)->nullable();
             $table->integer('block_id')->nullable();
+            $table->boolean('staff_rate')->default(true);
+            $table->boolean('student_rate')->default(true);
             $table->timestamps();
         });
     }

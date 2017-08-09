@@ -59,7 +59,7 @@ class Activity extends Model
      */
     public function getRoundsData()
     {
-        $rounds = $this->rounds->sortBy('round_number');
+        $rounds = $this->rounds->where(Auth::user()->role . '_rate', true)->sortBy('round_number');
         $currentRoundNumber = Auth::user()->currentRound;
 
         $roundsData = new stdClass();

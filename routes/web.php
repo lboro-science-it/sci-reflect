@@ -48,6 +48,9 @@ Route::prefix('a/{activity}')->group(function() {
         // bulk add students to group
         Route::put('group/{groupId}', 'StudentUserController@bulkGroup');
 
+        // show form for rating a student
+        Route::get('rate/{studentId}', 'RatingController@show');
+
         Route::get('setup', 'ActivityController@showSetup');
     });
 
