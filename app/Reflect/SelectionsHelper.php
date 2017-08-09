@@ -16,18 +16,6 @@ class SelectionsHelper
     }
 
     /**
-     * Deletes selections whose id is in $selectionsToDelete. Manually updates
-     * $user->selections relationship to match the database.
-     * @return void
-     */
-    private function deleteSelections($selectionsToDelete)
-    {
-        if (count($selectionsToDelete) > 0) {
-            DB::table('selections')->whereIn('id', $selectionsToDelete)->delete();
-        }
-    }
-
-    /**
      * Returns an array with $user's response for each indicator in $indicators
      * in $round, or null if there is no response. Use in views:
      * @if($existingResponses[$indicator->id] == $choice->id) checked @endif
@@ -70,29 +58,20 @@ class SelectionsHelper
      */
     public function insertOrUpdateSelections($round, $user)
     {
-        // todo: refactor
-        // todo: validate input
-        $selections = $this->getSelectionsFromRequest(); 
+        // get $requestSelections from request in format $indicatorId => $choiceId
+        $requestSelections = $this->getSelectionsFromRequest();
 
-        if (count($selections) == 0) {
-            return;
-        }
+        if (count($requestSelections) > 0) {
+            // delete existing selections matching the indicator_id, user_id and round_id
+            $indicatorIdsToDelete = array_keys($requestSelections);
+            DB::table('selections')->where('user_id', $user->id)
+                                   ->where('round_id', $round->id)
+                                   ->whereIn('indicator_id', $indicatorIdsToDelete)
+                                   ->delete();
 
-        $existingSelections = $user->selections->where('round_id', '=', $round->id);
-
-        $selectionsToInsert = array();
-        $selectionsToDelete = array();
-
-        foreach($selections as $indicatorId => $choiceId) {
-            $existingSelection = $existingSelections->where('indicator_id', '=', $indicatorId)->first();
-
-            // if user has responded to this indicator differently to new one, delete it
-            if ($existingSelection && $existingSelection->choice_id != $choiceId) {
-                array_push($selectionsToDelete, $existingSelection->id);
-            }
-
-            // if there is no response the same as the new response, insert it
-            if (!($existingSelection && $existingSelection->choice_id == $choiceId)) {
+            // insert new versions of those selections
+            $selectionsToInsert = [];
+            foreach($requestSelections as $indicatorId => $choiceId) {
                 array_push($selectionsToInsert, [
                     'round_id' => $round->id,
                     'indicator_id' => $indicatorId,
@@ -103,24 +82,11 @@ class SelectionsHelper
                 ]);
             }
 
-        }
-
-        $this->deleteSelections($selectionsToDelete);
-        $this->insertSelections($selectionsToInsert);
-        $user->load(['selections' => function ($q) use ($round) {
-            $q->where('round_id', '=', $round->id);
-        }]);
-    }
-
-    /**
-     * Inserts selections based on models in $selectionsToInsert. Updates
-     * $user->selections to match updated database record.
-     * @return void
-     */
-    public function insertSelections($selectionsToInsert)
-    {
-        if (count($selectionsToInsert) > 0) {
             DB::table('selections')->insert($selectionsToInsert);
+            $user->load(['selections' => function ($q) use ($round) {
+                $q->where('round_id', '=', $round->id);
+            }]);
         }
     }
+
 }
