@@ -1,5 +1,5 @@
-<ul class="list-group">
-    @if($rounds->count() > 0)
+@if($rounds->count() > 0)
+    <ul class="list-group">
         <li class="list-group-item">
             <h3>Completed Rounds</h3>
         </li>
@@ -10,5 +10,5 @@
                 </a>
             </li>
         @endforeach
-    @endif
-</ul>
+    </ul>
+@endif
