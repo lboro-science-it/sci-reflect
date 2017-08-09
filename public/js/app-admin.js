@@ -71571,7 +71571,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             if (filterGroupResult == true) {
-                if (this.student.name.toLowerCase().includes(this.filterText.toLowerCase()) || this.filterText == '') {
+                if (this.filterText == '' || this.student.name != '' && this.student.name.toLowerCase().includes(this.filterText.toLowerCase())) {
                     return true;
                 }
             }
