@@ -91,15 +91,4 @@ class ActivityController extends Controller
 
         return view('activity.staff.dashboard');
     }
-
-    /**
-     * Placeholder to show setup view (create prepopulated w/ existing data)
-     *
-     * @param  App\Activity $activity
-     * @return View
-     */
-    public function showSetup(Activity $activity)
-    {
-        return dd('showSetup view');
-    }
 }

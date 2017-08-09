@@ -50,8 +50,6 @@ Route::prefix('a/{activity}')->group(function() {
 
         // show form for rating a student
         Route::get('rate/{studentId}', 'RatingController@show');
-
-        Route::get('setup', 'ActivityController@showSetup');
     });
 
     /**
