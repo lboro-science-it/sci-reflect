@@ -24,7 +24,6 @@ class SkillsHelper
     /**
      * Returns a collection of $skills for the given $user in the given $round
      * based only on the skills in the $round.
-     * todo: base skills on activity's skills, not rounds, with ones not in round grey 
      *
      * @return View
      */
