@@ -163,10 +163,10 @@ class Activity extends Model
             // add required staffMember data for view to array
             array_push($staffArray, [
                 'id' => $staffMember->id,
-                'name' => $staffMember->name,
+                'name' => $staffMember->name ?? '',
                 'email' => $staffMember->email,
-                'groupName' => isset($staffMember->group->name) ?? false,
-                'hasAccessed' => isset($staffMember->pivot->lti_user_id) ? true : false,
+                'groupName' => $staffMember->group->name ?? false,
+                'hasAccessed' => isset($staffMember->pivot->lti_user_id),
                 'lastAccess' => $staffMember->pivot->updated_at,
             ]);
         }
@@ -201,12 +201,12 @@ class Activity extends Model
             // add required student data for view to array
             array_push($studentsArray, [
                 'id' => $student->id,
-                'name' => $student->name,
+                'name' => $student->name ?? '',
                 'email' => $student->email,
-                'groupId' => isset($student->group->id) ? $student->group->id : null,
-                'currentRoundNumber' => isset($student->pivot->current_round) ? $student->pivot->current_round : false,
-                'hasAccessed' => isset($student->pivot->lti_user_id) ? true : false,
-                'complete' => ($student->pivot->complete) ? true : false,
+                'groupId' => $student->group->id ?? null,
+                'currentRoundNumber' => $student->pivot->current_round ?? false,
+                'hasAccessed' => isset($student->pivot->lti_user_id),
+                'complete' => $student->pivot->complete,
                 'rounds' => $roundsArray,
                 'lastAccess' => $student->pivot->updated_at,
             ]);
