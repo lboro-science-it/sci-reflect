@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-show="editGroups.length > 0">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -7,7 +7,7 @@
                 </div>
                 <div class="panel-body">
 
-                    <table class="table" v-show="editGroups">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Group</th>

@@ -23,12 +23,10 @@
         </div>
     </div>
 
-    @if(count($groups))
-        @section('sciReflect')
-            sciReflect.groups = {!! json_encode($groups) !!};
-        @append
-        <group-table :groups="sciReflect.groups"></group-table>
-    @endif
+    @section('sciReflect')
+        sciReflect.groups = {!! json_encode($groups) !!};
+    @append
+    <group-table :groups="sciReflect.groups"></group-table>
 
     <group-bulk></group-bulk>
     <group-batch></group-batch>
