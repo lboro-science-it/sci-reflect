@@ -27,10 +27,19 @@ class LtiController extends Controller
             $tool->handleRequest();
 
             if ($tool->ok) {
-                // auth the launching user if they aren't already launched
+                // auth the launching user if they aren't already authed
                 if (!Auth::check() || Auth::user()->id != $tool->user_id) {
                     Auth::loginUsingId($tool->user_id);
                 }
+
+                // store user role & current round in session for this activity
+                $activities = $request->session()->has('activities') ? $request->session()->get('activities') : [];
+                $activities[$tool->activity_id] = [
+                    'activity_id' => $tool->activity_id,
+                    'currentRoundNumber' => $tool->currentRoundNumber,
+                    'role' => $tool->role
+                ];
+                $request->session()->put('activities', $activities);
 
                 // redirect staff to their routes
                 if ($tool->role == 'staff') {

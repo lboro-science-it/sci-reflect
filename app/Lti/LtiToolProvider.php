@@ -91,6 +91,7 @@ class LtiToolProvider extends ToolProvider
         $this->createOrUpdatePivot($user, $activity, $role);
 
         $currentRoundNumber = $this->getCurrentRoundNumber($user);
+        $this->currentRoundNumber = $currentRoundNumber;
         $currentRound = $activity->rounds->where('round_number', $currentRoundNumber)->first();
 
         $this->format = isset($currentRound->format) ? $currentRound->format : $activity->format;
