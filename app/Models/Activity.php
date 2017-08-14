@@ -194,7 +194,8 @@ class Activity extends Model
             $roundsArray = [];
             foreach($rounds as $round) {
                 array_push($roundsArray, [
-                    'completion' => $student->getCompletion($round)
+                    'completion' => $student->getCompletion($round),
+                    'roundNumber' => $round->round_number
                 ]);
             }
 

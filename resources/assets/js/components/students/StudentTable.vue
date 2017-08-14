@@ -6,7 +6,7 @@
                     <div class="form-inline">
                         <div class="form-group">
                             <button :class="overviewClass" v-on:click="setMode('overview')">Overview</button>
-                            <button :class="rateClass" v-on:click="setMode('rate')">Rate</button>
+                            <button :class="detailsClass" v-on:click="setMode('details')">Details</button>
                         </div>
                         <div class="form-group">
                             <select class="form-control input-lg" v-model="filterGroup">
@@ -33,15 +33,13 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th v-show="mode == 'overview'">Group</th>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th v-show="mode == 'overview'">Current round</th>
-                                <th v-show="mode == 'overview'" v-for="round in rounds">{{ round.title }}</th>
-                                <th v-show="mode == 'overview'">Accessed?</th>
-                                <th v-show="mode == 'overview'">Completed?</th>
-                                <th v-show="mode == 'overview'">Last access</th>
-                                <th v-show="mode == 'rate'">Rate</th>
+                                <th v-show="mode == 'overview'">Group</th>
+                                <th v-show="mode == 'overview'" colspan="2" v-for="round in rounds">{{ round.title }}</th>
+                                <th v-show="mode == 'details'">Accessed?</th>
+                                <th v-show="mode == 'details'">Completed?</th>
+                                <th v-show="mode == 'details'">Last access</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -87,11 +85,11 @@
         },
 
         computed: {
+            detailsClass() {
+                return (this.mode == 'details') ? this.activeBtnClass : this.inactiveBtnClass;
+            },
             overviewClass () {
                 return (this.mode == 'overview') ? this.activeBtnClass : this.inactiveBtnClass;
-            },
-            rateClass () {
-                return (this.mode == 'rate') ? this.activeBtnClass : this.inactiveBtnClass;
             }
         },
 

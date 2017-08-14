@@ -6,20 +6,30 @@
                    v-bind:true-value="true"
                    v-bind:false-false="false">
         </td>
+        <td>{{ student.name }}</td>
         <td v-show="mode == 'overview'">
             <select v-model="editGroupId" v-on:change="changedGroup">
                 <option value="null">No group</option>
                 <option v-for="group in groups" :value="group.id">{{ group.name }}</option>
             </select>
         </td>
-        <td>{{ student.name }}</td>
-        <td>{{ student.email }}</td>
-        <td v-show="mode == 'overview'" class="todo"><p v-if="student.currentRoundNumber">{{ student.currentRoundNumber }}</p><p v-else>Complete</p></td>
-        <td v-show="mode == 'overview'" v-for="round in student.rounds" class="todo">{{ round.completion }}</td>
-        <td v-show="mode == 'overview'" class="todo"><p v-if="student.hasAccessed">Yes</p><p v-else>No</p></td>
-        <td v-show="mode == 'overview'" class="todo"><p v-if="student.complete">Yes</p><p v-else>No</p></td>
-        <td v-show="mode == 'overview'" class="todo"><p v-if="student.hasAccessed">{{ student.lastAccessed }}</p></td>
-        <td v-show="mode == 'rate'"><a class="btn btn-lg btn-success" :href="rateStudentLink" role="button">Rate</a></td>
+        <template v-for="round in student.rounds">
+            <td v-show="mode == 'overview'"
+                :class="{ 
+                    info: student.currentRoundNumber == round.roundNumber,
+                    success: round.completion == '100%'
+                }">
+                {{ round.completion }}
+            </td>
+            <td v-show="mode == 'overview'">
+                <a class="btn btn-success" :href="getRateLink(round.roundNumber)">rate</a>
+                ** todo only show if can rate **
+            </td>
+        </template>
+       
+        <td v-show="mode == 'details'" :class="{ success: student.hasAccessed }"><p v-if="student.hasAccessed">Yes</p><p v-else>No</p></td>
+        <td v-show="mode == 'details'" :class="{ success: student.complete }"><p v-if="student.complete">Yes</p><p v-else>No</p></td>
+        <td v-show="mode == 'details'"><p v-if="student.hasAccessed">{{ student.lastAccessed }}</p></td>
     </tr>
 </template>
 
@@ -43,14 +53,8 @@
             'student'
         ],
 
-        computed: {
-            rateStudentLink () {
-                return window.sciReflect.baseUrl + '/rate/' + this.student.id;
-            }
-        },
-
         methods: {
-            // when group drop down is changed, persist to database
+            // when group dropdown is changed, persist to database
             changedGroup() {
                 if (this.editGroupId != this.currentGroupId) {
                     axios.put('student/' + this.student.id + '/group', {
@@ -69,6 +73,11 @@
                 } else {
                     this.$emit('unchecked', this.student.id);
                 }
+            },
+
+            // returns link for rating the row's student for given round
+            getRateLink(roundNumber) {
+                return window.sciReflect.baseUrl + '/r/' + roundNumber + '/rate/' + this.student.id;
             },
 
             // only show row if it fits filter criteria

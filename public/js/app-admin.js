@@ -71514,6 +71514,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -71529,14 +71539,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     props: ['filterGroup', 'filterText', 'groups', 'mode', 'student'],
 
-    computed: {
-        rateStudentLink: function rateStudentLink() {
-            return window.sciReflect.baseUrl + '/rate/' + this.student.id;
-        }
-    },
-
     methods: {
-        // when group drop down is changed, persist to database
+        // when group dropdown is changed, persist to database
         changedGroup: function changedGroup() {
             var _this = this;
 
@@ -71558,6 +71562,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 this.$emit('unchecked', this.student.id);
             }
+        },
+
+
+        // returns link for rating the row's student for given round
+        getRateLink: function getRateLink(roundNumber) {
+            return window.sciReflect.baseUrl + '/r/' + roundNumber + '/rate/' + this.student.id;
         },
 
 
@@ -71628,7 +71638,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  })]), _vm._v(" "), _c('td', {
+  })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.name))]), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -71663,62 +71673,59 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": group.id
       }
     }, [_vm._v(_vm._s(group.name))])
-  })], 2)]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.email))]), _vm._v(" "), _c('td', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
-    }],
-    staticClass: "todo"
-  }, [(_vm.student.currentRoundNumber) ? _c('p', [_vm._v(_vm._s(_vm.student.currentRoundNumber))]) : _c('p', [_vm._v("Complete")])]), _vm._v(" "), _vm._l((_vm.student.rounds), function(round) {
-    return _c('td', {
+  })], 2)]), _vm._v(" "), _vm._l((_vm.student.rounds), function(round) {
+    return [_c('td', {
       directives: [{
         name: "show",
         rawName: "v-show",
         value: (_vm.mode == 'overview'),
         expression: "mode == 'overview'"
       }],
-      staticClass: "todo"
-    }, [_vm._v(_vm._s(round.completion))])
+      class: {
+        info: _vm.student.currentRoundNumber == round.roundNumber,
+          success: round.completion == '100%'
+      }
+    }, [_vm._v("\n            " + _vm._s(round.completion) + "\n        ")]), _vm._v(" "), _c('td', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.mode == 'overview'),
+        expression: "mode == 'overview'"
+      }]
+    }, [_c('a', {
+      staticClass: "btn btn-success",
+      attrs: {
+        "href": _vm.getRateLink(round.roundNumber)
+      }
+    }, [_vm._v("rate")]), _vm._v("\n            ** todo only show if can rate **\n        ")])]
   }), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
+      value: (_vm.mode == 'details'),
+      expression: "mode == 'details'"
     }],
-    staticClass: "todo"
+    class: {
+      success: _vm.student.hasAccessed
+    }
   }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
+      value: (_vm.mode == 'details'),
+      expression: "mode == 'details'"
     }],
-    staticClass: "todo"
+    class: {
+      success: _vm.student.complete
+    }
   }, [(_vm.student.complete) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
-    }],
-    staticClass: "todo"
-  }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.student.lastAccessed))]) : _vm._e()]), _vm._v(" "), _c('td', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.mode == 'rate'),
-      expression: "mode == 'rate'"
+      value: (_vm.mode == 'details'),
+      expression: "mode == 'details'"
     }]
-  }, [_c('a', {
-    staticClass: "btn btn-lg btn-success",
-    attrs: {
-      "href": _vm.rateStudentLink,
-      "role": "button"
-    }
-  }, [_vm._v("Rate")])])], 2)
+  }, [(_vm.student.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.student.lastAccessed))]) : _vm._e()])], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -71846,8 +71853,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -71866,11 +71871,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     computed: {
+        detailsClass: function detailsClass() {
+            return this.mode == 'details' ? this.activeBtnClass : this.inactiveBtnClass;
+        },
         overviewClass: function overviewClass() {
             return this.mode == 'overview' ? this.activeBtnClass : this.inactiveBtnClass;
-        },
-        rateClass: function rateClass() {
-            return this.mode == 'rate' ? this.activeBtnClass : this.inactiveBtnClass;
         }
     },
 
@@ -71931,13 +71936,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Overview")]), _vm._v(" "), _c('button', {
-    class: _vm.rateClass,
+    class: _vm.detailsClass,
     on: {
       "click": function($event) {
-        _vm.setMode('rate')
+        _vm.setMode('details')
       }
     }
-  }, [_vm._v("Rate")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Details")])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('select', {
     directives: [{
@@ -72001,58 +72006,47 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-body"
   }, [_c('table', {
     staticClass: "table"
-  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', {
+  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.mode == 'overview'),
       expression: "mode == 'overview'"
     }]
-  }, [_vm._v("Group")]), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
-    }]
-  }, [_vm._v("Current round")]), _vm._v(" "), _vm._l((_vm.rounds), function(round) {
+  }, [_vm._v("Group")]), _vm._v(" "), _vm._l((_vm.rounds), function(round) {
     return _c('th', {
       directives: [{
         name: "show",
         rawName: "v-show",
         value: (_vm.mode == 'overview'),
         expression: "mode == 'overview'"
-      }]
+      }],
+      attrs: {
+        "colspan": "2"
+      }
     }, [_vm._v(_vm._s(round.title))])
   }), _vm._v(" "), _c('th', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
+      value: (_vm.mode == 'details'),
+      expression: "mode == 'details'"
     }]
   }, [_vm._v("Accessed?")]), _vm._v(" "), _c('th', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
+      value: (_vm.mode == 'details'),
+      expression: "mode == 'details'"
     }]
   }, [_vm._v("Completed?")]), _vm._v(" "), _c('th', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: (_vm.mode == 'overview'),
-      expression: "mode == 'overview'"
+      value: (_vm.mode == 'details'),
+      expression: "mode == 'details'"
     }]
-  }, [_vm._v("Last access")]), _vm._v(" "), _c('th', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.mode == 'rate'),
-      expression: "mode == 'rate'"
-    }]
-  }, [_vm._v("Rate")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student, index) {
+  }, [_vm._v("Last access")])], 2)]), _vm._v(" "), _c('tbody', _vm._l((_vm.students), function(student, index) {
     return _c('student-row', {
       key: student.id,
       attrs: {

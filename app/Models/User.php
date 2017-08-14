@@ -48,7 +48,7 @@ class User extends Authenticatable
             return null;
         }
 
-        return number_format($completion * 100, 1) . '%';
+        return number_format($completion * 100, 0) . '%';
     }
 
     public function getCompletionDecimal($round, $page = null)
