@@ -17,6 +17,10 @@ Vue.component('group-bulk', require('./components/groups/GroupBulk.vue'));
 Vue.component('group-row', require('./components/groups/GroupRow.vue'));
 Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 
+Vue.component('skill-list-item', require('./components/ratings/SkillListItem.vue'));
+Vue.component('skill-rater', require('./components/ratings/SkillRater.vue'));
+Vue.component('student-rater', require('./components/ratings/StudentRater.vue'));
+
 Vue.component('staff-row', require('./components/staff/StaffRow.vue'));
 Vue.component('staff-table', require('./components/staff/StaffTable.vue'));
 
