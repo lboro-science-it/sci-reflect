@@ -49,7 +49,7 @@ Route::prefix('a/{activity}')->group(function() {
         Route::put('group/{groupId}', 'StudentUserController@bulkGroup');
 
         // show form for rating a student
-        Route::get('rate/{studentId}', 'RatingController@show');
+        Route::get('r/{round}/rate/{studentId}', 'RatingController@show');
     });
 
     /**

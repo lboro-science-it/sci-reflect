@@ -23,7 +23,7 @@
             </td>
             <td v-show="mode == 'overview'">
                 <a class="btn btn-success" :href="getRateLink(round.roundNumber)">rate</a>
-                ** todo only show if can rate **
+                ** todo: can rate; has rated **
             </td>
         </template>
        

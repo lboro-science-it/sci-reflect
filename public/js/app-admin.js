@@ -71697,7 +71697,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "href": _vm.getRateLink(round.roundNumber)
       }
-    }, [_vm._v("rate")]), _vm._v("\n            ** todo only show if can rate **\n        ")])]
+    }, [_vm._v("rate")]), _vm._v("\n            ** todo: can rate; has rated **\n        ")])]
   }), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",
