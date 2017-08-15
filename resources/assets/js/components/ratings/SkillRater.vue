@@ -1,38 +1,23 @@
 <template>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3>
-                Rate {{ studentName }}
-            </h3>
-
-        </div>
-
-        <div class="panel-body text-center">
+    <div class="text-center">
+        <transition name="fade" mode="out-in">
+            <h3 :key="skill.id">{{ skill.title }}</h3>
+        </transition>
+        <transition name="fade" mode="out-in">
+            <p style="padding-bottom: 20px;"
+               :key="skill.id">
+               {{ skill.description }}
+           </p>
+       </transition>
+        <div v-for="choice in choices" :style="buttonSpacer">
             <transition name="fade" mode="out-in">
-                <h3 :key="skill.id">{{ skill.title }}</h3>
+                <button class="btn btn-lg choice-btn"
+                        :class="getBtnClass(choice.value)"
+                        v-on:click="updateRating(choice.value)"
+                        :key="skill.id">
+                    {{ choice.label }}
+                </button>
             </transition>
-            <transition name="fade" mode="out-in">
-                <p style="padding-bottom: 20px;"
-                   :key="skill.id">
-                   {{ skill.description }}
-               </p>
-           </transition>
-            <div v-for="choice in choices" :style="buttonSpacer">
-                <transition name="fade" mode="out-in">
-                    <button class="btn btn-lg btn-success"
-                            v-on:click="updateRating(choice.value)"
-                            :key="skill.id">
-                        {{ choice.label }}
-                    </button>
-                </transition>
-            </div>
-        </div>
-
-        <div class="panel-footer text-center">
-            <button class="btn btn-lg btn-success"
-                    v-on:click="storeRatings">
-                Save
-            </button>
         </div>
     </div>
 </template>
@@ -58,15 +43,16 @@ export default {
 
     props: [
         'choices',
-        'saveBtn',
-        'skill',
-        'studentName'
+        'skill'
     ],
 
     methods: {
-        // emit an event to store ratings to the database
-        storeRatings() {
-            this.$emit('store-ratings');
+        getBtnClass(value) {
+            if (this.skill.rating == value) {
+                return 'btn-success';
+            } else {
+                return 'btn-info';
+            }
         },
 
         // update the skill in the parent array

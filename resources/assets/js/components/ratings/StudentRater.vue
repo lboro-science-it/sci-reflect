@@ -17,13 +17,26 @@
         </div>
 
         <div class="col-md-7">
-            <skill-rater :skill="skills[activeSkillIndex]"
-                         :choices="choices"
-                         :studentName="studentName"
-                         v-on:update-rating="updateRating"
-                         v-on:store-ratings="storeRatings"
-                         :saveBtn="!unratedSkillIds.length">
-            </skill-rater>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>
+                        Rate {{ studentName }}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <skill-rater :skill="skills[activeSkillIndex]"
+                                 :choices="choices"
+                                 v-on:update-rating="updateRating">
+                    </skill-rater>
+                </div>
+                <div class="panel-footer text-right">
+                    <button class="btn btn-lg"
+                            :class="saveBtnClass"
+                            v-on:click="storeRatings">
+                        {{ saveText }}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -35,6 +48,7 @@
         data () {
             return {
                 activeSkillIndex: 0,
+                saveText: 'Save',
                 unratedSkillIds: []
             }
         },
@@ -46,6 +60,16 @@
             'studentId',
             'studentName'
         ],
+
+        computed: {
+            saveBtnClass() {
+                if (this.unratedSkillIds.length > 0) {
+                    return 'btn-info';
+                } else {
+                    return 'btn-success';
+                }
+            }
+        },
 
         mounted () {
             // create unratedSkillIds array to track when to show done button

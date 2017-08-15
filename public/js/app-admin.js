@@ -72369,6 +72369,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -72376,12 +72389,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             activeSkillIndex: 0,
+            saveText: 'Save',
             unratedSkillIds: []
         };
     },
 
 
     props: ['skills', 'choices', 'roundNumber', 'studentId', 'studentName'],
+
+    computed: {
+        saveBtnClass: function saveBtnClass() {
+            if (this.unratedSkillIds.length > 0) {
+                return 'btn-info';
+            } else {
+                return 'btn-success';
+            }
+        }
+    },
 
     mounted: function mounted() {
         // create unratedSkillIds array to track when to show done button
@@ -72474,18 +72498,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-7"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("\n                    Rate " + _vm._s(_vm.studentName) + "\n                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
   }, [_c('skill-rater', {
     attrs: {
       "skill": _vm.skills[_vm.activeSkillIndex],
-      "choices": _vm.choices,
-      "studentName": _vm.studentName,
-      "saveBtn": !_vm.unratedSkillIds.length
+      "choices": _vm.choices
     },
     on: {
-      "update-rating": _vm.updateRating,
-      "store-ratings": _vm.storeRatings
+      "update-rating": _vm.updateRating
     }
-  })], 1)])
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "panel-footer text-right"
+  }, [_c('button', {
+    staticClass: "btn btn-lg",
+    class: _vm.saveBtnClass,
+    on: {
+      "click": _vm.storeRatings
+    }
+  }, [_vm._v("\n                    " + _vm._s(_vm.saveText) + "\n                ")])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -72531,21 +72566,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -72566,12 +72586,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['choices', 'saveBtn', 'skill', 'studentName'],
+    props: ['choices', 'skill'],
 
     methods: {
-        // emit an event to store ratings to the database
-        storeRatings: function storeRatings() {
-            this.$emit('store-ratings');
+        getBtnClass: function getBtnClass(value) {
+            if (this.skill.rating == value) {
+                return 'btn-success';
+            } else {
+                return 'btn-info';
+            }
         },
 
 
@@ -72589,11 +72612,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('h3', [_vm._v("\n            Rate " + _vm._s(_vm.studentName) + "\n        ")])]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body text-center"
+    staticClass: "text-center"
   }, [_c('transition', {
     attrs: {
       "name": "fade",
@@ -72611,7 +72630,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "padding-bottom": "20px"
     }
-  }, [_vm._v("\n               " + _vm._s(_vm.skill.description) + "\n           ")])]), _vm._v(" "), _vm._l((_vm.choices), function(choice) {
+  }, [_vm._v("\n           " + _vm._s(_vm.skill.description) + "\n       ")])]), _vm._v(" "), _vm._l((_vm.choices), function(choice) {
     return _c('div', {
       style: (_vm.buttonSpacer)
     }, [_c('transition', {
@@ -72621,21 +72640,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('button', {
       key: _vm.skill.id,
-      staticClass: "btn btn-lg btn-success",
+      staticClass: "btn btn-lg choice-btn",
+      class: _vm.getBtnClass(choice.value),
       on: {
         "click": function($event) {
           _vm.updateRating(choice.value)
         }
       }
-    }, [_vm._v("\n                    " + _vm._s(choice.label) + "\n                ")])])], 1)
-  })], 2), _vm._v(" "), _c('div', {
-    staticClass: "panel-footer text-center"
-  }, [_c('button', {
-    staticClass: "btn btn-lg btn-success",
-    on: {
-      "click": _vm.storeRatings
-    }
-  }, [_vm._v("\n            Save\n        ")])])])
+    }, [_vm._v("\n                " + _vm._s(choice.label) + "\n            ")])])], 1)
+  })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

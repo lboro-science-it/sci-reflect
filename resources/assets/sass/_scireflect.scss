@@ -25,6 +25,11 @@
     text-decoration: none;
 }
 
+.choice-btn:active,
+.choice-btn:focus {
+    background-color: #2ab27b;
+}
+
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity .2s;
