@@ -8,17 +8,27 @@
         </div>
 
         <div class="panel-body text-center">
-            <h3>{{ skill.title }}</h3>
-            <p style="padding-bottom: 20px;">{{ skill.description }}</p>
+            <transition name="fade" mode="out-in">
+                <h3 :key="skill.id">{{ skill.title }}</h3>
+            </transition>
+            <transition name="fade" mode="out-in">
+                <p style="padding-bottom: 20px;"
+                   :key="skill.id">
+                   {{ skill.description }}
+               </p>
+           </transition>
             <div v-for="choice in choices" :style="buttonSpacer">
-                <button class="btn btn-lg btn-success"
-                        v-on:click="updateRating(choice.value)">
-                    {{ choice.label }}
-                </button>
+                <transition name="fade" mode="out-in">
+                    <button class="btn btn-lg btn-success"
+                            v-on:click="updateRating(choice.value)"
+                            :key="skill.id">
+                        {{ choice.label }}
+                    </button>
+                </transition>
             </div>
         </div>
 
-        <div class="panel-footer text-center" v-show="saveBtn">
+        <div class="panel-footer text-center" v-if="saveBtn">
             <button class="btn btn-lg btn-success"
                     v-on:click="storeRatings">
                 Save

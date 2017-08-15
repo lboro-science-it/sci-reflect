@@ -48,11 +48,14 @@
         ],
 
         mounted () {
-            this.skills.forEach(skill => {
+            // create unratedSkillIds array to track when to show done button
+            let skillsLength = this.skills.length;
+            for (let i = 0; i < skillsLength; i++) {
+                let skill = this.skills[i];
                 if (skill.rating === null) {
                     this.unratedSkillIds.push(skill.id);
                 }
-            });
+            }
         },
 
         methods: {
@@ -62,10 +65,21 @@
             },
 
             storeRatings() {
+                let postData = {};
 
-                axios.post(window.sciReflect.baseUrl + '/r/' + this.roundNumber + '/rate/' + this.studentId, {
-                    test: 'data'
-                }).then(response => {
+                // create object of skill_id => rating for insert to db
+                let skillsLength = this.skills.length;
+                for (let i = 0; i < skillsLength; i++) {
+                    let skill = this.skills[i];
+                    postData[skill.id] = skill.rating;
+                }
+                
+                let postUrl = window.sciReflect.baseUrl + '/r/' + this.roundNumber + '/rate/' + this.studentId;
+
+                axios.post(postUrl, {
+                    'skills': postData
+                })
+                .then(response => {
                     console.log(response.data);
                 });
 

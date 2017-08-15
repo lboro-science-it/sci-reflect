@@ -72384,13 +72384,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['skills', 'choices', 'roundNumber', 'studentId', 'studentName'],
 
     mounted: function mounted() {
-        var _this = this;
-
-        this.skills.forEach(function (skill) {
+        // create unratedSkillIds array to track when to show done button
+        var skillsLength = this.skills.length;
+        for (var i = 0; i < skillsLength; i++) {
+            var skill = this.skills[i];
             if (skill.rating === null) {
-                _this.unratedSkillIds.push(skill.id);
+                this.unratedSkillIds.push(skill.id);
             }
-        });
+        }
     },
 
 
@@ -72400,9 +72401,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.activeSkillIndex = index;
         },
         storeRatings: function storeRatings() {
+            var postData = {};
 
-            axios.post(window.sciReflect.baseUrl + '/r/' + this.roundNumber + '/rate/' + this.studentId, {
-                test: 'data'
+            // create object of skill_id => rating for insert to db
+            var skillsLength = this.skills.length;
+            for (var i = 0; i < skillsLength; i++) {
+                var skill = this.skills[i];
+                postData[skill.id] = skill.rating;
+            }
+
+            var postUrl = window.sciReflect.baseUrl + '/r/' + this.roundNumber + '/rate/' + this.studentId;
+
+            axios.post(postUrl, {
+                'skills': postData
             }).then(function (response) {
                 console.log(response.data);
             });
@@ -72525,6 +72536,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -72573,35 +72594,48 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_c('h3', [_vm._v("\n            Rate " + _vm._s(_vm.studentName) + "\n        ")])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body text-center"
-  }, [_c('h3', [_vm._v(_vm._s(_vm.skill.title))]), _vm._v(" "), _c('p', {
+  }, [_c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('h3', {
+    key: _vm.skill.id
+  }, [_vm._v(_vm._s(_vm.skill.title))])]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('p', {
+    key: _vm.skill.id,
     staticStyle: {
       "padding-bottom": "20px"
     }
-  }, [_vm._v(_vm._s(_vm.skill.description))]), _vm._v(" "), _vm._l((_vm.choices), function(choice) {
+  }, [_vm._v("\n               " + _vm._s(_vm.skill.description) + "\n           ")])]), _vm._v(" "), _vm._l((_vm.choices), function(choice) {
     return _c('div', {
       style: (_vm.buttonSpacer)
+    }, [_c('transition', {
+      attrs: {
+        "name": "fade",
+        "mode": "out-in"
+      }
     }, [_c('button', {
+      key: _vm.skill.id,
       staticClass: "btn btn-lg btn-success",
       on: {
         "click": function($event) {
           _vm.updateRating(choice.value)
         }
       }
-    }, [_vm._v("\n                " + _vm._s(choice.label) + "\n            ")])])
-  })], 2), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.saveBtn),
-      expression: "saveBtn"
-    }],
+    }, [_vm._v("\n                    " + _vm._s(choice.label) + "\n                ")])])], 1)
+  })], 2), _vm._v(" "), (_vm.saveBtn) ? _c('div', {
     staticClass: "panel-footer text-center"
   }, [_c('button', {
     staticClass: "btn btn-lg btn-success",
     on: {
       "click": _vm.storeRatings
     }
-  }, [_vm._v("\n            Save\n        ")])])])
+  }, [_vm._v("\n            Save\n        ")])]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

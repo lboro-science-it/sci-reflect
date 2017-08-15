@@ -48,8 +48,28 @@ class RatingController extends Controller
              ->with('student', $student);
     }
 
+    /** 
+     * Store ratings for an array of skills, where rated = $studentId and
+     * rater = Auth::user()->id
+     *
+     */
     public function store(Activity $activity, Round $round, $studentId, Request $request)
     {
+        $rater_id = Auth::user()->id;
+        $rated_id = $studentId;
+        $round_id = $round->id;
+
+        return $request->input('skills');
+
+        $ratingsToInsert = [];
+        // foreach request->skills as skill
+        // skill_id = skill->id
+        // rating = skill->rating
+        // created_at = date('Y-m-d H:i:s')
+        // updated_at = date('Y-m-d H:i:s')
+        // array push all the above
+        // DB::insert all the above
+
         return 'success';
 
     }
