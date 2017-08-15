@@ -5,9 +5,9 @@ namespace App\Reflect;
 use Auth;
 
 class BlockContentParser {
-    protected $openTag = '{{';
+    protected $openTag = '{$';
 
-    protected $closeTag = '}}';
+    protected $closeTag = '$}';
 
     protected $tags = [];
 
