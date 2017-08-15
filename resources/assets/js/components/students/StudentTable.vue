@@ -51,7 +51,8 @@
                                          :filterGroup="filterGroup"
                                          :mode="mode"
                                          v-on:checked="checked(index)"
-                                         v-on:unchecked="unchecked(index)">
+                                         v-on:unchecked="unchecked(index)"
+                                         :checked="student.checked">
                             </student-row>
                         </tbody>
                     </table>
@@ -76,7 +77,6 @@
             return {
                 activeBtnClass: 'btn btn-lg btn-success',
                 bulkGroupId: null,
-                checkedStudents: [],
                 filterText: '',
                 filterGroup: 'all',
                 inactiveBtnClass: 'btn btn-lg btn-info',
@@ -102,25 +102,43 @@
 
         methods: {
             bulkGroup() {
-                if (this.bulkGroupId != null && this.checkedStudents.length > 0) {
-                    axios.put(this.putUrl + '/' + this.bulkGroupId, {
-                        students: this.checkedStudents
-                    })
-                    .then(response => {
-                        if (response.data == 'success') {
-                            // todo: update each row's group
-                            // uncheck all checkboxes
-                            this.checkedStudents = [];
-                            // reset the select
-                            this.bulkGroupId = null
+                if (this.bulkGroupId != null) {
+                    // determine which students are checked at the moment
+                    let checkedStudents = [];
+                    let studentsLength = this.students.length;
+                    for (let i = 0; i < studentsLength; i++) {
+                        let student = this.students[i];
+                        if (student.checked) {
+                            checkedStudents.push(student.id);
                         }
-                    });
+                    }
 
+                    if (checkedStudents.length > 0) {
+                        console.log(checkedStudents); 
+                        axios.put(this.putUrl + '/' + this.bulkGroupId, {
+                            students: checkedStudents
+                        })
+                        .then(response => {
+                            if (response.data == 'success') {
+                                // reset all students' checked status
+                                let studentsLength = this.students.length;
+                                for (let i = 0; i < studentsLength; i++) {
+                                    let student = this.students[i];
+                                    student.checked = false;
+                                    student.groupId = this.bulkGroupId;
+                                }
+
+                                // todo: update each row's group
+                                // reset the select
+                                this.bulkGroupId = null
+                            }
+                        });
+                    }
                 }
             },
 
             checked(index) {
-                this.checkedStudents.push(this.students[index].id);
+                this.students[index].checked = true;
             },
 
             setMode(mode) {
@@ -128,7 +146,7 @@
             },
 
             unchecked(index) {
-                this.checkedStudents.splice(this.checkedStudents.indexOf(this.students[index].id), 1);
+                this.students[index].checked = false;
             }
         }
     }

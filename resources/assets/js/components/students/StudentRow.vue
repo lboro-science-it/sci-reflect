@@ -1,10 +1,11 @@
 <template>
     <tr v-show="showRow()">
         <td><input type="checkbox"
-                   v-model="checked"
+                   :checked="checked"
+                   v-model="checkedStatus"
                    v-on:change="checkboxChanged"
                    v-bind:true-value="true"
-                   v-bind:false-false="false">
+                   v-bind:false-value="false">
         </td>
         <td>{{ (student.name != '') ? student.name : student.email }}</td>
         <td v-show="mode == 'overview'">
@@ -43,19 +44,26 @@
     export default {
         data () {
             return {
-                checked: false,
+                checkedStatus: false,
                 currentGroupId: this.student.groupId,
                 editGroupId: this.student.groupId
             }
         },
 
         props: [
+            'checked',
             'filterGroup',
             'filterText',
             'groups',
             'mode',
             'student'
         ],
+
+        watch: {
+            checked () {
+                this.checkedStatus = this.checked;
+            }
+        },
 
         methods: {
             // when group dropdown is changed, persist to database
@@ -72,10 +80,10 @@
 
             // when checkbox is checked, store in parent array
             checkboxChanged() {
-                if (this.checked) {
-                    this.$emit('checked', this.student.id);
+                if (this.checkedStatus) {
+                    this.$emit('checked');
                 } else {
-                    this.$emit('unchecked', this.student.id);
+                    this.$emit('unchecked');
                 }
             },
 
