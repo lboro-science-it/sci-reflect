@@ -6,7 +6,7 @@
                    v-bind:true-value="true"
                    v-bind:false-false="false">
         </td>
-        <td>{{ student.name }}</td>
+        <td>{{ (student.name != '') ? student.name : student.email }}</td>
         <td v-show="mode == 'overview'">
             <select v-model="editGroupId" v-on:change="changedGroup">
                 <option value="null">No group</option>

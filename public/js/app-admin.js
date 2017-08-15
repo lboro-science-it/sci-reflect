@@ -71650,7 +71650,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.student.name))]), _vm._v(" "), _c('td', {
+  })]), _vm._v(" "), _c('td', [_vm._v(_vm._s((_vm.student.name != '') ? _vm.student.name : _vm.student.email))]), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",
       rawName: "v-show",
