@@ -15,7 +15,7 @@
                         :class="getBtnClass(choice.value)"
                         v-on:click="updateRating(choice.value)"
                         :key="skill.id">
-                    {{ choice.label }}
+                    {{ choice.label !== '' ? choice.label : '(value: ' + choice.value + ')' }}
                 </button>
             </transition>
         </div>

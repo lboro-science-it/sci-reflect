@@ -72649,7 +72649,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.updateRating(choice.value)
         }
       }
-    }, [_vm._v("\n                " + _vm._s(choice.label) + "\n            ")])])], 1)
+    }, [_vm._v("\n                " + _vm._s(choice.label !== '' ? choice.label : '(value: ' + choice.value + ')') + "\n            ")])])], 1)
   })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
