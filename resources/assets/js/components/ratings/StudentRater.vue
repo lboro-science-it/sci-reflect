@@ -29,12 +29,21 @@
                                  v-on:update-rating="updateRating">
                     </skill-rater>
                 </div>
-                <div class="panel-footer text-right">
-                    <button class="btn btn-lg"
-                            :class="saveBtnClass"
-                            v-on:click="storeRatings">
-                        {{ saveText }}
-                    </button>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-xs-6 text-left">
+                            <a class="btn btn-lg btn-success" :href="homeUrl">
+                                Back to Dashboard
+                            </a>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <button class="btn btn-lg"
+                                    :class="saveBtnClass"
+                                    v-on:click="storeRatings">
+                                {{ saveText }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,6 +64,7 @@
 
         props: [
             'choices',
+            'homeUrl',
             'postUrl',
             'roundNumber',
             'skills',

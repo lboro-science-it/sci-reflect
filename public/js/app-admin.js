@@ -71532,6 +71532,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -71701,11 +71705,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         expression: "mode == 'overview'"
       }]
     }, [_c('a', {
-      staticClass: "btn btn-success",
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (round.staffCanRate),
+        expression: "round.staffCanRate"
+      }],
+      staticClass: "btn",
+      class: {
+        'disabled': round.staffHasRated,
+          'btn-success': round.staffHasRated,
+          'btn-info': !round.staffHasRated
+      },
       attrs: {
         "href": _vm.getRateLink(round.roundNumber)
       }
-    }, [_vm._v("rate")]), _vm._v("\n            ** todo: can rate; has rated **\n        ")])]
+    }, [_vm._v("Rate")])])]
   }), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",
@@ -72386,6 +72401,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -72399,7 +72423,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['choices', 'postUrl', 'roundNumber', 'skills', 'studentId', 'studentName'],
+    props: ['choices', 'homeUrl', 'postUrl', 'roundNumber', 'skills', 'studentId', 'studentName'],
 
     computed: {
         saveBtnClass: function saveBtnClass() {
@@ -72517,14 +72541,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "update-rating": _vm.updateRating
     }
   })], 1), _vm._v(" "), _c('div', {
-    staticClass: "panel-footer text-right"
+    staticClass: "panel-footer"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-6 text-left"
+  }, [_c('a', {
+    staticClass: "btn btn-lg btn-success",
+    attrs: {
+      "href": _vm.homeUrl
+    }
+  }, [_vm._v("\n                            Back to Dashboard\n                        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 text-right"
   }, [_c('button', {
     staticClass: "btn btn-lg",
     class: _vm.saveBtnClass,
     on: {
       "click": _vm.storeRatings
     }
-  }, [_vm._v("\n                    " + _vm._s(_vm.saveText) + "\n                ")])])])])])
+  }, [_vm._v("\n                            " + _vm._s(_vm.saveText) + "\n                        ")])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"

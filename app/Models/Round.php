@@ -103,4 +103,9 @@ class Round extends Model
 
         return true;
     }
+
+    public function ratings()
+    {
+        return $this->hasMany('App\Rating');
+    }
 }

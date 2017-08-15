@@ -17,7 +17,8 @@ Rating {{ $student->name }} in {{ $round->title }}
                    student-id="{{ $student->id }}"
                    student-name="{{ $student->name }}"
                    round-number="{{ $round->round_number }}"
-                   post-url="{{ url('a/' . $activity->id . '/r/' . $round->round_number . '/rate/' . $student->id) }}">
+                   post-url="{{ url('a/' . $activity->id . '/r/' . $round->round_number . '/rate/' . $student->id) }}"
+                   home-url="{{ url('a/' . $activity->id ) }}">
     </student-rater>
 
 @endsection

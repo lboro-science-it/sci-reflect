@@ -195,7 +195,9 @@ class Activity extends Model
             foreach($rounds as $round) {
                 array_push($roundsArray, [
                     'completion' => $student->getCompletion($round),
-                    'roundNumber' => $round->round_number
+                    'roundNumber' => $round->round_number,
+                    'staffCanRate' => $round->staff_rate ? true : false,
+                    'staffHasRated' => $student->staffHasRated($round)
                 ]);
             }
 

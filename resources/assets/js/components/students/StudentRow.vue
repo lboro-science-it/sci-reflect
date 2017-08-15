@@ -22,8 +22,12 @@
                 {{ round.completion }}
             </td>
             <td v-show="mode == 'overview'">
-                <a class="btn btn-success" :href="getRateLink(round.roundNumber)">rate</a>
-                ** todo: can rate; has rated **
+                <a class="btn"
+                   :href="getRateLink(round.roundNumber)"
+                   :class="{ 'disabled': round.staffHasRated,
+                             'btn-success': round.staffHasRated,
+                             'btn-info': !round.staffHasRated }"
+                   v-show="round.staffCanRate">Rate</a>
             </td>
         </template>
        

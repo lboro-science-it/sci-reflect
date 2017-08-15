@@ -131,6 +131,23 @@ class User extends Authenticatable
         ]);
     }
 
+    /**
+     * Returns true if a staff member has rated the user for each skill in
+     * the round.
+     */
+    public function staffHasRated($round)
+    {
+        $skills = $round->getSkills();
+        $ratings = $round->ratings->where('rated_id', $this->id)
+                                   ->where('rater_id', '<>', $this->id);
+
+        if ($skills->count() == $ratings->count()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function ratings()
     {
         return $this->hasMany('App\Rating', 'rater_id');
