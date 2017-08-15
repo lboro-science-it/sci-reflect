@@ -23,9 +23,6 @@
 </template>
 
 <script>
-
-import 'axios';
-
 export default {
     data() {
         return {

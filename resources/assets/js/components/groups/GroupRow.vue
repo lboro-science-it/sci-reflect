@@ -55,9 +55,11 @@
         },
 
         props: [
+            'deleteUrl',
             'display',
             'id',
             'name',
+            'putUrl',
             'users'
         ],
 
@@ -67,7 +69,7 @@
                 this.edit = false;
             },
             deleteGroup () {    // send a delete request
-                 axios.delete('groups/' + this.id).then(response => {
+                 axios.delete(this.deleteUrl + '/' + this.id).then(response => {
                     this.$emit('delete-group', this.id);
                 });
             },
@@ -83,7 +85,7 @@
                     this.edit = false;
                     this.saving = true;
                     this.saveText = 'Saving...';
-                    axios.put('groups/' + this.id, {
+                    axios.put(this.putUrl + '/' + this.id, {
                         groupName: this.editName
                     }).then(response => {
                         this.currentName = response.data;

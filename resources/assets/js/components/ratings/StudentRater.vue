@@ -54,9 +54,10 @@
         },
 
         props: [
-            'skills',
             'choices',
+            'postUrl',
             'roundNumber',
+            'skills',
             'studentId',
             'studentName'
         ],
@@ -99,9 +100,7 @@
                     postData[skill.id] = skill.rating;
                 }
                 
-                let postUrl = window.sciReflect.baseUrl + '/r/' + this.roundNumber + '/rate/' + this.studentId;
-
-                axios.post(postUrl, {
+                axios.post(this.postUrl, {
                     'skills': postData
                 })
                 .then(response => {

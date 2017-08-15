@@ -26,10 +26,15 @@
     @section('sciReflect')
         sciReflect.groups = {!! json_encode($groups) !!};
     @append
-    <group-table :groups="sciReflect.groups"></group-table>
+    <group-table :groups="sciReflect.groups"
+                 delete-url="{{ url('a/' . $activity->id . '/groups/') }}"
+                 put-url="{{ url('a/' . $activity->id . '/groups/') }}">
+    </group-table>
 
-    <group-bulk></group-bulk>
-    <group-batch></group-batch>
+    <group-bulk post-url="{{ url('a/' . $activity->id . '/groups/bulk') }}">
+    </group-bulk>
+    <group-batch post-url="{{ url('a/' . $activity->id . '/groups/batch') }}">
+    </group-batch>
 
     <h4>todo</h4>
     <li><strike>form for adding groups</strike></li>

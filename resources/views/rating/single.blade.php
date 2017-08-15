@@ -16,7 +16,8 @@ Rating {{ $student->name }} in {{ $round->title }}
                    :choices="sciReflect.choices"
                    student-id="{{ $student->id }}"
                    student-name="{{ $student->name }}"
-                   round-number="{{ $round->round_number }}">
+                   round-number="{{ $round->round_number }}"
+                   post-url="{{ url('a/' . $activity->id . '/r/' . $round->round_number . '/rate/' . $student->id) }}">
     </student-rater>
 
 @endsection

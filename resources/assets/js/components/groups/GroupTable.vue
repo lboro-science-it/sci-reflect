@@ -21,6 +21,8 @@
                                        :name="group.name"
                                        :users="group.userCount"
                                        :id="group.id"
+                                       :delete-url="deleteUrl"
+                                       :put-url="putUrl"
                                        v-on:delete-group="deleteGroup(index)">
                             </group-row>
                         </tbody>
@@ -37,8 +39,6 @@
 </template>
 
 <script>
-    import 'axios';
-
     export default {
         data () {
             return {
@@ -47,7 +47,9 @@
         },
 
         props: [
-            'groups'
+            'deleteUrl',
+            'groups',
+            'putUrl'
         ],
 
         methods: {

@@ -70534,6 +70534,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
+    props: ['postUrl'],
+
     methods: {
         saveGroups: function saveGroups() {
             var _this = this;
@@ -70542,7 +70544,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.saving = true;
             this.saveText = 'Saving...';
             if (this.numberToCreate > 0) {
-                axios.post('groups/batch', {
+                axios.post(this.postUrl, {
                     groupPrefix: this.groupPrefix,
                     numberToCreate: this.numberToCreate
                 }).then(function (response) {
@@ -70736,6 +70738,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
+    props: ['postUrl'],
+
     methods: {
         saveGroups: function saveGroups() {
             var _this = this;
@@ -70743,7 +70747,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // update the current name and send the request
             this.saving = true;
             this.saveText = 'Saving...';
-            axios.post('groups/bulk', {
+            axios.post(this.postUrl, {
                 groups: this.groups
             }).then(function (response) {
                 _this.$parent.$emit('groups-added', response.data);
@@ -70918,7 +70922,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['display', 'id', 'name', 'users'],
+    props: ['deleteUrl', 'display', 'id', 'name', 'putUrl', 'users'],
 
     methods: {
         cancelEdit: function cancelEdit() {
@@ -70930,7 +70934,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             // send a delete request
-            axios.delete('groups/' + this.id).then(function (response) {
+            axios.delete(this.deleteUrl + '/' + this.id).then(function (response) {
                 _this.$emit('delete-group', _this.id);
             });
         },
@@ -70950,7 +70954,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.edit = false;
                 this.saving = true;
                 this.saveText = 'Saving...';
-                axios.put('groups/' + this.id, {
+                axios.put(this.putUrl + '/' + this.id, {
                     groupName: this.editName
                 }).then(function (response) {
                     _this2.currentName = response.data;
@@ -71108,8 +71112,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -71148,8 +71150,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -71159,7 +71161,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['groups'],
+    props: ['deleteUrl', 'groups', 'putUrl'],
 
     methods: {
         deleteGroup: function deleteGroup(index) {
@@ -71203,7 +71205,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "name": group.name,
         "users": group.userCount,
-        "id": group.id
+        "id": group.id,
+        "delete-url": _vm.deleteUrl,
+        "put-url": _vm.putUrl
       },
       on: {
         "delete-group": function($event) {
@@ -71883,14 +71887,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
-    props: ['groups', 'rounds', 'students'],
+    props: ['groups', 'putUrl', 'rounds', 'students'],
 
     methods: {
         bulkGroup: function bulkGroup() {
             var _this = this;
 
             if (this.bulkGroupId != null && this.checkedStudents.length > 0) {
-                axios.put('group/' + this.bulkGroupId, {
+                axios.put(this.putUrl + '/' + this.bulkGroupId, {
                     students: this.checkedStudents
                 }).then(function (response) {
                     if (response.data == 'success') {
@@ -72395,7 +72399,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['skills', 'choices', 'roundNumber', 'studentId', 'studentName'],
+    props: ['choices', 'postUrl', 'roundNumber', 'skills', 'studentId', 'studentName'],
 
     computed: {
         saveBtnClass: function saveBtnClass() {
@@ -72437,9 +72441,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 postData[skill.id] = skill.rating;
             }
 
-            var postUrl = window.sciReflect.baseUrl + '/r/' + this.roundNumber + '/rate/' + this.studentId;
-
-            axios.post(postUrl, {
+            axios.post(this.postUrl, {
                 'skills': postData
             }).then(function (response) {
                 _this.saveText = response.data == 'success' ? 'Saved!' : 'Error!';
@@ -72542,8 +72544,6 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -72568,9 +72568,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {

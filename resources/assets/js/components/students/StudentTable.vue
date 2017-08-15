@@ -95,6 +95,7 @@
 
         props: [
             'groups',
+            'putUrl',
             'rounds',
             'students'
         ],
@@ -102,7 +103,7 @@
         methods: {
             bulkGroup() {
                 if (this.bulkGroupId != null && this.checkedStudents.length > 0) {
-                    axios.put('group/' + this.bulkGroupId, {
+                    axios.put(this.putUrl + '/' + this.bulkGroupId, {
                         students: this.checkedStudents
                     })
                     .then(response => {

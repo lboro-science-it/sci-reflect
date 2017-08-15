@@ -47,12 +47,16 @@
             }
         },
 
+        props: [
+            'postUrl'
+        ],
+
         methods: {
             saveGroups () {      // update the current name and send the request
                 this.saving = true;
                 this.saveText = 'Saving...';
                 if (this.numberToCreate > 0) {
-                    axios.post('groups/batch', {
+                    axios.post(this.postUrl, {
                         groupPrefix: this.groupPrefix,
                         numberToCreate: this.numberToCreate
                     }).then(response => {

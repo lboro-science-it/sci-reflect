@@ -35,11 +35,15 @@
             }
         },
 
+        props: [
+            'postUrl'
+        ],
+
         methods: {
             saveGroups () {      // update the current name and send the request
                 this.saving = true;
                 this.saveText = 'Saving...';
-                axios.post('groups/bulk', {
+                axios.post(this.postUrl, {
                     groups: this.groups
                 }).then(response => {
                     this.$parent.$emit('groups-added', response.data);
