@@ -72628,14 +72628,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("\n                    " + _vm._s(choice.label) + "\n                ")])])], 1)
-  })], 2), _vm._v(" "), (_vm.saveBtn) ? _c('div', {
+  })], 2), _vm._v(" "), _c('div', {
     staticClass: "panel-footer text-center"
   }, [_c('button', {
     staticClass: "btn btn-lg btn-success",
     on: {
       "click": _vm.storeRatings
     }
-  }, [_vm._v("\n            Save\n        ")])]) : _vm._e()])
+  }, [_vm._v("\n            Save\n        ")])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

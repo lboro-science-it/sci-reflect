@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="panel-footer text-center" v-if="saveBtn">
+        <div class="panel-footer text-center">
             <button class="btn btn-lg btn-success"
                     v-on:click="storeRatings">
                 Save
