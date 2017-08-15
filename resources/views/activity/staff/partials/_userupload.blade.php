@@ -1,4 +1,4 @@
-<form id="user-upload" action="{{ url('a/' . $activity->id . '/add-users') }}" method="POST">
+<form id="user-upload" action="{{ url('a/' . $activity->id . '/users/add') }}" method="POST">
     {{ csrf_field() }}
     {{ method_field('POST') }}
 

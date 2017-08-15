@@ -4,9 +4,9 @@ Create activity: done **
 Setup activity: **
 
 {{-- Add users --}}
-<a href="{{ url('a/' . $activity->id . '/add-users') }}"
+<a href="{{ url('a/' . $activity->id . '/users/add') }}"
     {{-- will add this later
-       v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/add-users') }}')"
+       v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/users/add') }}')"
     --}}
     >
    Add users:
@@ -48,7 +48,7 @@ Open activity: @include('activity.staff.partials._openclose')
             Setup activity
         </div>
     </div>
-    <a href="{{ url('a/' . $activity->id . '/add-users') }}">
+    <a href="{{ url('a/' . $activity->id . '/users/add') }}">
         <div class="col-md-1 col-sm-2 col-xs-4 text-center task-col">
             <div class="task-circle">
                 <span class="glyphicon glyphicon-user"></span>

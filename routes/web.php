@@ -33,8 +33,8 @@ Route::prefix('a/{activity}')->group(function() {
         Route::put('close', 'ActivityController@close');
         Route::put('open', 'ActivityController@open');
 
-        Route::get('add-users', 'UserController@create');
-        Route::post('add-users', 'UserController@store');
+        Route::get('users/add', 'UserController@create');
+        Route::post('users/add', 'UserController@store');
 
         // Group routes
         Route::get('groups', 'GroupController@index');
