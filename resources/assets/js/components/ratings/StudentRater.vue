@@ -89,6 +89,7 @@
             },
 
             storeRatings() {
+                this.saveText = 'Saving...';
                 let postData = {};
 
                 // create object of skill_id => rating for insert to db
@@ -104,14 +105,13 @@
                     'skills': postData
                 })
                 .then(response => {
-                    console.log(response.data);
-                });
+                    this.saveText = (response.data == 'success') ? 'Saved!' : 'Error!';
 
-                // ok so we need to post...
-                // rated id (student id)
-                // round id
-                // skills array (just the skill id and rating for each)
-                // to a post of whatever the route is to get this page
+                    let self = this;
+                    setTimeout(function() {
+                        self.saveText = 'Save';
+                    }, 5000);
+                });
             },
 
             // set the rating on the skills array object

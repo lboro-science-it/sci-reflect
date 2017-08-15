@@ -72425,6 +72425,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.activeSkillIndex = index;
         },
         storeRatings: function storeRatings() {
+            var _this = this;
+
+            this.saveText = 'Saving...';
             var postData = {};
 
             // create object of skill_id => rating for insert to db
@@ -72439,14 +72442,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post(postUrl, {
                 'skills': postData
             }).then(function (response) {
-                console.log(response.data);
-            });
+                _this.saveText = response.data == 'success' ? 'Saved!' : 'Error!';
 
-            // ok so we need to post...
-            // rated id (student id)
-            // round id
-            // skills array (just the skill id and rating for each)
-            // to a post of whatever the route is to get this page
+                var self = _this;
+                setTimeout(function () {
+                    self.saveText = 'Save';
+                }, 5000);
+            });
         },
 
 
