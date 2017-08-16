@@ -34,7 +34,7 @@ Route::prefix('a/{activity}')->group(function() {
         Route::put('open', 'ActivityController@open');
 
         Route::get('users/add', 'UserController@create');
-        Route::post('users/add', 'UserController@store');
+        Route::post('users', 'UserController@store');
 
         // Group routes
         Route::get('groups', 'GroupController@index');

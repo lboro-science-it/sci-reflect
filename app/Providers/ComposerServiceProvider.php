@@ -19,11 +19,13 @@ class ComposerServiceProvider extends ServiceProvider
             '*', 'App\ViewComposers\ActivityComposer'
         );
 
+        // compose dashboard with students, staff, groups, rounds
         View::composer(
-            ['activity.staff.design', 'activity.staff.dashboard'],
+            'activity.staff.dashboard',
             'App\ViewComposers\StaffActivityComposer'
         );
 
+        // compose tasks partial with task status vars
         View::composer(
             'activity.staff.partials._tasks',
             'App\ViewComposers\StaffTasksComposer'
