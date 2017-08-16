@@ -17,12 +17,18 @@ class GroupController extends Controller
         $this->request = $request;
     }
 
+    /**
+     * Add a bunch of users ($request->input('users')) to a given $groupId,
+     * i.e. update records on 'activity_user' table, which contains a 'group_id'
+     * field. This is the endpoint of StudentTable.vue component's bulk user
+     * changing form. $request->input('users') is just an array of ids.
+     *
+     */
     public function addUsers(Activity $activity, $groupId, Request $request)
     {
-        // get the users whose group we need to change
         $users = $activity->users->whereIn('id', $request->input('users'));
 
-        // get the pivot record ids where the group relationship is stored
+        // get ids of the pivot table records for the users
         $pivotsToUpdate = [];
         foreach($users as $user) {
             array_push($pivotsToUpdate, 
@@ -30,7 +36,7 @@ class GroupController extends Controller
             );
         }
 
-        // do the update
+        // update the pivot records
         DB::table('activity_user')->whereIn('id', $pivotsToUpdate)->update([
             'group_id' => $groupId
         ]);
