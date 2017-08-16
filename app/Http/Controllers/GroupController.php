@@ -114,7 +114,8 @@ class GroupController extends Controller
     public function delete(Activity $activity, $groupId)
     {
         DB::table('activity_user')->where('activity_id', $activity->id)->where('group_id', $groupId)->update(['group_id' => null]);
-        DB::table('groups')->where('activity_id', $activity->id)->where('id', $groupId)->delete();
+        $group = $activity->groups()->where('id', $groupId)->first();
+        $group->delete();
 
         return 'success';
     }
