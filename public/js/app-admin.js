@@ -71536,20 +71536,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            checked: false,
+            checkedStatus: false,
             currentGroupId: this.student.groupId,
             editGroupId: this.student.groupId
         };
     },
 
 
-    props: ['filterGroup', 'filterText', 'groups', 'mode', 'student'],
+    props: ['checked', 'filterGroup', 'filterText', 'groups', 'mode', 'student'],
+
+    watch: {
+        checked: function checked() {
+            this.checkedStatus = this.checked;
+        }
+    },
 
     methods: {
         // when group dropdown is changed, persist to database
@@ -71569,10 +71576,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // when checkbox is checked, store in parent array
         checkboxChanged: function checkboxChanged() {
-            if (this.checked) {
-                this.$emit('checked', this.student.id);
+            if (this.checkedStatus) {
+                this.$emit('checked');
             } else {
-                this.$emit('unchecked', this.student.id);
+                this.$emit('unchecked');
             }
         },
 
@@ -71620,33 +71627,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.checked),
-      expression: "checked"
+      value: (_vm.checkedStatus),
+      expression: "checkedStatus"
     }],
     attrs: {
       "type": "checkbox",
       "true-value": true,
-      "false-false": false
+      "false-value": false
     },
     domProps: {
-      "checked": Array.isArray(_vm.checked) ? _vm._i(_vm.checked, null) > -1 : (_vm.checked)
+      "checked": _vm.checked,
+      "checked": Array.isArray(_vm.checkedStatus) ? _vm._i(_vm.checkedStatus, null) > -1 : (_vm.checkedStatus)
     },
     on: {
       "change": _vm.checkboxChanged,
       "__c": function($event) {
-        var $$a = _vm.checked,
+        var $$a = _vm.checkedStatus,
           $$el = $event.target,
           $$c = $$el.checked ? (true) : (false);
         if (Array.isArray($$a)) {
           var $$v = null,
             $$i = _vm._i($$a, $$v);
           if ($$c) {
-            $$i < 0 && (_vm.checked = $$a.concat($$v))
+            $$i < 0 && (_vm.checkedStatus = $$a.concat($$v))
           } else {
-            $$i > -1 && (_vm.checked = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            $$i > -1 && (_vm.checkedStatus = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
           }
         } else {
-          _vm.checked = $$c
+          _vm.checkedStatus = $$c
         }
       }
     }
@@ -71876,6 +71884,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -71884,7 +71893,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             activeBtnClass: 'btn btn-lg btn-success',
             bulkGroupId: null,
-            checkedStudents: [],
             filterText: '',
             filterGroup: 'all',
             inactiveBtnClass: 'btn btn-lg btn-info',
@@ -71908,28 +71916,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         bulkGroup: function bulkGroup() {
             var _this = this;
 
-            if (this.bulkGroupId != null && this.checkedStudents.length > 0) {
-                axios.put(this.putUrl + '/' + this.bulkGroupId, {
-                    students: this.checkedStudents
-                }).then(function (response) {
-                    if (response.data == 'success') {
-                        // todo: update each row's group
-                        // uncheck all checkboxes
-                        _this.checkedStudents = [];
-                        // reset the select
-                        _this.bulkGroupId = null;
+            if (this.bulkGroupId != null) {
+                // determine which students are checked at the moment
+                var checkedStudents = [];
+                var studentsLength = this.students.length;
+                for (var i = 0; i < studentsLength; i++) {
+                    var student = this.students[i];
+                    if (student.checked) {
+                        checkedStudents.push(student.id);
                     }
-                });
+                }
+
+                // todo: below seems to be posting but not console logging. why?
+                // todo: after posting, need to be able to update the groups displayed in the table, uncheck the checkboxes,
+                // ... without triggering the onchanged function causing a bunch more queries.
+                if (checkedStudents.length > 0) {
+                    console.log(checkedStudents);
+                    axios.put(this.putUrl + '/' + this.bulkGroupId, {
+                        students: checkedStudents
+                    }).then(function (response) {
+                        if (response.data == 'success') {
+                            // reset all students' checked status
+                            var _studentsLength = _this.students.length;
+                            for (var _i = 0; _i < _studentsLength; _i++) {
+                                var _student = _this.students[_i];
+                                _student.checked = false;
+                                _student.groupId = _this.bulkGroupId;
+                            }
+
+                            // todo: update each row's group
+                            // reset the select
+                            _this.bulkGroupId = null;
+                        }
+                    });
+                }
             }
         },
         checked: function checked(index) {
-            this.checkedStudents.push(this.students[index].id);
+            this.students[index].checked = true;
         },
         setMode: function setMode(mode) {
             this.mode = mode;
         },
         unchecked: function unchecked(index) {
-            this.checkedStudents.splice(this.checkedStudents.indexOf(this.students[index].id), 1);
+            this.students[index].checked = false;
         }
     }
 });
@@ -72077,7 +72107,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "groups": _vm.groups,
         "filterText": _vm.filterText,
         "filterGroup": _vm.filterGroup,
-        "mode": _vm.mode
+        "mode": _vm.mode,
+        "checked": student.checked
       },
       on: {
         "checked": function($event) {

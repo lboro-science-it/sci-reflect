@@ -113,6 +113,9 @@
                         }
                     }
 
+                    // todo: below seems to be posting but not console logging. why?
+                    // todo: after posting, need to be able to update the groups displayed in the table, uncheck the checkboxes,
+                    // ... without triggering the onchanged function causing a bunch more queries.
                     if (checkedStudents.length > 0) {
                         console.log(checkedStudents); 
                         axios.put(this.putUrl + '/' + this.bulkGroupId, {

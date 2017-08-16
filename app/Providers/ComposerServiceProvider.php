@@ -19,11 +19,6 @@ class ComposerServiceProvider extends ServiceProvider
             '*', 'App\ViewComposers\ActivityComposer'
         );
 
-        // make list of formats available to the format select drop down
-        View::composer(
-            'activity.partials._format', 'App\ViewComposers\ActivityFormatComposer'
-        );
-
         View::composer(
             ['activity.staff.design', 'activity.staff.dashboard'],
             'App\ViewComposers\StaffActivityComposer'

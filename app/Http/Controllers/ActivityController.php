@@ -86,7 +86,10 @@ class ActivityController extends Controller
     public function show(Activity $activity)
     {
         if ($activity->status == 'new') {
-            return view('activity.staff.new');
+            $reflect = app('Reflect');
+
+            return view('activity.staff.new')
+                 ->with('formats', $reflect->getFormatDisplayNames());
         }
 
         return view('activity.staff.dashboard');
