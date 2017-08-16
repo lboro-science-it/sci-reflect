@@ -24,9 +24,9 @@ class GroupController extends Controller
      * changing form. $request->input('users') is just an array of ids.
      *
      */
-    public function addUsers(Activity $activity, $groupId, Request $request)
+    public function addUsers(Activity $activity, $groupId)
     {
-        $users = $activity->users->whereIn('id', $request->input('users'));
+        $users = $activity->users->whereIn('id', $this->request->input('users'));
 
         // get ids of the pivot table records for the users
         $pivotsToUpdate = [];
