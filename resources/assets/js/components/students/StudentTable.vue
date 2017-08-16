@@ -118,8 +118,8 @@
                     // ... without triggering the onchanged function causing a bunch more queries.
                     if (checkedStudents.length > 0) {
                         console.log(checkedStudents); 
-                        axios.put(this.putUrl + '/' + this.bulkGroupId, {
-                            students: checkedStudents
+                        axios.post(this.putUrl + '/' + this.bulkGroupId + '/users', {
+                            users: checkedStudents
                         })
                         .then(response => {
                             if (response.data == 'success') {

@@ -71564,7 +71564,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             if (this.editGroupId != this.currentGroupId) {
-                axios.put('student/' + this.student.id + '/group', {
+                axios.put('users/' + this.student.id + '/group', {
                     groupId: this.editGroupId
                 }).then(function (response) {
                     _this.currentGroupId = response.data;
@@ -71932,8 +71932,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // ... without triggering the onchanged function causing a bunch more queries.
                 if (checkedStudents.length > 0) {
                     console.log(checkedStudents);
-                    axios.put(this.putUrl + '/' + this.bulkGroupId, {
-                        students: checkedStudents
+                    axios.post(this.putUrl + '/' + this.bulkGroupId + '/users', {
+                        users: checkedStudents
                     }).then(function (response) {
                         if (response.data == 'success') {
                             // reset all students' checked status

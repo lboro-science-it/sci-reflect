@@ -35,4 +35,21 @@ class UserController extends Controller
         return redirect('a/' . $activity->id)
                   ->with('message', $message);
     }
+
+    /**
+     * Updates the group which the user is related to, the endpoint of changing
+     * the drop down box in the StudentRow.vue component.
+     *
+     * @param  App\Activity $activity
+     * @return View
+     */
+    public function updateGroup(Activity $activity, $userId, Request $request)
+    {
+        $activity->users()->updateExistingPivot($userId, [
+            'group_id' => $request->input('groupId')
+        ]);
+
+        return $request->input('groupId');
+    }
+
 }

@@ -17,6 +17,27 @@ class GroupController extends Controller
         $this->request = $request;
     }
 
+    public function addUsers(Activity $activity, $groupId, Request $request)
+    {
+        // get the users whose group we need to change
+        $users = $activity->users->whereIn('id', $request->input('users'));
+
+        // get the pivot record ids where the group relationship is stored
+        $pivotsToUpdate = [];
+        foreach($users as $user) {
+            array_push($pivotsToUpdate, 
+                $user->pivot->id
+            );
+        }
+
+        // do the update
+        DB::table('activity_user')->whereIn('id', $pivotsToUpdate)->update([
+            'group_id' => $groupId
+        ]);
+
+        return 'success';
+    }
+
     /**
      * Add a number of groups as specified by numberOfGroups with groupPrefix.
      */

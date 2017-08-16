@@ -69,7 +69,7 @@
             // when group dropdown is changed, persist to database
             changedGroup() {
                 if (this.editGroupId != this.currentGroupId) {
-                    axios.put('student/' + this.student.id + '/group', {
+                    axios.put('users/' + this.student.id + '/group', {
                         groupId: this.editGroupId
                     }).then(response => {
                         this.currentGroupId = response.data;

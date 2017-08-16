@@ -35,6 +35,7 @@ Route::prefix('a/{activity}')->group(function() {
 
         Route::get('users/add', 'UserController@create');
         Route::post('users', 'UserController@store');
+        Route::put('users/{userId}/group', 'UserController@updateGroup');
 
         // Group routes
         Route::get('groups', 'GroupController@index');
@@ -42,11 +43,7 @@ Route::prefix('a/{activity}')->group(function() {
         Route::post('groups/bulk', 'GroupController@bulk');
         Route::post('groups/batch', 'GroupController@batch');
         Route::put('groups/{groupId}', 'GroupController@update');
-
-        // Student User routes
-        Route::put('student/{userId}/group', 'StudentUserController@updateGroup');
-        // bulk add students to group
-        Route::put('group/{groupId}', 'StudentUserController@bulkGroup');
+        Route::post('groups/{groupId}/users', 'GroupController@addUsers');
 
         // show form for rating a student
         Route::get('r/{round}/rate/{studentId}', 'RatingController@show');

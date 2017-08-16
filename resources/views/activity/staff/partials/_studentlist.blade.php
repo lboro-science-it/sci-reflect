@@ -7,6 +7,6 @@
     <student-table :rounds="sciReflect.rounds" 
                    :students="sciReflect.students"
                    :groups="sciReflect.groups"
-                   put-url="{{ url('a/' . $activity->id . '/group/') }}">
+                   put-url="{{ url('a/' . $activity->id . '/groups/') }}">
     </student-table>
 @endif
