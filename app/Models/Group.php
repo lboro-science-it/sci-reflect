@@ -11,13 +11,13 @@ class Group extends Model
         return $this->hasMany('App\ActivityUser');
     }
 
+    /** 
+     * Returns a collection of users belonging to the group, via the
+     * activityUsers relationship (pivot table).
+     *
+     */
     public function getUsers()
     {
-        $users = collect();
-        foreach ($this->activityUsers as $user) {
-            $users->push($user);
-        }
-
-        return $users;
+        return $this->activityUsers;
     }
 }

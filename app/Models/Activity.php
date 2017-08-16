@@ -22,7 +22,8 @@ class Activity extends Model
      */
 
     /**
-     * Returns the categories within the activity, ordered for rendering
+     * Returns the categories within the activity, ordered for rendering.
+     *
      */
     public function getCategories()
     {
@@ -35,7 +36,8 @@ class Activity extends Model
     }
 
     /**
-     * Returns an array of the groups within the activity for rendering
+     * Returns an array of the groups within the activity for rendering.
+     *
      */
     public function getGroupListArray()
     {
