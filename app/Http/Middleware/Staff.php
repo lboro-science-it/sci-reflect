@@ -17,7 +17,16 @@ class Staff
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->role !== 'staff') {
+        if (!Auth::check()) {
+            return redirect('eject');
+        }
+
+        $activityId = $request->route('activity')->id;
+
+        // session contains array of user's launched activities w/ roles
+        $userActivities = $request->session()->get('activities');
+
+        if ($userActivities[$activityId]['role'] !== 'staff') {
             return redirect('eject');
         }
 

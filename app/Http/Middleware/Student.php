@@ -24,10 +24,13 @@ class Student
             return redirect('eject');
         }
 
-        if (Auth::user()->role !== 'student') {
-            return redirect('activity/' . $request->route('activity')->id);
+        $activityId = $request->route('activity')->id;
+        $userActivities = $request->session()->get('activities');
+
+        if ($userActivities[$activityId]['role'] !== 'student') {
+            return redirect('a/' . $activityId);
         }
-        
+
         return $next($request);
     }
 }
