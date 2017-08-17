@@ -147,6 +147,7 @@ class User extends Authenticatable
     public function staffHasRated($round)
     {
         $skills = $round->getSkills();
+        // todo: eager load all rounds' before this is called
         $ratings = $round->ratings->where('rated_id', $this->id)
                                    ->where('rater_id', '<>', $this->id);
 
