@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
             $userActivities = $this->app->request->session()->get('activities');
             Auth::user()->role = $userActivities[$value]['role'];
             Auth::user()->currentRound = $userActivities[$value]['currentRound'];
-            Auth::user()->currentPage = $userActivities[$value]['currentRound'];
+            Auth::user()->currentPage = $userActivities[$value]['currentPage'];
 
             return $activity;
         });
