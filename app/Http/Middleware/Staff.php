@@ -26,8 +26,6 @@ class Staff
         // session contains array of user's launched activities w/ roles
         $userActivities = $request->session()->get('activities');
 
-        dd($userActivities[$activityId]);
-
         if ($userActivities[$activityId]['role'] !== 'staff') {
             return redirect('eject');
         }

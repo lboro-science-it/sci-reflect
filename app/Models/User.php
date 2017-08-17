@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -129,6 +130,14 @@ class User extends Authenticatable
             'current_page' => $pageNumber,
             'complete' => $complete
         ]);
+
+        // if user == authed user, update the session
+        if ($this->id == Auth::user()->id) {
+            $activities = request()->session()->get('activities');
+            $activities[$activity->id]['currentRound'] = $roundNumber;
+            $activities[$activity->id]['currentPage'] = $pageNumber;
+            request()->session()->put('activities', $activities);
+        }
     }
 
     /**
