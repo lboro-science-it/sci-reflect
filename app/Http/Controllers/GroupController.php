@@ -55,7 +55,6 @@ class GroupController extends Controller
         $groupsToInsert = [];
 
         if (!empty($prefix)) {
-            $totalGroups = $activity->groups->count();
             for ($i = 0; $i < $numberToCreate; $i++) {
                 array_push($groupsToInsert, [
                     'activity_id' => $activity->id,
