@@ -32,7 +32,8 @@ class LtiController extends Controller
                     Auth::loginUsingId($tool->user_id);
                 }
 
-                // store user role & current round in session for this activity
+                // store user's pivot data for the activity in the session
+                // so we don't have to query the pivot stuff every request
                 $activities = $request->session()->has('activities') ? $request->session()->get('activities') : [];
                 $activities[$tool->activity_id] = [
                     'activity_id' => $tool->activity_id,

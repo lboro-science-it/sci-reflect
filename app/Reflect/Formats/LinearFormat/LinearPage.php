@@ -239,13 +239,10 @@ class LinearPage extends BasePage
             'current_page' => $page->pivot->page_number
         ]);
 
-        // update session to match.
-        if ($this->user->id == Auth::user()->id) {
-            $activities = $this->request->session()->get('activities');
-            $activities[$this->activity->id]['currentRound'] = $this->round->round_number;
-            $activities[$this->activity->id]['currentPage'] = $page->pivot->page_number;
-            $this->request->session()->put('activities', $activities);
-
-        }
+        // update session to match
+        $activities = $this->request->session()->get('activities');
+        $activities[$this->activity->id]['currentRound'] = $this->round->round_number;
+        $activities[$this->activity->id]['currentPage'] = $page->pivot->page_number;
+        $this->request->session()->put('activities', $activities);
     }
 }

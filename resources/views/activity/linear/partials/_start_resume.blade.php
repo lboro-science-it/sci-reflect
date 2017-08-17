@@ -2,7 +2,7 @@
     {{ csrf_field() }}
     
     <button type="submit" name="resume" value="resume" class="btn btn-primary btn-lg">
-        @if($activity->pivot->current_page == 1)
+        @if(Auth::user()->currentPage == 1)
             Start
         @else
             @if($activityData->hasDone)
