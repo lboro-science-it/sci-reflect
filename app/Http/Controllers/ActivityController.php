@@ -94,4 +94,9 @@ class ActivityController extends Controller
 
         return view('activity.staff.dashboard');
     }
+
+    public function showClosed(Activity $activity)
+    {
+        return view('activity.closed');
+    }
 }

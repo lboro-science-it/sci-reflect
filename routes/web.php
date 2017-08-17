@@ -54,7 +54,7 @@ Route::prefix('a/{activity}')->group(function() {
      * Student routes, middleware prevents these being accessed unless used is
      * authed, has a relationship to the {activity}, and role 'student'
      */
-    Route::group(['middleware' => ['student']], function() {
+    Route::group(['middleware' => ['student', 'activity.open']], function() {
         // student linear routes
         Route::get('linear', 'LinearController@dashboard');
         Route::post('linear/r/{round}/p/{page}', 'LinearController@page');
@@ -66,6 +66,8 @@ Route::prefix('a/{activity}')->group(function() {
         // student chart routes
         Route::get('student/r/{round}/chart/{scope?}', 'StudentChartController@show');
     });
+
+    Route::get('closed', 'ActivityController@showClosed');
 });
 
 // security routes

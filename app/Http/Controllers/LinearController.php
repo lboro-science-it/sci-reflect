@@ -18,14 +18,9 @@ class LinearController extends Controller
      */
     public function dashboard(Activity $activity)
     {
-        if ($activity->isOpen()) {
-            $linearActivity = app('LinearActivity');
+        $linearActivity = app('LinearActivity');
 
-            return $linearActivity->processActivity();
-        }
-
-        // todo: move to middleware affecting all student activity routes
-        return view('activity.closed');
+        return $linearActivity->processActivity();
     }
 
     /**

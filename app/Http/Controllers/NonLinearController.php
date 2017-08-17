@@ -18,14 +18,9 @@ class NonLinearController extends Controller
      */
     public function dashboard(Activity $activity)
     {
-        if ($activity->isOpen()) {
-            $nonLinearActivity = app('NonLinearActivity');
+        $nonLinearActivity = app('NonLinearActivity');
 
-            return $nonLinearActivity->processActivity();
-        }
-
-        // todo: move to middleware affecting all student activity routes
-        return view('activity.closed');
+        return $nonLinearActivity->processActivity();
     }
 
     /**
