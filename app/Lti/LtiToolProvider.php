@@ -31,16 +31,6 @@ class LtiToolProvider extends ToolProvider
         }
     }
 
-    private function getCurrentRoundNumber($user)
-    {
-        $userActivity = $user->activities->where('id', $this->activity_id)->first();
-        if (is_null($userActivity)) {
-            return 1;
-        } else {
-            return $userActivity->pivot->current_round;
-        }
-    }
-
     private function getOrCreateActivity()
     {
         // find or create an activity record based on launch
@@ -90,10 +80,14 @@ class LtiToolProvider extends ToolProvider
 
         $this->createOrUpdatePivot($user, $activity, $role);
 
-        $currentRoundNumber = $this->getCurrentRoundNumber($user);
+        $userActivity = $user->activities->where('id', $activity->id)->first();
+        $currentRoundNumber = is_null($userActivity) ? 1 : $userActivity->pivot->current_round;
         $this->currentRoundNumber = $currentRoundNumber;
+        
+        $currentPageNumber = is_null($userActivity) ? 1 : $userActivity->pivot->current_page;
+        $this->currentPageNumber = $currentPageNumber;
+        
         $currentRound = $activity->rounds->where('round_number', $currentRoundNumber)->first();
-
         $this->format = isset($currentRound->format) ? $currentRound->format : $activity->format;
     }
 

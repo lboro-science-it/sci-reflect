@@ -36,7 +36,8 @@ class LtiController extends Controller
                 $activities = $request->session()->has('activities') ? $request->session()->get('activities') : [];
                 $activities[$tool->activity_id] = [
                     'activity_id' => $tool->activity_id,
-                    'currentRoundNumber' => $tool->currentRoundNumber,
+                    'currentRound' => $tool->currentRoundNumber,
+                    'currentPage' => $tool->currentPageNumber,
                     'role' => $tool->role
                 ];
                 $request->session()->put('activities', $activities);
