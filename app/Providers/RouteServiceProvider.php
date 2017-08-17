@@ -45,11 +45,13 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         // Load $round model based on {round_number} in {activity}
+        // this also loads all of the activity's rounds...
+        // todo: consider whether loading all rounds is desireable in all cases.
         Route::bind('round', function($value) {
             $activity = $this->app->request->route('activity');
             $round = $activity->rounds->where('round_number', $value)
                                       ->first();
-                                      
+
             return $round;
         });
 
