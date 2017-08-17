@@ -46,11 +46,10 @@ class RouteServiceProvider extends ServiceProvider
 
         // Load $round model based on {round_number} in {activity}
         Route::bind('round', function($value) {
-            $activityId = $this->app->request->route('activity')->id;
-            $round = Round::where('activity_id', $activityId)
-                          ->where('round_number', $value)
-                          ->first();
-
+            $activity = $this->app->request->route('activity');
+            $round = $activity->rounds->where('round_number', $value)
+                                      ->first();
+                                      
             return $round;
         });
 
