@@ -56,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         // Load $page model based on number in {round}
-        Route::bind('roundPage', function($value) {
+        Route::bind('page', function($value) {
             $round = $this->app->request->route('round');
             $page = $round->pages->where('pivot.page_number', $value)->first();
 

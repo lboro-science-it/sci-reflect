@@ -57,11 +57,11 @@ Route::prefix('a/{activity}')->group(function() {
     Route::group(['middleware' => ['student']], function() {
         // student linear routes
         Route::get('linear', 'LinearController@dashboard');
-        Route::post('linear/r/{round}/p/{roundPage}', 'LinearController@page');
+        Route::post('linear/r/{round}/p/{page}', 'LinearController@page');
 
         // student nonlinear routes
         Route::get('nonlinear', 'NonLinearController@dashboard');
-        Route::post('nonlinear/r/{round}/c/{category}/p/{categoryPage}', 'NonLinearController@page');
+        Route::post('nonlinear/r/{round}/c/{category}', 'NonLinearController@page');
 
         // student chart routes
         Route::get('student/r/{round}/chart/{scope?}', 'StudentChartController@show');
