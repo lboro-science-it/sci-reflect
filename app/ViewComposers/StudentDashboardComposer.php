@@ -6,7 +6,7 @@ use App\Reflect\MessageHelper;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class StudentActivityComposer
+class StudentDashboardComposer
 {
     protected $activity;
 

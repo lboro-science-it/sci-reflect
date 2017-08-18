@@ -5,7 +5,7 @@ namespace App\ViewComposers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class StaffActivityComposer
+class StaffDashboardComposer
 {
     protected $activity;
 

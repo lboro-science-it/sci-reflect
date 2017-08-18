@@ -43,7 +43,7 @@ class RatingController extends Controller
 
         $student = User::find($studentId);
 
-        return view('rating.single')
+        return view('staff.rating')
              ->with('skills', $skillsArray)
              ->with('choices', $choices)
              ->with('round', $round)

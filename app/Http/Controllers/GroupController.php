@@ -124,7 +124,7 @@ class GroupController extends Controller
     {
         $groupsArray = $activity->getGroupListArray();
  
-        return view('groups.index')
+        return view('staff.groups')
              ->with('groups', $groupsArray);
     }
 

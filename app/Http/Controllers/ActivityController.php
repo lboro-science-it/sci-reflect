@@ -19,7 +19,7 @@ class ActivityController extends Controller
         $activity->status = 'closed';
         $activity->save();
 
-        return view('activity.staff.dashboard');
+        return view('staff.dashboard');
     }
 
     /**
@@ -47,7 +47,7 @@ class ActivityController extends Controller
 
         $activity->save();
 
-        return view('activity.staff.dashboard');
+        return view('staff.dashboard');
     }
 
     /**
@@ -74,7 +74,7 @@ class ActivityController extends Controller
         $activity->status = 'open';
         $activity->save();
 
-        return view('activity.staff.dashboard');
+        return view('staff.dashboard');
     }
 
     /**
@@ -88,11 +88,11 @@ class ActivityController extends Controller
         if ($activity->status == 'new') {
             $reflect = app('Reflect');
 
-            return view('activity.staff.new')
+            return view('staff.new')
                  ->with('formats', $reflect->getFormatDisplayNames());
         }
 
-        return view('activity.staff.dashboard');
+        return view('staff.dashboard');
     }
 
     public function showClosed(Activity $activity)
