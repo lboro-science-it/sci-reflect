@@ -27,7 +27,7 @@ class ComposerServiceProvider extends ServiceProvider
 
         // compose tasks partial with task status vars
         View::composer(
-            'activity.staff.partials._tasks',
+            'partials.staff.tasks',
             'App\ViewComposers\StaffTasksComposer'
         );
 

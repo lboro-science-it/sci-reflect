@@ -6,7 +6,7 @@
 
 @section('content')
 
-@include('activity.staff.partials._tasks')
+@include('partials.staff.tasks')
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">

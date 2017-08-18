@@ -39,7 +39,7 @@
         @include('partials.rounds.completed', ['rounds' => $activityData->rounds->completed])
         @include('partials.rounds.future', ['rounds' => $activityData->rounds->future])
         @isset($knowledgeQuote)
-            @include('activity.partials._knowledge_quote', ['knowledgeQuote' => $knowledgeQuote])
+            @include('partials.knowledge.quote', ['knowledgeQuote' => $knowledgeQuote])
         @endisset
     </div>
 </div>
