@@ -8,7 +8,7 @@ use stdClass;
 
 class NonLinearActivity extends BaseActivity
 {
-    protected $view = 'activity.nonlinear.show';
+    protected $view = 'nonlinear.dashboard';
 
     private function eagerLoad()
     {

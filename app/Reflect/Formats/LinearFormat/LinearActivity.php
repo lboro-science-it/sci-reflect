@@ -10,7 +10,7 @@ use stdClass;
 
 class LinearActivity extends BaseActivity
 {
-    protected $view = 'activity.linear.show';
+    protected $view = 'linear.dashboard';
 
     private function eagerLoad()
     {
