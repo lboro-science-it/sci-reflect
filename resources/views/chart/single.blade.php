@@ -17,7 +17,7 @@
                 <h3>Your skills after {{ $round->title }}</h3>
             </div>
             <div class="panel-body" style="padding: 20px;">
-                @include('chart.partials._chart', ['chartData' => $chartData])
+                @include('partials.chart.chart', ['chartData' => $chartData])
             </div>
         </div>
 
