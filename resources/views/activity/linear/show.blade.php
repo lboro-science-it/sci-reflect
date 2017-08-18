@@ -13,7 +13,7 @@
             <div style="margin-top: 22px;">
                 @foreach($activityData->strongestSkills as $skill)
                     <div class="col-sm-4">
-                        @include('skills.partials._pill', ['skill' => $skill, 'improve' => true])
+                        @include('partials.ratings.pill', ['skill' => $skill, 'improve' => true])
                     </div>
                 @endforeach
             </div>
@@ -32,7 +32,7 @@
             <div>
                 @foreach($activityData->weakestSkills as $skill)
                     <div class="col-sm-4">
-                        @include('skills.partials._pill', ['skill' => $skill, 'improve' => true])
+                        @include('partials.ratings.pill', ['skill' => $skill, 'improve' => true])
                     </div>
                 @endforeach
             </div>

@@ -27,7 +27,7 @@
              </div>
          </div>
 
-        @include('rounds.partials._completed', ['rounds' => $rounds->completed->whereNotIn('id', $round->id)])
+        @include('partials.rounds.completed', ['rounds' => $rounds->completed->whereNotIn('id', $round->id)])
 
     </div>
 
@@ -50,7 +50,7 @@
                             <h3>{{ $category->name }}</h3>
                             @foreach($skills->where('category_id', $category->id) as $skill)
                                 <div class="row">
-                                    @include('skills.partials._horizontal', ['skill' => $skill, 'category' => $category, 'improve' => true])
+                                    @include('partials.ratings.horizontal', ['skill' => $skill, 'category' => $category, 'improve' => true])
                                 </div>
                             @endforeach
                         @endif
@@ -58,7 +58,7 @@
                 @else
                     @foreach($skills as $skill)
                         <div class="row">
-                            @include ('skills.partials._horizontal', ['skill' => $skill, 'category' => $skill->category, 'improve' => true])
+                            @include ('partials.ratings.horizontal', ['skill' => $skill, 'category' => $skill->category, 'improve' => true])
                         </div>
                     @endforeach
                 @endif

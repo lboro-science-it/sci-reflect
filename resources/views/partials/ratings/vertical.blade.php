@@ -29,4 +29,4 @@
     </div>
 </div>
 
-@include('skills.partials._modal', ['skill' => $skill])
+@include('partials.ratings.modal', ['skill' => $skill])

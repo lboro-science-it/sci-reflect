@@ -35,7 +35,7 @@
             </button>
         </h4>
     </div>
-    @include('skills.partials._modal', ['skill' => $skill])
+    @include('partials.ratings.modal', ['skill' => $skill])
 @endisset
 
 @isset($showDescription)

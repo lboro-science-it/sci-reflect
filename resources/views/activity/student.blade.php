@@ -17,9 +17,9 @@
 
     {{-- Activity sidebar content (chart, rounds list, quote...) --}}
     <div class="col-md-3 col-sm-4">
-        @include('activity.partials._chart')
-        @include('rounds/partials/_completed', ['rounds' => $activityData->rounds->completed])
-        @include('rounds/partials/_future', ['rounds' => $activityData->rounds->future])
+        @include('activity.partials._chart', ['chartData' => $activityData->chartData])
+        @include('partials.rounds.completed', ['rounds' => $activityData->rounds->completed])
+        @include('partials.rounds.future', ['rounds' => $activityData->rounds->future])
         @isset($knowledgeQuote)
             @include('activity.partials._knowledge_quote', ['knowledgeQuote' => $knowledgeQuote])
         @endisset

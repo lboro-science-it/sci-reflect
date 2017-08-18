@@ -1,13 +1,16 @@
-<div class="col-sm-4">
-    <button type="button"
-            class="btn btn-default" 
-            data-toggle="modal"
-            data-target="#skill-{{ $skill->id }}"
-            style="height: 100%; 
-                   width: 100%; 
-                   margin: 2%; 
-                   padding: 2%;">
-        <h4>
+<div class="panel panel-default"
+    @isset($improve)
+     role="button"
+     data-toggle="modal"
+     data-target="#skill-{{ $skill->id }}"
+    @endisset
+>
+    <div class="panel-heading" 
+         style="background-color: {{ $skill->category->color }};
+                padding: 2.5px;">
+    </div>
+    <div class="panel-body" style="padding: 2%; margin: 0;">
+        <h4 class="text-center">
             {{ $skill->title }}
         </h4>
         <div class="progress progress-reflect progress-min">
@@ -20,7 +23,9 @@
                         background-color: {{ $skill->background }};">
             </div>
         </div>
-    </button>
+    </div>
 </div>
 
-@include('skills.partials._modal', ['skill' => $skill])
+@isset($improve)
+@include('partials.ratings.modal', ['skill' => $skill])
+@endisset

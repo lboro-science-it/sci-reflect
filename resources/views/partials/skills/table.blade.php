@@ -17,7 +17,7 @@
             <td width="50%">
                 {{ $indicator->text }}
             </td>
-        @foreach($choices as $choice)
+            @foreach($choices as $choice)
             <td class="text-center" width="{{ 50 / $choiceCount }}%">
                 <label style="width: 100%; height: 100%;" for="{{ $indicator->id . '-' . $choice->id }}">
                     <input id="{{ $indicator->id . '-' . $choice->id }}" 
@@ -30,7 +30,7 @@
                            @endif>
                 </label>
             </td>
-        @endforeach
+            @endforeach
         </tr>
         @endforeach
     </tbody>
