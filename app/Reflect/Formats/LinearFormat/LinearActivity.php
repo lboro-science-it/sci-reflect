@@ -42,7 +42,6 @@ class LinearActivity extends BaseActivity
         //todo: get improve links for weakest skills from previous round
         $activityData = new stdClass();
 
-        $activityData->view = $this->view;
         $activityData->chartData = $this->getChartData();
         $activityData->hasDone = $this->hasDone();
         $activityData->roundContent = $this->getRoundContent();
@@ -121,7 +120,7 @@ class LinearActivity extends BaseActivity
 
     public function processActivity()
     {
-        return view($this->activityView)
+        return view($this->view)
                ->with('activityData', $this->getData());
     }
 

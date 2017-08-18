@@ -13,7 +13,7 @@ class NonLinearPage extends BasePage
         'page' => 'page'
     ];
 
-    protected $view = 'page.nonlinear.show';
+    protected $view = 'nonlinear.page';
 
     /**
      * Merges format-specific actions with base actions.

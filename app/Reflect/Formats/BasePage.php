@@ -17,8 +17,6 @@ class BasePage
         'default' => 'default'
     ];
 
-    protected $pageView = 'page.student';
-
     public function __construct(Request $request)
     {
         $this->request = $request;

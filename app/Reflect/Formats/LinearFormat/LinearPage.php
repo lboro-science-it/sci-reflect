@@ -21,7 +21,7 @@ class LinearPage extends BasePage
         'save' => 'save'
     ];
 
-    protected $view = 'page.linear.show';
+    protected $view = 'linear.page';
 
     /**
      * Merges format-specific actions with base actions.
@@ -81,7 +81,6 @@ class LinearPage extends BasePage
         $data->selections = $this->selectionsHelper->getSelectionsFromIndicators($page->getIndicators(), $this->round, $this->user);
         $data->sidebar = $this->getSidebar($page);
         $data->totalPages = $this->round->pages->count();
-        $data->view = $this->view;
 
         return $data;
     }
@@ -157,7 +156,7 @@ class LinearPage extends BasePage
 
     public function makePageView($page)
     {
-        return view($this->pageView)
+        return view($this->view)
         ->with('pageData', $this->getData($page));
     }
 

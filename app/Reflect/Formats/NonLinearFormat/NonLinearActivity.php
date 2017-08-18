@@ -46,7 +46,6 @@ class NonLinearActivity extends BaseActivity
 
         $activityData = new stdClass();
 
-        $activityData->view = $this->view;
         $activityData->categories = $this->getCategories();
         $activityData->chartData = $this->getChartData();
         $activityData->roundContent = $activityData->roundContent = $this->getRoundContent();
@@ -58,7 +57,7 @@ class NonLinearActivity extends BaseActivity
 
     public function processActivity()
     {
-        return view($this->activityView)
+        return view($this->view)
                ->with('activityData', $this->getData());
     }
 }

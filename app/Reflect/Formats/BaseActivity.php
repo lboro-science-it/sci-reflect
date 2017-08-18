@@ -15,8 +15,6 @@ class BaseActivity
 
     protected $user = null;
 
-    protected $activityView = 'activity.student';
-
     public function __construct(Request $request)
     {
         $this->request = $request;
