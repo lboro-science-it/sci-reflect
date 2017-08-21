@@ -28,7 +28,7 @@ Route::prefix('a/{activity}')->group(function() {
      */
     Route::group(['middleware' => ['staff']], function() {
         // staff activity routes
-        Route::get('/', 'ActivityController@showSetup');        // temporarily changed from show for dev
+        Route::get('/', 'ActivityController@show');        // temporarily changed from show for dev
         Route::put('/', 'ActivityController@create');
         Route::put('close', 'ActivityController@close');
         Route::put('open', 'ActivityController@open');
