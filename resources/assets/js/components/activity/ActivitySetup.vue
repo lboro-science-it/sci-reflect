@@ -1,6 +1,63 @@
 <template>
-    <div class="row">
-        <activity-tabs></activity-tabs>
+    <div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills">
+                            <li role="presentation" 
+                                :class="{ active: activeTab == 'activity-rounds'}"
+                                v-on:click.prevent="activeTab = 'activity-rounds'"
+                            >
+                                <a href="#">
+                                    Rounds ({{ rounds.length }})
+                                </a>
+                            </li>
+                            <li role="presentation"
+                                :class="{ active: activeTab == 'activity-pages'}"
+                                v-on:click.prevent="activeTab = 'activity-pages'"
+                            >
+                                <a href="#">
+                                    Pages ({{ pages.length }})
+                                </a>
+                            </li>
+                            <li role="presentation"
+                                :class="{ active: activeTab == 'activity-skills'}"
+                                v-on:click.prevent="activeTab = 'activity-skills'"
+                            >
+                                <a href="#">
+                                    Skills ({{ skills.length }})
+                                </a>
+                            </li>
+                            <li role="presentation"
+                                :class="{ active: activeTab == 'activity-content'}"
+                                v-on:click.prevent="activeTab = 'activity-content'"
+                            >
+                                <a href="#">
+                                    Content
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <keep-alive>
+                    <component :is="activeTab"
+                               :blocks="editBlocks"
+                               :categories="editCategories"
+                               :choices="editChoices"
+                               :pages="editPages"
+                               :rounds="editRounds"
+                               :skills="editSkills">
+                    </component>
+                </keep-alive>
+            </div>
+        </div>
+
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -53,12 +110,23 @@
     export default {
         data () {
             return {
-                'editRounds': this.rounds
+                'activeTab': 'activity-rounds',
+                'editBlocks': this.blocks,
+                'editCategories': this.categories,
+                'editChoices': this.choices,
+                'editPages': this.pages,
+                'editRounds': this.rounds,
+                'editSkills': this.skills
             }
         },
 
         props: [
-            'rounds'
+            'blocks',
+            'categories',
+            'choices',
+            'pages',
+            'rounds',
+            'skills'
         ],
 
         methods: {
@@ -66,7 +134,7 @@
         },
 
         mounted () {
-            console.log(this.editRounds);
+
         }
     }
 </script>

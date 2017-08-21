@@ -114,6 +114,9 @@ class ActivityController extends Controller
     public function showSetup(Activity $activity)
     {
         // get rounds as a json string (array) indexed by round_number
+        $activity->rounds->load([
+            'pageRounds'
+        ]);
         $rounds = $activity->rounds->sortBy('round_number')->values()->toJson();
 
         // get pages with ids of blocks / skills as arrays
@@ -130,15 +133,18 @@ class ActivityController extends Controller
         $activity->skills->load([
             'indicators'
         ]);
-        $skills = $activity->skills->toJson();
+        $skills = $activity->skills->sortBy('number')->values()->toJson();
 
         // get categories
-        $categories = $activity->categories->toJson();
+        $categories = $activity->categories->sortBy('name')->sortBy('number')->values()->keyBy('id')->toJson();
 
-        return view ('staff.setup')->with('rounds', $rounds)
+        $choices = $activity->choices->sortBy('value')->values()->toJson();
+
+        return view ('staff.setup')->with('blocks', $blocks)
+                                   ->with('categories', $categories)
+                                   ->with('choices', $choices)
                                    ->with('pages', $pages)
-                                   ->with('blocks', $blocks)
-                                   ->with('skills', $skills)
-                                   ->with('categories', $categories);
+                                   ->with('rounds', $rounds)
+                                   ->with('skills', $skills);
     }
 }

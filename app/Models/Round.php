@@ -19,6 +19,17 @@ class Round extends Model
         return $this->belongsTo('App\Block');
     }
 
+    /**
+     * Models the pivot table page_round, used in activity editor view where
+     * actual pages are loaded as a separate array, so clientside the relationships
+     * are figured out.
+     *
+     */
+    public function pageRounds()
+    {
+        return $this->hasMany('App\PageRound');
+    }
+
     public function pages()
     {
         return $this->belongsToMany('App\Page')->withPivot(['page_number']);

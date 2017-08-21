@@ -70399,8 +70399,11 @@ window.Vue = __webpack_require__(151);
  * this instance.
  */
 
+Vue.component('activity-content', __webpack_require__(265));
+Vue.component('activity-pages', __webpack_require__(262));
+Vue.component('activity-rounds', __webpack_require__(259));
 Vue.component('activity-setup', __webpack_require__(253));
-Vue.component('activity-tabs', __webpack_require__(256));
+Vue.component('activity-skills', __webpack_require__(268));
 
 Vue.component('group-batch', __webpack_require__(208));
 Vue.component('group-bulk', __webpack_require__(211));
@@ -72909,24 +72912,85 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            'editRounds': this.rounds
+            'activeTab': 'activity-rounds',
+            'editBlocks': this.blocks,
+            'editCategories': this.categories,
+            'editChoices': this.choices,
+            'editPages': this.pages,
+            'editRounds': this.rounds,
+            'editSkills': this.skills
         };
     },
 
 
-    props: ['rounds'],
+    props: ['blocks', 'categories', 'choices', 'pages', 'rounds', 'skills'],
 
     methods: {},
 
-    mounted: function mounted() {
-        console.log(this.editRounds);
-    }
+    mounted: function mounted() {}
 });
 
 /***/ }),
@@ -72934,9 +72998,99 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  return _c('div', [_c('div', {
     staticClass: "row"
-  }, [_c('activity-tabs'), _vm._v(" "), _vm._m(0)], 1)
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "nav nav-pills"
+  }, [_c('li', {
+    class: {
+      active: _vm.activeTab == 'activity-rounds'
+    },
+    attrs: {
+      "role": "presentation"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.activeTab = 'activity-rounds'
+      }
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("\n                                Rounds (" + _vm._s(_vm.rounds.length) + ")\n                            ")])]), _vm._v(" "), _c('li', {
+    class: {
+      active: _vm.activeTab == 'activity-pages'
+    },
+    attrs: {
+      "role": "presentation"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.activeTab = 'activity-pages'
+      }
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("\n                                Pages (" + _vm._s(_vm.pages.length) + ")\n                            ")])]), _vm._v(" "), _c('li', {
+    class: {
+      active: _vm.activeTab == 'activity-skills'
+    },
+    attrs: {
+      "role": "presentation"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.activeTab = 'activity-skills'
+      }
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("\n                                Skills (" + _vm._s(_vm.skills.length) + ")\n                            ")])]), _vm._v(" "), _c('li', {
+    class: {
+      active: _vm.activeTab == 'activity-content'
+    },
+    attrs: {
+      "role": "presentation"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.activeTab = 'activity-content'
+      }
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("\n                                Content\n                            ")])])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-10 col-md-offset-1"
+  }, [_c('keep-alive', [_c(_vm.activeTab, {
+    tag: "component",
+    attrs: {
+      "blocks": _vm.editBlocks,
+      "categories": _vm.editCategories,
+      "choices": _vm.editChoices,
+      "pages": _vm.editPages,
+      "rounds": _vm.editRounds,
+      "skills": _vm.editSkills
+    }
+  })], 1)], 1)]), _vm._v(" "), _vm._m(0)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-md-6 col-md-offset-3"
@@ -72955,15 +73109,18 @@ if (false) {
 }
 
 /***/ }),
-/* 256 */
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(257),
+  __webpack_require__(260),
   /* template */
-  __webpack_require__(258),
+  __webpack_require__(261),
   /* styles */
   null,
   /* scopeId */
@@ -72971,9 +73128,9 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/activity/ActivityTabs.vue"
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/activity/ActivityRounds.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] ActivityTabs.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] ActivityRounds.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -72982,9 +73139,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6e34df8c", Component.options)
+    hotAPI.createRecord("data-v-1e8e089a", Component.options)
   } else {
-    hotAPI.reload("data-v-6e34df8c", Component.options)
+    hotAPI.reload("data-v-1e8e089a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -72995,7 +73152,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 257 */
+/* 260 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73025,55 +73182,383 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            activeIndex: 0
+        };
+    },
+
+
+    props: ['rounds'],
+
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("\n            An activity can have one or more rounds. Rounds are a single iteration of the student being required to reflect on their skills.\n            Rounds contain pages, which can display skills and content to the student. It doesn't matter if a skill is present in all rounds, a single round, or selected rounds.\n            When the student completes a round, they can see a chart of their reflections against the skills present in that round.\n        ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('div', {
+    staticClass: "list-group",
+    attrs: {
+      "role": "group"
+    }
+  }, [_vm._m(0), _vm._v(" "), _vm._l((_vm.rounds), function(round, index) {
+    return _c('div', {
+      staticClass: "list-group-item",
+      class: {
+        active: index == _vm.activeIndex
+      },
+      attrs: {
+        "role": "button"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.activeIndex = index
+        }
+      }
+    }, [_vm._v("\n                        " + _vm._s(round.title) + "\n                    ")])
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-9"
+  }, [_vm._v("\n                content about editing the round\n            ")])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "list-group-item"
+  }, [_c('input', {
+    attrs: {
+      "type": "text"
+    }
+  }), _vm._v(" "), _c('button', {
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("\n                            save\n                        ")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1e8e089a", module.exports)
+  }
+}
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(263),
+  /* template */
+  __webpack_require__(264),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/activity/ActivityPages.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ActivityPages.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-08c772b4", Component.options)
+  } else {
+    hotAPI.reload("data-v-08c772b4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 263 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {};
     },
-
-
-    props: [],
-
-    methods: {}
+    mounted: function mounted() {}
 });
 
 /***/ }),
-/* 258 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('ul', {
-    staticClass: "nav nav-pills"
-  }, [_c('li', {
-    attrs: {
-      "role": "presentation"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("\n            Rounds\n        ")])]), _vm._v(" "), _c('li', {
-    attrs: {
-      "role": "presentation"
-    }
-  }, [_c('a', [_vm._v("\n            Pages\n        ")])]), _vm._v(" "), _c('li', {
-    attrs: {
-      "role": "presentation"
-    }
-  }, [_c('a', [_vm._v("\n            Skills\n        ")])]), _vm._v(" "), _c('li', {
-    attrs: {
-      "role": "presentation"
-    }
-  }, [_c('a', [_vm._v("\n            Content\n        ")])])])
-}]}
+  return _c('div', [_vm._v("\n    this is the pages component\n")])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6e34df8c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-08c772b4", module.exports)
+  }
+}
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(266),
+  /* template */
+  __webpack_require__(267),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/activity/ActivityContent.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ActivityContent.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0300834a", Component.options)
+  } else {
+    hotAPI.reload("data-v-0300834a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    },
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("\n    this is the content component\n")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-0300834a", module.exports)
+  }
+}
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(269),
+  /* template */
+  __webpack_require__(270),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/activity/ActivitySkills.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ActivitySkills.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-593ce4d0", Component.options)
+  } else {
+    hotAPI.reload("data-v-593ce4d0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 269 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            activeIndex: 0,
+            editSkills: this.skills
+        };
+    },
+
+
+    props: ['blocks', 'categories', 'skills'],
+
+    methods: {
+        getStyle: function getStyle(index) {
+            return {
+                'border-color': this.categories[this.editSkills[index].category_id].color
+            };
+        }
+    },
+
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('ul', {
+    staticClass: "nav nav-pills nav-stacked"
+  }, _vm._l((_vm.editSkills), function(skill, index) {
+    return _c('li', {
+      class: {
+        active: index == _vm.activeIndex
+      },
+      attrs: {
+        "role": "presentation"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.activeIndex = index
+        }
+      }
+    }, [_c('a', {
+      style: (_vm.getStyle(index)),
+      attrs: {
+        "href": "#"
+      }
+    }, [_vm._v("\n                            " + _vm._s(skill.title) + "\n                        ")])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-9"
+  }, [_vm._v("\n                " + _vm._s(_vm.editSkills[_vm.activeIndex].title)), _c('br'), _vm._v("\n                " + _vm._s(_vm.editSkills[_vm.activeIndex].description)), _c('br'), _vm._v("\n                " + _vm._s(_vm.editSkills[_vm.activeIndex].block_id)), _c('br'), _vm._v("\n                " + _vm._s(_vm.editSkills[_vm.activeIndex].category_id) + "\n            ")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-593ce4d0", module.exports)
   }
 }
 
