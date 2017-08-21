@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
-
     protected $hidden = [
         'created_at',
         'updated_at'
@@ -34,7 +33,7 @@ class Round extends Model
 
     /**
      * Returns an array of all indicators present in the round (via pages,
-     * skills, indicators)
+     * skills)
      * @return array
      */
     public function getIndicators()
@@ -52,6 +51,10 @@ class Round extends Model
         return $this->indicators;
     }
 
+    /**
+     * Returns a collection of skills present in the round (via pages)
+     * @return collection
+     */
     public function getSkills()
     {
         if (!isset($this->skills)) {

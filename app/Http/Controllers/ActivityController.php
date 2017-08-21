@@ -95,31 +95,50 @@ class ActivityController extends Controller
         return view('staff.dashboard');
     }
 
+    /**
+     * Display the view informing the user that the activity is closed.
+     *
+     * @return View
+     */
     public function showClosed(Activity $activity)
     {
         return view('activity.closed');
     }
 
+    /**
+     * Display the view for setting up the activity, including creating rounds,
+     * pages, skills, indicators, content blocks, etc.
+     *
+     * @return View
+     */
     public function showSetup(Activity $activity)
     {
+        // get rounds as a json string (array) indexed by round_number
         $rounds = $activity->rounds->sortBy('round_number')->values()->toJson();
+
+        // get pages with ids of blocks / skills as arrays
         $activity->pages->load([
             'blockPages',
             'pageSkills'
         ]);
         $pages = $activity->pages->toJson();
-        
+
+        // get blocks
         $blocks = $activity->blocks->toJson();
         
+        // get skills with indicators preloaded as arrays
         $activity->skills->load([
             'indicators'
         ]);
         $skills = $activity->skills->toJson();
 
+        // get categories
+        $categories = $activity->categories->toJson();
 
         return view ('staff.setup')->with('rounds', $rounds)
                                    ->with('pages', $pages)
                                    ->with('blocks', $blocks)
-                                   ->with('skills', $skills);
+                                   ->with('skills', $skills)
+                                   ->with('categories', $categories);
     }
 }

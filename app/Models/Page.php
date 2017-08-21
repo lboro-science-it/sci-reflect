@@ -16,6 +16,12 @@ class Page extends Model
 
     // Relationship methods 
 
+    /**
+     * Model for the pivot table between pages and blocks, used when pages
+     * are rendered in activity setup, so in the browser the correct block
+     * can be referred to via its ID.
+     *
+     */
     public function blockPages()
     {
         return $this->hasMany('App\BlockPage');
@@ -26,6 +32,13 @@ class Page extends Model
         return $this->belongsToMany('App\Block')->withPivot('position');
     }
 
+    /**
+     * Model for the pivot between pages and skills. When pages are rendered
+     * in activity setup, they are rendered with an array of pageSkills,
+     * that array contains ids of all skills which are present in a separate
+     * array.
+     *
+     */
     public function pageSkills()
     {
         return $this->hasMany('App\PageSkill');

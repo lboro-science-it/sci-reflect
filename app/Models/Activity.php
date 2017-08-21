@@ -258,7 +258,13 @@ class Activity extends Model
         return $studentsArray;
     }
 
+    /**
+     * Tracks whether $userGroups have already been loaded, so this function
+     * can be called by multiple helpers without causing multiple queries.
+     * todo: manage this better without the property.
+     */
     protected $userGroupsLoaded = false;
+    
     /**
      * Gets the activity's groups and saves them as relations to the activity's
      * users directly (rather than activity->user pivots)
