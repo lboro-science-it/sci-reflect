@@ -13,11 +13,12 @@
                                type="text"
                                class="form-control input-lg"
                                placeholder="Add"
+                               v-on:keyup.enter="addRound"
                         >
                     </div>
                     <button class="btn btn-lg btn-primary"
                             v-on:click.prevent="addRound">
-                        Add round
+                        {{ addRoundCaption }}
                     </button>
                 </div>
             </div>
@@ -51,6 +52,7 @@
         data () {
             return {
                 activeIndex: 0,
+                addRoundCaption: 'Add round',
                 newRoundTitle: ''
             }
         },
@@ -62,13 +64,23 @@
         methods: {
             addRound() {
                 if (this.newRound !== '') {
+                    let self = this;
+                    this.addRoundCaption = 'Adding...';
                     axios.post('rounds', {
                         title: this.newRoundTitle
                     }).then(response => {
                         if (response.status == 200) {
-                            // success
-                            // todo: emit event adding the round to the parent rounds
+                            this.addRoundCaption = 'Added!';
+                            setTimeout(function() {
+                                self.addRoundCaption = 'Add round';
+                            }, 5000);
+                            this.newRoundTitle = '';
                             this.$emit('add-round', response.data);
+                        } else {
+                            this.addRoundCaption = 'Failed!';
+                            setTimeout(function() {
+                                self.addRoundCaption = 'Add round';
+                            }, 5000);
                         }
                     });
                 }

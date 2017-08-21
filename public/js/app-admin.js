@@ -73231,6 +73231,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -73238,6 +73239,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             activeIndex: 0,
+            addRoundCaption: 'Add round',
             newRoundTitle: ''
         };
     },
@@ -73250,13 +73252,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             if (this.newRound !== '') {
+                var self = this;
+                this.addRoundCaption = 'Adding...';
                 axios.post('rounds', {
                     title: this.newRoundTitle
                 }).then(function (response) {
                     if (response.status == 200) {
-                        // success
-                        // todo: emit event adding the round to the parent rounds
+                        _this.addRoundCaption = 'Added!';
+                        setTimeout(function () {
+                            self.addRoundCaption = 'Add round';
+                        }, 5000);
+                        _this.newRoundTitle = '';
                         _this.$emit('add-round', response.data);
+                    } else {
+                        _this.addRoundCaption = 'Failed!';
+                        setTimeout(function () {
+                            self.addRoundCaption = 'Add round';
+                        }, 5000);
                     }
                 });
             }
@@ -73293,6 +73305,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": (_vm.newRoundTitle)
     },
     on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.addRound($event)
+      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.newRoundTitle = $event.target.value
@@ -73306,7 +73322,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.addRound($event)
       }
     }
-  }, [_vm._v("\n                    Add round\n                ")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                    " + _vm._s(_vm.addRoundCaption) + "\n                ")])])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "row"
