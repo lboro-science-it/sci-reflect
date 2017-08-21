@@ -44,16 +44,7 @@ class Activity extends Model
         $groups = $this->groups->sortBy('name');
         $groups->load('activityUsers.user');
 
-        $groupsArray = [];
-        foreach($groups as $group) {
-            array_push($groupsArray, [
-                'id' => $group->id,
-                'name' => $group->name,
-                'userCount' => $group->getUsers()->count()
-            ]);
-        }
-
-        return $groupsArray;
+        return $groups->toArray();
     }
 
     /**

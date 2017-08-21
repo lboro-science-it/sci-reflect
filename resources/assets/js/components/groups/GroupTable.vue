@@ -19,7 +19,7 @@
                             <group-row v-for="(group, index) in editGroups"
                                        :key="group.id"
                                        :name="group.name"
-                                       :users="group.userCount"
+                                       :users="group.user_count"
                                        :id="group.id"
                                        :delete-url="deleteUrl"
                                        :put-url="putUrl"

@@ -70404,18 +70404,18 @@ Vue.component('group-bulk', __webpack_require__(211));
 Vue.component('group-row', __webpack_require__(214));
 Vue.component('group-table', __webpack_require__(217));
 
-Vue.component('skill-list-item', __webpack_require__(245));
-Vue.component('skill-rater', __webpack_require__(246));
-Vue.component('student-rater', __webpack_require__(247));
+Vue.component('skill-list-item', __webpack_require__(220));
+Vue.component('skill-rater', __webpack_require__(223));
+Vue.component('student-rater', __webpack_require__(226));
 
-Vue.component('staff-row', __webpack_require__(220));
-Vue.component('staff-table', __webpack_require__(223));
+Vue.component('staff-row', __webpack_require__(229));
+Vue.component('staff-table', __webpack_require__(232));
 
-Vue.component('student-row', __webpack_require__(226));
-Vue.component('student-table', __webpack_require__(229));
+Vue.component('student-row', __webpack_require__(235));
+Vue.component('student-table', __webpack_require__(238));
 
 Vue.component('polar-chart', __webpack_require__(152));
-Vue.component('staff-partial', __webpack_require__(232));
+Vue.component('staff-partial', __webpack_require__(241));
 
 
 
@@ -71204,7 +71204,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       key: group.id,
       attrs: {
         "name": group.name,
-        "users": group.userCount,
+        "users": group.user_count,
         "id": group.id,
         "delete-url": _vm.deleteUrl,
         "put-url": _vm.putUrl
@@ -71255,9 +71255,9 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/staff/StaffRow.vue"
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/ratings/SkillListItem.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] StaffRow.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] SkillListItem.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -71266,9 +71266,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7c1d6fcc", Component.options)
+    hotAPI.createRecord("data-v-0cf53cf0", Component.options)
   } else {
-    hotAPI.reload("data-v-7c1d6fcc", Component.options)
+    hotAPI.reload("data-v-0cf53cf0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -71284,8 +71284,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -71296,20 +71294,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {};
-    },
+    props: ['active', 'skill'],
 
-
-    props: ['staffMember'],
-
-    methods: {},
-
-    mounted: function mounted() {}
+    methods: {
+        activate: function activate() {
+            this.$emit('activate');
+        }
+    }
 });
 
 /***/ }),
@@ -71317,17 +71318,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tr', [_c('td', [(_vm.staffMember.groupName) ? _c('p', [_vm._v(_vm._s(_vm.staffMember.groupName))]) : _c('p', [_vm._v("select")])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffMember.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffMember.email))]), _vm._v(" "), _c('td', {
-    staticClass: "todo"
-  }, [(_vm.staffMember.hasAccessed) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
-    staticClass: "todo"
-  }, [(_vm.staffMember.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.staffMember.lastAccessed))]) : _vm._e()])])
+  return _c('div', {
+    staticClass: "list-group-item",
+    attrs: {
+      "role": "button"
+    },
+    on: {
+      "click": _vm.activate
+    }
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.active),
+      expression: "active"
+    }],
+    staticClass: "glyphicon glyphicon-chevron-right",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v("\n    \n    " + _vm._s(_vm.skill.title) + "\n    "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.skill.rating !== null),
+      expression: "skill.rating !== null"
+    }]
+  }, [_vm._v("(" + _vm._s(_vm.skill.rating) + ")")]), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.skill.rating !== null),
+      expression: "skill.rating !== null"
+    }],
+    staticClass: "glyphicon glyphicon-ok pull-right",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7c1d6fcc", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0cf53cf0", module.exports)
   }
 }
 
@@ -71348,9 +71382,9 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/staff/StaffTable.vue"
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/ratings/SkillRater.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] StaffTable.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] SkillRater.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -71359,9 +71393,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d25bb3e4", Component.options)
+    hotAPI.createRecord("data-v-ae0bb22a", Component.options)
   } else {
-    hotAPI.reload("data-v-d25bb3e4", Component.options)
+    hotAPI.reload("data-v-ae0bb22a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -71401,6 +71435,521 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            buttonSpacer: {
+                float: 'left',
+                paddingLeft: '10px',
+                paddingRight: '10px',
+                paddingBottom: '20px',
+                position: 'relative',
+                textAlign: 'center',
+                width: 100 / this.choices.length + "%"
+            }
+        };
+    },
+
+
+    props: ['choices', 'skill'],
+
+    methods: {
+        getBtnClass: function getBtnClass(value) {
+            if (this.skill.rating == value) {
+                return 'btn-success';
+            } else {
+                return 'btn-info';
+            }
+        },
+
+
+        // update the skill in the parent array
+        updateRating: function updateRating(value) {
+            this.$emit('update-rating', value);
+        }
+    }
+
+});
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "text-center"
+  }, [_c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('h3', {
+    key: _vm.skill.id
+  }, [_vm._v(_vm._s(_vm.skill.title))])]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('p', {
+    key: _vm.skill.id,
+    staticStyle: {
+      "padding-bottom": "20px"
+    }
+  }, [_vm._v("\n           " + _vm._s(_vm.skill.description) + "\n       ")])]), _vm._v(" "), _vm._l((_vm.choices), function(choice) {
+    return _c('div', {
+      style: (_vm.buttonSpacer)
+    }, [_c('transition', {
+      attrs: {
+        "name": "fade",
+        "mode": "out-in"
+      }
+    }, [_c('button', {
+      key: _vm.skill.id,
+      staticClass: "btn btn-lg choice-btn",
+      class: _vm.getBtnClass(choice.value),
+      on: {
+        "click": function($event) {
+          _vm.updateRating(choice.value)
+        }
+      }
+    }, [_vm._v("\n                " + _vm._s(choice.label !== '' ? choice.label : '(value: ' + choice.value + ')') + "\n            ")])])], 1)
+  })], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-ae0bb22a", module.exports)
+  }
+}
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(227),
+  /* template */
+  __webpack_require__(228),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/ratings/StudentRater.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StudentRater.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-495eb9c1", Component.options)
+  } else {
+    hotAPI.reload("data-v-495eb9c1", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 227 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            activeSkillIndex: 0,
+            saveText: 'Save',
+            unratedSkillIds: []
+        };
+    },
+
+
+    props: ['choices', 'homeUrl', 'postUrl', 'roundNumber', 'skills', 'studentId', 'studentName'],
+
+    computed: {
+        saveBtnClass: function saveBtnClass() {
+            if (this.unratedSkillIds.length > 0) {
+                return 'btn-info';
+            } else {
+                return 'btn-success';
+            }
+        }
+    },
+
+    mounted: function mounted() {
+        // create unratedSkillIds array to track when to show done button
+        var skillsLength = this.skills.length;
+        for (var i = 0; i < skillsLength; i++) {
+            var skill = this.skills[i];
+            if (skill.rating === null) {
+                this.unratedSkillIds.push(skill.id);
+            }
+        }
+    },
+
+
+    methods: {
+        // display the skill in the SkillRater panel
+        activate: function activate(index) {
+            this.activeSkillIndex = index;
+        },
+        storeRatings: function storeRatings() {
+            var _this = this;
+
+            this.saveText = 'Saving...';
+            var postData = {};
+
+            // create object of skill_id => rating for insert to db
+            var skillsLength = this.skills.length;
+            for (var i = 0; i < skillsLength; i++) {
+                var skill = this.skills[i];
+                postData[skill.id] = skill.rating;
+            }
+
+            axios.post(this.postUrl, {
+                'skills': postData
+            }).then(function (response) {
+                _this.saveText = response.data == 'success' ? 'Saved!' : 'Error!';
+
+                var self = _this;
+                setTimeout(function () {
+                    self.saveText = 'Save';
+                }, 5000);
+            });
+        },
+
+
+        // set the rating on the skills array object
+        updateRating: function updateRating(value) {
+            var activeSkill = this.skills[this.activeSkillIndex];
+            activeSkill.rating = value;
+            // update the array of unratedSkillIds
+            var unratedSkillIndex = this.unratedSkillIds.indexOf(activeSkill.id);
+            // delete the skill from unratedSkills so we can count if there are still unratedSkills
+            if (unratedSkillIndex >= 0) {
+                this.unratedSkillIds.splice(unratedSkillIndex, 1);
+            }
+            // advance to the next skill
+            // todo: checking whether next skill is unrated, if not, advance to next unrated skill instead
+            if (this.skills.length > this.activeSkillIndex + 1) {
+                this.activeSkillIndex++;
+            }
+        }
+    }
+
+});
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-3 col-md-offset-1"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('ul', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.skills), function(skill, index) {
+    return _c('skill-list-item', {
+      key: skill.id,
+      attrs: {
+        "skill": skill,
+        "active": index == _vm.activeSkillIndex
+      },
+      on: {
+        "activate": function($event) {
+          _vm.activate(index)
+        }
+      }
+    })
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-7"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("\n                    Rate " + _vm._s(_vm.studentName) + "\n                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('skill-rater', {
+    attrs: {
+      "skill": _vm.skills[_vm.activeSkillIndex],
+      "choices": _vm.choices
+    },
+    on: {
+      "update-rating": _vm.updateRating
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "panel-footer"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-6 text-left"
+  }, [_c('a', {
+    staticClass: "btn btn-lg btn-success",
+    attrs: {
+      "href": _vm.homeUrl
+    }
+  }, [_vm._v("\n                            Back to Dashboard\n                        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 text-right"
+  }, [_c('button', {
+    staticClass: "btn btn-lg",
+    class: _vm.saveBtnClass,
+    on: {
+      "click": _vm.storeRatings
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.saveText) + "\n                        ")])])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Skills")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-495eb9c1", module.exports)
+  }
+}
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(230),
+  /* template */
+  __webpack_require__(231),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/staff/StaffRow.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StaffRow.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7c1d6fcc", Component.options)
+  } else {
+    hotAPI.reload("data-v-7c1d6fcc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 230 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    },
+
+
+    props: ['staffMember'],
+
+    methods: {},
+
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [_c('td', [(_vm.staffMember.groupName) ? _c('p', [_vm._v(_vm._s(_vm.staffMember.groupName))]) : _c('p', [_vm._v("select")])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffMember.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffMember.email))]), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.staffMember.hasAccessed) ? _c('p', [_vm._v("Yes")]) : _c('p', [_vm._v("No")])]), _vm._v(" "), _c('td', {
+    staticClass: "todo"
+  }, [(_vm.staffMember.hasAccessed) ? _c('p', [_vm._v(_vm._s(_vm.staffMember.lastAccessed))]) : _vm._e()])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7c1d6fcc", module.exports)
+  }
+}
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(233),
+  /* template */
+  __webpack_require__(234),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/staff/StaffTable.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StaffTable.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d25bb3e4", Component.options)
+  } else {
+    hotAPI.reload("data-v-d25bb3e4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 233 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -71412,7 +71961,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 225 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -71450,15 +71999,15 @@ if (false) {
 }
 
 /***/ }),
-/* 226 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(227),
+  __webpack_require__(236),
   /* template */
-  __webpack_require__(228),
+  __webpack_require__(237),
   /* styles */
   null,
   /* scopeId */
@@ -71490,7 +72039,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 227 */
+/* 236 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71612,7 +72161,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 228 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -71767,15 +72316,15 @@ if (false) {
 }
 
 /***/ }),
-/* 229 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(230),
+  __webpack_require__(239),
   /* template */
-  __webpack_require__(231),
+  __webpack_require__(240),
   /* styles */
   null,
   /* scopeId */
@@ -71807,7 +72356,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 230 */
+/* 239 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71965,7 +72514,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 231 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -72176,15 +72725,15 @@ if (false) {
 }
 
 /***/ }),
-/* 232 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(233),
+  __webpack_require__(242),
   /* template */
-  __webpack_require__(234),
+  __webpack_require__(243),
   /* styles */
   null,
   /* scopeId */
@@ -72216,7 +72765,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 233 */
+/* 242 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72235,7 +72784,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 234 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -72248,565 +72797,6 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-73125bb2", module.exports)
-  }
-}
-
-/***/ }),
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(252),
-  /* template */
-  __webpack_require__(253),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/ratings/SkillListItem.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] SkillListItem.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0cf53cf0", Component.options)
-  } else {
-    hotAPI.reload("data-v-0cf53cf0", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 246 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(250),
-  /* template */
-  __webpack_require__(251),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/ratings/SkillRater.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] SkillRater.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-ae0bb22a", Component.options)
-  } else {
-    hotAPI.reload("data-v-ae0bb22a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 247 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(248),
-  /* template */
-  __webpack_require__(249),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/ratings/StudentRater.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] StudentRater.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-495eb9c1", Component.options)
-  } else {
-    hotAPI.reload("data-v-495eb9c1", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 248 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            activeSkillIndex: 0,
-            saveText: 'Save',
-            unratedSkillIds: []
-        };
-    },
-
-
-    props: ['choices', 'homeUrl', 'postUrl', 'roundNumber', 'skills', 'studentId', 'studentName'],
-
-    computed: {
-        saveBtnClass: function saveBtnClass() {
-            if (this.unratedSkillIds.length > 0) {
-                return 'btn-info';
-            } else {
-                return 'btn-success';
-            }
-        }
-    },
-
-    mounted: function mounted() {
-        // create unratedSkillIds array to track when to show done button
-        var skillsLength = this.skills.length;
-        for (var i = 0; i < skillsLength; i++) {
-            var skill = this.skills[i];
-            if (skill.rating === null) {
-                this.unratedSkillIds.push(skill.id);
-            }
-        }
-    },
-
-
-    methods: {
-        // display the skill in the SkillRater panel
-        activate: function activate(index) {
-            this.activeSkillIndex = index;
-        },
-        storeRatings: function storeRatings() {
-            var _this = this;
-
-            this.saveText = 'Saving...';
-            var postData = {};
-
-            // create object of skill_id => rating for insert to db
-            var skillsLength = this.skills.length;
-            for (var i = 0; i < skillsLength; i++) {
-                var skill = this.skills[i];
-                postData[skill.id] = skill.rating;
-            }
-
-            axios.post(this.postUrl, {
-                'skills': postData
-            }).then(function (response) {
-                _this.saveText = response.data == 'success' ? 'Saved!' : 'Error!';
-
-                var self = _this;
-                setTimeout(function () {
-                    self.saveText = 'Save';
-                }, 5000);
-            });
-        },
-
-
-        // set the rating on the skills array object
-        updateRating: function updateRating(value) {
-            var activeSkill = this.skills[this.activeSkillIndex];
-            activeSkill.rating = value;
-            // update the array of unratedSkillIds
-            var unratedSkillIndex = this.unratedSkillIds.indexOf(activeSkill.id);
-            // delete the skill from unratedSkills so we can count if there are still unratedSkills
-            if (unratedSkillIndex >= 0) {
-                this.unratedSkillIds.splice(unratedSkillIndex, 1);
-            }
-            // advance to the next skill
-            // todo: checking whether next skill is unrated, if not, advance to next unrated skill instead
-            if (this.skills.length > this.activeSkillIndex + 1) {
-                this.activeSkillIndex++;
-            }
-        }
-    }
-
-});
-
-/***/ }),
-/* 249 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-3 col-md-offset-1"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_vm._m(0), _vm._v(" "), _c('ul', {
-    staticClass: "list-group"
-  }, _vm._l((_vm.skills), function(skill, index) {
-    return _c('skill-list-item', {
-      key: skill.id,
-      attrs: {
-        "skill": skill,
-        "active": index == _vm.activeSkillIndex
-      },
-      on: {
-        "activate": function($event) {
-          _vm.activate(index)
-        }
-      }
-    })
-  }))])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-7"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_c('h3', [_vm._v("\n                    Rate " + _vm._s(_vm.studentName) + "\n                ")])]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('skill-rater', {
-    attrs: {
-      "skill": _vm.skills[_vm.activeSkillIndex],
-      "choices": _vm.choices
-    },
-    on: {
-      "update-rating": _vm.updateRating
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "panel-footer"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-xs-6 text-left"
-  }, [_c('a', {
-    staticClass: "btn btn-lg btn-success",
-    attrs: {
-      "href": _vm.homeUrl
-    }
-  }, [_vm._v("\n                            Back to Dashboard\n                        ")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-6 text-right"
-  }, [_c('button', {
-    staticClass: "btn btn-lg",
-    class: _vm.saveBtnClass,
-    on: {
-      "click": _vm.storeRatings
-    }
-  }, [_vm._v("\n                            " + _vm._s(_vm.saveText) + "\n                        ")])])])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-heading"
-  }, [_c('h3', [_vm._v("Skills")])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-495eb9c1", module.exports)
-  }
-}
-
-/***/ }),
-/* 250 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            buttonSpacer: {
-                float: 'left',
-                paddingLeft: '10px',
-                paddingRight: '10px',
-                paddingBottom: '20px',
-                position: 'relative',
-                textAlign: 'center',
-                width: 100 / this.choices.length + "%"
-            }
-        };
-    },
-
-
-    props: ['choices', 'skill'],
-
-    methods: {
-        getBtnClass: function getBtnClass(value) {
-            if (this.skill.rating == value) {
-                return 'btn-success';
-            } else {
-                return 'btn-info';
-            }
-        },
-
-
-        // update the skill in the parent array
-        updateRating: function updateRating(value) {
-            this.$emit('update-rating', value);
-        }
-    }
-
-});
-
-/***/ }),
-/* 251 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "text-center"
-  }, [_c('transition', {
-    attrs: {
-      "name": "fade",
-      "mode": "out-in"
-    }
-  }, [_c('h3', {
-    key: _vm.skill.id
-  }, [_vm._v(_vm._s(_vm.skill.title))])]), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade",
-      "mode": "out-in"
-    }
-  }, [_c('p', {
-    key: _vm.skill.id,
-    staticStyle: {
-      "padding-bottom": "20px"
-    }
-  }, [_vm._v("\n           " + _vm._s(_vm.skill.description) + "\n       ")])]), _vm._v(" "), _vm._l((_vm.choices), function(choice) {
-    return _c('div', {
-      style: (_vm.buttonSpacer)
-    }, [_c('transition', {
-      attrs: {
-        "name": "fade",
-        "mode": "out-in"
-      }
-    }, [_c('button', {
-      key: _vm.skill.id,
-      staticClass: "btn btn-lg choice-btn",
-      class: _vm.getBtnClass(choice.value),
-      on: {
-        "click": function($event) {
-          _vm.updateRating(choice.value)
-        }
-      }
-    }, [_vm._v("\n                " + _vm._s(choice.label !== '' ? choice.label : '(value: ' + choice.value + ')') + "\n            ")])])], 1)
-  })], 2)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-ae0bb22a", module.exports)
-  }
-}
-
-/***/ }),
-/* 252 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['active', 'skill'],
-
-    methods: {
-        activate: function activate() {
-            this.$emit('activate');
-        }
-    }
-});
-
-/***/ }),
-/* 253 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "list-group-item",
-    attrs: {
-      "role": "button"
-    },
-    on: {
-      "click": _vm.activate
-    }
-  }, [_c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.active),
-      expression: "active"
-    }],
-    staticClass: "glyphicon glyphicon-chevron-right",
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }), _vm._v("\n    \n    " + _vm._s(_vm.skill.title) + "\n    "), _c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.skill.rating !== null),
-      expression: "skill.rating !== null"
-    }]
-  }, [_vm._v("(" + _vm._s(_vm.skill.rating) + ")")]), _vm._v(" "), _c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.skill.rating !== null),
-      expression: "skill.rating !== null"
-    }],
-    staticClass: "glyphicon glyphicon-ok pull-right",
-    attrs: {
-      "aria-hidden": "true"
-    }
-  })])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0cf53cf0", module.exports)
   }
 }
 
