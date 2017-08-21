@@ -136,7 +136,7 @@ class ActivityController extends Controller
         $skills = $activity->skills->sortBy('number')->values()->toJson();
 
         // get categories
-        $categories = $activity->categories->sortBy('name')->sortBy('number')->values()->keyBy('id')->toJson();
+        $categories = $activity->categories->sortBy('name')->sortBy('number')->values()->toJson();
 
         $choices = $activity->choices->sortBy('value')->values()->toJson();
 

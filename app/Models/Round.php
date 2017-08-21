@@ -12,6 +12,10 @@ class Round extends Model
         'updated_at'
     ];
 
+    protected $fillable = [
+        'activity_id', 'format', 'round_number', 'title'
+    ];
+
     // Relationship methods
 
     public function block()

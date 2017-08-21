@@ -28,7 +28,7 @@ Route::prefix('a/{activity}')->group(function() {
      */
     Route::group(['middleware' => ['staff']], function() {
         // staff activity routes
-        Route::get('/', 'ActivityController@show');
+        Route::get('/', 'ActivityController@showSetup');        // temporarily changed from show for dev
         Route::put('/', 'ActivityController@create');
         Route::put('close', 'ActivityController@close');
         Route::put('open', 'ActivityController@open');
@@ -45,6 +45,11 @@ Route::prefix('a/{activity}')->group(function() {
         Route::post('groups/batch', 'GroupController@batch');
         Route::put('groups/{groupId}', 'GroupController@update');
         Route::post('groups/{groupId}/users', 'GroupController@addUsers');
+
+        // Round routes
+        Route::post('rounds', 'RoundController@store');
+        Route::delete('rounds/{roundId}', 'RoundController@delete');
+        Route::put('rounds/{roundId}', 'RoundController@update');
 
         // show form for rating a student
         Route::get('r/{round}/rate/{studentId}', 'RatingController@show');

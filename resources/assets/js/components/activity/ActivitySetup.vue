@@ -46,6 +46,11 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <keep-alive>
+                    <activity-rounds v-show="activeTab == 'activity-rounds'"
+                                     :rounds="editRounds"
+                                     v-on:add-round="addRound">
+                    </activity-rounds>
+
                     <component :is="activeTab"
                                :blocks="editBlocks"
                                :categories="editCategories"
@@ -130,11 +135,15 @@
         ],
 
         methods: {
-
+            addRound(round) {
+                this.editRounds.push(round);
+            }
         },
 
         mounted () {
-
+            this.editRounds.sort(function(a, b) {
+                return a.round_number - b.round_number;
+            });
         }
     }
 </script>

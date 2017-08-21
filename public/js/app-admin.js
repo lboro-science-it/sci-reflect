@@ -72969,6 +72969,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -72988,9 +72993,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     props: ['blocks', 'categories', 'choices', 'pages', 'rounds', 'skills'],
 
-    methods: {},
+    methods: {
+        addRound: function addRound(round) {
+            this.editRounds.push(round);
+        }
+    },
 
-    mounted: function mounted() {}
+    mounted: function mounted() {
+        this.editRounds.sort(function (a, b) {
+            return a.round_number - b.round_number;
+        });
+    }
 });
 
 /***/ }),
@@ -73080,7 +73093,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-10 col-md-offset-1"
-  }, [_c('keep-alive', [_c(_vm.activeTab, {
+  }, [_c('keep-alive', [_c('activity-rounds', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.activeTab == 'activity-rounds'),
+      expression: "activeTab == 'activity-rounds'"
+    }],
+    attrs: {
+      "rounds": _vm.editRounds
+    },
+    on: {
+      "add-round": _vm.addRound
+    }
+  }), _vm._v(" "), _c(_vm.activeTab, {
     tag: "component",
     attrs: {
       "blocks": _vm.editBlocks,
@@ -73157,6 +73183,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -73193,19 +73221,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            activeIndex: 0
+            activeIndex: 0,
+            newRoundTitle: ''
         };
     },
 
 
     props: ['rounds'],
 
-    mounted: function mounted() {}
+    methods: {
+        addRound: function addRound() {
+            var _this = this;
+
+            if (this.newRound !== '') {
+                axios.post('rounds', {
+                    title: this.newRoundTitle
+                }).then(function (response) {
+                    if (response.status == 200) {
+                        // success
+                        // todo: emit event adding the round to the parent rounds
+                        _this.$emit('add-round', response.data);
+                    }
+                });
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -73216,17 +73272,52 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("\n            An activity can have one or more rounds. Rounds are a single iteration of the student being required to reflect on their skills.\n            Rounds contain pages, which can display skills and content to the student. It doesn't matter if a skill is present in all rounds, a single round, or selected rounds.\n            When the student completes a round, they can see a chart of their reflections against the skills present in that round.\n        ")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('h3', [_vm._v("Manage rounds")]), _vm._v(" "), _c('p', [_vm._v("\n                Add one or more rounds to your activity. For each round, students will reflect on the skills you specify. \n                At the end, they'll be able to see how their skills have evolved.\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "form-inline"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.newRoundTitle),
+      expression: "newRoundTitle"
+    }],
+    staticClass: "form-control input-lg",
+    attrs: {
+      "type": "text",
+      "placeholder": "Add"
+    },
+    domProps: {
+      "value": (_vm.newRoundTitle)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.newRoundTitle = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-lg btn-primary",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.addRound($event)
+      }
+    }
+  }, [_vm._v("\n                    Add round\n                ")])])]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
-    staticClass: "col-xs-3"
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-4"
   }, [_c('div', {
     staticClass: "list-group",
     attrs: {
       "role": "group"
     }
-  }, [_vm._m(0), _vm._v(" "), _vm._l((_vm.rounds), function(round, index) {
+  }, _vm._l((_vm.rounds), function(round, index) {
     return _c('div', {
       staticClass: "list-group-item",
       class: {
@@ -73241,23 +73332,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.activeIndex = index
         }
       }
-    }, [_vm._v("\n                        " + _vm._s(round.title) + "\n                    ")])
-  })], 2)]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-9"
-  }, [_vm._v("\n                content about editing the round\n            ")])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "list-group-item"
-  }, [_c('input', {
-    attrs: {
-      "type": "text"
-    }
-  }), _vm._v(" "), _c('button', {
-    attrs: {
-      "type": "submit"
-    }
-  }, [_vm._v("\n                            save\n                        ")])])
-}]}
+    }, [_vm._v("\n                            " + _vm._s(round.title) + "\n                        ")])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-8"
+  }, [_vm._v("\n                    content about editing the round\n                ")])])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
