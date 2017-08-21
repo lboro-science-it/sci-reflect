@@ -7,11 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
+    protected $visible = [
+        'id',
+        'title',
+        'blockPages',
+        'pageSkills'
+    ];
+
     // Relationship methods 
+
+    public function blockPages()
+    {
+        return $this->hasMany('App\BlockPage');
+    }
 
     public function blocks()
     {
         return $this->belongsToMany('App\Block')->withPivot('position');
+    }
+
+    public function pageSkills()
+    {
+        return $this->hasMany('App\PageSkill');
     }
 
     public function skills()

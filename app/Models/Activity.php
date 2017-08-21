@@ -19,6 +19,11 @@ class Activity extends Model
 
     // Relationship methods
 
+    public function blocks()
+    {
+        return $this->hasMany('App\Block');
+    }
+
     public function categories()
     {
         return $this->hasMany('App\Category');
@@ -42,6 +47,11 @@ class Activity extends Model
     public function rounds()
     {
         return $this->hasMany('App\Round');
+    }
+
+    public function skills()
+    {
+        return $this->hasMany('App\Skill');
     }
 
     public function users()

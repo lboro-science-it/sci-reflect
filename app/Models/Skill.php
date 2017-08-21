@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Skill extends Model
 {
+    protected $visible = [
+        'id',
+        'category_id',
+        'title',
+        'description',
+        'block_id',
+        'number',
+        'indicators'
+    ];
+
     public function block()
     {
         return $this->belongsTo('App\Block');

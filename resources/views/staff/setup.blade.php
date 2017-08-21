@@ -8,8 +8,13 @@ Setup structure for {{ $activity->name }}
 
 @section('content')
 
+  @include('partials.staff.tasks')
+
   @section('sciReflect')
-    sciReflect.rounds = {!! json_encode($rounds) !!};
+    sciReflect.rounds = {!! $rounds !!};
+    sciReflect.pages = {!! $pages !!};
+    sciReflect.skills = {!! $skills !!};
+    sciReflect.blocks = {!! $blocks !!};
   @append
   
   <activity-setup :rounds="sciReflect.rounds">

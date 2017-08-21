@@ -53,16 +53,20 @@
     export default {
         data () {
             return {
-
+                'editRounds': this.rounds
             }
         },
 
         props: [
-
+            'rounds'
         ],
 
         methods: {
 
+        },
+
+        mounted () {
+            console.log(this.editRounds);
         }
     }
 </script>
