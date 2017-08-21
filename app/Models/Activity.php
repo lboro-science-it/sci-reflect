@@ -201,7 +201,8 @@ class Activity extends Model
     }
 
     /**
-     * Returns an array of the students within the activity for rendering
+     * Returns an array of the students within the activity for rendering.
+     * todo: use Eloquent attributes methods to generate these instead, if possible.
      */
     public function getStudentListArray()
     {
@@ -211,7 +212,10 @@ class Activity extends Model
         $students->load('selections');
 
         // load each round's content details, required for calculating each student's completion of rounds
-        $this->rounds->load('pages.skills.indicators');
+        $this->rounds->load([
+            'pages.skills.indicators',
+            'ratings'
+        ]);
         $rounds = $this->rounds->sortBy('round_number');
 
         $studentsArray = [];
