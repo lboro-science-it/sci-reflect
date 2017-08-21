@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     // Relationship methods
 
     public function block()

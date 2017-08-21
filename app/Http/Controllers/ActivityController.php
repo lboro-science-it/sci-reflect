@@ -102,6 +102,13 @@ class ActivityController extends Controller
 
     public function showSetup(Activity $activity)
     {
-        return view ('staff.setup');
+        $rounds = $activity->rounds->sortBy('round_number')->values()->toArray();
+        // so setup is gonna want the rounds
+        // pages
+        // skills
+        // indicators ? 
+        // blocks
+        return view ('staff.setup')
+              ->with('rounds', $rounds);
     }
 }
