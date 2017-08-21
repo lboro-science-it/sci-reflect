@@ -1,30 +1,35 @@
 <h3>Tasks</h3>
 <p>** will style this as icons once structure complete **</p>
-Create activity: done ** 
-Setup activity: **
+<a href="{{ url('a/' . $activity->id) }}">
+    Dashboard
+</a>
+
+|
+
+{{-- Setup activity (rounds, pages, etc --}}
+@if($activity->status == 'design')
+<a href="{{ url('a/' . $activity->id . '/setup') }}">
+@endif
+    Setup activity
+@if($activity->status == 'design')
+</a>
+@endif
+
+|
 
 {{-- Add users --}}
-<a href="{{ url('a/' . $activity->id . '/users/add') }}"
-    {{-- will add this later
-       v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/users/add') }}')"
-    --}}
-    >
-   Add users:
+<a href="{{ url('a/' . $activity->id . '/users/add') }}">
+   Add users
 </a>
-@if($usersAdded)
-    done
-@endif
-**
+
+|
 
 {{-- Manage groups --}}
-<a href="{{ url('a/' . $activity->id . '/groups') }}"
-    {{-- will add this later
-        v-on:click.prevent="getPartial('{{ url('a/' . $activity->id . '/groups') }}')"
-    --}}
-    >
-    Manage groups:
+<a href="{{ url('a/' . $activity->id . '/groups') }}">
+    Manage groups
 </a>
-**
+
+|
 
 Add skills: ** todo: only show if $activity->status == 'design' **
 Create structure: ** todo: only show if $activity->status == 'design' **

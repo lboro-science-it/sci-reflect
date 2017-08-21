@@ -32,6 +32,7 @@ Route::prefix('a/{activity}')->group(function() {
         Route::put('/', 'ActivityController@create');
         Route::put('close', 'ActivityController@close');
         Route::put('open', 'ActivityController@open');
+        Route::get('setup', 'ActivityController@showSetup');
 
         Route::get('users/add', 'UserController@create');
         Route::post('users', 'UserController@store');

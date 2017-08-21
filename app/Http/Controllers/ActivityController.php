@@ -99,4 +99,9 @@ class ActivityController extends Controller
     {
         return view('activity.closed');
     }
+
+    public function showSetup(Activity $activity)
+    {
+        return view ('staff.setup');
+    }
 }
