@@ -21,16 +21,10 @@ class Group extends Model
         return $this->hasMany('App\ActivityUser');
     }
 
-    /** 
-     * Returns a collection of users belonging to the group, via the
-     * activityUsers relationship (pivot table).
-     *
+    /**
+     * Returns count of relationships to pivot table this group has,
+     * i.e. how many rows in activity_user have group_id of $this->id.
      */
-    public function getUsers()
-    {
-        return $this->activityUsers;
-    }
-
     public function getUserCountAttribute()
     {
         return $this->activityUsers->count();

@@ -7,10 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
+    // Relationship methods 
+
     public function blocks()
     {
         return $this->belongsToMany('App\Block')->withPivot('position');
     }
+
+    public function skills()
+    {
+        return $this->belongsToMany('App\Skill')->withPivot('position');
+    }
+
+    // Data gathering methods
 
     /**
      * Returns the page's blocks and skills, sorted by position in their
@@ -59,8 +68,4 @@ class Page extends Model
         return $this->indicators;
     }
 
-    public function skills()
-    {
-        return $this->belongsToMany('App\Skill')->withPivot('position');
-    }
 }

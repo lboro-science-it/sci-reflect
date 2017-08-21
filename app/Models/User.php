@@ -28,12 +28,26 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    // Relationship methods
+
     public function activities()
     {
         return $this->belongsToMany('App\Activity')->withPivot([
             'id', 'complete', 'current_page', 'current_round', 'group_id', 'lti_user_id', 'role'
         ])->withTimestamps();
     }
+
+    public function ratings()
+    {
+        return $this->hasMany('App\Rating', 'rater_id');
+    }
+
+    public function selections()
+    {
+        return $this->hasMany('App\Selection');
+    }
+
+    // Data gathering methods
 
     /**
      * Gets completion (as percentage) of $round or $page within $round
@@ -158,13 +172,4 @@ class User extends Authenticatable
         return false;
     }
 
-    public function ratings()
-    {
-        return $this->hasMany('App\Rating', 'rater_id');
-    }
-
-    public function selections()
-    {
-        return $this->hasMany('App\Selection');
-    }
 }

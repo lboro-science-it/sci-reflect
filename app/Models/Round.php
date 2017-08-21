@@ -7,10 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
 {
+    // Relationship methods
+
     public function block()
     {
         return $this->belongsTo('App\Block');
     }
+
+    public function pages()
+    {
+        return $this->belongsToMany('App\Page')->withPivot(['page_number']);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany('App\Rating');
+    }
+
+    // Data gathering methods
 
     /**
      * Returns an array of all indicators present in the round (via pages,
@@ -82,11 +96,6 @@ class Round extends Model
         return false;
     }
 
-    public function pages()
-    {
-        return $this->belongsToMany('App\Page')->withPivot(['page_number']);
-    }
-
     /**
      * Returns true if the previous round is complete, and also returns true
      * if current round is the first round.
@@ -104,8 +113,4 @@ class Round extends Model
         return true;
     }
 
-    public function ratings()
-    {
-        return $this->hasMany('App\Rating');
-    }
 }

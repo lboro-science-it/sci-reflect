@@ -17,9 +17,42 @@ class Activity extends Model
         'consumer_pk', 'resource_link_record_id', 'status'
     ];
 
-    /**
-     * functions
-     */
+    // Relationship methods
+
+    public function categories()
+    {
+        return $this->hasMany('App\Category');
+    }
+
+    public function choices()
+    {
+        return $this->hasMany('App\Choice');
+    }
+
+    public function groups()
+    {
+        return $this->hasMany('App\Group');
+    }
+
+    public function pages()
+    {
+        return $this->hasMany('App\Page');
+    }
+
+    public function rounds()
+    {
+        return $this->hasMany('App\Round');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\User')->withPivot([
+            'id', 'complete', 'current_page', 'current_round', 'group_id', 'lti_user_id', 'role'
+        ])->withTimestamps();
+    }
+
+
+    // Data gathering methods
 
     /**
      * Returns the categories within the activity, ordered for rendering.
@@ -248,39 +281,4 @@ class Activity extends Model
         return false;
     }
 
-    /**
-     * Relationships
-     */
-
-    public function categories()
-    {
-        return $this->hasMany('App\Category');
-    }
-
-    public function choices()
-    {
-        return $this->hasMany('App\Choice');
-    }
-
-    public function groups()
-    {
-        return $this->hasMany('App\Group');
-    }
-
-    public function pages()
-    {
-        return $this->hasMany('App\Page');
-    }
-
-    public function rounds()
-    {
-        return $this->hasMany('App\Round');
-    }
-
-    public function users()
-    {
-        return $this->belongsToMany('App\User')->withPivot([
-            'id', 'complete', 'current_page', 'current_round', 'group_id', 'lti_user_id', 'role'
-        ])->withTimestamps();
-    }
 }
