@@ -12,6 +12,6 @@ Setup {{ $activity->name }}
 
   @append
 
-  <p>todo: insert stuff about setting up the activity, like name, open date, close date, format...</p>
+  <p>todo: insert stuff about setting up the activity, like name, open date, close date, format, number of choices...</p>
 
 @endsection

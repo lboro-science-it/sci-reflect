@@ -35,7 +35,6 @@ Route::prefix('a/{activity}')->group(function() {
         Route::get('setup', 'ActivityController@showSetup');
 
         Route::get('users', 'UserController@index');
-        Route::get('users/add', 'UserController@create');
         Route::post('users', 'UserController@store');
         Route::put('users/{userId}/group', 'UserController@updateGroup');
 
@@ -52,6 +51,9 @@ Route::prefix('a/{activity}')->group(function() {
         Route::post('rounds', 'RoundController@store');
         Route::delete('rounds/{roundId}', 'RoundController@delete');
         Route::put('rounds/{roundId}', 'RoundController@update');
+
+        // Skill routes
+        Route::get('skills', 'SkillController@index');
 
         // show form for rating a student
         Route::get('r/{round}/rate/{studentId}', 'RatingController@show');

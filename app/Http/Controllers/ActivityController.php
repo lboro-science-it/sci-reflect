@@ -106,45 +106,13 @@ class ActivityController extends Controller
     }
 
     /**
-     * Display the view for setting up the activity, including creating rounds,
-     * pages, skills, indicators, content blocks, etc.
+     * Display the view for activity setup (basically same as new but prepopulated)
      *
      * @return View
      */
     public function showSetup(Activity $activity)
     {
-        // get rounds as a json string (array) indexed by round_number
-        $activity->rounds->load([
-            'pageRounds'
-        ]);
-        $rounds = $activity->rounds->sortBy('round_number')->values()->toJson();
-
-        // get pages with ids of blocks / skills as arrays
-        $activity->pages->load([
-            'blockPages',
-            'pageSkills'
-        ]);
-        $pages = $activity->pages->toJson();
-
-        // get blocks
-        $blocks = $activity->blocks->toJson();
-        
-        // get skills with indicators preloaded as arrays
-        $activity->skills->load([
-            'indicators'
-        ]);
-        $skills = $activity->skills->sortBy('number')->values()->toJson();
-
-        // get categories
-        $categories = $activity->categories->sortBy('name')->sortBy('number')->values()->toJson();
-
-        $choices = $activity->choices->sortBy('value')->values()->toJson();
-
-        return view ('staff.setup')->with('blocks', $blocks)
-                                   ->with('categories', $categories)
-                                   ->with('choices', $choices)
-                                   ->with('pages', $pages)
-                                   ->with('rounds', $rounds)
-                                   ->with('skills', $skills);
+        // todo: pass the correct data etc
+        return view ('staff.setup');
     }
 }
