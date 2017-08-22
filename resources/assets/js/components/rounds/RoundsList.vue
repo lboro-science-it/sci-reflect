@@ -1,29 +1,42 @@
 <template>
     <div>
         <h4>Rounds 
-            <a href="#"
+            <button
                class="pull-right"
                v-on:click.prevent="orderRounds = true"
                v-show="!orderRounds"
             >
                 Re-order
-            </a>
-            <a href="#"
+            </button>
+            <button
                class="pull-right"
                v-on:click.prevent="saveRoundOrder"
                v-show="orderRounds"
             >
                 {{ saveCaption }}
-            </a>
+            </button>
+            <button
+               class="pull-right"
+               v-on:click.prevent="cancelRoundOrder"
+               v-show="orderRounds"
+            >
+                Cancel
+            </button>
         </h4>
         <div class="list-group">
-            <draggable :list="rounds" class="dragArea"
-                       v-on:end="roundDropped"
+            <draggable :list="editRounds" class="dragArea"
                        :options="{ handle: '.glyphicon' }">
-                <div class="list-group-item" v-for="round in rounds">
+
+                <div v-for="(round, index) in editRounds"
+                     class="list-group-item"
+                     role="button"
+                     v-on:click="activateRound(index)"
+                >
                     <span class="glyphicon glyphicon-move"
-                          v-show="orderRounds"></span>
+                          v-show="orderRounds">
+                    </span>
                     {{ round.round_number }}: {{ round.title }}
+                    
                 </div>
             </draggable>
         </div>
@@ -38,6 +51,7 @@
     export default {
         data () {
             return {
+                editRounds: this.rounds,
                 orderRounds: false,
                 saveCaption: 'Save'
             }
@@ -48,12 +62,15 @@
         ],
 
         methods: {
-            // update the round numbers after sorting them
-            roundDropped() {
-                let roundsLength = this.rounds.length;
-                for (let i = 0; i < roundsLength; i ++) {
-                    this.rounds[i].round_number = i + 1;
-                }
+            activateRound(index) {
+                console.log('activating round ... ' + index);
+            },
+
+            cancelRoundOrder() {
+                this.editRounds.sort(function(a, b) {
+                    return a.round_number - b.round_number;
+                });
+                this.orderRounds = false;
             },
 
             // send the new round_id => round_numbers to the server
@@ -61,10 +78,12 @@
                 this.saveCaption = 'Saving...';
                 let self = this;
                 
-                let roundsLength = this.rounds.length;
+                let roundsLength = this.editRounds.length;
                 let newRounds = {};
                 for (let i = 0; i < roundsLength; i++) {
-                    let round = this.rounds[i];
+                    let round = this.editRounds[i];
+                    // update the round order
+                    round.round_number = i + 1;
                     newRounds[round.id] = round.round_number;
                 }
 
@@ -73,6 +92,7 @@
                     rounds: newRounds
                 }).then(response => {
                     if (response.status == 200) {
+                        this.rounds = this.editRounds;
                         this.saveCaption = 'Saved!';
                     } else {
                         this.saveCaption = 'Failed!';
