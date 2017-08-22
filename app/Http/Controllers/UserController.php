@@ -47,8 +47,9 @@ class UserController extends Controller
      */
     public function updateGroup(Activity $activity, $userId, Request $request)
     {
+        $groupId = $request->input('groupId');
         $activity->users()->updateExistingPivot($userId, [
-            'group_id' => $request->input('groupId')
+            'group_id' => (!$groupId == 'null') ? $groupId : null
         ]);
 
         return $request->input('groupId');

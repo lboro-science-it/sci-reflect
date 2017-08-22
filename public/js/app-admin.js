@@ -72122,6 +72122,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios.put('users/' + this.student.id + '/group', {
                     groupId: this.editGroupId
                 }).then(function (response) {
+                    console.log(response.data);
                     _this.currentGroupId = response.data;
                     _this.editGroupId = response.data;
                 });
