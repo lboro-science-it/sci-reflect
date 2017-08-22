@@ -86,9 +86,8 @@
                         <li><a href="{{ url('a/' . $activity->id) }}">Dashboard</a></li>
                         <li><a href="{{ url('a/' . $activity->id . '/setup') }}">Setup activity</a></li>
                         <li><a href="{{ url('a/' . $activity->id) }}">Rounds</a></li>
-                        <li><a href="{{ url('a/' . $activity->id) }}">Pages</a></li>
                         <li><a href="{{ url('a/' . $activity->id) }}">Skills</a></li>
-                        <li><a href="{{ url('a/' . $activity->id . '/users/add') }}">Users</a></li>
+                        <li><a href="{{ url('a/' . $activity->id . '/users') }}">Users</a></li>
                         <li><a href="{{ url('a/' . $activity->id . '/groups') }}">Groups</a></li>
                         @include('partials.staff.openclose')
                       </ul>

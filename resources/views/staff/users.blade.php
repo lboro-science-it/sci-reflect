@@ -6,6 +6,27 @@
 
 @section('content')
 
+    @if(count($students))
+        @section('sciReflect')
+            sciReflect.rounds = {!! json_encode($rounds) !!};
+            sciReflect.students = {!! json_encode($students) !!};
+            sciReflect.groups = {!! json_encode($groups) !!};
+        @append
+        <student-table :rounds="sciReflect.rounds" 
+                       :students="sciReflect.students"
+                       :groups="sciReflect.groups"
+                       put-url="{{ url('a/' . $activity->id . '/groups/') }}">
+        </student-table>
+    @endif
+
+    @if(count($staff) > 0)    
+        @section('sciReflect')
+            sciReflect.staff = {!! json_encode($staff) !!};
+        @append
+        <staff-table :staff="sciReflect.staff">
+        </staff-table>
+    @endif
+
     <form id="user-upload" action="{{ url('a/' . $activity->id . '/users') }}" method="POST">
         {{ csrf_field() }}
         {{ method_field('POST') }}

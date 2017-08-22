@@ -10,15 +10,17 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Returns the view with forms for adding staff and students.
-     *
-     * @param  App\Activity $activity
-     * @return View
-     */
-    public function create(Activity $activity, Request $request)
+    public function index(Activity $activity)
     {
-        return view('staff.users');
+        $groups = $activity->getGroupListArray();
+        $rounds = $activity->getRoundListArray();
+        $students = $activity->getStudentListArray();
+        $staff = $activity->getStaffListArray();
+
+        return view('staff.users')->with('students', $students)
+                                  ->with('staff', $staff)
+                                  ->with('rounds', $rounds)
+                                  ->with('groups', $groups);
     }
 
     /**
@@ -32,7 +34,7 @@ class UserController extends Controller
     {
         $message = $userHelper->processRequest($request);
 
-        return redirect('a/' . $activity->id)
+        return redirect('a/' . $activity->id . '/users')
                   ->with('message', $message);
     }
 
