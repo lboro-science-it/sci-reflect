@@ -73754,18 +73754,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return {};
+        return {
+            activeRoundIndex: null,
+            editRound: {}
+        };
     },
 
 
-    props: ['pages', 'rounds', 'skills'],
+    props: ['blocks', 'pages', 'rounds', 'skills'],
 
-    methods: {}
+    methods: {
+        // clone the activated round into the editRound object
+        activateRound: function activateRound(index) {
+            this.activeRoundIndex = index;
+            this.editRound = JSON.parse(JSON.stringify(this.rounds[index]));
+        }
+    }
 });
 
 /***/ }),
@@ -73790,12 +73817,74 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('rounds-list', {
     attrs: {
       "rounds": _vm.rounds
+    },
+    on: {
+      "activate-round": _vm.activateRound
     }
-  })], 1), _vm._v(" "), _vm._m(0)]), _vm._v("\n\n        list rounds -> with an edit button or an 'active' which causes another div to be visible"), _c('br'), _vm._v("\n        edit round"), _c('br'), _vm._v("\n        reorder round"), _c('br')])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  })], 1), _vm._v(" "), _c('div', {
     staticClass: "col-xs-9"
-  }, [_c('h4', [_vm._v("Edit...")])])
+  }, [_c('h4', [_vm._v("Edit...")]), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "title"
+    }
+  }, [_vm._v("Title")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editRound.title),
+      expression: "editRound.title"
+    }],
+    attrs: {
+      "id": "title",
+      "type": "text",
+      "placeholder": "Title"
+    },
+    domProps: {
+      "value": (_vm.editRound.title)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editRound.title = $event.target.value
+      }
+    }
+  }), _c('br'), _c('br'), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "format"
+    }
+  }, [_vm._v("Format")]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "openDate"
+    }
+  }, [_vm._v("Open Date")]), _vm._v(" "), _c('input', {
+    attrs: {
+      "id": "openDate",
+      "type": "datetime-local"
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "closeDate"
+    }
+  }, [_vm._v("Close Date")]), _vm._v(" "), _c('input', {
+    attrs: {
+      "id": "closeDate",
+      "type": "datetime-local"
+    }
+  }), _vm._v("\n\n\n                Round Number: " + _vm._s(_vm.editRound.round_number)), _c('br'), _vm._v("\n                Format: " + _vm._s(_vm.editRound.format) + "\n            ")])]), _vm._v("\n\n        list rounds -> with an edit button or an 'active' which causes another div to be visible"), _c('br'), _vm._v("\n        edit round"), _c('br'), _vm._v("\n        reorder round"), _c('br')])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('select', {
+    attrs: {
+      "id": "format"
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "linear"
+    }
+  }, [_vm._v("Linear")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "nonlinear"
+    }
+  }, [_vm._v("NonLinear")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -75994,6 +76083,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            activeIndex: null,
+            editRounds: this.rounds,
             orderRounds: false,
             saveCaption: 'Save'
         };
@@ -76003,12 +76094,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['rounds'],
 
     methods: {
-        // update the round numbers after sorting them
-        roundDropped: function roundDropped() {
-            var roundsLength = this.rounds.length;
-            for (var i = 0; i < roundsLength; i++) {
-                this.rounds[i].round_number = i + 1;
+        activateRound: function activateRound(index) {
+            if (!this.orderRounds) {
+                this.activeIndex = index;
+                this.$emit('activate-round', index);
             }
+        },
+        cancelRoundOrder: function cancelRoundOrder() {
+            this.editRounds.sort(function (a, b) {
+                return a.round_number - b.round_number;
+            });
+            this.orderRounds = false;
         },
 
 
@@ -76019,10 +76115,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.saveCaption = 'Saving...';
             var self = this;
 
-            var roundsLength = this.rounds.length;
+            var roundsLength = this.editRounds.length;
             var newRounds = {};
             for (var i = 0; i < roundsLength; i++) {
-                var round = this.rounds[i];
+                var round = this.editRounds[i];
+                // update the round order
+                round.round_number = i + 1;
                 newRounds[round.id] = round.round_number;
             }
 
@@ -76031,6 +76129,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 rounds: newRounds
             }).then(function (response) {
                 if (response.status == 200) {
+                    _this.rounds = _this.editRounds;
                     _this.saveCaption = 'Saved!';
                 } else {
                     _this.saveCaption = 'Failed!';
@@ -76049,7 +76148,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h4', [_vm._v("Rounds \n        "), _c('a', {
+  return _c('div', [_c('h4', [_vm._v("\n        Rounds \n\n        "), _c('button', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -76057,16 +76156,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "!orderRounds"
     }],
     staticClass: "pull-right",
-    attrs: {
-      "href": "#"
-    },
     on: {
       "click": function($event) {
         $event.preventDefault();
         _vm.orderRounds = true
       }
     }
-  }, [_vm._v("\n            Re-order\n        ")]), _vm._v(" "), _c('a', {
+  }, [_vm._v("\n            Re-order\n        ")]), _vm._v(" "), _c('button', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -76074,31 +76170,50 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "orderRounds"
     }],
     staticClass: "pull-right",
-    attrs: {
-      "href": "#"
-    },
     on: {
       "click": function($event) {
         $event.preventDefault();
         _vm.saveRoundOrder($event)
       }
     }
-  }, [_vm._v("\n            " + _vm._s(_vm.saveCaption) + "\n        ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n            " + _vm._s(_vm.saveCaption) + "\n        ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.orderRounds),
+      expression: "orderRounds"
+    }],
+    staticClass: "pull-right",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.cancelRoundOrder($event)
+      }
+    }
+  }, [_vm._v("\n            Cancel\n        ")])]), _vm._v(" "), _c('div', {
     staticClass: "list-group"
   }, [_c('draggable', {
     staticClass: "dragArea",
     attrs: {
-      "list": _vm.rounds,
+      "list": _vm.editRounds,
       "options": {
         handle: '.glyphicon'
       }
-    },
-    on: {
-      "end": _vm.roundDropped
     }
-  }, _vm._l((_vm.rounds), function(round) {
+  }, _vm._l((_vm.editRounds), function(round, index) {
     return _c('div', {
-      staticClass: "list-group-item"
+      staticClass: "list-group-item",
+      class: {
+        active: index == _vm.activeIndex
+      },
+      attrs: {
+        "role": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.activateRound(index)
+        }
+      }
     }, [_c('span', {
       directives: [{
         name: "show",

@@ -1,47 +1,34 @@
 <template>
     <div>
-        <h4>Rounds 
-            <button
-               class="pull-right"
-               v-on:click.prevent="orderRounds = true"
-               v-show="!orderRounds"
-            >
+        <h4>
+            Rounds 
+
+            <button class="pull-right" v-on:click.prevent="orderRounds = true" v-show="!orderRounds">
                 Re-order
             </button>
-            <button
-               class="pull-right"
-               v-on:click.prevent="saveRoundOrder"
-               v-show="orderRounds"
-            >
+
+            <button class="pull-right" v-on:click.prevent="saveRoundOrder" v-show="orderRounds">
                 {{ saveCaption }}
             </button>
-            <button
-               class="pull-right"
-               v-on:click.prevent="cancelRoundOrder"
-               v-show="orderRounds"
-            >
+            
+            <button class="pull-right" v-on:click.prevent="cancelRoundOrder" v-show="orderRounds">
                 Cancel
             </button>
         </h4>
         <div class="list-group">
-            <draggable :list="editRounds" class="dragArea"
-                       :options="{ handle: '.glyphicon' }">
+            <draggable :list="editRounds" class="dragArea" :options="{ handle: '.glyphicon' }">
 
                 <div v-for="(round, index) in editRounds"
                      class="list-group-item"
+                     :class="{ active: index == activeIndex }"
                      role="button"
-                     v-on:click="activateRound(index)"
-                >
-                    <span class="glyphicon glyphicon-move"
-                          v-show="orderRounds">
-                    </span>
+                     v-on:click="activateRound(index)">
+
+                    <span class="glyphicon glyphicon-move" v-show="orderRounds"></span>
                     {{ round.round_number }}: {{ round.title }}
-                    
                 </div>
             </draggable>
         </div>
-
-
     </div>
 </template>
 
@@ -51,6 +38,7 @@
     export default {
         data () {
             return {
+                activeIndex: null,
                 editRounds: this.rounds,
                 orderRounds: false,
                 saveCaption: 'Save'
@@ -63,7 +51,10 @@
 
         methods: {
             activateRound(index) {
-                console.log('activating round ... ' + index);
+                if (!this.orderRounds) {
+                    this.activeIndex = index;
+                    this.$emit('activate-round', index);
+                }
             },
 
             cancelRoundOrder() {
