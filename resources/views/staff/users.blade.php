@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.staff')
 
 @section('title')
     Manage users: {{ $activity->name }}
 @endsection
 
 @section('content')
-    @include('partials.staff.tasks')
+
     <form id="user-upload" action="{{ url('a/' . $activity->id . '/users') }}" method="POST">
         {{ csrf_field() }}
         {{ method_field('POST') }}

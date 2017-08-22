@@ -72966,14 +72966,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -73106,16 +73098,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "add-round": _vm.addRound
     }
-  }), _vm._v(" "), _c(_vm.activeTab, {
-    tag: "component",
-    attrs: {
-      "blocks": _vm.editBlocks,
-      "categories": _vm.editCategories,
-      "choices": _vm.editChoices,
-      "pages": _vm.editPages,
-      "rounds": _vm.editRounds,
-      "skills": _vm.editSkills
-    }
   })], 1)], 1)]), _vm._v(" "), _vm._m(0)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
@@ -73232,6 +73214,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -73240,6 +73228,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             activeIndex: 0,
             addRoundCaption: 'Add round',
+            currentRound: this.rounds[this.activeIndex],
             newRoundTitle: ''
         };
     },
@@ -73261,14 +73250,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         _this.addRoundCaption = 'Added!';
                         setTimeout(function () {
                             self.addRoundCaption = 'Add round';
-                        }, 5000);
+                        }, 3000);
                         _this.newRoundTitle = '';
                         _this.$emit('add-round', response.data);
                     } else {
                         _this.addRoundCaption = 'Failed!';
                         setTimeout(function () {
                             self.addRoundCaption = 'Add round';
-                        }, 5000);
+                        }, 3000);
                     }
                 });
             }
@@ -73350,8 +73339,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("\n                            " + _vm._s(round.title) + "\n                        ")])
   }))]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-8"
-  }, [_vm._v("\n                    content about editing the round\n                ")])])])])])
+    staticClass: "col-xs-8 form-horizontal"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-xs-3 control-label",
+    attrs: {
+      "for": "roundName"
+    }
+  }, [_vm._v("Round name")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-9"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentRound.title),
+      expression: "currentRound.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.currentRound.title)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.currentRound.title = $event.target.value
+      }
+    }
+  })])]), _vm._v("\n                    content about editing the round\n                ")])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

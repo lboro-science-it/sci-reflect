@@ -28,12 +28,13 @@ Route::prefix('a/{activity}')->group(function() {
      */
     Route::group(['middleware' => ['staff']], function() {
         // staff activity routes
-        Route::get('/', 'ActivityController@show');        // temporarily changed from show for dev
+        Route::get('/', 'ActivityController@showSetup');        // temporarily changed from show for dev
         Route::put('/', 'ActivityController@create');
         Route::put('close', 'ActivityController@close');
         Route::put('open', 'ActivityController@open');
         Route::get('setup', 'ActivityController@showSetup');
 
+        Route::get('users', 'UserController@index');
         Route::get('users/add', 'UserController@create');
         Route::post('users', 'UserController@store');
         Route::put('users/{userId}/group', 'UserController@updateGroup');

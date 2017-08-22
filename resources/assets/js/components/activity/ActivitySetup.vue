@@ -51,14 +51,6 @@
                                      v-on:add-round="addRound">
                     </activity-rounds>
 
-                    <component :is="activeTab"
-                               :blocks="editBlocks"
-                               :categories="editCategories"
-                               :choices="editChoices"
-                               :pages="editPages"
-                               :rounds="editRounds"
-                               :skills="editSkills">
-                    </component>
                 </keep-alive>
             </div>
         </div>

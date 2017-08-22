@@ -36,7 +36,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-8">
+                    <div class="col-xs-8 form-horizontal">
+                        <div class="form-group">
+                            <label for="roundName" class="col-xs-3 control-label">Round name</label>
+                            <div class="col-xs-9">
+                                <input v-model="currentRound.title" type="text" class="form-control">
+                            </div>
+                        </div>
                         content about editing the round
                     </div>
                 </div>
@@ -53,6 +59,7 @@
             return {
                 activeIndex: 0,
                 addRoundCaption: 'Add round',
+                currentRound: this.rounds[this.activeIndex],
                 newRoundTitle: ''
             }
         },
@@ -73,14 +80,14 @@
                             this.addRoundCaption = 'Added!';
                             setTimeout(function() {
                                 self.addRoundCaption = 'Add round';
-                            }, 5000);
+                            }, 3000);
                             this.newRoundTitle = '';
                             this.$emit('add-round', response.data);
                         } else {
                             this.addRoundCaption = 'Failed!';
                             setTimeout(function() {
                                 self.addRoundCaption = 'Add round';
-                            }, 5000);
+                            }, 3000);
                         }
                     });
                 }

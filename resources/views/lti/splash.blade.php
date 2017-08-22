@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.student')
 
 @section('navbar-header-class')
 navbar-transparent

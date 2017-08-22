@@ -1,12 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.staff')
 
 @section('title')
     Staff dashboard: {{ $activity->name }}
 @endsection
 
 @section('content')
-
-    @include('partials.staff.tasks')
 
     @if(count($students))
         @section('sciReflect')

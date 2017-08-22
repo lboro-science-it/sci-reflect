@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.staff')
 
 @section('title')
 
@@ -7,8 +7,6 @@ Setup structure for {{ $activity->name }}
 @endsection
 
 @section('content')
-
-  @include('partials.staff.tasks')
 
   {{-- Register the json-formatted collections passed from the controller
        in the global JS sciReflect object so we can use in Vue components --}}
