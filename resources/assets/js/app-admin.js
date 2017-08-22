@@ -19,10 +19,14 @@ Vue.component('activity-rounds', require('./components/activity/ActivityRounds.v
 Vue.component('activity-setup', require('./components/activity/ActivitySetup.vue'));
 Vue.component('activity-skills', require('./components/activity/ActivitySkills.vue'));
 
+Vue.component('draggable', require('vuedraggable'));
+
 Vue.component('group-batch', require('./components/groups/GroupBatch.vue'));
 Vue.component('group-bulk', require('./components/groups/GroupBulk.vue'));
 Vue.component('group-row', require('./components/groups/GroupRow.vue'));
 Vue.component('group-table', require('./components/groups/GroupTable.vue'));
+
+Vue.component('rounds-setup', require('./components/rounds/RoundsSetup.vue'));
 
 Vue.component('skill-list-item', require('./components/ratings/SkillListItem.vue'));
 Vue.component('skill-rater', require('./components/ratings/SkillRater.vue'));

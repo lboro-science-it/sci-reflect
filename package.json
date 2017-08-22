@@ -19,6 +19,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
-    "chart.js": "^2.6.0"
+    "chart.js": "^2.6.0",
+    "vuedraggable": "^2.14.1"
   }
 }
