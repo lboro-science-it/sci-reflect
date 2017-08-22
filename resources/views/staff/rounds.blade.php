@@ -26,8 +26,8 @@ Setup structure for {{ $activity->name }}
 
   <p>
     todo:
-    List of existing rounds<br>
-    Add a round<br>
+    <strike>List of existing rounds</strike><br>
+    <strike>Add a round</strike><br>
     Edit a round (title, format, number open/close date, content block, whether to keep visible, who can rate it)<br>
     Delete a round (should also unrelate all pages, delete any orphaned pages, skills etc)<br>
     Add page(s) to round - show all available pages that aren't already added, enable editing of pages, (adding skills to) etc<br>
@@ -38,15 +38,4 @@ Setup structure for {{ $activity->name }}
     Delete content from pages<br>
   </p>
 
-  
-  {{-- pass the json collections from the controller to the Vue component --}}
-  {{--
-  <activity-setup :blocks="sciReflect.blocks"
-                  :categories="sciReflect.categories"
-                  :choices="sciReflect.choices"
-                  :pages="sciReflect.pages"
-                  :rounds="sciReflect.rounds"
-                  :skills="sciReflect.skills">
-  </activity-setup>
-  --}}
 @endsection

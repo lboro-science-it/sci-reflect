@@ -26,6 +26,8 @@ Vue.component('group-bulk', require('./components/groups/GroupBulk.vue'));
 Vue.component('group-row', require('./components/groups/GroupRow.vue'));
 Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 
+Vue.component('round-add', require('./components/rounds/RoundAdd.vue'));
+Vue.component('rounds-list', require('./components/rounds/RoundsList.vue'));
 Vue.component('rounds-setup', require('./components/rounds/RoundsSetup.vue'));
 
 Vue.component('skill-list-item', require('./components/ratings/SkillListItem.vue'));

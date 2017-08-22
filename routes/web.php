@@ -50,6 +50,7 @@ Route::prefix('a/{activity}')->group(function() {
         Route::get('rounds', 'RoundController@index');
         Route::post('rounds', 'RoundController@store');
         Route::delete('rounds/{roundId}', 'RoundController@delete');
+        Route::put('rounds/order', 'RoundController@updateRoundOrder');
         Route::put('rounds/{roundId}', 'RoundController@update');
 
         // Skill routes

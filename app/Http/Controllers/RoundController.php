@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Round;
+use DB;
 use Illuminate\Http\Request;
 
 class RoundController extends Controller
@@ -69,5 +70,32 @@ class RoundController extends Controller
     public function update(Activity $activity, Request $request)
     {
 
+    }
+
+    /**
+     * Updates round_number based on $request->input('rounds') which should
+     * be an array of $round_id => $round_number.
+     *
+     */
+    public function updateRoundOrder(Activity $activity, Request $request)
+    {
+        $round_ids = array_keys($request->input('rounds'));
+
+        // check round_ids all belong to the activity and therefore user has permission to change them
+        // todo: move this to middleware
+        $rounds = $activity->rounds->whereIn('id', $round_ids);
+        if (count($round_ids) != $rounds->count()) {
+            return redirect('eject');
+        }
+
+        // build cases string for update query
+        $cases = '';
+        foreach($request->input('rounds') as $round_id => $round_number) {
+            $cases .= "when id = $round_id then $round_number "; 
+        }
+
+        DB::statement("UPDATE rounds SET round_number = (case $cases end) WHERE id IN (" . implode(", ", $round_ids) .");");
+
+        return 'success';
     }
 }
