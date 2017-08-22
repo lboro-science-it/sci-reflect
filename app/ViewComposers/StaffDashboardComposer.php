@@ -21,8 +21,8 @@ class StaffDashboardComposer
      */
     public function compose(View $view)
     {
-        $groups = $this->activity->groups;
-        $rounds = $this->activity->getRoundsListArray();
+        $groups = $this->activity->getGroupListArray();
+        $rounds = $this->activity->getRoundListArray();
         $students = $this->activity->getStudentListArray();
         $staff = $this->activity->getStaffListArray();
 

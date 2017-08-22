@@ -84,7 +84,7 @@ class Activity extends Model
      */
     public function getGroupListArray()
     {
-        $groups = $this->groups->sortBy('name');
+        $groups = $this->groups->sortBy('name')->values();
         $groups->load('activityUsers.user');
 
         return $groups->toArray();
@@ -127,7 +127,7 @@ class Activity extends Model
     /**
      * Returns an array of rounds for use in the activity dashboard
      */
-    public function getRoundsListArray()
+    public function getRoundListArray()
     {
         $rounds = $this->rounds->sortBy('round_number');
 
