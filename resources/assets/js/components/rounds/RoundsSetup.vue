@@ -62,11 +62,11 @@
                 this.activeRoundIndex = index;
             },
 
+            // change rounds' round_number to match the order of the array
             renumberRounds() {
                 let roundsLength = this.rounds.length;
                 for (let i = 0; i < roundsLength; i++) {
                     let round = this.rounds[i];
-                    // update the round order
                     round.round_number = i + 1;
                 }
             }

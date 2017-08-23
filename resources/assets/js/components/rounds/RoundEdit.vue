@@ -1,6 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-body">
+            <!-- Round Title -->
             <div class="form-group">
                 <label for="title" class="col-xs-2 control-label">Title</label>
                 <div class="col-xs-10">
@@ -8,6 +9,7 @@
                 </div>
             </div>
 
+            <!-- Format -->
             <div class="form-group">
                 <label for="format" class="col-xs-2 control-label">Format</label>
                 <div class="col-xs-10">
@@ -18,6 +20,7 @@
                 </div>
             </div>
 
+            <!-- Open and Close dates -->
             <div class="form-group">
                 <label for="openDate" class="col-xs-2 control-label">Open Date (include time!)</label>
                 <div class="col-xs-4">
@@ -30,7 +33,7 @@
                 </div>
             </div>
 
-
+            <!-- Content -->
             <div class="form-group">
                 <label for="blockContent" class="col-xs-2 control-label">Content<br>(html is allowed - use wisely)</label>
                 <div class="col-xs-10">
@@ -38,6 +41,7 @@
                 </div>
             </div>
 
+            <!-- Visibility and Rating permissions -->
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-3">
                     <div class="checkbox">
@@ -62,6 +66,7 @@
                 </div>
             </div>
 
+            <!-- Save / Delete buttons -->
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-10">
                     <button class="btn btn-lg" v-on:click="saveRound" :class="{ disabled: activeRoundIndex === null }">Save</button>
@@ -111,7 +116,7 @@
         },
 
         methods: {
-            // send a delete request to the server and if it works, update the local variable
+            // send a delete request to the server and if it works, update local rounds
             deleteRound() {
                 if (this.rounds.length > 1 && confirm("Are you sure?")) {
                     axios.delete('rounds/' + this.editRound.id)
@@ -143,16 +148,14 @@
                     round: this.editRound,
                     blockContent: this.editBlockContent
                 }).then(response => {
+                    // if response was ok, update the local round object to match the database response
                     if (response.status == 200) {
-                        // update the local objects to match what we've stored in the database
-                        // update all of the round's properties
                         for (var property in response.data) {
                             this.rounds[this.activeRoundIndex][property] = response.data[property];
                         }
 
-                        // if the round responded with includes a block we need to update the local block object
+                        // if response includes a block, store that too, creating the block locally if needed
                         if (typeof response.data.block !== 'undefined') {
-                            // create a local block with the saem id if needed
                             if (typeof this.blocks[response.data.block_id] === 'undefined') {
                                 this.blocks[response.data.block_id] = {
                                     id: response.data.block_id

@@ -73790,11 +73790,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         activateRound: function activateRound(index) {
             this.activeRoundIndex = index;
         },
+
+
+        // change rounds' round_number to match the order of the array
         renumberRounds: function renumberRounds() {
             var roundsLength = this.rounds.length;
             for (var i = 0; i < roundsLength; i++) {
                 var round = this.rounds[i];
-                // update the round order
                 round.round_number = i + 1;
             }
         }
@@ -75921,15 +75923,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -75952,9 +75945,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var self = this;
             this.saveCaption = 'Saving...';
+
             axios.post('rounds', {
                 title: this.addRoundName
             }).then(function (response) {
+                // put the added round at the end of the rounds array
                 if (response.status == 200) {
                     _this.saveCaption = 'Saved!';
                     _this.rounds.push(response.data);
@@ -76068,19 +76063,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            activeIndex: null,
-            editRounds: this.rounds,
+            activeIndex: null, // index of the active round
             orderRounds: false,
             saveCaption: 'Save'
         };
@@ -76090,19 +76079,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['rounds'],
 
     methods: {
+        // set active index on click of round, emit event to other components
         activateRound: function activateRound(index) {
             if (!this.orderRounds) {
                 this.activeIndex = index;
                 this.$emit('activate-round', index);
             }
         },
+
+
+        // returns rounds to order based on round_number i.e. cancels reordering
         cancelRoundOrder: function cancelRoundOrder() {
-            this.editRounds.sort(function (a, b) {
+            this.rounds.sort(function (a, b) {
                 return a.round_number - b.round_number;
             });
             this.orderRounds = false;
         },
-        reOrder: function reOrder() {
+
+
+        // turns reordering mode on - makes it impossible to edit the 'active' round
+        reorder: function reorder() {
             this.activateRound(null);
             this.orderRounds = true;
         },
@@ -76115,21 +76111,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.saveCaption = 'Saving...';
             var self = this;
 
-            var roundsLength = this.editRounds.length;
+            // object to store new round_id => round_number details
             var newRounds = {};
+
+            var roundsLength = this.rounds.length;
             for (var i = 0; i < roundsLength; i++) {
-                var round = this.editRounds[i];
+                var round = this.rounds[i];
                 // update the round order
                 round.round_number = i + 1;
                 newRounds[round.id] = round.round_number;
             }
 
-            // generate an array of round_ids => round_numbers
+            // send the round_id => round_number array to server
             axios.put('rounds/order', {
                 rounds: newRounds
             }).then(function (response) {
                 if (response.status == 200) {
-                    _this.rounds = _this.editRounds;
                     _this.saveCaption = 'Saved!';
                     setTimeout(function () {
                         self.orderRounds = false;
@@ -76152,17 +76149,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h4', [_vm._v("\n        Rounds\n    ")]), _vm._v(" "), _c('p', [_vm._v("\n        (Click to select for editing)\n    ")]), _vm._v(" "), _c('div', {
+  return _c('div', [_c('h4', [_vm._v("Rounds")]), _vm._v(" "), _c('p', [_vm._v("(Click to select for editing)")]), _vm._v(" "), _c('div', {
     staticClass: "list-group"
   }, [_c('draggable', {
     staticClass: "dragArea",
     attrs: {
-      "list": _vm.editRounds,
+      "list": _vm.rounds,
       "options": {
         handle: '.glyphicon'
       }
     }
-  }, _vm._l((_vm.editRounds), function(round, index) {
+  }, _vm._l((_vm.rounds), function(round, index) {
     return _c('div', {
       staticClass: "list-group-item",
       class: {
@@ -76184,7 +76181,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         expression: "orderRounds"
       }],
       staticClass: "glyphicon glyphicon-move"
-    }), _vm._v("\n                " + _vm._s(round.round_number) + ": " + _vm._s(round.title) + "\n            ")])
+    }), _vm._v("\n                " + _vm._s(round.round_number) + ": " + _vm._s(round.title) + "\n\n            ")])
   }))], 1), _vm._v(" "), _c('div', {
     staticClass: "text-center form-group"
   }, [_c('button', {
@@ -76196,7 +76193,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "btn btn-lg",
     on: {
-      "click": _vm.reOrder
+      "click": _vm.reorder
     }
   }, [_vm._v("\n            Re-order\n        ")]), _vm._v(" "), _c('button', {
     directives: [{
@@ -76352,6 +76349,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -76388,7 +76390,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        // send a delete request to the server and if it works, update the local variable
+        // send a delete request to the server and if it works, update local rounds
         deleteRound: function deleteRound() {
             var _this = this;
 
@@ -76425,16 +76427,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 round: this.editRound,
                 blockContent: this.editBlockContent
             }).then(function (response) {
+                // if response was ok, update the local round object to match the database response
                 if (response.status == 200) {
-                    // update the local objects to match what we've stored in the database
-                    // update all of the round's properties
                     for (var property in response.data) {
                         _this2.rounds[_this2.activeRoundIndex][property] = response.data[property];
                     }
 
-                    // if the round responded with includes a block we need to update the local block object
+                    // if response includes a block, store that too, creating the block locally if needed
                     if (typeof response.data.block !== 'undefined') {
-                        // create a local block with the saem id if needed
                         if (typeof _this2.blocks[response.data.block_id] === 'undefined') {
                             _this2.blocks[response.data.block_id] = {
                                 id: response.data.block_id
