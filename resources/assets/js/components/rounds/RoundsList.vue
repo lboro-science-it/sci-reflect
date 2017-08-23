@@ -95,13 +95,17 @@
                     if (response.status == 200) {
                         this.rounds = this.editRounds;
                         this.saveCaption = 'Saved!';
+                        setTimeout(function() {
+                            self.orderRounds = false;
+                            self.saveCaption = 'Save';
+                        }, 500);     
                     } else {
                         this.saveCaption = 'Failed!';
+                        setTimeout(function() {
+                            self.orderRounds = false;
+                            self.saveCaption = 'Save';
+                        }, 2000);                        
                     }
-                    setTimeout(function() {
-                        self.orderRounds = false;
-                        self.saveCaption = 'Save';
-                    }, 2000);
                 });
 
             }

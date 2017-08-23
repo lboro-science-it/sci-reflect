@@ -14,9 +14,7 @@
                 </div>
             </div>
 
-            list rounds -> with an edit button or an 'active' which causes another div to be visible<br>
-            edit round<br>
-            <strike>reorder round</strike>
+            todo: add edit button when round is active, otherwise list its pages.
         </div>
     </div>
 </template>

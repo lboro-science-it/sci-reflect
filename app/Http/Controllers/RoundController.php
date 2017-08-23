@@ -86,9 +86,6 @@ class RoundController extends Controller
         $round->fill($roundUpdates);
         $round->open_date = $roundUpdates['open_date'] == '' ? null : $roundUpdates['open_date'];
         $round->close_date = $roundUpdates['close_date'] == '' ? null : $roundUpdates['close_date'];
-        $round->keep_visible = $roundUpdates['keep_visible'];
-        $round->staff_rate = $roundUpdates['staff_rate'];
-        $round->student_rate = $roundUpdates['student_rate'];
 
         if ($round->block_id == null && $request->input('blockContent') != null) {
             $block = Block::create([

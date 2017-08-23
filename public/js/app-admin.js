@@ -73752,8 +73752,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -73809,7 +73807,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "blocks": _vm.blocks,
       "activeRoundIndex": _vm.activeRoundIndex
     }
-  })], 1)]), _vm._v("\n\n        list rounds -> with an edit button or an 'active' which causes another div to be visible"), _c('br'), _vm._v("\n        edit round"), _c('br'), _vm._v(" "), _c('strike', [_vm._v("reorder round")])], 1)])
+  })], 1)]), _vm._v("\n\n        todo: add edit button when round is active, otherwise list its pages.\n    ")])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -76065,13 +76063,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (response.status == 200) {
                     _this.rounds = _this.editRounds;
                     _this.saveCaption = 'Saved!';
+                    setTimeout(function () {
+                        self.orderRounds = false;
+                        self.saveCaption = 'Save';
+                    }, 500);
                 } else {
                     _this.saveCaption = 'Failed!';
+                    setTimeout(function () {
+                        self.orderRounds = false;
+                        self.saveCaption = 'Save';
+                    }, 2000);
                 }
-                setTimeout(function () {
-                    self.orderRounds = false;
-                    self.saveCaption = 'Save';
-                }, 2000);
             });
         }
     }
@@ -76335,6 +76337,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     // update the local objects to match what we've stored in the database
                     for (var property in response.data) {
                         _this.rounds[_this.activeRoundIndex][property] = response.data[property];
+                        if (typeof _this.blocks[response.data.block_id] === 'undefined') {
+                            _this.blocks[response.data.block_id] = {
+                                id: response.data.block_id
+                            };
+                        }
                         _this.blocks[response.data.block_id].content = _this.editBlockContent;
                     }
                 }

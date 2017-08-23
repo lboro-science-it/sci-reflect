@@ -13,7 +13,7 @@ class Round extends Model
     ];
 
     protected $fillable = [
-        'activity_id', 'format', 'round_number', 'title'
+        'format', 'keep_visible', 'round_number', 'staff_rate', 'student_rate', 'title'
     ];
 
     // Relationship methods

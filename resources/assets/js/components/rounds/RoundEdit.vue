@@ -126,6 +126,11 @@
                         // update the local objects to match what we've stored in the database
                         for (var property in response.data) {
                             this.rounds[this.activeRoundIndex][property] = response.data[property];
+                            if (typeof this.blocks[response.data.block_id] === 'undefined') {
+                                this.blocks[response.data.block_id] = {
+                                    id: response.data.block_id
+                                };
+                            }
                             this.blocks[response.data.block_id].content = this.editBlockContent;
                         }
                     }
