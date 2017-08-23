@@ -11,6 +11,11 @@ class Block extends Model
         'content'
     ];
 
+    protected $fillable = [
+        'activity_id',
+        'content'
+    ];
+
     public function pages()
     {
         return $this->belongsToMany('App\Page')->withPivot('position');

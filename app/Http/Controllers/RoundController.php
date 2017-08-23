@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Block;
 use App\Round;
 use DB;
 use Illuminate\Http\Request;
@@ -55,6 +56,7 @@ class RoundController extends Controller
     {
         // so we know the user has access to the activity and is staff
         // so we just need to create the round...
+        // todo: we also need to add a default page for the round in order for it not to break
         $round = new Round([
             'format' => $activity->format,
             'round_number' => $activity->rounds->count() + 1,
@@ -84,13 +86,24 @@ class RoundController extends Controller
         $round->fill($roundUpdates);
         $round->open_date = $roundUpdates['open_date'] == '' ? null : $roundUpdates['open_date'];
         $round->close_date = $roundUpdates['close_date'] == '' ? null : $roundUpdates['close_date'];
-        $round->keep_visible = $roundUpdates['keep_visible'] == 'true' ? 1 : 0;
-        $round->staff_rate = $roundUpdates['staff_rate'] == 'true' ? 1 : 0;
-        $round->student_rate = $roundUpdates['student_rate'] == 'true' ? 1 : 0;
+        $round->keep_visible = $roundUpdates['keep_visible'];
+        $round->staff_rate = $roundUpdates['staff_rate'];
+        $round->student_rate = $roundUpdates['student_rate'];
 
-        // if the round's block id is null and $request->blockContent == '' do nothing
-        // if it's null and blockContent is set, create a block
-        // if it's not null, update the block to the same content as blockContent
+        if ($round->block_id == null && $request->input('blockContent') != null) {
+            $block = Block::create([
+                'activity_id' => $activity->id,
+                'content' => $request->input('blockContent')
+            ]);
+            $block->save();
+            $round->block_id = $block->id;
+            // create block, set content, relate it
+        } elseif ($round->block_id != null) {
+            $block = $round->block;
+            $block->content = $request->input('blockContent') ? $request->input('blockContent') : '';
+            $block->save();
+            // update existing block content
+        }
 
         $round->save();
 

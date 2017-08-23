@@ -112,7 +112,6 @@
         },
 
         methods: {
-
             // post the updated round stuff to the server and update the local rounds / blocks objects
             saveRound() {
                 // put the dates back in the right format
@@ -123,8 +122,13 @@
                     round: this.editRound,
                     blockContent: this.editBlockContent
                 }).then(response => {
-                    // now update this.rounds to persist that around the app
-                    console.log(response.data);
+                    if (response.status == 200) {
+                        // update the local objects to match what we've stored in the database
+                        for (var property in response.data) {
+                            this.rounds[this.activeRoundIndex][property] = response.data[property];
+                            this.blocks[response.data.block_id].content = this.editBlockContent;
+                        }
+                    }
                 });
             }
         }

@@ -73754,8 +73754,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -76321,9 +76319,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-
         // post the updated round stuff to the server and update the local rounds / blocks objects
         saveRound: function saveRound() {
+            var _this = this;
+
             // put the dates back in the right format
             this.editRound.open_date = this.editOpenDate == '' ? null : this.editOpenDate.replace("T", " ");
             this.editRound.close_date = this.editCloseDate == '' ? null : this.editCloseDate.replace("T", " ");
@@ -76332,8 +76331,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 round: this.editRound,
                 blockContent: this.editBlockContent
             }).then(function (response) {
-                // now update this.rounds to persist that around the app
-                console.log(response.data);
+                if (response.status == 200) {
+                    // update the local objects to match what we've stored in the database
+                    for (var property in response.data) {
+                        _this.rounds[_this.activeRoundIndex][property] = response.data[property];
+                        _this.blocks[response.data.block_id].content = _this.editBlockContent;
+                    }
+                }
             });
         }
     }
