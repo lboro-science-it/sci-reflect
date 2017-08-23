@@ -30,7 +30,7 @@ class RoundController extends Controller
         $pages = $activity->pages->toJson();
 
         // get blocks
-        $blocks = $activity->blocks->toJson();
+        $blocks = $activity->blocks->keyBy('id')->toJson();
         
         // get skills with indicators preloaded as arrays
         $activity->skills->load([
@@ -67,9 +67,34 @@ class RoundController extends Controller
         return $round;
     }
 
-    public function update(Activity $activity, Request $request)
+    /** 
+     * Update the round and its associated block based on $request->input,
+     * which contains 'round', a copy of the round object, and blockContent,
+     * to be put in the round's related block's content column.
+     *
+     */
+    public function update(Activity $activity, $roundId, Request $request)
     {
+        // get the round from the $activity object, ensuring the user has authority to edit it
+        $round = $activity->rounds()->where('id', $roundId)->first();
 
+        // update the fields
+        $roundUpdates = $request->input('round');
+
+        $round->fill($roundUpdates);
+        $round->open_date = $roundUpdates['open_date'] == '' ? null : $roundUpdates['open_date'];
+        $round->close_date = $roundUpdates['close_date'] == '' ? null : $roundUpdates['close_date'];
+        $round->keep_visible = $roundUpdates['keep_visible'] == 'true' ? 1 : 0;
+        $round->staff_rate = $roundUpdates['staff_rate'] == 'true' ? 1 : 0;
+        $round->student_rate = $roundUpdates['student_rate'] == 'true' ? 1 : 0;
+
+        // if the round's block id is null and $request->blockContent == '' do nothing
+        // if it's null and blockContent is set, create a block
+        // if it's not null, update the block to the same content as blockContent
+
+        $round->save();
+
+        return $round;
     }
 
     /**

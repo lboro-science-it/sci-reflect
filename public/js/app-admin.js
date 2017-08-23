@@ -70413,6 +70413,7 @@ Vue.component('group-row', __webpack_require__(214));
 Vue.component('group-table', __webpack_require__(217));
 
 Vue.component('round-add', __webpack_require__(276));
+Vue.component('round-edit', __webpack_require__(285));
 Vue.component('rounds-list', __webpack_require__(282));
 Vue.component('rounds-setup', __webpack_require__(271));
 
@@ -73755,31 +73756,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            activeRoundIndex: null,
-            editRound: {}
+            activeRoundIndex: null
         };
     },
 
@@ -73790,7 +73773,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // clone the activated round into the editRound object
         activateRound: function activateRound(index) {
             this.activeRoundIndex = index;
-            this.editRound = JSON.parse(JSON.stringify(this.rounds[index]));
         }
     }
 });
@@ -73805,12 +73787,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
-    staticClass: "text-center"
-  }, [_c('round-add', {
-    attrs: {
-      "rounds": _vm.rounds
-    }
-  })], 1), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-3"
@@ -73821,71 +73797,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "activate-round": _vm.activateRound
     }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-9"
-  }, [_c('h4', [_vm._v("Edit...")]), _vm._v(" "), _c('label', {
+  }), _vm._v(" "), _c('div', {
+    staticClass: "text-center form-group"
+  }, [_c('round-add', {
     attrs: {
-      "for": "title"
+      "rounds": _vm.rounds
     }
-  }, [_vm._v("Title")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.editRound.title),
-      expression: "editRound.title"
-    }],
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-9 form-horizontal"
+  }, [_c('round-edit', {
     attrs: {
-      "id": "title",
-      "type": "text",
-      "placeholder": "Title"
-    },
-    domProps: {
-      "value": (_vm.editRound.title)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.editRound.title = $event.target.value
-      }
+      "rounds": _vm.rounds,
+      "blocks": _vm.blocks,
+      "activeRoundIndex": _vm.activeRoundIndex
     }
-  }), _c('br'), _c('br'), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "format"
-    }
-  }, [_vm._v("Format")]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "openDate"
-    }
-  }, [_vm._v("Open Date")]), _vm._v(" "), _c('input', {
-    attrs: {
-      "id": "openDate",
-      "type": "datetime-local"
-    }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "closeDate"
-    }
-  }, [_vm._v("Close Date")]), _vm._v(" "), _c('input', {
-    attrs: {
-      "id": "closeDate",
-      "type": "datetime-local"
-    }
-  }), _vm._v("\n\n\n                Round Number: " + _vm._s(_vm.editRound.round_number)), _c('br'), _vm._v("\n                Format: " + _vm._s(_vm.editRound.format) + "\n            ")])]), _vm._v("\n\n        list rounds -> with an edit button or an 'active' which causes another div to be visible"), _c('br'), _vm._v("\n        edit round"), _c('br'), _vm._v("\n        reorder round"), _c('br')])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('select', {
-    attrs: {
-      "id": "format"
-    }
-  }, [_c('option', {
-    attrs: {
-      "value": "linear"
-    }
-  }, [_vm._v("Linear")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "value": "nonlinear"
-    }
-  }, [_vm._v("NonLinear")])])
-}]}
+  })], 1)]), _vm._v("\n\n        list rounds -> with an edit button or an 'active' which causes another div to be visible"), _c('br'), _vm._v("\n        edit round"), _c('br'), _vm._v(" "), _c('strike', [_vm._v("reorder round")])], 1)])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -76077,6 +76004,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -76105,6 +76037,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return a.round_number - b.round_number;
             });
             this.orderRounds = false;
+        },
+        reOrder: function reOrder() {
+            this.activateRound(null);
+            this.orderRounds = true;
         },
 
 
@@ -76148,49 +76084,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h4', [_vm._v("\n        Rounds \n\n        "), _c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.orderRounds),
-      expression: "!orderRounds"
-    }],
-    staticClass: "pull-right",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.orderRounds = true
-      }
-    }
-  }, [_vm._v("\n            Re-order\n        ")]), _vm._v(" "), _c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.orderRounds),
-      expression: "orderRounds"
-    }],
-    staticClass: "pull-right",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.saveRoundOrder($event)
-      }
-    }
-  }, [_vm._v("\n            " + _vm._s(_vm.saveCaption) + "\n        ")]), _vm._v(" "), _c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.orderRounds),
-      expression: "orderRounds"
-    }],
-    staticClass: "pull-right",
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.cancelRoundOrder($event)
-      }
-    }
-  }, [_vm._v("\n            Cancel\n        ")])]), _vm._v(" "), _c('div', {
+  return _c('div', [_c('h4', [_vm._v("\n        Rounds\n    ")]), _vm._v(" "), _c('p', [_vm._v("\n        (Click to select for editing)\n    ")]), _vm._v(" "), _c('div', {
     staticClass: "list-group"
   }, [_c('draggable', {
     staticClass: "dragArea",
@@ -76223,13 +76117,520 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }],
       staticClass: "glyphicon glyphicon-move"
     }), _vm._v("\n                " + _vm._s(round.round_number) + ": " + _vm._s(round.title) + "\n            ")])
-  }))], 1)])
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "text-center form-group"
+  }, [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.orderRounds),
+      expression: "!orderRounds"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.reOrder
+    }
+  }, [_vm._v("\n            Re-order\n        ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.orderRounds),
+      expression: "orderRounds"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.saveRoundOrder
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.saveCaption) + "\n        ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.orderRounds),
+      expression: "orderRounds"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.cancelRoundOrder
+    }
+  }, [_vm._v("\n            Cancel\n        ")])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-1749a928", module.exports)
+  }
+}
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(286),
+  /* template */
+  __webpack_require__(287),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/rounds/RoundEdit.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] RoundEdit.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4aaea9bf", Component.options)
+  } else {
+    hotAPI.reload("data-v-4aaea9bf", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 286 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            editBlockContent: '',
+            editOpenDate: '',
+            editCloseDate: '',
+            editRound: {}
+        };
+    },
+
+
+    props: ['activeRoundIndex', 'blocks', 'rounds'],
+
+    watch: {
+        // when activeRoundIndex changes, populate the editRound object as required
+        activeRoundIndex: function activeRoundIndex(index) {
+            if (index !== null) {
+                this.editRound = JSON.parse(JSON.stringify(this.rounds[index]));
+
+                // get dates in correct format for HTML5 form
+                this.editOpenDate = this.editRound.open_date ? this.editRound.open_date.replace(" ", "T") : '';
+                this.editCloseDate = this.editRound.close_date ? this.editRound.close_date.replace(" ", "T") : '';
+
+                // get the block content so it can be edited
+                var blockId = this.editRound.block_id;
+                this.editBlockContent = blockId ? JSON.parse(JSON.stringify(this.blocks[blockId].content)) : '';
+            } else {
+                this.editBlockContent = '';
+                this.editOpenDate = '';
+                this.editCloseDate = '';
+                this.editRound = {};
+            }
+        }
+    },
+
+    methods: {
+
+        // post the updated round stuff to the server and update the local rounds / blocks objects
+        saveRound: function saveRound() {
+            // put the dates back in the right format
+            this.editRound.open_date = this.editOpenDate == '' ? null : this.editOpenDate.replace("T", " ");
+            this.editRound.close_date = this.editCloseDate == '' ? null : this.editCloseDate.replace("T", " ");
+
+            axios.put('rounds/' + this.editRound.id, {
+                round: this.editRound,
+                blockContent: this.editBlockContent
+            }).then(function (response) {
+                // now update this.rounds to persist that around the app
+                console.log(response.data);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('h4', [_vm._v("Edit...")]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "title"
+    }
+  }, [_vm._v("Title")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editRound.title),
+      expression: "editRound.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "title",
+      "type": "text",
+      "placeholder": "Title"
+    },
+    domProps: {
+      "value": (_vm.editRound.title)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editRound.title = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "format"
+    }
+  }, [_vm._v("Format")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editRound.format),
+      expression: "editRound.format"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "format"
+    },
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.editRound.format = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, [_c('option', {
+    attrs: {
+      "value": "linear"
+    }
+  }, [_vm._v("Linear")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "nonlinear"
+    }
+  }, [_vm._v("NonLinear")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "openDate"
+    }
+  }, [_vm._v("Open Date (include time!)")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-4"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editOpenDate),
+      expression: "editOpenDate"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "openDate",
+      "type": "datetime-local"
+    },
+    domProps: {
+      "value": (_vm.editOpenDate)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editOpenDate = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "col-xs-2 contrlo-label",
+    attrs: {
+      "for": "closeDate"
+    }
+  }, [_vm._v("Close Date (include time!)")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-4"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editCloseDate),
+      expression: "editCloseDate"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "closeDate",
+      "type": "datetime-local"
+    },
+    domProps: {
+      "value": (_vm.editCloseDate)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editCloseDate = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editBlockContent),
+      expression: "editBlockContent"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "blockContent",
+      "rows": "5",
+      "type": "textarea"
+    },
+    domProps: {
+      "value": (_vm.editBlockContent)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editBlockContent = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-xs-offset-2 col-xs-3"
+  }, [_c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editRound.keep_visible),
+      expression: "editRound.keep_visible"
+    }],
+    attrs: {
+      "id": "keepVisible",
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.editRound.keep_visible) ? _vm._i(_vm.editRound.keep_visible, null) > -1 : (_vm.editRound.keep_visible)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.editRound.keep_visible,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$c) {
+            $$i < 0 && (_vm.editRound.keep_visible = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.editRound.keep_visible = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.editRound.keep_visible = $$c
+        }
+      }
+    }
+  }), _vm._v("Keep visible?\n                ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editRound.staff_rate),
+      expression: "editRound.staff_rate"
+    }],
+    attrs: {
+      "id": "staffRate",
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.editRound.staff_rate) ? _vm._i(_vm.editRound.staff_rate, null) > -1 : (_vm.editRound.staff_rate)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.editRound.staff_rate,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$c) {
+            $$i < 0 && (_vm.editRound.staff_rate = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.editRound.staff_rate = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.editRound.staff_rate = $$c
+        }
+      }
+    }
+  }), _vm._v("Staff rate?\n                ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editRound.student_rate),
+      expression: "editRound.student_rate"
+    }],
+    attrs: {
+      "id": "studentRate",
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.editRound.student_rate) ? _vm._i(_vm.editRound.student_rate, null) > -1 : (_vm.editRound.student_rate)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.editRound.student_rate,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$c) {
+            $$i < 0 && (_vm.editRound.student_rate = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.editRound.student_rate = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.editRound.student_rate = $$c
+        }
+      }
+    }
+  }), _vm._v("Students rate?\n                ")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-xs-offset-2 col-xs-10"
+  }, [_c('button', {
+    staticClass: "btn btn-lg pull-right",
+    on: {
+      "click": _vm.saveRound
+    }
+  }, [_vm._v("Save")])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "blockContent"
+    }
+  }, [_vm._v("Content"), _c('br'), _vm._v("(html is allowed - use wisely)")])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4aaea9bf", module.exports)
   }
 }
 

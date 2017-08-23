@@ -19,7 +19,8 @@ Setup structure for {{ $activity->name }}
     sciReflect.skills = {!! $skills !!};
   @append
  
-  <rounds-setup :pages="sciReflect.pages"
+  <rounds-setup :blocks="sciReflect.blocks"
+                :pages="sciReflect.pages"
                 :rounds="sciReflect.rounds"
                 :skills="sciReflect.skills">
   </rounds-setup>

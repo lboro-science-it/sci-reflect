@@ -1,20 +1,11 @@
 <template>
     <div>
         <h4>
-            Rounds 
-
-            <button class="pull-right" v-on:click.prevent="orderRounds = true" v-show="!orderRounds">
-                Re-order
-            </button>
-
-            <button class="pull-right" v-on:click.prevent="saveRoundOrder" v-show="orderRounds">
-                {{ saveCaption }}
-            </button>
-            
-            <button class="pull-right" v-on:click.prevent="cancelRoundOrder" v-show="orderRounds">
-                Cancel
-            </button>
+            Rounds
         </h4>
+        <p>
+            (Click to select for editing)
+        </p>
         <div class="list-group">
             <draggable :list="editRounds" class="dragArea" :options="{ handle: '.glyphicon' }">
 
@@ -28,6 +19,20 @@
                     {{ round.round_number }}: {{ round.title }}
                 </div>
             </draggable>
+        </div>
+
+        <div class="text-center form-group">
+            <button class="btn btn-lg" v-on:click="reOrder" v-show="!orderRounds">
+                Re-order
+            </button>
+
+            <button class="btn btn-lg" v-on:click="saveRoundOrder" v-show="orderRounds">
+                {{ saveCaption }}
+            </button>
+            
+            <button class="btn btn-lg" v-on:click="cancelRoundOrder" v-show="orderRounds">
+                Cancel
+            </button>
         </div>
     </div>
 </template>
@@ -62,6 +67,11 @@
                     return a.round_number - b.round_number;
                 });
                 this.orderRounds = false;
+            },
+
+            reOrder() {
+                this.activateRound(null);
+                this.orderRounds = true;
             },
 
             // send the new round_id => round_numbers to the server
