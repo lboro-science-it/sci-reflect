@@ -1,28 +1,23 @@
 <template>
     <div>
-        <h4>
-            Rounds
-        </h4>
-        <p>
-            (Click to select for editing)
-        </p>
+        <h4>Rounds</h4>
+        <p>(Click to select for editing)</p>
         <div class="list-group">
-            <draggable :list="editRounds" class="dragArea" :options="{ handle: '.glyphicon' }">
-
-                <div v-for="(round, index) in editRounds"
-                     class="list-group-item"
+            <draggable :list="rounds" class="dragArea" :options="{ handle: '.glyphicon' }">
+                <div role="button" class="list-group-item"
                      :class="{ active: index == activeIndex }"
-                     role="button"
-                     v-on:click="activateRound(index)">
-
+                     v-for="(round, index) in rounds"
+                     v-on:click="activateRound(index)"
+                     >
                     <span class="glyphicon glyphicon-move" v-show="orderRounds"></span>
                     {{ round.round_number }}: {{ round.title }}
+
                 </div>
             </draggable>
         </div>
 
         <div class="text-center form-group">
-            <button class="btn btn-lg" v-on:click="reOrder" v-show="!orderRounds">
+            <button class="btn btn-lg" v-on:click="reorder" v-show="!orderRounds">
                 Re-order
             </button>
 
@@ -43,8 +38,7 @@
     export default {
         data () {
             return {
-                activeIndex: null,
-                editRounds: this.rounds,
+                activeIndex: null,          // index of the active round
                 orderRounds: false,
                 saveCaption: 'Save'
             }
@@ -55,6 +49,7 @@
         ],
 
         methods: {
+            // set active index on click of round, emit event to other components
             activateRound(index) {
                 if (!this.orderRounds) {
                     this.activeIndex = index;
@@ -62,14 +57,16 @@
                 }
             },
 
+            // returns rounds to order based on round_number i.e. cancels reordering
             cancelRoundOrder() {
-                this.editRounds.sort(function(a, b) {
+                this.rounds.sort(function(a, b) {
                     return a.round_number - b.round_number;
                 });
                 this.orderRounds = false;
             },
 
-            reOrder() {
+            // turns reordering mode on - makes it impossible to edit the 'active' round
+            reorder() {
                 this.activateRound(null);
                 this.orderRounds = true;
             },
@@ -79,21 +76,22 @@
                 this.saveCaption = 'Saving...';
                 let self = this;
                 
-                let roundsLength = this.editRounds.length;
+                // object to store new round_id => round_number details
                 let newRounds = {};
+
+                let roundsLength = this.rounds.length;
                 for (let i = 0; i < roundsLength; i++) {
-                    let round = this.editRounds[i];
+                    let round = this.rounds[i];
                     // update the round order
                     round.round_number = i + 1;
                     newRounds[round.id] = round.round_number;
                 }
 
-                // generate an array of round_ids => round_numbers
+                // send the round_id => round_number array to server
                 axios.put('rounds/order', {
                     rounds: newRounds
                 }).then(response => {
                     if (response.status == 200) {
-                        this.rounds = this.editRounds;
                         this.saveCaption = 'Saved!';
                         setTimeout(function() {
                             self.orderRounds = false;
