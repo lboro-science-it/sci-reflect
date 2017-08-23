@@ -3,14 +3,33 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-3">
-                    <rounds-list :rounds="rounds" v-on:activate-round="activateRound"></rounds-list>
+                    <rounds-list :rounds="rounds"
+                                 v-on:activate-round="activateRound"
+                                 v-on:renumber-rounds="renumberRounds">
+                    </rounds-list>
 
                     <div class="text-center form-group">
                         <round-add :rounds="rounds"></round-add>
                     </div>
                 </div>
                 <div class="col-xs-9 form-horizontal">
-                    <round-edit :rounds="rounds" :blocks="blocks" :activeRoundIndex="activeRoundIndex"></round-edit>
+                    <ul class="nav nav-tabs nav-justified">
+
+                        <li role="presentation" :class="{ active: activeTab == 'edit' }" v-on:click.prevent="activeTab = 'edit'">
+                            <a href="#">Edit</a>
+                        </li>
+
+                        <li role="presentation" :class="{ active: activeTab == 'pages'}" v-on:click.prevent="activeTab = 'pages'">
+                            <a href="#">Pages</a>
+                        </li>
+
+                    </ul>
+
+                    <round-edit :rounds="rounds" 
+                                :blocks="blocks" 
+                                :activeRoundIndex="activeRoundIndex"
+                                v-on:renumber-rounds="renumberRounds">
+                    </round-edit>
                 </div>
             </div>
 
@@ -25,7 +44,8 @@
     export default {
         data () {
             return {
-                activeRoundIndex: null
+                activeRoundIndex: null,
+                activeTab: 'edit'
             }
         },
 
@@ -40,6 +60,15 @@
             // deal with the rounds list emitted event
             activateRound(index) {
                 this.activeRoundIndex = index;
+            },
+
+            renumberRounds() {
+                let roundsLength = this.rounds.length;
+                for (let i = 0; i < roundsLength; i++) {
+                    let round = this.rounds[i];
+                    // update the round order
+                    round.round_number = i + 1;
+                }
             }
         }
     }

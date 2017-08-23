@@ -73752,13 +73752,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            activeRoundIndex: null
+            activeRoundIndex: null,
+            activeTab: 'edit'
         };
     },
 
@@ -73769,6 +73789,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // deal with the rounds list emitted event
         activateRound: function activateRound(index) {
             this.activeRoundIndex = index;
+        },
+        renumberRounds: function renumberRounds() {
+            var roundsLength = this.rounds.length;
+            for (var i = 0; i < roundsLength; i++) {
+                var round = this.rounds[i];
+                // update the round order
+                round.round_number = i + 1;
+            }
         }
     }
 });
@@ -73791,7 +73819,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "rounds": _vm.rounds
     },
     on: {
-      "activate-round": _vm.activateRound
+      "activate-round": _vm.activateRound,
+      "renumber-rounds": _vm.renumberRounds
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "text-center form-group"
@@ -73801,11 +73830,50 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "col-xs-9 form-horizontal"
-  }, [_c('round-edit', {
+  }, [_c('ul', {
+    staticClass: "nav nav-tabs nav-justified"
+  }, [_c('li', {
+    class: {
+      active: _vm.activeTab == 'edit'
+    },
+    attrs: {
+      "role": "presentation"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.activeTab = 'edit'
+      }
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Edit")])]), _vm._v(" "), _c('li', {
+    class: {
+      active: _vm.activeTab == 'pages'
+    },
+    attrs: {
+      "role": "presentation"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.activeTab = 'pages'
+      }
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Pages")])])]), _vm._v(" "), _c('round-edit', {
     attrs: {
       "rounds": _vm.rounds,
       "blocks": _vm.blocks,
       "activeRoundIndex": _vm.activeRoundIndex
+    },
+    on: {
+      "renumber-rounds": _vm.renumberRounds
     }
   })], 1)]), _vm._v("\n\n        todo: add edit button when round is active, otherwise list its pages.\n    ")])])
 },staticRenderFns: []}
@@ -75898,7 +75966,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 setTimeout(function () {
                     self.saveCaption = 'Save';
                     self.addRound = false;
-                }, 3000);
+                }, 500);
             });
         },
 
@@ -76283,6 +76351,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -76327,6 +76396,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios.delete('rounds/' + this.editRound.id).then(function (response) {
                     if (response.status == 204) {
                         _this.rounds.splice(_this.activeRoundIndex, 1);
+                        _this.$emit('renumber-rounds');
                         _this.resetEditRound();
                     }
                 });
@@ -76384,7 +76454,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h4', [_vm._v("Edit...")]), _vm._v(" "), _c('div', {
+  return _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-xs-2 control-label",
@@ -76576,7 +76650,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("Keep visible?\n                ")])])]), _vm._v(" "), _c('div', {
+  }), _vm._v("Keep visible?\n                    ")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_c('div', {
     staticClass: "checkbox"
@@ -76612,7 +76686,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("Staff rate?\n                ")])])]), _vm._v(" "), _c('div', {
+  }), _vm._v("Staff rate?\n                    ")])])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-3"
   }, [_c('div', {
     staticClass: "checkbox"
@@ -76648,7 +76722,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("Students rate?\n                ")])])])]), _vm._v(" "), _c('div', {
+  }), _vm._v("Students rate?\n                    ")])])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('div', {
     staticClass: "col-xs-offset-2 col-xs-10"
@@ -76668,7 +76742,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.deleteRound
     }
-  }, [_vm._v("Delete")])])])])
+  }, [_vm._v("Delete")])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('label', {
     staticClass: "col-xs-2 control-label",

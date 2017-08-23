@@ -64,7 +64,7 @@
                     setTimeout(function() {
                         self.saveCaption = 'Save';
                         self.addRound = false;
-                    }, 3000);
+                    }, 500);
                 });
             },
 

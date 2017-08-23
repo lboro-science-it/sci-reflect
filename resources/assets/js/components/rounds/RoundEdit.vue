@@ -1,71 +1,72 @@
 <template>
-    <div>
-        <h4>Edit...</h4>
-        <div class="form-group">
-            <label for="title" class="col-xs-2 control-label">Title</label>
-            <div class="col-xs-10">
-                <input id="title" class="form-control" type="text" v-model="editRound.title" placeholder="Title">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="format" class="col-xs-2 control-label">Format</label>
-            <div class="col-xs-10">
-                <select id="format" class="form-control" v-model="editRound.format">
-                    <option value="linear">Linear</option>
-                    <option value="nonlinear">NonLinear</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="openDate" class="col-xs-2 control-label">Open Date (include time!)</label>
-            <div class="col-xs-4">
-                <input id="openDate" class="form-control" type="datetime-local" v-model="editOpenDate">
-            </div>
-
-            <label for="closeDate" class="col-xs-2 contrlo-label">Close Date (include time!)</label>
-            <div class="col-xs-4">
-                <input id="closeDate" class="form-control" type="datetime-local" v-model="editCloseDate">
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="blockContent" class="col-xs-2 control-label">Content<br>(html is allowed - use wisely)</label>
-            <div class="col-xs-10">
-                <textarea id="blockContent" class="form-control" rows="5" type="textarea" v-model="editBlockContent"></textarea>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-xs-offset-2 col-xs-3">
-                <div class="checkbox">
-                    <label>
-                        <input id="keepVisible" type="checkbox" v-model="editRound.keep_visible">Keep visible?
-                    </label>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="title" class="col-xs-2 control-label">Title</label>
+                <div class="col-xs-10">
+                    <input id="title" class="form-control" type="text" v-model="editRound.title" placeholder="Title">
                 </div>
             </div>
-            <div class="col-xs-3">
-                <div class="checkbox">
-                    <label>
-                        <input id="staffRate" type="checkbox" v-model="editRound.staff_rate">Staff rate?
-                    </label>
-                </div>
-            </div>
-            <div class="col-xs-3">
-                <div class="checkbox">
-                    <label>
-                        <input id="studentRate" type="checkbox" v-model="editRound.student_rate">Students rate?
-                    </label>
-                </div>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-xs-offset-2 col-xs-10">
-                <button class="btn btn-lg" v-on:click="saveRound" :class="{ disabled: activeRoundIndex === null }">Save</button>
-                <button class="btn" v-on:click="deleteRound" :class="{ disabled: activeRoundIndex === null || rounds.length == 1 }">Delete</button>
+            <div class="form-group">
+                <label for="format" class="col-xs-2 control-label">Format</label>
+                <div class="col-xs-10">
+                    <select id="format" class="form-control" v-model="editRound.format">
+                        <option value="linear">Linear</option>
+                        <option value="nonlinear">NonLinear</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="openDate" class="col-xs-2 control-label">Open Date (include time!)</label>
+                <div class="col-xs-4">
+                    <input id="openDate" class="form-control" type="datetime-local" v-model="editOpenDate">
+                </div>
+
+                <label for="closeDate" class="col-xs-2 contrlo-label">Close Date (include time!)</label>
+                <div class="col-xs-4">
+                    <input id="closeDate" class="form-control" type="datetime-local" v-model="editCloseDate">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="blockContent" class="col-xs-2 control-label">Content<br>(html is allowed - use wisely)</label>
+                <div class="col-xs-10">
+                    <textarea id="blockContent" class="form-control" rows="5" type="textarea" v-model="editBlockContent"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-3">
+                    <div class="checkbox">
+                        <label>
+                            <input id="keepVisible" type="checkbox" v-model="editRound.keep_visible">Keep visible?
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="checkbox">
+                        <label>
+                            <input id="staffRate" type="checkbox" v-model="editRound.staff_rate">Staff rate?
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div class="checkbox">
+                        <label>
+                            <input id="studentRate" type="checkbox" v-model="editRound.student_rate">Students rate?
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <button class="btn btn-lg" v-on:click="saveRound" :class="{ disabled: activeRoundIndex === null }">Save</button>
+                    <button class="btn" v-on:click="deleteRound" :class="{ disabled: activeRoundIndex === null || rounds.length == 1 }">Delete</button>
+                </div>
             </div>
         </div>
     </div>
@@ -117,6 +118,7 @@
                     .then(response => {
                         if (response.status == 204) {
                             this.rounds.splice(this.activeRoundIndex, 1);
+                            this.$emit('renumber-rounds');
                             this.resetEditRound();
                         }
                     });

@@ -30,7 +30,7 @@ Setup structure for {{ $activity->name }}
     <strike>List of existing rounds</strike><br>
     <strike>Add a round</strike><br>
     <strike>Edit a round (title, format, number open/close date, content block, whether to keep visible, who can rate it)</strike><br>
-    Delete a round (should also unrelate all pages, delete any orphaned pages, skills etc)<br>
+    <strike>Delete a round (should also unrelate all pages, delete any orphaned pages, skills etc)</strike><br>
     Add page(s) to round - show all available pages that aren't already added, enable editing of pages, (adding skills to) etc<br>
     Reorder pages in rounds<br>
     Delete pages from rounds<br>
