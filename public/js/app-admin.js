@@ -76335,14 +76335,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 if (response.status == 200) {
                     // update the local objects to match what we've stored in the database
+                    // update all of the round's properties
                     for (var property in response.data) {
                         _this.rounds[_this.activeRoundIndex][property] = response.data[property];
+                    }
+
+                    // if the round responded with includes a block we need to update the local block object
+                    if (typeof response.data.block !== 'undefined') {
+                        // create a local block with the saem id if needed
                         if (typeof _this.blocks[response.data.block_id] === 'undefined') {
                             _this.blocks[response.data.block_id] = {
                                 id: response.data.block_id
                             };
                         }
-                        _this.blocks[response.data.block_id].content = _this.editBlockContent;
+                        // update the local block content to match the server response
+                        _this.blocks[response.data.block_id].content = response.data.block.content;
                     }
                 }
             });

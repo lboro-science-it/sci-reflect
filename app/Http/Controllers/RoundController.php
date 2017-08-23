@@ -93,7 +93,8 @@ class RoundController extends Controller
                 'content' => $request->input('blockContent')
             ]);
             $block->save();
-            $round->block_id = $block->id;
+            $round->block()->associate($block);
+//            $round->block_id = $block->id;
             // create block, set content, relate it
         } elseif ($round->block_id != null) {
             $block = $round->block;

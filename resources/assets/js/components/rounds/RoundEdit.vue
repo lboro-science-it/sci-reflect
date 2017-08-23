@@ -124,14 +124,21 @@
                 }).then(response => {
                     if (response.status == 200) {
                         // update the local objects to match what we've stored in the database
+                        // update all of the round's properties
                         for (var property in response.data) {
                             this.rounds[this.activeRoundIndex][property] = response.data[property];
+                        }
+
+                        // if the round responded with includes a block we need to update the local block object
+                        if (typeof response.data.block !== 'undefined') {
+                            // create a local block with the saem id if needed
                             if (typeof this.blocks[response.data.block_id] === 'undefined') {
                                 this.blocks[response.data.block_id] = {
                                     id: response.data.block_id
                                 };
                             }
-                            this.blocks[response.data.block_id].content = this.editBlockContent;
+                            // update the local block content to match the server response
+                            this.blocks[response.data.block_id].content = response.data.block.content;
                         }
                     }
                 });
