@@ -34,14 +34,14 @@ class RoundController extends Controller
     {
         // get rounds as a json string (array) indexed by round_number
         $activity->rounds->load([
-            'pageRounds'
+            'pagePivots'
         ]);
         $rounds = $activity->rounds->sortBy('round_number')->values()->toJson();
 
         // get pages with ids of blocks / skills as arrays
         $activity->pages->load([
-            'blockPages',
-            'pageSkills'
+            'blockPivots',
+            'skillPivots'
         ]);
         $pages = $activity->pages->toJson();
 

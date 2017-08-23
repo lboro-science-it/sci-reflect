@@ -10,8 +10,8 @@ class Page extends Model
     protected $visible = [
         'id',
         'title',
-        'blockPages',
-        'pageSkills'
+        'blockPivots',
+        'skillPivots'
     ];
 
     // Relationship methods 
@@ -22,7 +22,7 @@ class Page extends Model
      * can be referred to via its ID.
      *
      */
-    public function blockPages()
+    public function blockPivots()
     {
         return $this->hasMany('App\BlockPage');
     }
@@ -39,7 +39,7 @@ class Page extends Model
      * array.
      *
      */
-    public function pageSkills()
+    public function skillPivots()
     {
         return $this->hasMany('App\PageSkill');
     }

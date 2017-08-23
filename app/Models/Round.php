@@ -29,7 +29,7 @@ class Round extends Model
      * are figured out.
      *
      */
-    public function pageRounds()
+    public function pagePivots()
     {
         return $this->hasMany('App\PageRound');
     }
