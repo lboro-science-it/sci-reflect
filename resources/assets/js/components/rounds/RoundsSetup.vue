@@ -28,12 +28,18 @@
                     <round-edit :rounds="rounds" 
                                 :blocks="blocks" 
                                 :activeRoundIndex="activeRoundIndex"
-                                v-on:renumber-rounds="renumberRounds">
+                                v-on:renumber-rounds="renumberRounds"
+                                v-show="activeTab == 'edit'">
                     </round-edit>
+
+                    <round-pages :round="rounds[activeRoundIndex]"
+                                 :blocks="blocks"
+                                 :pages="pages"
+                                 :skills="skills"
+                                 v-show="activeTab == 'pages'">
+                    </round-pages>
                 </div>
             </div>
-
-            todo: add edit button when round is active, otherwise list its pages.
         </div>
     </div>
 </template>

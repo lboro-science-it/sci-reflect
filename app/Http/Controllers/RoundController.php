@@ -34,18 +34,23 @@ class RoundController extends Controller
     {
         // get rounds as a json string (array) indexed by round_number
         $activity->rounds->load([
-            'pagePivots'
+            'pagePivots' => function($q) {
+                $q->orderBy('page_number');
+            }
         ]);
         $rounds = $activity->rounds->sortBy('round_number')->values()->toJson();
 
         // get pages with ids of blocks / skills as arrays
         $activity->pages->load([
-            'blockPivots',
-            'skillPivots'
+            'blockPivots' => function($q) {
+                $q->orderBy('position');
+            },
+            'skillPivots' => function($q) {
+                $q->orderBy('position');
+            }
         ]);
-        $pages = $activity->pages->toJson();
+        $pages = $activity->pages->keyBy('id')->toJson();
 
-        // get blocks
         $blocks = $activity->blocks->keyBy('id')->toJson();
         
         // get skills with indicators preloaded as arrays
