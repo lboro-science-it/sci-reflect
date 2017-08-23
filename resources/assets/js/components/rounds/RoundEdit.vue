@@ -64,7 +64,8 @@
 
         <div class="form-group">
             <div class="col-xs-offset-2 col-xs-10">
-                <button class="btn btn-lg pull-right" v-on:click="saveRound">Save</button>
+                <button class="btn btn-lg" v-on:click="saveRound" :class="{ disabled: activeRoundIndex === null }">Save</button>
+                <button class="btn" v-on:click="deleteRound" :class="{ disabled: activeRoundIndex === null || rounds.length == 1 }">Delete</button>
             </div>
         </div>
     </div>
@@ -103,15 +104,33 @@
                     let blockId = this.editRound.block_id;
                     this.editBlockContent = blockId ? JSON.parse(JSON.stringify(this.blocks[blockId].content)) : '';
                 } else {
-                    this.editBlockContent = '';
-                    this.editOpenDate = '';
-                    this.editCloseDate = '';
-                    this.editRound = {};
+                    this.resetEditRound();
                 }
             }
         },
 
         methods: {
+            // send a delete request to the server and if it works, update the local variable
+            deleteRound() {
+                if (this.rounds.length > 1 && confirm("Are you sure?")) {
+                    axios.delete('rounds/' + this.editRound.id)
+                    .then(response => {
+                        if (response.status == 204) {
+                            this.rounds.splice(this.activeRoundIndex, 1);
+                            this.resetEditRound();
+                        }
+                    });
+                }
+            },
+
+            // clear all of the variables used to store the edit state of a round
+            resetEditRound() {
+                this.editBlockContent = '';
+                this.editOpenDate = '';
+                this.editCloseDate = '';
+                this.editRound = {};
+            },
+
             // post the updated round stuff to the server and update the local rounds / blocks objects
             saveRound() {
                 // put the dates back in the right format

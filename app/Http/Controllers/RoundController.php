@@ -10,11 +10,26 @@ use Illuminate\Http\Request;
 
 class RoundController extends Controller
 {
-    public function delete(Activity $activity, Request $request)
+    /**
+     * Delete the specified round resource, only if the user has access to it,
+     * which is the case if they are staff in activity.
+     *
+     */
+    public function delete(Activity $activity, $roundId, Request $request)
     {
+        $round = $activity->rounds()->where('id', $roundId)->first();
 
+        if (isset($round)) {
+            $round->delete();
+            return response()->json(null, 204);
+        }
     }
 
+    /**
+     * Displays the form for editing rounds, which also includes rounds'
+     * related data (pages, skills, etc) so various bits of data are loaded.
+     *
+     */
     public function index(Activity $activity, Request $request)
     {
         // get rounds as a json string (array) indexed by round_number
@@ -52,6 +67,11 @@ class RoundController extends Controller
                                    ->with('skills', $skills);
     }
 
+    /**
+     * Store a round in the activity based on $request->input('title'),
+     * returns the round object to be included in the browser object.
+     *
+     */
     public function store(Activity $activity, Request $request)
     {
         // so we know the user has access to the activity and is staff
@@ -60,7 +80,10 @@ class RoundController extends Controller
         $round = new Round([
             'format' => $activity->format,
             'round_number' => $activity->rounds->count() + 1,
-            'title' => $request->input('title')
+            'title' => $request->input('title'),
+            'keep_visible' => true,
+            'staff_rate' => true,
+            'student_rate' => true
         ]);
 
         $round->activity_id = $activity->id;
@@ -87,6 +110,7 @@ class RoundController extends Controller
         $round->open_date = $roundUpdates['open_date'] == '' ? null : $roundUpdates['open_date'];
         $round->close_date = $roundUpdates['close_date'] == '' ? null : $roundUpdates['close_date'];
 
+        // create a block if there is content to go in it and one doesn't exist
         if ($round->block_id == null && $request->input('blockContent') != null) {
             $block = Block::create([
                 'activity_id' => $activity->id,
@@ -94,17 +118,16 @@ class RoundController extends Controller
             ]);
             $block->save();
             $round->block()->associate($block);
-//            $round->block_id = $block->id;
-            // create block, set content, relate it
+        // update the block's content to match posted content if a block is present
         } elseif ($round->block_id != null) {
             $block = $round->block;
             $block->content = $request->input('blockContent') ? $request->input('blockContent') : '';
             $block->save();
-            // update existing block content
         }
 
         $round->save();
 
+        // return the round object which also includes the block
         return $round;
     }
 

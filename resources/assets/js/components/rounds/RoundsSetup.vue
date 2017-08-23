@@ -37,7 +37,7 @@
         ],
 
         methods: {
-            // clone the activated round into the editRound object
+            // deal with the rounds list emitted event
             activateRound(index) {
                 this.activeRoundIndex = index;
             }

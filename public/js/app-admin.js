@@ -73766,7 +73766,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['blocks', 'pages', 'rounds', 'skills'],
 
     methods: {
-        // clone the activated round into the editRound object
+        // deal with the rounds list emitted event
         activateRound: function activateRound(index) {
             this.activeRoundIndex = index;
         }
@@ -76282,6 +76282,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -76312,18 +76313,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var blockId = this.editRound.block_id;
                 this.editBlockContent = blockId ? JSON.parse(JSON.stringify(this.blocks[blockId].content)) : '';
             } else {
-                this.editBlockContent = '';
-                this.editOpenDate = '';
-                this.editCloseDate = '';
-                this.editRound = {};
+                this.resetEditRound();
             }
         }
     },
 
     methods: {
+        // send a delete request to the server and if it works, update the local variable
+        deleteRound: function deleteRound() {
+            var _this = this;
+
+            if (this.rounds.length > 1 && confirm("Are you sure?")) {
+                axios.delete('rounds/' + this.editRound.id).then(function (response) {
+                    if (response.status == 204) {
+                        _this.rounds.splice(_this.activeRoundIndex, 1);
+                        _this.resetEditRound();
+                    }
+                });
+            }
+        },
+
+
+        // clear all of the variables used to store the edit state of a round
+        resetEditRound: function resetEditRound() {
+            this.editBlockContent = '';
+            this.editOpenDate = '';
+            this.editCloseDate = '';
+            this.editRound = {};
+        },
+
+
         // post the updated round stuff to the server and update the local rounds / blocks objects
         saveRound: function saveRound() {
-            var _this = this;
+            var _this2 = this;
 
             // put the dates back in the right format
             this.editRound.open_date = this.editOpenDate == '' ? null : this.editOpenDate.replace("T", " ");
@@ -76337,19 +76359,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     // update the local objects to match what we've stored in the database
                     // update all of the round's properties
                     for (var property in response.data) {
-                        _this.rounds[_this.activeRoundIndex][property] = response.data[property];
+                        _this2.rounds[_this2.activeRoundIndex][property] = response.data[property];
                     }
 
                     // if the round responded with includes a block we need to update the local block object
                     if (typeof response.data.block !== 'undefined') {
                         // create a local block with the saem id if needed
-                        if (typeof _this.blocks[response.data.block_id] === 'undefined') {
-                            _this.blocks[response.data.block_id] = {
+                        if (typeof _this2.blocks[response.data.block_id] === 'undefined') {
+                            _this2.blocks[response.data.block_id] = {
                                 id: response.data.block_id
                             };
                         }
                         // update the local block content to match the server response
-                        _this.blocks[response.data.block_id].content = response.data.block.content;
+                        _this2.blocks[response.data.block_id].content = response.data.block.content;
                     }
                 }
             });
@@ -76631,11 +76653,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-xs-offset-2 col-xs-10"
   }, [_c('button', {
-    staticClass: "btn btn-lg pull-right",
+    staticClass: "btn btn-lg",
+    class: {
+      disabled: _vm.activeRoundIndex === null
+    },
     on: {
       "click": _vm.saveRound
     }
-  }, [_vm._v("Save")])])])])
+  }, [_vm._v("Save")]), _vm._v(" "), _c('button', {
+    staticClass: "btn",
+    class: {
+      disabled: _vm.activeRoundIndex === null || _vm.rounds.length == 1
+    },
+    on: {
+      "click": _vm.deleteRound
+    }
+  }, [_vm._v("Delete")])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('label', {
     staticClass: "col-xs-2 control-label",
