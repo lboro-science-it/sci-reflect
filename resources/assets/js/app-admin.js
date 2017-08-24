@@ -28,12 +28,11 @@ Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 
 Vue.component('page-edit', require('./components/pages/PageEdit.vue'));
 Vue.component('page-list', require('./components/pages/PageList.vue'));
+Vue.component('page-row', require('./components/pages/PageRow.vue'));
 
 Vue.component('round-add', require('./components/rounds/RoundAdd.vue'));
 Vue.component('round-edit', require('./components/rounds/RoundEdit.vue'));
 Vue.component('rounds-list', require('./components/rounds/RoundsList.vue'));
-Vue.component('round-page', require('./components/rounds/RoundPage.vue'));
-Vue.component('round-pages', require('./components/rounds/RoundPages.vue'));
 Vue.component('rounds-setup', require('./components/rounds/RoundsSetup.vue'));
 
 Vue.component('skill-list-item', require('./components/ratings/SkillListItem.vue'));

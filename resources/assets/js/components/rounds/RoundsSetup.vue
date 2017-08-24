@@ -36,12 +36,11 @@
                                 </button>
                             </div>
 
-                            <h4>Edit {{ activeRound }}'s pages</h4>
-
                             <page-list :round="rounds[activeRoundIndex]"
                                        :blocks="blocks"
                                        :pages="pages"
-                                       :skills="skills">
+                                       :skills="skills"
+                                       v-on:activate-page="activatePage">
                             </page-list>
                         </div>
                     </transition>
@@ -61,11 +60,12 @@
 
                     <transition name="fade" mode="out-in">
                         <div v-show="editView == 'pages'">
-                            <round-pages :round="rounds[activeRoundIndex]"
-                                         :blocks="blocks"
-                                         :pages="pages"
-                                         :skills="skills">
-                            </round-pages>
+                            <!-- todo: page edit view, where we can...
+                                 * edit the page title
+                                 * add skills
+                                 * add blocks
+                                 * delete the page (if it's not the only page)
+                             -->
                         </div>
                     </transition>
 
@@ -95,14 +95,6 @@
         ],
 
         computed: {
-            activeRound() {
-                if (this.activeRoundIndex !== null) {
-                    return this.rounds[this.activeRoundIndex].title;
-                } else {
-                    return '<Unset Round>';
-                }
-            },
-
             // calculate the total pages within the current active round
             totalPages() {
                 if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
@@ -114,6 +106,11 @@
         },
 
         methods: {
+            // set the active page
+            activatePage(index) {
+                this.activePageIndex = index;
+            },
+
             // deal with the rounds list emitted event
             activateRound(index) {
                 this.activeRoundIndex = index;
