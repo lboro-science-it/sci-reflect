@@ -19,6 +19,7 @@ Vue.component('group-bulk', require('./components/groups/GroupBulk.vue'));
 Vue.component('group-row', require('./components/groups/GroupRow.vue'));
 Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 
+Vue.component('page-add', require('./components/pages/PageAdd.vue'));
 Vue.component('page-edit', require('./components/pages/PageEdit.vue'));
 Vue.component('page-list', require('./components/pages/PageList.vue'));
 

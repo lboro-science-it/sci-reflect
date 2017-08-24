@@ -14,6 +14,11 @@ class Page extends Model
         'skillPivots'
     ];
 
+    protected $fillable = [
+        'activity_id',
+        'title'
+    ];
+
     // Relationship methods 
 
     /**

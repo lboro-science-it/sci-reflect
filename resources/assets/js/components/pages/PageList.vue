@@ -2,6 +2,7 @@
     <div>
         <h4 v-show="round">Edit {{ title }}'s pages</h4>
 
+        <!-- Selectable list of pages -->
         <div class="list-group">
             <draggable :list="editPages" class="dragArea" :options="{ handle: '.glyphicon' }">
                 <div role="button" class="list-group-item"
@@ -16,6 +17,7 @@
             </draggable>
         </div>
 
+        <!-- Reordering buttons -->
         <div class="text-center form-group">
             <button class="btn btn-lg" v-on:click="reorder" v-show="!orderPages">
                 Re-order
@@ -28,6 +30,12 @@
             <button class="btn btn-lg" v-on:click="cancelPageOrder" v-show="orderPages">
                 Cancel
             </button>
+        </div>
+
+        <!-- Button for adding page -->
+        <div class="text-center form-group">
+            <page-add :pages="pages" :round="round"
+                      v-on:add-page-pivots="addPagePivots"></page-add>
         </div>
 
     </div>
@@ -62,6 +70,12 @@
                     let pageId = (index !== null) ? this.editPages[index].id : null;
                     this.$emit('activate-page', pageId);
                 }
+            },
+
+            // Adds new pivots to this.round (i.e. if we have added a page with relationship)
+            addPagePivots(pagePivots) {
+                this.round.page_pivots.push(pagePivots);
+                this.updateEditPages();
             },
 
             // returns rounds to order based on round_number i.e. cancels reordering

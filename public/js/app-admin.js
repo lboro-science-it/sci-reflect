@@ -70406,6 +70406,7 @@ Vue.component('group-bulk', __webpack_require__(211));
 Vue.component('group-row', __webpack_require__(214));
 Vue.component('group-table', __webpack_require__(217));
 
+Vue.component('page-add', __webpack_require__(303));
 Vue.component('page-edit', __webpack_require__(294));
 Vue.component('page-list', __webpack_require__(295));
 
@@ -76193,6 +76194,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -76218,6 +76227,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var pageId = index !== null ? this.editPages[index].id : null;
                 this.$emit('activate-page', pageId);
             }
+        },
+
+
+        // Adds new pivots to this.round (i.e. if we have added a page with relationship)
+        addPagePivots: function addPagePivots(pagePivots) {
+            this.round.page_pivots.push(pagePivots);
+            this.updateEditPages();
         },
 
 
@@ -76375,13 +76391,245 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.cancelPageOrder
     }
-  }, [_vm._v("\n            Cancel\n        ")])])])
+  }, [_vm._v("\n            Cancel\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "text-center form-group"
+  }, [_c('page-add', {
+    attrs: {
+      "pages": _vm.pages,
+      "round": _vm.round
+    },
+    on: {
+      "add-page-pivots": _vm.addPagePivots
+    }
+  })], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-1b531129", module.exports)
+  }
+}
+
+/***/ }),
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(304),
+  /* template */
+  __webpack_require__(305),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/pages/PageAdd.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PageAdd.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7bf24934", Component.options)
+  } else {
+    hotAPI.reload("data-v-7bf24934", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 304 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            addPage: false,
+            addPageName: '',
+            saveCaption: 'Save'
+        };
+    },
+
+
+    props: ['pages', 'round'],
+
+    methods: {
+        // posts the page name to the server to create a new page
+        storePage: function storePage(page) {
+            var _this = this;
+
+            var self = this;
+            this.saveCaption = 'Saving...';
+
+            axios.post('pages', {
+                page: {
+                    title: this.addPageName
+                },
+                roundId: this.round.id
+            }).then(function (response) {
+                // response.data contains created 'page' object
+                // + a 'pagePivots' which need to be inserted into this.rounds
+                if (response.status == 200) {
+                    _this.saveCaption = 'Saved!';
+                    // put the page in the local pages object
+                    _this.pages[response.data.page.id] = response.data.page;
+                    // persist the page_pivots to the round
+                    _this.$emit('add-page-pivots', response.data.page_pivots);
+                } else {
+                    _this.saveCaption = 'Failed!';
+                }
+
+                _this.addPageName = '';
+                setTimeout(function () {
+                    self.saveCaption = 'Save';
+                    self.addPage = false;
+                }, 500);
+            });
+        },
+
+
+        // toggles whether the add page form is being shown
+        toggleAddPage: function toggleAddPage() {
+            this.addPage = !this.addPage;
+            if (this.addPage) {
+                Vue.nextTick(function () {
+                    document.getElementById('addPageInput').focus();
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 305 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "form-inline"
+  }, [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.addPage),
+      expression: "!addPage"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.toggleAddPage
+    }
+  }, [_vm._v("\n        Add page\n    ")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.addPage),
+      expression: "addPage"
+    }],
+    staticClass: "form-group"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.addPageName),
+      expression: "addPageName"
+    }],
+    staticClass: "form-control input-lg",
+    attrs: {
+      "id": "addPageInput",
+      "type": "text",
+      "placeholder": "New page title..."
+    },
+    domProps: {
+      "value": (_vm.addPageName)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.storePage(_vm.addPageName)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.addPageName = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.addPage),
+      expression: "addPage"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.toggleAddPage
+    }
+  }, [_vm._v("\n        Cancel\n    ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.addPage),
+      expression: "addPage"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": function($event) {
+        _vm.storePage(_vm.addPageName)
+      }
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.saveCaption) + "\n    ")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7bf24934", module.exports)
   }
 }
 

@@ -46,6 +46,9 @@ Route::prefix('a/{activity}')->group(function() {
         Route::put('groups/{groupId}', 'GroupController@update');
         Route::post('groups/{groupId}/users', 'GroupController@addUsers');
 
+        // Page routes
+        Route::post('pages', 'PageController@store');
+
         // Round routes
         Route::get('rounds', 'RoundController@index');
         Route::post('rounds', 'RoundController@store');
