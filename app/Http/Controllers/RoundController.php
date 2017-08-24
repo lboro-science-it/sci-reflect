@@ -112,6 +112,8 @@ class RoundController extends Controller
         $round->activity_id = $activity->id;
         $round->save();
 
+        $round->page_pivots = [];
+
         return $round;
     }
 

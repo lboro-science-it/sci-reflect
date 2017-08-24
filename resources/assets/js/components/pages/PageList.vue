@@ -117,7 +117,7 @@
 
             // creates an object of pages based on the round's page_pivots + global pages object
             updateEditPages() {
-                if (this.round) {
+                if (this.round && this.round.page_pivots) {
                     this.editPages = JSON.parse(JSON.stringify(this.round.page_pivots));
 
                     let pagesLength = this.editPages.length;

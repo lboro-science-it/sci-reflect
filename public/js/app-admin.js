@@ -76282,7 +76282,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // creates an object of pages based on the round's page_pivots + global pages object
         updateEditPages: function updateEditPages() {
-            if (this.round) {
+            if (this.round && this.round.page_pivots) {
                 this.editPages = JSON.parse(JSON.stringify(this.round.page_pivots));
 
                 var pagesLength = this.editPages.length;
