@@ -3,41 +3,72 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-3">
-                    <rounds-list :rounds="rounds"
-                                 v-on:activate-round="activateRound"
-                                 v-on:renumber-rounds="renumberRounds">
-                    </rounds-list>
 
-                    <div class="text-center form-group">
-                        <round-add :rounds="rounds"></round-add>
-                    </div>
+                    <!-- Stuff only visible when editView == 'round' i.e. editing rounds general settings -->
+                    <transition name="fade" mode="out-in">
+                        <div v-show="editView == 'round'">
+
+                            <!-- List of rounds, select active round, add rounds, change order -->
+                            <rounds-list :rounds="rounds"
+                                         v-on:activate-round="activateRound"
+                                         v-on:renumber-rounds="renumberRounds">
+                            </rounds-list>
+
+                            <!-- Edit pages toggle button, changes editView -->
+                            <div class="text-center form-group">
+                                <button class="btn btn-lg" 
+                                        :class="{ disabled: activeRoundIndex == null }"
+                                        v-on:click="editView = 'pages'">
+                                    Edit pages ({{ totalPages }})
+                                </button>
+                            </div>
+
+                        </div>
+                    </transition>
+
+                    <!-- Stuff only visible when editing round's pages -->
+                    <transition name="fade" mode="out-in">
+                        <div v-show="editView == 'pages'">
+                            <div class="text-center form-group">
+                                <button class="btn btn-lg"
+                                         v-on:click="editView = 'round'">
+                                    Back to Rounds list
+                                </button>
+                            </div>
+
+                            <h4>Edit {{ activeRound }}'s pages</h4>
+
+                            <page-list :round="rounds[activeRoundIndex]"
+                                       :blocks="blocks"
+                                       :pages="pages"
+                                       :skills="skills">
+                            </page-list>
+                        </div>
+                    </transition>
+
                 </div>
+
                 <div class="col-xs-9 form-horizontal">
-                    <ul class="nav nav-tabs nav-justified">
+                    <transition name="fade" mode="out-in">
+                        <div v-show="editView == 'round'">
+                            <round-edit :rounds="rounds" 
+                                        :blocks="blocks" 
+                                        :index="activeRoundIndex"
+                                        v-on:renumber-rounds="renumberRounds">
+                            </round-edit>
+                        </div>
+                    </transition>
 
-                        <li role="presentation" :class="{ active: activeTab == 'edit' }" v-on:click.prevent="activeTab = 'edit'">
-                            <a href="#">Edit</a>
-                        </li>
+                    <transition name="fade" mode="out-in">
+                        <div v-show="editView == 'pages'">
+                            <round-pages :round="rounds[activeRoundIndex]"
+                                         :blocks="blocks"
+                                         :pages="pages"
+                                         :skills="skills">
+                            </round-pages>
+                        </div>
+                    </transition>
 
-                        <li role="presentation" :class="{ active: activeTab == 'pages'}" v-on:click.prevent="activeTab = 'pages'">
-                            <a href="#">Pages</a>
-                        </li>
-
-                    </ul>
-
-                    <round-edit :rounds="rounds" 
-                                :blocks="blocks" 
-                                :activeRoundIndex="activeRoundIndex"
-                                v-on:renumber-rounds="renumberRounds"
-                                v-show="activeTab == 'edit'">
-                    </round-edit>
-
-                    <round-pages :round="rounds[activeRoundIndex]"
-                                 :blocks="blocks"
-                                 :pages="pages"
-                                 :skills="skills"
-                                 v-show="activeTab == 'pages'">
-                    </round-pages>
                 </div>
             </div>
         </div>
@@ -50,8 +81,9 @@
     export default {
         data () {
             return {
+                activePageIndex: null,
                 activeRoundIndex: null,
-                activeTab: 'edit'
+                editView: 'round'
             }
         },
 
@@ -61,6 +93,25 @@
             'rounds',
             'skills'
         ],
+
+        computed: {
+            activeRound() {
+                if (this.activeRoundIndex !== null) {
+                    return this.rounds[this.activeRoundIndex].title;
+                } else {
+                    return '<Unset Round>';
+                }
+            },
+
+            // calculate the total pages within the current active round
+            totalPages() {
+                if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
+                    return this.rounds[this.activeRoundIndex].page_pivots.length;
+                } else {
+                    return 0;
+                }
+            }
+        },
 
         methods: {
             // deal with the rounds list emitted event

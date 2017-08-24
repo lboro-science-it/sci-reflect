@@ -70412,6 +70412,9 @@ Vue.component('group-bulk', __webpack_require__(211));
 Vue.component('group-row', __webpack_require__(214));
 Vue.component('group-table', __webpack_require__(217));
 
+Vue.component('page-edit', __webpack_require__(294));
+Vue.component('page-list', __webpack_require__(295));
+
 Vue.component('round-add', __webpack_require__(276));
 Vue.component('round-edit', __webpack_require__(285));
 Vue.component('rounds-list', __webpack_require__(282));
@@ -73779,19 +73782,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            activePageIndex: null,
             activeRoundIndex: null,
-            activeTab: 'edit'
+            editView: 'round'
         };
     },
 
 
     props: ['blocks', 'pages', 'rounds', 'skills'],
+
+    computed: {
+        activeRound: function activeRound() {
+            if (this.activeRoundIndex !== null) {
+                return this.rounds[this.activeRoundIndex].title;
+            } else {
+                return '<Unset Round>';
+            }
+        },
+
+
+        // calculate the total pages within the current active round
+        totalPages: function totalPages() {
+            if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
+                return this.rounds[this.activeRoundIndex].page_pivots.length;
+            } else {
+                return 0;
+            }
+        }
+    },
 
     methods: {
         // deal with the rounds list emitted event
@@ -73824,6 +73879,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-3"
+  }, [_c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.editView == 'round'),
+      expression: "editView == 'round'"
+    }]
   }, [_c('rounds-list', {
     attrs: {
       "rounds": _vm.rounds
@@ -73834,77 +73901,87 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "text-center form-group"
-  }, [_c('round-add', {
-    attrs: {
-      "rounds": _vm.rounds
-    }
-  })], 1)], 1), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-9 form-horizontal"
-  }, [_c('ul', {
-    staticClass: "nav nav-tabs nav-justified"
-  }, [_c('li', {
+  }, [_c('button', {
+    staticClass: "btn btn-lg",
     class: {
-      active: _vm.activeTab == 'edit'
-    },
-    attrs: {
-      "role": "presentation"
+      disabled: _vm.activeRoundIndex == null
     },
     on: {
       "click": function($event) {
-        $event.preventDefault();
-        _vm.activeTab = 'edit'
+        _vm.editView = 'pages'
       }
     }
-  }, [_c('a', {
+  }, [_vm._v("\n                                Edit pages (" + _vm._s(_vm.totalPages) + ")\n                            ")])])], 1)]), _vm._v(" "), _c('transition', {
     attrs: {
-      "href": "#"
+      "name": "fade",
+      "mode": "out-in"
     }
-  }, [_vm._v("Edit")])]), _vm._v(" "), _c('li', {
-    class: {
-      active: _vm.activeTab == 'pages'
-    },
-    attrs: {
-      "role": "presentation"
-    },
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.editView == 'pages'),
+      expression: "editView == 'pages'"
+    }]
+  }, [_c('div', {
+    staticClass: "text-center form-group"
+  }, [_c('button', {
+    staticClass: "btn btn-lg",
     on: {
       "click": function($event) {
-        $event.preventDefault();
-        _vm.activeTab = 'pages'
+        _vm.editView = 'round'
       }
     }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Pages")])])]), _vm._v(" "), _c('round-edit', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.activeTab == 'edit'),
-      expression: "activeTab == 'edit'"
-    }],
-    attrs: {
-      "rounds": _vm.rounds,
-      "blocks": _vm.blocks,
-      "activeRoundIndex": _vm.activeRoundIndex
-    },
-    on: {
-      "renumber-rounds": _vm.renumberRounds
-    }
-  }), _vm._v(" "), _c('round-pages', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.activeTab == 'pages'),
-      expression: "activeTab == 'pages'"
-    }],
+  }, [_vm._v("\n                                Back to Rounds list\n                            ")])]), _vm._v(" "), _c('h4', [_vm._v("Edit " + _vm._s(_vm.activeRound) + "'s pages")]), _vm._v(" "), _c('page-list', {
     attrs: {
       "round": _vm.rounds[_vm.activeRoundIndex],
       "blocks": _vm.blocks,
       "pages": _vm.pages,
       "skills": _vm.skills
     }
-  })], 1)])])])
+  })], 1)])], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-9 form-horizontal"
+  }, [_c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.editView == 'round'),
+      expression: "editView == 'round'"
+    }]
+  }, [_c('round-edit', {
+    attrs: {
+      "rounds": _vm.rounds,
+      "blocks": _vm.blocks,
+      "index": _vm.activeRoundIndex
+    },
+    on: {
+      "renumber-rounds": _vm.renumberRounds
+    }
+  })], 1)]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade",
+      "mode": "out-in"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.editView == 'pages'),
+      expression: "editView == 'pages'"
+    }]
+  }, [_c('round-pages', {
+    attrs: {
+      "round": _vm.rounds[_vm.activeRoundIndex],
+      "blocks": _vm.blocks,
+      "pages": _vm.pages,
+      "skills": _vm.skills
+    }
+  })], 1)])], 1)])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -75950,6 +76027,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -76090,6 +76168,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -76176,7 +76258,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h4', [_vm._v("Rounds")]), _vm._v(" "), _c('p', [_vm._v("(Click to select for editing)")]), _vm._v(" "), _c('div', {
+  return _c('div', [_c('h4', [_vm._v("Rounds")]), _vm._v(" "), _c('div', {
     staticClass: "list-group"
   }, [_c('draggable', {
     staticClass: "dragArea",
@@ -76244,7 +76326,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.cancelRoundOrder
     }
-  }, [_vm._v("\n            Cancel\n        ")])])])
+  }, [_vm._v("\n            Cancel\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "text-center form-group"
+  }, [_c('round-add', {
+    attrs: {
+      "rounds": _vm.rounds
+    }
+  })], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -76381,6 +76469,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -76395,13 +76485,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['activeRoundIndex', 'blocks', 'rounds'],
+    props: ['index', 'blocks', 'rounds'],
 
     watch: {
-        // when activeRoundIndex changes, populate the editRound object as required
-        activeRoundIndex: function activeRoundIndex(index) {
-            if (index !== null) {
-                this.editRound = JSON.parse(JSON.stringify(this.rounds[index]));
+        // when index changes, populate the editRound object as required
+        index: function index(_index) {
+            if (_index !== null) {
+                this.editRound = JSON.parse(JSON.stringify(this.rounds[_index]));
 
                 // get dates in correct format for HTML5 form
                 this.editOpenDate = this.editRound.open_date ? this.editRound.open_date.replace(" ", "T") : '';
@@ -76424,7 +76514,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.rounds.length > 1 && confirm("Are you sure?")) {
                 axios.delete('rounds/' + this.editRound.id).then(function (response) {
                     if (response.status == 204) {
-                        _this.rounds.splice(_this.activeRoundIndex, 1);
+                        _this.rounds.splice(_this.index, 1);
                         _this.$emit('renumber-rounds');
                         _this.resetEditRound();
                     }
@@ -76457,7 +76547,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // if response was ok, update the local round object to match the database response
                 if (response.status == 200) {
                     for (var property in response.data) {
-                        _this2.rounds[_this2.activeRoundIndex][property] = response.data[property];
+                        _this2.rounds[_this2.index][property] = response.data[property];
                     }
 
                     // if response includes a block, store that too, creating the block locally if needed
@@ -76485,7 +76575,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-body"
-  }, [_c('div', {
+  }, [_c('h4', [_vm._v("Edit round")]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-xs-2 control-label",
@@ -76756,7 +76846,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "btn btn-lg",
     class: {
-      disabled: _vm.activeRoundIndex === null
+      disabled: _vm.index === null
     },
     on: {
       "click": _vm.saveRound
@@ -76764,7 +76854,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Save")]), _vm._v(" "), _c('button', {
     staticClass: "btn",
     class: {
-      disabled: _vm.activeRoundIndex === null || _vm.rounds.length == 1
+      disabled: _vm.index === null || _vm.rounds.length == 1
     },
     on: {
       "click": _vm.deleteRound
@@ -76877,8 +76967,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     // fill dummy fields whenever round is updated
     watch: {
         round: function round() {
-            console.log("round has changed, round is ");
-            console.log(this.round);
             if (this.round) {
                 this.title = this.round.title;
                 // clones the round's page pivots into a temporary editable object
@@ -77021,6 +77109,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -77034,13 +77125,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         activateEditing: function activateEditing(index) {
-            console.log('activateEditing for ' + index);
-            this.editPages[index].editing = true;
-            console.log(this.editPages[index]);
+            this.editTitle = true;
+            var editInput = document.getElementById(this.editPage.id);
+            Vue.nextTick(function () {
+                editInput.focus();
+            });
         },
+
+
+        // reset title to original page title and turn off editing
         cancelEditTitle: function cancelEditTitle(index) {
-            // todo: reset to original title... even though we don't have it here.
-            // but if we get pages we can get it
             this.editTitle = false;
             this.editPage.title = JSON.parse(JSON.stringify(this.originalPage.title));
         },
@@ -77050,8 +77144,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         saveTitle: function saveTitle(index) {
+            // todo: post new title to server and update original page title from that
+            this.originalPage.title = JSON.parse(JSON.stringify(this.editPage.title));
+            this.editTitle = false;
             console.log('here we would save the page title');
-            console.log('so we need to know the page being saved here');
         }
     }
 });
@@ -77085,12 +77181,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "editTitle"
     }],
     attrs: {
-      "type": "text"
+      "type": "text",
+      "id": _vm.editPage.id
     },
     domProps: {
       "value": (_vm.editPage.title)
     },
     on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.saveTitle(_vm.index)
+      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.editPage.title = $event.target.value
@@ -77107,7 +77208,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     on: {
       "click": function($event) {
-        _vm.editTitle = true
+        _vm.activateEditing(_vm.index)
       }
     }
   }, [_vm._v("edit")]), _vm._v(" "), _c('button', {
@@ -77156,6 +77257,152 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-1e6bd3c4", module.exports)
+  }
+}
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(296),
+  /* template */
+  __webpack_require__(297),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/pages/PageEdit.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PageEdit.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2a9b3895", Component.options)
+  } else {
+    hotAPI.reload("data-v-2a9b3895", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 295 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(298),
+  /* template */
+  __webpack_require__(299),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/pages/PageList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PageList.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1b531129", Component.options)
+  } else {
+    hotAPI.reload("data-v-1b531129", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 296 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    }
+});
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("This is the page edit component")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2a9b3895", module.exports)
+  }
+}
+
+/***/ }),
+/* 298 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    }
+});
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("This is the page list component")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1b531129", module.exports)
   }
 }
 

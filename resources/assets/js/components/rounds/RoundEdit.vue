@@ -1,6 +1,8 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-body">
+            <h4>Edit round</h4>
+            
             <!-- Round Title -->
             <div class="form-group">
                 <label for="title" class="col-xs-2 control-label">Title</label>
@@ -69,8 +71,8 @@
             <!-- Save / Delete buttons -->
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-10">
-                    <button class="btn btn-lg" v-on:click="saveRound" :class="{ disabled: activeRoundIndex === null }">Save</button>
-                    <button class="btn" v-on:click="deleteRound" :class="{ disabled: activeRoundIndex === null || rounds.length == 1 }">Delete</button>
+                    <button class="btn btn-lg" v-on:click="saveRound" :class="{ disabled: index === null }">Save</button>
+                    <button class="btn" v-on:click="deleteRound" :class="{ disabled: index === null || rounds.length == 1 }">Delete</button>
                 </div>
             </div>
         </div>
@@ -91,14 +93,14 @@
         },
 
         props: [
-            'activeRoundIndex',
+            'index',
             'blocks',
             'rounds'
         ],
 
         watch: {
-            // when activeRoundIndex changes, populate the editRound object as required
-            activeRoundIndex: function(index) {
+            // when index changes, populate the editRound object as required
+            index: function(index) {
                 if (index !== null) {
                     this.editRound = JSON.parse(JSON.stringify(this.rounds[index]));
 
@@ -122,7 +124,7 @@
                     axios.delete('rounds/' + this.editRound.id)
                     .then(response => {
                         if (response.status == 204) {
-                            this.rounds.splice(this.activeRoundIndex, 1);
+                            this.rounds.splice(this.index, 1);
                             this.$emit('renumber-rounds');
                             this.resetEditRound();
                         }
@@ -151,7 +153,7 @@
                     // if response was ok, update the local round object to match the database response
                     if (response.status == 200) {
                         for (var property in response.data) {
-                            this.rounds[this.activeRoundIndex][property] = response.data[property];
+                            this.rounds[this.index][property] = response.data[property];
                         }
 
                         // if response includes a block, store that too, creating the block locally if needed

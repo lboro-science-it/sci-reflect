@@ -1,7 +1,7 @@
 <template>
     <div>
         <h4>Rounds</h4>
-        <p>(Click to select for editing)</p>
+
         <div class="list-group">
             <draggable :list="rounds" class="dragArea" :options="{ handle: '.glyphicon' }">
                 <div role="button" class="list-group-item"
@@ -28,6 +28,10 @@
             <button class="btn btn-lg" v-on:click="cancelRoundOrder" v-show="orderRounds">
                 Cancel
             </button>
+        </div>
+
+        <div class="text-center form-group">
+            <round-add :rounds="rounds"></round-add>
         </div>
     </div>
 </template>

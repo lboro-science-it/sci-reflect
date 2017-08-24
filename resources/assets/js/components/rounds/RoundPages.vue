@@ -49,8 +49,6 @@
         // fill dummy fields whenever round is updated
         watch: {
             round () {
-                console.log("round has changed, round is ");
-                console.log(this.round);
                 if (this.round) {
                     this.title = this.round.title
                     // clones the round's page pivots into a temporary editable object
