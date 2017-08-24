@@ -154,13 +154,22 @@ class RoundController extends Controller
 
         // generate the case statements to mass update the pivot table
         $cases = '';
+        $page_pivots = [];
         foreach($request->input('pages') as $page_id => $page_number) {
             $cases .= "when page_id = $page_id then $page_number ";
+            array_push($page_pivots, [
+                'page_id' => $page_id,
+                'page_number' => $page_number,
+            ]);
         }
+
+        usort($page_pivots, function($a, $b) {
+            return $a['page_number'] <=> $b['page_number'];
+        });
 
         DB::statement("UPDATE page_round SET page_number = (case $cases end) WHERE round_id = $roundId;");
 
-        return response()->json(null, 200);
+        return response()->json($page_pivots, 200);
     }
 
     /**

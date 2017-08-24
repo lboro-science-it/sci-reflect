@@ -76215,11 +76215,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.orderPages) {
                 this.activeIndex = index;
                 // get the page's id and emit that event so it can be edited
-                if (index !== null) {
-                    this.$emit('activate-page', this.editPages[index].id);
-                } else {
-                    this.$emit('activate-page', null);
-                }
+                var pageId = index !== null ? this.editPages[index].id : null;
+                this.$emit('activate-page', pageId);
             }
         },
 
@@ -76242,41 +76239,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // update the round's pivots to reflect new order of pages
         savePageOrder: function savePageOrder(index) {
-            var newPages = {};
+            var _this = this;
 
-            // update editPages' page numbers to match the array index order
-            // populate newPages object with page_id => page_number
+            var newPages = {};
             var pagesLength = this.editPages.length;
             for (var i = 0; i < pagesLength; i++) {
                 var page = this.editPages[i];
                 page.page_number = i + 1;
-
+                // set page number to match array order, store in assoc array of page_id => page_number
                 newPages[page.id] = page.page_number;
             }
 
             axios.put('rounds/' + this.round.id + '/pages/numbers', {
                 pages: newPages
             }).then(function (response) {
-                console.log(response.data);
+                if (response.status == 200) {
+                    // response.data contains the updated page_pivots for the round
+                    _this.round.page_pivots = response.data;
+                    _this.updateEditPages();
+                    _this.orderPages = false;
+                }
             });
-            // saving page order = update the round's page_pivots both in memory and in the database
-            // so we are gonna send a put request to the server on the round_id
-            // containing page_ids and page_numbers
-            // in the order of the current editPages array
-            // and then we are gonna update the local round.page_pivots to match what comes back
-            console.log('we would save page order here');
-        }
-    },
+        },
 
-    watch: {
-        // whenever round changes, update the editPages array so pages can be
-        // edited independently of the persisted status of them, and undone if needed
-        round: function round() {
+
+        // creates an object of pages based on the round's page_pivots + global pages object
+        updateEditPages: function updateEditPages() {
             if (this.round) {
-                // clone pivots (page_id and page_number) into editPages
                 this.editPages = JSON.parse(JSON.stringify(this.round.page_pivots));
 
-                // copy the page objects into the temporary editPages object
                 var pagesLength = this.editPages.length;
                 for (var i = 0; i < pagesLength; i++) {
                     var pageNumber = this.editPages[i].page_number;
@@ -76290,13 +76281,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
+    watch: {
+        // update the temporary editPages array when round changes
+        round: function round() {
+            this.updateEditPages();
+        }
+    },
+
     computed: {
         title: function title() {
-            if (this.round) {
-                return this.round.title;
-            }
-
-            return '<No Round Set>';
+            return this.round ? this.round.title : '<No Round Set>';
         }
     }
 });
