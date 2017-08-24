@@ -75656,7 +75656,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (this.rounds.length > 1 && confirm("Are you sure?")) {
                 axios.delete('rounds/' + this.editRound.id).then(function (response) {
-                    console.log(response.data);
                     if (response.status == 204) {
                         _this.rounds.splice(_this.index, 1);
                         _this.$emit('renumber-rounds');
