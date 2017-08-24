@@ -60,12 +60,7 @@
 
                     <transition name="fade" mode="out-in">
                         <div v-show="editView == 'pages'">
-                            <!-- todo: page edit view, where we can...
-                                 * edit the page title
-                                 * add skills
-                                 * add blocks
-                                 * delete the page (if it's not the only page)
-                             -->
+                            <page-edit :page="pages[activePageId]"></page-edit>
                         </div>
                     </transition>
 
@@ -81,7 +76,7 @@
     export default {
         data () {
             return {
-                activePageIndex: null,
+                activePageId: null,
                 activeRoundIndex: null,
                 editView: 'round'
             }
@@ -107,8 +102,8 @@
 
         methods: {
             // set the active page
-            activatePage(index) {
-                this.activePageIndex = index;
+            activatePage(id) {
+                this.activePageId = id;
             },
 
             // deal with the rounds list emitted event

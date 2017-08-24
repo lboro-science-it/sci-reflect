@@ -72958,18 +72958,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            activePageIndex: null,
+            activePageId: null,
             activeRoundIndex: null,
             editView: 'round'
         };
@@ -72991,8 +72986,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         // set the active page
-        activatePage: function activatePage(index) {
-            this.activePageIndex = index;
+        activatePage: function activatePage(id) {
+            this.activePageId = id;
         },
 
 
@@ -73124,7 +73119,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.editView == 'pages'),
       expression: "editView == 'pages'"
     }]
-  })])], 1)])])])
+  }, [_c('page-edit', {
+    attrs: {
+      "page": _vm.pages[_vm.activePageId]
+    }
+  })], 1)])], 1)])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -76120,7 +76119,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {};
-    }
+    },
+
+
+    computed: {
+        title: function title() {
+            if (typeof this.page !== 'undefined') {
+                return this.page.title;
+            }
+
+            return '<No Page Set>';
+        }
+    },
+
+    props: ['page']
 });
 
 /***/ }),
@@ -76128,7 +76140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("This is the page edit component")])
+  return _c('div', [_vm._v("This is the page edit component. Page we would be editing is " + _vm._s(_vm.title))])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -76144,6 +76156,8 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -76179,6 +76193,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -76195,10 +76210,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['blocks', 'pages', 'round', 'skills'],
 
     methods: {
+        // activates a page based on its index
         activatePage: function activatePage(index) {
             if (!this.orderPages) {
                 this.activeIndex = index;
-                this.$emit('activate-page', index);
+                // get the page's id and emit that event so it can be edited
+                if (index !== null) {
+                    this.$emit('activate-page', this.editPages[index].id);
+                } else {
+                    this.$emit('activate-page', null);
+                }
             }
         },
 
@@ -76217,13 +76238,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.activatePage(null);
             this.orderPages = true;
         },
+
+
+        // update the round's pivots to reflect new order of pages
         savePageOrder: function savePageOrder(index) {
+            var newPages = {};
+
+            // update editPages' page numbers to match the array index order
+            // populate newPages object with page_id => page_number
+            var pagesLength = this.editPages.length;
+            for (var i = 0; i < pagesLength; i++) {
+                var page = this.editPages[i];
+                page.page_number = i + 1;
+
+                newPages[page.id] = page.page_number;
+            }
+
+            axios.put('rounds/' + this.round.id + '/pages/numbers', {
+                pages: newPages
+            }).then(function (response) {
+                console.log(response.data);
+            });
+            // saving page order = update the round's page_pivots both in memory and in the database
+            // so we are gonna send a put request to the server on the round_id
+            // containing page_ids and page_numbers
+            // in the order of the current editPages array
+            // and then we are gonna update the local round.page_pivots to match what comes back
             console.log('we would save page order here');
         }
     },
 
     watch: {
-        // whenever round changes, update the editingPages array so pages can be
+        // whenever round changes, update the editPages array so pages can be
         // edited independently of the persisted status of them, and undone if needed
         round: function round() {
             if (this.round) {

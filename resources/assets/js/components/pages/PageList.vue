@@ -34,6 +34,7 @@
 </template>
 
 <script>
+    import 'axios';
 
     export default {
         data() {
@@ -53,10 +54,16 @@
         ],
 
         methods: {
+            // activates a page based on its index
             activatePage(index) {
                 if (!this.orderPages) {
                     this.activeIndex = index;
-                    this.$emit('activate-page', index);
+                    // get the page's id and emit that event so it can be edited
+                    if (index !== null) {
+                        this.$emit('activate-page', this.editPages[index].id);
+                    } else {
+                        this.$emit('activate-page', null);
+                    }
                 }
             },
 
@@ -74,14 +81,37 @@
                 this.orderPages = true;
             },
 
+            // update the round's pivots to reflect new order of pages
             savePageOrder(index) {
+                let newPages = {};
+
+                // update editPages' page numbers to match the array index order
+                // populate newPages object with page_id => page_number
+                let pagesLength = this.editPages.length;
+                for (let i = 0; i < pagesLength; i++) {
+                    let page = this.editPages[i];
+                    page.page_number = i + 1;
+
+                    newPages[page.id] = page.page_number;
+                }
+
+                axios.put('rounds/' + this.round.id + '/pages/numbers', {
+                    pages: newPages
+                }).then(response => {
+                    console.log(response.data);
+                });
+                // saving page order = update the round's page_pivots both in memory and in the database
+                // so we are gonna send a put request to the server on the round_id
+                // containing page_ids and page_numbers
+                // in the order of the current editPages array
+                // and then we are gonna update the local round.page_pivots to match what comes back
                 console.log('we would save page order here');
             }
 
         },
 
         watch: {
-            // whenever round changes, update the editingPages array so pages can be
+            // whenever round changes, update the editPages array so pages can be
             // edited independently of the persisted status of them, and undone if needed
             round() {
                 if (this.round) {

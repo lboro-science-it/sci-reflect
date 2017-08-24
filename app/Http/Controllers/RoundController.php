@@ -137,6 +137,33 @@ class RoundController extends Controller
     }
 
     /**
+     * Updates page numbers in page_round pivot for $roundId based on
+     * $request->input('pages') which contains data in the format page_id => page_number
+     *
+     */ 
+    public function updatePageNumbers(Activity $activity, $roundId, Request $request)
+    {
+        // get the round from the activity
+        $round = $activity->rounds()->where('id', $roundId)->first();
+
+        // eject if the round isn't set, it means it belongs to a different activity
+        // todo: put into middleware to detect that $roundId belongs to $activity
+        if (is_null($round)) {
+            return redirect('eject');
+        }
+
+        // generate the case statements to mass update the pivot table
+        $cases = '';
+        foreach($request->input('pages') as $page_id => $page_number) {
+            $cases .= "when page_id = $page_id then $page_number ";
+        }
+
+        DB::statement("UPDATE page_round SET page_number = (case $cases end) WHERE round_id = $roundId;");
+
+        return response()->json(null, 200);
+    }
+
+    /**
      * Updates round_number based on $request->input('rounds') which should
      * be an array of $round_id => $round_number.
      *
@@ -160,6 +187,6 @@ class RoundController extends Controller
 
         DB::statement("UPDATE rounds SET round_number = (case $cases end) WHERE id IN (" . implode(", ", $round_ids) .");");
 
-        return 'success';
+        return response()->json(null, 200);
     }
 }
