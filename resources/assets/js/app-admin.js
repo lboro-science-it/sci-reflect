@@ -12,13 +12,6 @@ window.Vue = require('vue');
  * this instance.
  */
 
-
-Vue.component('activity-content', require('./components/activity/ActivityContent.vue'));
-Vue.component('activity-pages', require('./components/activity/ActivityPages.vue'));
-Vue.component('activity-rounds', require('./components/activity/ActivityRounds.vue'));
-Vue.component('activity-setup', require('./components/activity/ActivitySetup.vue'));
-Vue.component('activity-skills', require('./components/activity/ActivitySkills.vue'));
-
 Vue.component('draggable', require('vuedraggable'));
 
 Vue.component('group-batch', require('./components/groups/GroupBatch.vue'));
@@ -28,7 +21,6 @@ Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 
 Vue.component('page-edit', require('./components/pages/PageEdit.vue'));
 Vue.component('page-list', require('./components/pages/PageList.vue'));
-Vue.component('page-row', require('./components/pages/PageRow.vue'));
 
 Vue.component('round-add', require('./components/rounds/RoundAdd.vue'));
 Vue.component('round-edit', require('./components/rounds/RoundEdit.vue'));

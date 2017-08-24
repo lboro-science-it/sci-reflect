@@ -78,7 +78,6 @@
                 console.log('we would save page order here');
             }
 
-
         },
 
         watch: {
