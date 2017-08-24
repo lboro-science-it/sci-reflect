@@ -17,10 +17,28 @@ class RoundController extends Controller
      */
     public function delete(Activity $activity, $roundId, Request $request)
     {
-        $round = $activity->rounds()->where('id', $roundId)->first();
+        $round = $activity->rounds->where('id', $roundId)->first();
 
         if (isset($round)) {
+            // delete the round's pivots and the round
+            $round->pagePivots()->delete();
             $round->delete();
+
+            // update the remaining rounds' page numbers
+            $remainingRounds = $activity->rounds->filter(function ($round) use ($roundId) {
+                return $round->id != $roundId;
+            })->sortBy('round_number');
+
+            // build sql case query for each round and the roundNumber it should have
+            $roundNumber = 1;
+            $cases = '';
+            foreach ($remainingRounds as $round) {
+                $cases .= "when id = $round->id then $roundNumber ";
+                $roundNumber++;
+            }
+
+            DB::statement("UPDATE rounds SET round_number = (case $cases end) WHERE activity_id = $activity->id;");
+
             return response()->json(null, 204);
         }
     }

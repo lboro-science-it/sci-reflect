@@ -123,6 +123,7 @@
                 if (this.rounds.length > 1 && confirm("Are you sure?")) {
                     axios.delete('rounds/' + this.editRound.id)
                     .then(response => {
+                        console.log(response.data);
                         if (response.status == 204) {
                             this.rounds.splice(this.index, 1);
                             this.$emit('renumber-rounds');

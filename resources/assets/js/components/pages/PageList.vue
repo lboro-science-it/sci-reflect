@@ -93,7 +93,7 @@
             },
 
             // update the round's pivots to reflect new order of pages
-            savePageOrder(index) {
+            savePageOrder() {
                 let newPages = {};
                 let pagesLength = this.editPages.length;
                 for (let i = 0; i < pagesLength; i++) {

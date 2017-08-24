@@ -72977,7 +72977,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         // calculate the total pages within the current active round
         totalPages: function totalPages() {
-            if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
+            if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex] !== 'undefined' && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
                 return this.rounds[this.activeRoundIndex].page_pivots.length;
             } else {
                 return 0;
@@ -75656,6 +75656,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (this.rounds.length > 1 && confirm("Are you sure?")) {
                 axios.delete('rounds/' + this.editRound.id).then(function (response) {
+                    console.log(response.data);
                     if (response.status == 204) {
                         _this.rounds.splice(_this.index, 1);
                         _this.$emit('renumber-rounds');
@@ -76254,7 +76255,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
         // update the round's pivots to reflect new order of pages
-        savePageOrder: function savePageOrder(index) {
+        savePageOrder: function savePageOrder() {
             var _this = this;
 
             var newPages = {};

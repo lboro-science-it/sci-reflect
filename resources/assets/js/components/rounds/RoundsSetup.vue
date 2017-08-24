@@ -92,7 +92,8 @@
         computed: {
             // calculate the total pages within the current active round
             totalPages() {
-                if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
+                if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex] !== 'undefined'
+                    && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
                     return this.rounds[this.activeRoundIndex].page_pivots.length;
                 } else {
                     return 0;
