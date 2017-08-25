@@ -19,18 +19,21 @@ Vue.component('group-bulk', require('./components/groups/GroupBulk.vue'));
 Vue.component('group-row', require('./components/groups/GroupRow.vue'));
 Vue.component('group-table', require('./components/groups/GroupTable.vue'));
 
+// list components
+Vue.component('sortable-list', require('./components/lists/SortableList.vue'));
+
 Vue.component('page-add', require('./components/pages/PageAdd.vue'));
 Vue.component('page-edit', require('./components/pages/PageEdit.vue'));
 Vue.component('page-list', require('./components/pages/PageList.vue'));
+Vue.component('pages-setup', require('./components/pages/PagesSetup.vue'));
 
-Vue.component('round-add', require('./components/rounds/RoundAdd.vue'));
 Vue.component('round-edit', require('./components/rounds/RoundEdit.vue'));
-Vue.component('rounds-list', require('./components/rounds/RoundsList.vue'));
 Vue.component('rounds-setup', require('./components/rounds/RoundsSetup.vue'));
 
 Vue.component('skill-list-item', require('./components/ratings/SkillListItem.vue'));
 Vue.component('skill-rater', require('./components/ratings/SkillRater.vue'));
 Vue.component('student-rater', require('./components/ratings/StudentRater.vue'));
+
 
 Vue.component('staff-row', require('./components/staff/StaffRow.vue'));
 Vue.component('staff-table', require('./components/staff/StaffTable.vue'));

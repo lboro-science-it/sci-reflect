@@ -70406,13 +70406,15 @@ Vue.component('group-bulk', __webpack_require__(211));
 Vue.component('group-row', __webpack_require__(214));
 Vue.component('group-table', __webpack_require__(217));
 
+// list components
+Vue.component('sortable-list', __webpack_require__(306));
+
 Vue.component('page-add', __webpack_require__(303));
 Vue.component('page-edit', __webpack_require__(294));
 Vue.component('page-list', __webpack_require__(295));
+Vue.component('pages-setup', __webpack_require__(312));
 
-Vue.component('round-add', __webpack_require__(276));
 Vue.component('round-edit', __webpack_require__(285));
-Vue.component('rounds-list', __webpack_require__(282));
 Vue.component('rounds-setup', __webpack_require__(271));
 
 Vue.component('skill-list-item', __webpack_require__(220));
@@ -72959,14 +72961,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
+
+var defaultRound = {
+    id: null,
+    title: '',
+    block_id: null,
+    page_pivots: []
+};
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             activePageId: null,
-            activeRoundIndex: null,
+            activeRound: defaultRound,
+            activeRoundPages: [],
             editView: 'round'
         };
     },
@@ -72974,37 +72985,119 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     props: ['blocks', 'pages', 'rounds', 'skills'],
 
-    computed: {
-        // calculate the total pages within the current active round
-        totalPages: function totalPages() {
-            if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex] !== 'undefined' && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
-                return this.rounds[this.activeRoundIndex].page_pivots.length;
-            } else {
-                return 0;
+    watch: {
+        // update activeRoundPages whenever activeRound is changed
+        activeRound: function activeRound(_activeRound) {
+            this.activeRoundPages = {};
+            console.log("active round title is " + _activeRound.title);
+            console.log(_activeRound);
+            var pagePivotsLength = _activeRound.page_pivots.length;
+            for (var i = 0; i < pagePivotsLength; i++) {
+                var pagePivot = _activeRound.page_pivots[i];
+                this.activeRoundPages[i] = JSON.parse(JSON.stringify(this.pages[pagePivot.page_id]));
+                this.activeRoundPages[i].page_number = pagePivot.page_number;
             }
+            console.log(this.activeRoundPages);
         }
     },
 
     methods: {
-        // set the active page
-        activatePage: function activatePage(id) {
-            this.activePageId = id;
+        // sets activeRound to either an actual round or a placeholder
+        activateRound: function activateRound(round) {
+            this.activeRound = round ? round : defaultRound;
         },
 
 
-        // deal with the rounds list emitted event
-        activateRound: function activateRound(index) {
-            this.activeRoundIndex = index;
+        // post the roundName to the server, update the local rounds array
+        addRound: function addRound(roundName) {
+            var _this = this;
+
+            axios.post('rounds', {
+                title: roundName
+            }).then(function (response) {
+                if (response.status == 200) {
+                    _this.rounds.push(response.data);
+                }
+            });
         },
 
 
-        // change rounds' round_number to match the order of the array
+        // deletes the round, updates the local rounds array
+        deleteRound: function deleteRound(round) {
+            var _this2 = this;
+
+            if (this.rounds.length > 1 && confirm("Are you sure?")) {
+                axios.delete('rounds/' + round.id).then(function (response) {
+                    if (response.status == 204) {
+                        var roundsLength = _this2.rounds.length;
+                        for (var i = 0; i < roundsLength; i++) {
+                            var currentRound = _this2.rounds[i];
+                            if (currentRound.id == round.id) {
+                                _this2.rounds.splice(i, 1);
+                                break;
+                            }
+                        }
+                        _this2.renumberRounds(); // makes sure local round numbers are ok
+                        _this2.activateRound(null); // set nothing to activeRound
+                    }
+                });
+            }
+        },
+
+
+        // updates rounds round_number properties to match the array order
         renumberRounds: function renumberRounds() {
             var roundsLength = this.rounds.length;
             for (var i = 0; i < roundsLength; i++) {
                 var round = this.rounds[i];
                 round.round_number = i + 1;
             }
+        },
+
+
+        // send an array of round_id => round_number to server
+        reorderRounds: function reorderRounds() {
+            var roundNumbers = {};
+            var roundsLength = this.rounds.length;
+            for (var i = 0; i < roundsLength; i++) {
+                var round = this.rounds[i];
+                roundNumbers[round.id] = round.round_number;
+            }
+
+            axios.put('rounds/order', {
+                rounds: roundNumbers
+            });
+        },
+
+
+        // save round to server
+        updateRound: function updateRound(round, blockContent) {
+            var _this3 = this;
+
+            var activeRound = this.activeRound;
+
+            axios.put('rounds/' + round.id, {
+                round: round,
+                blockContent: blockContent
+            }).then(function (response) {
+                // if response was ok, update the local round object to match the database response
+                if (response.status == 200) {
+                    for (var property in response.data) {
+                        activeRound[property] = response.data[property];
+                    }
+
+                    // if response includes a block, store that too, creating the block locally if needed
+                    if (typeof response.data.block !== 'undefined') {
+                        if (typeof _this3.blocks[response.data.block_id] === 'undefined') {
+                            _this3.blocks[response.data.block_id] = {
+                                id: response.data.block_id
+                            };
+                        }
+                        // update the local block content to match the server response
+                        _this3.blocks[response.data.block_id].content = response.data.block.content;
+                    }
+                }
+            });
         }
     }
 });
@@ -73014,15 +73107,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-xs-3"
-  }, [_c('transition', {
+  return _c('div', [_c('transition', {
     attrs: {
       "name": "fade",
       "mode": "out-in"
@@ -73033,28 +73118,53 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-show",
       value: (_vm.editView == 'round'),
       expression: "editView == 'round'"
-    }]
-  }, [_c('rounds-list', {
+    }],
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('sortable-list', {
     attrs: {
-      "rounds": _vm.rounds
+      "items": _vm.rounds,
+      "number-prop": "round_number",
+      "title-prop": "title",
+      "title": "Rounds",
+      "add-caption": "Add Round"
     },
     on: {
-      "activate-round": _vm.activateRound,
-      "renumber-rounds": _vm.renumberRounds
+      "activate-item": _vm.activateRound,
+      "add-item": _vm.addRound,
+      "reorder-list": _vm.reorderRounds
     }
   }), _vm._v(" "), _c('div', {
     staticClass: "text-center form-group"
   }, [_c('button', {
     staticClass: "btn btn-lg",
     class: {
-      disabled: _vm.activeRoundIndex == null
+      disabled: _vm.activeRound.id === null
     },
     on: {
       "click": function($event) {
         _vm.editView = 'pages'
       }
     }
-  }, [_vm._v("\n                                Edit pages (" + _vm._s(_vm.totalPages) + ")\n                            ")])])], 1)]), _vm._v(" "), _c('transition', {
+  }, [_vm._v("\n                                    Edit pages (" + _vm._s(_vm.activeRound.page_pivots.length) + ")\n                                ")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-9 form-horizontal"
+  }, [_c('round-edit', {
+    attrs: {
+      "round": _vm.activeRound,
+      "block": _vm.blocks[_vm.activeRound.block_id],
+      "can-save": _vm.activeRound.id !== null,
+      "can-delete": _vm.activeRound.id !== null && _vm.rounds.length > 1
+    },
+    on: {
+      "update-round": _vm.updateRound,
+      "delete-round": _vm.deleteRound
+    }
+  })], 1)])])])]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "fade",
       "mode": "out-in"
@@ -73075,56 +73185,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.editView = 'round'
       }
     }
-  }, [_vm._v("\n                                Back to Rounds list\n                            ")])]), _vm._v(" "), _c('page-list', {
+  }, [_vm._v("\n                        Back to Rounds list\n                    ")])]), _vm._v(" "), _c('pages-setup', {
     attrs: {
-      "round": _vm.rounds[_vm.activeRoundIndex],
+      "round": _vm.activeRound,
+      "pages": _vm.activeRoundPages,
       "blocks": _vm.blocks,
-      "pages": _vm.pages,
       "skills": _vm.skills
-    },
-    on: {
-      "activate-page": _vm.activatePage
     }
-  })], 1)])], 1), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-9 form-horizontal"
-  }, [_c('transition', {
-    attrs: {
-      "name": "fade",
-      "mode": "out-in"
-    }
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.editView == 'round'),
-      expression: "editView == 'round'"
-    }]
-  }, [_c('round-edit', {
-    attrs: {
-      "rounds": _vm.rounds,
-      "blocks": _vm.blocks,
-      "index": _vm.activeRoundIndex
-    },
-    on: {
-      "renumber-rounds": _vm.renumberRounds
-    }
-  })], 1)]), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade",
-      "mode": "out-in"
-    }
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.editView == 'pages'),
-      expression: "editView == 'pages'"
-    }]
-  }, [_c('page-edit', {
-    attrs: {
-      "page": _vm.pages[_vm.activePageId]
-    }
-  })], 1)])], 1)])])])
+  })], 1)])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -75015,477 +75083,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 
 
 /***/ }),
-/* 276 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(278),
-  /* template */
-  __webpack_require__(277),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/rounds/RoundAdd.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] RoundAdd.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9ae8c608", Component.options)
-  } else {
-    hotAPI.reload("data-v-9ae8c608", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 277 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "form-inline"
-  }, [_c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.addRound),
-      expression: "!addRound"
-    }],
-    staticClass: "btn btn-lg",
-    on: {
-      "click": _vm.toggleAddRound
-    }
-  }, [_vm._v("\n        Add round\n    ")]), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.addRound),
-      expression: "addRound"
-    }],
-    staticClass: "form-group"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.addRoundName),
-      expression: "addRoundName"
-    }],
-    staticClass: "form-control input-lg",
-    attrs: {
-      "id": "addRoundInput",
-      "type": "text",
-      "placeholder": "New round name..."
-    },
-    domProps: {
-      "value": (_vm.addRoundName)
-    },
-    on: {
-      "keyup": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.storeRound(_vm.addRoundName)
-      },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.addRoundName = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.addRound),
-      expression: "addRound"
-    }],
-    staticClass: "btn btn-lg",
-    on: {
-      "click": _vm.toggleAddRound
-    }
-  }, [_vm._v("\n        Cancel\n    ")]), _vm._v(" "), _c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.addRound),
-      expression: "addRound"
-    }],
-    staticClass: "btn btn-lg",
-    on: {
-      "click": function($event) {
-        _vm.storeRound(_vm.addRoundName)
-      }
-    }
-  }, [_vm._v("\n        " + _vm._s(_vm.saveCaption) + "\n    ")])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-9ae8c608", module.exports)
-  }
-}
-
-/***/ }),
-/* 278 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            addRound: false,
-            addRoundName: '',
-            saveCaption: 'Save'
-        };
-    },
-
-
-    props: ['rounds'],
-
-    methods: {
-        // posts the round name to the server to create a new round
-        storeRound: function storeRound(round) {
-            var _this = this;
-
-            var self = this;
-            this.saveCaption = 'Saving...';
-
-            axios.post('rounds', {
-                title: this.addRoundName
-            }).then(function (response) {
-                // put the added round at the end of the rounds array
-                if (response.status == 200) {
-                    _this.saveCaption = 'Saved!';
-                    _this.rounds.push(response.data);
-                } else {
-                    _this.saveCaption = 'Failed!';
-                }
-
-                _this.addRoundName = '';
-                setTimeout(function () {
-                    self.saveCaption = 'Save';
-                    self.addRound = false;
-                }, 500);
-            });
-        },
-
-
-        // toggles whether the add round form is being shown
-        toggleAddRound: function toggleAddRound() {
-            this.addRound = !this.addRound;
-            if (this.addRound) {
-                Vue.nextTick(function () {
-                    document.getElementById('addRoundInput').focus();
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
+/* 276 */,
+/* 277 */,
+/* 278 */,
 /* 279 */,
 /* 280 */,
 /* 281 */,
-/* 282 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(283),
-  /* template */
-  __webpack_require__(284),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/rounds/RoundsList.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] RoundsList.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1749a928", Component.options)
-  } else {
-    hotAPI.reload("data-v-1749a928", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 283 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            activeIndex: null, // index of the active round
-            orderRounds: false,
-            saveCaption: 'Save'
-        };
-    },
-
-
-    props: ['rounds'],
-
-    methods: {
-        // set active index on click of round, emit event to other components
-        activateRound: function activateRound(index) {
-            if (!this.orderRounds) {
-                this.activeIndex = index;
-                this.$emit('activate-round', index);
-            }
-        },
-
-
-        // returns rounds to order based on round_number i.e. cancels reordering
-        cancelRoundOrder: function cancelRoundOrder() {
-            this.rounds.sort(function (a, b) {
-                return a.round_number - b.round_number;
-            });
-            this.orderRounds = false;
-        },
-
-
-        // turns reordering mode on - makes it impossible to edit the 'active' round
-        reorder: function reorder() {
-            this.activateRound(null);
-            this.orderRounds = true;
-        },
-
-
-        // send the new round_id => round_numbers to the server
-        saveRoundOrder: function saveRoundOrder() {
-            var _this = this;
-
-            this.saveCaption = 'Saving...';
-            var self = this;
-
-            // object to store new round_id => round_number details
-            var newRounds = {};
-
-            var roundsLength = this.rounds.length;
-            for (var i = 0; i < roundsLength; i++) {
-                var round = this.rounds[i];
-                // update the round order
-                round.round_number = i + 1;
-                newRounds[round.id] = round.round_number;
-            }
-
-            // send the round_id => round_number array to server
-            axios.put('rounds/order', {
-                rounds: newRounds
-            }).then(function (response) {
-                if (response.status == 200) {
-                    _this.saveCaption = 'Saved!';
-                    setTimeout(function () {
-                        self.orderRounds = false;
-                        self.saveCaption = 'Save';
-                    }, 500);
-                } else {
-                    _this.saveCaption = 'Failed!';
-                    setTimeout(function () {
-                        self.orderRounds = false;
-                        self.saveCaption = 'Save';
-                    }, 2000);
-                }
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 284 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('h4', [_vm._v("Rounds")]), _vm._v(" "), _c('div', {
-    staticClass: "list-group"
-  }, [_c('draggable', {
-    staticClass: "dragArea",
-    attrs: {
-      "list": _vm.rounds,
-      "options": {
-        handle: '.glyphicon'
-      }
-    }
-  }, _vm._l((_vm.rounds), function(round, index) {
-    return _c('div', {
-      staticClass: "list-group-item",
-      class: {
-        active: index == _vm.activeIndex
-      },
-      attrs: {
-        "role": "button"
-      },
-      on: {
-        "click": function($event) {
-          _vm.activateRound(index)
-        }
-      }
-    }, [_c('span', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (_vm.orderRounds),
-        expression: "orderRounds"
-      }],
-      staticClass: "glyphicon glyphicon-move"
-    }), _vm._v("\n                " + _vm._s(round.round_number) + ": " + _vm._s(round.title) + "\n\n            ")])
-  }))], 1), _vm._v(" "), _c('div', {
-    staticClass: "text-center form-group"
-  }, [_c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.orderRounds),
-      expression: "!orderRounds"
-    }],
-    staticClass: "btn btn-lg",
-    on: {
-      "click": _vm.reorder
-    }
-  }, [_vm._v("\n            Re-order\n        ")]), _vm._v(" "), _c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.orderRounds),
-      expression: "orderRounds"
-    }],
-    staticClass: "btn btn-lg",
-    on: {
-      "click": _vm.saveRoundOrder
-    }
-  }, [_vm._v("\n            " + _vm._s(_vm.saveCaption) + "\n        ")]), _vm._v(" "), _c('button', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.orderRounds),
-      expression: "orderRounds"
-    }],
-    staticClass: "btn btn-lg",
-    on: {
-      "click": _vm.cancelRoundOrder
-    }
-  }, [_vm._v("\n            Cancel\n        ")])]), _vm._v(" "), _c('div', {
-    staticClass: "text-center form-group"
-  }, [_c('round-add', {
-    attrs: {
-      "rounds": _vm.rounds
-    }
-  })], 1)])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1749a928", module.exports)
-  }
-}
-
-/***/ }),
+/* 282 */,
+/* 283 */,
+/* 284 */,
 /* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -75617,94 +75223,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var defaultRound = {
+    title: '',
+    open_date: '',
+    close_date: '',
+    keep_visible: false,
+    staff_rate: false,
+    student_rate: false,
+    format: 'linear'
+};
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editBlockContent: '',
-            editOpenDate: '',
-            editCloseDate: '',
             editRound: {}
         };
     },
 
 
-    props: ['index', 'blocks', 'rounds'],
+    props: ['block', 'canDelete', 'canSave', 'round'],
 
     watch: {
-        // when index changes, populate the editRound object as required
-        index: function index(_index) {
-            if (_index !== null) {
-                this.editRound = JSON.parse(JSON.stringify(this.rounds[_index]));
+        // clone block into an editable object when it changes
+        block: function block(_block) {
+            this.editBlockContent = _block ? JSON.parse(JSON.stringify(_block.content)) : '';
+        },
 
-                // get dates in correct format for HTML5 form
-                this.editOpenDate = this.editRound.open_date ? this.editRound.open_date.replace(" ", "T") : '';
-                this.editCloseDate = this.editRound.close_date ? this.editRound.close_date.replace(" ", "T") : '';
 
-                // get the block content so it can be edited
-                var blockId = this.editRound.block_id;
-                this.editBlockContent = blockId ? JSON.parse(JSON.stringify(this.blocks[blockId].content)) : '';
-            } else {
-                this.resetEditRound();
+        // clone round into an editable object when it changes
+        round: function round(_round) {
+            this.editRound = _round ? JSON.parse(JSON.stringify(_round)) : defaultRound;
+            if (_round) {
+                // format dates appropriately for HTML5 datetime-local input
+                this.editRound.open_date = this.editRound.open_date ? this.editRound.open_date.replace(" ", "T") : '';
+                this.editRound.close_date = this.editRound.close_date ? this.editRound.close_date.replace(" ", "T") : '';
             }
         }
     },
 
     methods: {
-        // send a delete request to the server and if it works, update local rounds
+        // emit an event to delete the round
         deleteRound: function deleteRound() {
-            var _this = this;
-
-            if (this.rounds.length > 1 && confirm("Are you sure?")) {
-                axios.delete('rounds/' + this.editRound.id).then(function (response) {
-                    if (response.status == 204) {
-                        _this.rounds.splice(_this.index, 1);
-                        _this.$emit('renumber-rounds');
-                        _this.resetEditRound();
-                    }
-                });
-            }
+            this.$emit('delete-round', this.editRound);
         },
 
 
-        // clear all of the variables used to store the edit state of a round
-        resetEditRound: function resetEditRound() {
-            this.editBlockContent = '';
-            this.editOpenDate = '';
-            this.editCloseDate = '';
-            this.editRound = {};
-        },
-
-
-        // post the updated round stuff to the server and update the local rounds / blocks objects
-        saveRound: function saveRound() {
-            var _this2 = this;
-
+        // emit an event containing the updated round & block content
+        updateRound: function updateRound() {
             // put the dates back in the right format
-            this.editRound.open_date = this.editOpenDate == '' ? null : this.editOpenDate.replace("T", " ");
-            this.editRound.close_date = this.editCloseDate == '' ? null : this.editCloseDate.replace("T", " ");
+            this.editRound.open_date = this.editRound.open_date == '' ? null : this.editRound.open_date.replace("T", " ");
+            this.editRound.close_date = this.editRound.close_date == '' ? null : this.editRound.close_date.replace("T", " ");
 
-            axios.put('rounds/' + this.editRound.id, {
-                round: this.editRound,
-                blockContent: this.editBlockContent
-            }).then(function (response) {
-                // if response was ok, update the local round object to match the database response
-                if (response.status == 200) {
-                    for (var property in response.data) {
-                        _this2.rounds[_this2.index][property] = response.data[property];
-                    }
-
-                    // if response includes a block, store that too, creating the block locally if needed
-                    if (typeof response.data.block !== 'undefined') {
-                        if (typeof _this2.blocks[response.data.block_id] === 'undefined') {
-                            _this2.blocks[response.data.block_id] = {
-                                id: response.data.block_id
-                            };
-                        }
-                        // update the local block content to match the server response
-                        _this2.blocks[response.data.block_id].content = response.data.block.content;
-                    }
-                }
-            });
+            this.$emit('update-round', this.editRound, this.editBlockContent);
         }
     }
 });
@@ -75801,8 +75372,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.editOpenDate),
-      expression: "editOpenDate"
+      value: (_vm.editRound.open_date),
+      expression: "editRound.open_date"
     }],
     staticClass: "form-control",
     attrs: {
@@ -75810,12 +75381,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "datetime-local"
     },
     domProps: {
-      "value": (_vm.editOpenDate)
+      "value": (_vm.editRound.open_date)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.editOpenDate = $event.target.value
+        _vm.editRound.open_date = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('label', {
@@ -75829,8 +75400,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.editCloseDate),
-      expression: "editCloseDate"
+      value: (_vm.editRound.close_date),
+      expression: "editRound.close_date"
     }],
     staticClass: "form-control",
     attrs: {
@@ -75838,12 +75409,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "datetime-local"
     },
     domProps: {
-      "value": (_vm.editCloseDate)
+      "value": (_vm.editRound.close_date)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.editCloseDate = $event.target.value
+        _vm.editRound.close_date = $event.target.value
       }
     }
   })])]), _vm._v(" "), _c('div', {
@@ -75989,15 +75560,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "btn btn-lg",
     class: {
-      disabled: _vm.index === null
+      disabled: !_vm.canSave
     },
     on: {
-      "click": _vm.saveRound
+      "click": _vm.updateRound
     }
   }, [_vm._v("Save")]), _vm._v(" "), _c('button', {
     staticClass: "btn",
     class: {
-      disabled: _vm.index === null || _vm.rounds.length == 1
+      disabled: !_vm.canDelete
     },
     on: {
       "click": _vm.deleteRound
@@ -76744,6 +76315,399 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-7bf24934", module.exports)
+  }
+}
+
+/***/ }),
+/* 306 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(307),
+  /* template */
+  __webpack_require__(308),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/lists/SortableList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] SortableList.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-475107e1", Component.options)
+  } else {
+    hotAPI.reload("data-v-475107e1", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 307 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            activeIndex: null,
+            addItem: false,
+            addItemName: '',
+            orderItems: false
+        };
+    },
+
+
+    props: ['addCaption', 'items', 'numberProp', 'titleProp', 'title'],
+
+    methods: {
+        // set active index on click of item, emit event to other components
+        activateItem: function activateItem(index) {
+            if (!this.orderItems) {
+                this.activeIndex = index;
+                this.$emit('activate-item', this.items[index]);
+            }
+        },
+
+
+        // returns items to order based on numberProp i.e. cancels reordering
+        cancelItemsOrder: function cancelItemsOrder() {
+            var self = this;
+            this.items.sort(function (a, b) {
+                return a[self.numberProp] - b[self.numberProp];
+            });
+            this.orderItems = false;
+        },
+
+
+        // turns reordering mode on - makes it impossible to edit the 'active' item
+        reorder: function reorder() {
+            this.activateItem(null);
+            this.orderItems = true;
+        },
+
+
+        // send the new round_id => round_numbers to the server
+        saveItemsOrder: function saveItemsOrder() {
+            var self = this;
+
+            var itemsLength = this.items.length;
+            for (var i = 0; i < itemsLength; i++) {
+                var item = this.items[i];
+                item[this.numberProp] = i + 1;
+            }
+
+            this.orderItems = false;
+            this.$emit('reorder-list');
+        },
+        storeItem: function storeItem(itemName) {
+            this.$emit('add-item', itemName);
+            this.addItemName = '';
+            this.addItem = false;
+        },
+        toggleAddItem: function toggleAddItem() {
+            this.addItem = !this.addItem;
+            if (this.addItem) {
+                Vue.nextTick(function () {
+                    document.getElementById('addItemInput').focus();
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('h4', [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('div', {
+    staticClass: "list-group"
+  }, [_c('draggable', {
+    staticClass: "dragArea",
+    attrs: {
+      "list": _vm.items,
+      "options": {
+        handle: '.glyphicon'
+      }
+    }
+  }, _vm._l((_vm.items), function(item, index) {
+    return _c('div', {
+      staticClass: "list-group-item",
+      class: {
+        active: index == _vm.activeIndex
+      },
+      attrs: {
+        "role": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.activateItem(index)
+        }
+      }
+    }, [_c('span', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.orderItems),
+        expression: "orderItems"
+      }],
+      staticClass: "glyphicon glyphicon-move"
+    }), _vm._v("\n                " + _vm._s(item[_vm.numberProp]) + ": " + _vm._s(item[_vm.titleProp]) + "\n            ")])
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "text-center form-group"
+  }, [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.orderItems),
+      expression: "!orderItems"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.reorder
+    }
+  }, [_vm._v("\n            Re-order\n        ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.orderItems),
+      expression: "orderItems"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.saveItemsOrder
+    }
+  }, [_vm._v("\n            Save\n        ")]), _vm._v(" "), _c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.orderItems),
+      expression: "orderItems"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.cancelItemsOrder
+    }
+  }, [_vm._v("\n            Cancel\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "text-center form-group"
+  }, [_c('button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.addItem),
+      expression: "!addItem"
+    }],
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.toggleAddItem
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.addCaption) + "\n        ")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.addItem),
+      expression: "addItem"
+    }]
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.addItemName),
+      expression: "addItemName"
+    }],
+    staticClass: "form-control input-lg",
+    attrs: {
+      "id": "addItemInput",
+      "type": "text",
+      "placeholder": _vm.addCaption
+    },
+    domProps: {
+      "value": (_vm.addItemName)
+    },
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.storeItem(_vm.addItemName)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.addItemName = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-lg",
+    on: {
+      "click": _vm.toggleAddItem
+    }
+  }, [_vm._v("\n                Cancel\n            ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-lg",
+    on: {
+      "click": function($event) {
+        _vm.storeItem(_vm.addItemName)
+      }
+    }
+  }, [_vm._v("\n                Save\n            ")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-475107e1", module.exports)
+  }
+}
+
+/***/ }),
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(313),
+  /* template */
+  __webpack_require__(314),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/scscs/Sites/sci-reflect/resources/assets/js/components/pages/PagesSetup.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PagesSetup.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-52f59116", Component.options)
+  } else {
+    hotAPI.reload("data-v-52f59116", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 313 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    }
+});
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("a div")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-52f59116", module.exports)
   }
 }
 

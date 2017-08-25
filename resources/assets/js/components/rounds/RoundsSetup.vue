@@ -1,83 +1,92 @@
 <template>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-xs-3">
+    <div>
+        <!-- Round editing view -->
+        <transition name="fade" mode="out-in">
+            <div class="panel panel-default" v-show="editView == 'round'">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <!-- Rounds list -->
+                            <sortable-list :items="rounds"
+                                           number-prop="round_number"
+                                           title-prop="title"
+                                           title="Rounds"
+                                           add-caption="Add Round"
+                                           v-on:activate-item="activateRound"
+                                           v-on:add-item="addRound"
+                                           v-on:reorder-list="reorderRounds">
+                            </sortable-list>
 
-                    <!-- Stuff only visible when editView == 'round' i.e. editing rounds general settings -->
-                    <transition name="fade" mode="out-in">
-                        <div v-show="editView == 'round'">
-
-                            <!-- List of rounds, select active round, add rounds, change order -->
-                            <rounds-list :rounds="rounds"
-                                         v-on:activate-round="activateRound"
-                                         v-on:renumber-rounds="renumberRounds">
-                            </rounds-list>
-
-                            <!-- Edit pages toggle button, changes editView -->
+                            <!-- Edit pages toggle button -->
                             <div class="text-center form-group">
                                 <button class="btn btn-lg" 
-                                        :class="{ disabled: activeRoundIndex == null }"
+                                        :class="{ disabled: activeRound.id === null }"
                                         v-on:click="editView = 'pages'">
-                                    Edit pages ({{ totalPages }})
+                                    Edit pages ({{ activeRound.page_pivots.length }})
                                 </button>
                             </div>
-
                         </div>
-                    </transition>
 
-                    <!-- Stuff only visible when editing round's pages -->
-                    <transition name="fade" mode="out-in">
-                        <div v-show="editView == 'pages'">
-                            <div class="text-center form-group">
-                                <button class="btn btn-lg"
-                                         v-on:click="editView = 'round'">
-                                    Back to Rounds list
-                                </button>
-                            </div>
-
-                            <page-list :round="rounds[activeRoundIndex]"
-                                       :blocks="blocks"
-                                       :pages="pages"
-                                       :skills="skills"
-                                       v-on:activate-page="activatePage">
-                            </page-list>
-                        </div>
-                    </transition>
-
-                </div>
-
-                <div class="col-xs-9 form-horizontal">
-                    <transition name="fade" mode="out-in">
-                        <div v-show="editView == 'round'">
-                            <round-edit :rounds="rounds" 
-                                        :blocks="blocks" 
-                                        :index="activeRoundIndex"
-                                        v-on:renumber-rounds="renumberRounds">
+                        <!-- Round edit panel -->
+                        <div class="col-xs-9 form-horizontal">
+                            <round-edit :round="activeRound"
+                                        :block="blocks[activeRound.block_id]"
+                                        :can-save="activeRound.id !== null"
+                                        :can-delete="activeRound.id !== null && rounds.length > 1"
+                                        v-on:update-round="updateRound"
+                                        v-on:delete-round="deleteRound">
                             </round-edit>
                         </div>
-                    </transition>
-
-                    <transition name="fade" mode="out-in">
-                        <div v-show="editView == 'pages'">
-                            <page-edit :page="pages[activePageId]"></page-edit>
-                        </div>
-                    </transition>
-
+                    </div>
                 </div>
             </div>
-        </div>
+        </transition>
+
+        <!-- Page editing view -->
+        <transition name="fade" mode="out-in">
+            <div v-show="editView == 'pages'">
+                <div class="text-center form-group">
+                    <button class="btn btn-lg" v-on:click="editView = 'round'">
+                        Back to Rounds list
+                    </button>
+                </div>
+
+                <pages-setup :round="activeRound"
+                             :pages="activeRoundPages"
+                             :blocks="blocks"
+                             :skills="skills">
+                </pages-setup>
+
+<!--
+                <page-list :round="activeRound"
+                           :blocks="blocks"
+                           :pages="pages"
+                           :skills="skills"
+                           v-on:activate-page="activatePage">
+                </page-list>
+                <page-edit :page="pages[activePageId]"></page-edit>
+-->
+            </div>
+        </transition>
     </div>
 </template>
 
 <script>
     import 'axios';
 
+    const defaultRound = {
+        id: null,
+        title: '',
+        block_id: null,
+        page_pivots: []
+    };
+
     export default {
         data () {
             return {
                 activePageId: null,
-                activeRoundIndex: null,
+                activeRound: defaultRound,
+                activeRoundPages: [],
                 editView: 'round'
             }
         },
@@ -89,36 +98,109 @@
             'skills'
         ],
 
-        computed: {
-            // calculate the total pages within the current active round
-            totalPages() {
-                if (this.activeRoundIndex !== null && typeof this.rounds[this.activeRoundIndex] !== 'undefined'
-                    && typeof this.rounds[this.activeRoundIndex].page_pivots !== 'undefined') {
-                    return this.rounds[this.activeRoundIndex].page_pivots.length;
-                } else {
-                    return 0;
+        watch: {
+            // update activeRoundPages whenever activeRound is changed
+            activeRound(activeRound) {
+                this.activeRoundPages = {};
+                console.log("active round title is " + activeRound.title);
+                console.log(activeRound);
+                let pagePivotsLength = activeRound.page_pivots.length;
+                for (let i = 0; i < pagePivotsLength; i++) {
+                    let pagePivot = activeRound.page_pivots[i];
+                    this.activeRoundPages[i] = JSON.parse(JSON.stringify(this.pages[pagePivot.page_id]));
+                    this.activeRoundPages[i].page_number = pagePivot.page_number;
                 }
+                console.log(this.activeRoundPages);
             }
         },
 
         methods: {
-            // set the active page
-            activatePage(id) {
-                this.activePageId = id;
+            // sets activeRound to either an actual round or a placeholder
+            activateRound(round) {
+                this.activeRound = (round) ? round : defaultRound;
             },
 
-            // deal with the rounds list emitted event
-            activateRound(index) {
-                this.activeRoundIndex = index;
+            // post the roundName to the server, update the local rounds array
+            addRound(roundName) {
+                axios.post('rounds', {
+                    title: roundName
+                }).then(response => {
+                    if (response.status == 200) {
+                        this.rounds.push(response.data);
+                    }
+                });
             },
 
-            // change rounds' round_number to match the order of the array
+            // deletes the round, updates the local rounds array
+            deleteRound(round) {
+                if (this.rounds.length > 1 && confirm("Are you sure?")) {
+                    axios.delete('rounds/' + round.id)
+                    .then(response => {
+                        if (response.status == 204) {
+                            let roundsLength = this.rounds.length;
+                            for (let i = 0; i < roundsLength; i++) {
+                                let currentRound = this.rounds[i];
+                                if (currentRound.id == round.id) {
+                                    this.rounds.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            this.renumberRounds();      // makes sure local round numbers are ok
+                            this.activateRound(null);   // set nothing to activeRound
+                        }
+                    });
+                }
+            },
+
+            // updates rounds round_number properties to match the array order
             renumberRounds() {
                 let roundsLength = this.rounds.length;
                 for (let i = 0; i < roundsLength; i++) {
                     let round = this.rounds[i];
                     round.round_number = i + 1;
                 }
+            },
+
+            // send an array of round_id => round_number to server
+            reorderRounds() {
+                let roundNumbers = {};
+                let roundsLength = this.rounds.length;
+                for (let i = 0; i < roundsLength; i++) {
+                    let round = this.rounds[i];
+                    roundNumbers[round.id] = round.round_number;
+                }
+
+                axios.put('rounds/order', {
+                    rounds: roundNumbers
+                });
+            },
+
+            // save round to server
+            updateRound(round, blockContent) {
+                let activeRound = this.activeRound;
+
+                axios.put('rounds/' + round.id, {
+                    round: round,
+                    blockContent: blockContent
+                }).then(response => {
+                    // if response was ok, update the local round object to match the database response
+                    if (response.status == 200) {
+                        for (var property in response.data) {
+                            activeRound[property] = response.data[property];
+                        }
+
+                        // if response includes a block, store that too, creating the block locally if needed
+                        if (typeof response.data.block !== 'undefined') {
+                            if (typeof this.blocks[response.data.block_id] === 'undefined') {
+                                this.blocks[response.data.block_id] = {
+                                    id: response.data.block_id
+                                };
+                            }
+                            // update the local block content to match the server response
+                            this.blocks[response.data.block_id].content = response.data.block.content;
+                        }
+                    }
+                });
             }
         }
     }
