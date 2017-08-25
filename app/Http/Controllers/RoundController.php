@@ -75,7 +75,7 @@ class RoundController extends Controller
         $activity->skills->load([
             'indicators'
         ]);
-        $skills = $activity->skills->sortBy('number')->values()->toJson();
+        $skills = $activity->skills->sortBy('number')->keyBy('id')->toJson();
 
         // get categories
         $categories = $activity->categories->sortBy('name')->sortBy('number')->values()->toJson();

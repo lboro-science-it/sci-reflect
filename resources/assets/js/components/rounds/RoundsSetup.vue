@@ -57,15 +57,6 @@
                              :skills="skills">
                 </pages-setup>
 
-<!--
-                <page-list :round="activeRound"
-                           :blocks="blocks"
-                           :pages="pages"
-                           :skills="skills"
-                           v-on:activate-page="activatePage">
-                </page-list>
-                <page-edit :page="pages[activePageId]"></page-edit>
--->
             </div>
         </transition>
     </div>
@@ -84,7 +75,6 @@
     export default {
         data () {
             return {
-                activePageId: null,
                 activeRound: defaultRound,
                 activeRoundPages: [],
                 editView: 'round'
@@ -101,16 +91,13 @@
         watch: {
             // update activeRoundPages whenever activeRound is changed
             activeRound(activeRound) {
-                this.activeRoundPages = {};
-                console.log("active round title is " + activeRound.title);
-                console.log(activeRound);
+                this.activeRoundPages = [];
                 let pagePivotsLength = activeRound.page_pivots.length;
                 for (let i = 0; i < pagePivotsLength; i++) {
                     let pagePivot = activeRound.page_pivots[i];
                     this.activeRoundPages[i] = JSON.parse(JSON.stringify(this.pages[pagePivot.page_id]));
                     this.activeRoundPages[i].page_number = pagePivot.page_number;
                 }
-                console.log(this.activeRoundPages);
             }
         },
 

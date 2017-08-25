@@ -72953,15 +72953,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -72975,7 +72966,6 @@ var defaultRound = {
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            activePageId: null,
             activeRound: defaultRound,
             activeRoundPages: [],
             editView: 'round'
@@ -72988,16 +72978,13 @@ var defaultRound = {
     watch: {
         // update activeRoundPages whenever activeRound is changed
         activeRound: function activeRound(_activeRound) {
-            this.activeRoundPages = {};
-            console.log("active round title is " + _activeRound.title);
-            console.log(_activeRound);
+            this.activeRoundPages = [];
             var pagePivotsLength = _activeRound.page_pivots.length;
             for (var i = 0; i < pagePivotsLength; i++) {
                 var pagePivot = _activeRound.page_pivots[i];
                 this.activeRoundPages[i] = JSON.parse(JSON.stringify(this.pages[pagePivot.page_id]));
                 this.activeRoundPages[i].page_number = pagePivot.page_number;
             }
-            console.log(this.activeRoundPages);
         }
     },
 
@@ -73151,7 +73138,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.editView = 'pages'
       }
     }
-  }, [_vm._v("\n                                    Edit pages (" + _vm._s(_vm.activeRound.page_pivots.length) + ")\n                                ")])])], 1), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                                Edit pages (" + _vm._s(_vm.activeRound.page_pivots.length) + ")\n                            ")])])], 1), _vm._v(" "), _c('div', {
     staticClass: "col-xs-9 form-horizontal"
   }, [_c('round-edit', {
     attrs: {
@@ -73185,7 +73172,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.editView = 'round'
       }
     }
-  }, [_vm._v("\n                        Back to Rounds list\n                    ")])]), _vm._v(" "), _c('pages-setup', {
+  }, [_vm._v("\n                    Back to Rounds list\n                ")])]), _vm._v(" "), _c('pages-setup', {
     attrs: {
       "round": _vm.activeRound,
       "pages": _vm.activeRoundPages,
@@ -76687,12 +76674,177 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
+
+var defaultPage = {
+    id: null,
+    title: '',
+    block_pivots: [],
+    skill_pivots: []
+};
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return {};
+        return {
+            activePage: defaultPage,
+            activePageBlocks: [],
+            activePageSkills: []
+        };
+    },
+
+
+    props: ['round', 'pages', 'blocks', 'skills'],
+
+    watch: {
+        // update activePageBlocks/Skills whenever activePage changes
+        activePage: function activePage(_activePage) {
+            // get the page's blocks from the global blocks object
+            this.activePageBlocks = {};
+            var blockPivotsLength = _activePage.block_pivots.length;
+            for (var i = 0; i < blockPivotsLength; i++) {
+                var blockPivot = _activePage.block_pivots[i];
+                this.activePageBlocks[i] = JSON.parse(JSON.stringify(this.blocks[blockPivot.block_id]));
+                this.activePageBlocks[i].position = blockPivot.position;
+            }
+
+            // get the page's skills from the global skills object
+            this.activePageSkills = {};
+            var skillPivotsLength = _activePage.skill_pivots.length;
+            for (var _i = 0; _i < skillPivotsLength; _i++) {
+                var skillPivot = _activePage.skill_pivots[_i];
+                this.activePageSkills[_i] = JSON.parse(JSON.stringify(this.skills[skillPivot.skill_id]));
+                this.activePageSkills[_i].position = skillPivot.position;
+            }
+        }
+    },
+
+    methods: {
+        // sets activePage to either an actual page or a placeholder
+        activatePage: function activatePage(page) {
+            this.activePage = page ? page : defaultPage;
+        },
+
+
+        // post the pageName to the server, update the local pages array
+        addPage: function addPage(pageName) {
+            var _this = this;
+
+            axios.post('pages', {
+                page: {
+                    title: pageName
+                },
+                roundId: this.round.id
+            }).then(function (response) {
+                if (response.status == 200) {
+                    // todo: create page_pivot on active round if specified
+                    _this.pages.push(response.data.page);
+                    _this.round.page_pivots.push(response.data.page_pivots);
+                }
+            });
+        },
+
+
+        // deletes the page, updates the local pages array
+        deletePage: function deletePage(page) {
+            var _this2 = this;
+
+            if (this.pages.length > 1 && confirm("Are you sure?")) {
+                axios.delete('pages/' + page.id).then(function (response) {
+                    if (response.status == 204) {
+                        var pagesLength = _this2.pages.length;
+                        for (var i = 0; i < pagesLength; i++) {
+                            var currentPage = _this2.pages[i];
+                            if (currentPage.id == page.id) {
+                                _this2.pages.splice(i, 1);
+                                break;
+                            }
+                        }
+                        _this2.renumberPages(); // makes sure local page numbers are ok
+                        _this2.activatePage(null); // set nothing to activePage
+                    }
+                });
+            }
+        },
+
+
+        // updates pages page_number properties to match the array order
+        renumberPages: function renumberPages() {
+            var pagesLength = this.pages.length;
+            for (var i = 0; i < pagesLength; i++) {
+                var page = this.pages[i];
+                page.page_number = i + 1;
+            }
+        },
+
+
+        // send an array of page_id => page_number to server
+        reorderPages: function reorderPages() {
+            var _this3 = this;
+
+            var pageNumbers = {};
+            var pagesLength = this.pages.length;
+            for (var i = 0; i < pagesLength; i++) {
+                var page = this.pages[i];
+                pageNumbers[page.id] = page.page_number;
+            }
+
+            axios.put('rounds/' + this.round.id + '/pages/numbers', {
+                pages: pageNumbers
+            }).then(function (response) {
+                if (response.status == 200) {
+                    // response.data contains updated page_pivots for the round
+                    _this3.round.page_pivots = response.data;
+                }
+            });
+        },
+
+
+        // save page to server
+        updatePage: function updatePage(page) {
+            var activePage = this.activePage;
+
+            axios.put('pages/' + page.id, {
+                page: page
+            }).then(function (response) {
+                // if response was ok, update the local page object to match the database response
+                if (response.status == 200) {
+                    for (var property in response.data) {
+                        activePage[property] = response.data[property];
+                    }
+                }
+            });
+        }
     }
 });
 
@@ -76701,7 +76853,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("a div")])
+  return _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-3"
+  }, [_c('sortable-list', {
+    attrs: {
+      "items": _vm.pages,
+      "number-prop": "page_number",
+      "title-prop": "title",
+      "title": _vm.round.title + '\'s Pages',
+      "add-caption": "Add Page"
+    },
+    on: {
+      "activate-item": _vm.activatePage,
+      "add-item": _vm.addPage,
+      "reorder-list": _vm.reorderPages
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-9 form-horizontal"
+  }, [_c('page-edit', {
+    attrs: {
+      "page": _vm.activePage,
+      "blocks": _vm.activePageBlocks,
+      "skills": _vm.activePageSkills,
+      "can-save": _vm.activePage.id !== null,
+      "can-delete": _vm.activePage.id !== null && _vm.pages.length > 1
+    },
+    on: {
+      "update-page": _vm.updatePage,
+      "delete-page": _vm.deletePage
+    }
+  })], 1)])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
