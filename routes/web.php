@@ -48,6 +48,7 @@ Route::prefix('a/{activity}')->group(function() {
 
         // Page routes
         Route::post('pages', 'PageController@store');
+        Route::put('pages/{pageId}', 'PageController@update');
 
         // Round routes
         Route::get('rounds', 'RoundController@index');

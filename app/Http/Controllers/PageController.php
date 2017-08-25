@@ -55,4 +55,24 @@ class PageController extends Controller
 
         return response()->json($response, 200);
     }
+
+    /**
+     * Updates page title, endpoint of save method in PageEdit.vue component
+     *
+     */ 
+    public function update(Activity $activity, $pageId, Request $request)
+    {
+        // get page from $activity to ensure it is editable
+        $page = $activity->pages()->where('id', $pageId)->first();
+
+        // eject user if page isn't in this activity because they don't have authorisation
+        if (!isset($page)) {
+            return redirect('eject');
+        }
+
+        $page->title = $request->input('title');
+        $page->save();
+
+        return response()->json($page, 200);
+    }
 }

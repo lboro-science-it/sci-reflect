@@ -76111,29 +76111,88 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return {};
+        return {
+            editPage: {}
+        };
     },
 
 
-    computed: {
-        title: function title() {
-            if (typeof this.page !== 'undefined') {
-                return this.page.title;
-            }
+    props: ['page'],
 
-            return '<No Page Set>';
+    methods: {
+        deletePage: function deletePage() {
+            console.log('deletePage method');
+        },
+
+
+        // sends a put of editPage's title to the server (for now)
+        // todo: also send the pivots of the blocks / skills
+        savePage: function savePage() {
+            var _this = this;
+
+            axios.put('pages/' + this.editPage.id, {
+                title: this.editPage.title
+            }).then(function (response) {
+                if (response.status == 200) {
+                    _this.page.title = response.data.title;
+                    console.log(_this.page.title);
+                }
+            });
         }
     },
 
-    props: ['page']
+    watch: {
+        page: function page() {
+            if (typeof this.page !== 'undefined') {
+                this.editPage = JSON.parse(JSON.stringify(this.page));
+            } else {
+                this.editPage = {
+                    title: '<No Page Set>'
+                };
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -76141,7 +76200,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("This is the page edit component. Page we would be editing is " + _vm._s(_vm.title))])
+  return _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('h4', [_vm._v("Edit Page")]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-xs-2 control-label",
+    attrs: {
+      "for": "title"
+    }
+  }, [_vm._v("Title")]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editPage.title),
+      expression: "editPage.title"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "title",
+      "type": "text",
+      "placeholder": "Title"
+    },
+    domProps: {
+      "value": (_vm.editPage.title)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editPage.title = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-xs-offset-2 col-xs-10"
+  }, [_c('button', {
+    staticClass: "btn btn-lg",
+    class: {
+      disabled: typeof _vm.page === 'undefined'
+    },
+    on: {
+      "click": _vm.savePage
+    }
+  }, [_vm._v("Save")]), _vm._v(" "), _c('button', {
+    staticClass: "btn",
+    class: {
+      disabled: typeof _vm.page === 'undefined'
+    },
+    on: {
+      "click": _vm.deletePage
+    }
+  }, [_vm._v("Delete")])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
