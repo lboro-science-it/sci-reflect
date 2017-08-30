@@ -37,6 +37,16 @@ class Page extends Model
         return $this->belongsToMany('App\Block')->withPivot('position');
     }
 
+    public function roundPivots()
+    {
+        return $this->hasMany('App\PageRound');
+    }
+
+    public function rounds()
+    {
+        return $this->belongsToMany('App\Round')->withPivot('page_number');
+    }
+
     /**
      * Model for the pivot between pages and skills. When pages are rendered
      * in activity setup, they are rendered with an array of pageSkills,

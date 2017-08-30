@@ -24,7 +24,7 @@ class RoundController extends Controller
             $round->pagePivots()->delete();
             $round->delete();
 
-            // update the remaining rounds' page numbers
+            // update the remaining rounds' round numbers
             $remainingRounds = $activity->rounds->filter(function ($round) use ($roundId) {
                 return $round->id != $roundId;
             })->sortBy('round_number');

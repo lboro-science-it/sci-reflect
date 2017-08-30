@@ -3,6 +3,7 @@
 namespace App;
 
 use DateTime;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Round extends Model
@@ -135,6 +136,23 @@ class Round extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Iterates the round's page pivots and resets the page numbers in order,
+     * so they are still 1 to n after a page has been removed.
+     */
+    public function updatePageNumbers()
+    {
+        $pagePivots = $this->pagePivots->sortBy('page_number');
+        $pageNumber = 1;
+        $cases = '';
+        foreach ($pagePivots as $pagePivot) {
+            $cases .= "when id = $pagePivot->id then $pageNumber ";
+            $pageNumber++;
+        }
+
+        DB::statement("UPDATE page_round SET page_number = (case $cases end) WHERE round_id = $this->id;");
     }
 
 }

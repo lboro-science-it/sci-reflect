@@ -11,6 +11,41 @@ use Illuminate\Http\Request;
 class PageController extends Controller
 {
     /**
+     * Delete the page with specified id, as long as the user is staff in the
+     * given $activity (Middleware ensures this is the case) and as long as
+     * the page belongs to the activity. Also deletes all relationships the
+     * page has to rounds, and updates those rounds' page_numbers.
+     * 
+     */
+    public function delete(Activity $activity, $pageId, Request $request)
+    {
+        // check the page exists in the activity
+        $page = $activity->pages()->where('id', $pageId)->first();
+
+        if (!isset($page)) {
+            // user is trying to delete another activity's page
+            return redirect('eject');
+        }
+
+        // deletes relationships to linked blocks / skills - may create orphans
+        $page->blockPivots()->delete();
+        $page->skillPivots()->delete();
+
+        // delete relationships to rounds, update page_numbers for those rounds
+        $rounds = $page->rounds()->get();
+        if ($rounds->count()) {
+            $page->roundPivots()->delete();
+            $rounds->load('pagePivots');
+            foreach ($rounds as $round) {
+                $round->updatePageNumbers();
+            }
+        }
+        $page->delete();
+
+        return response()->json(null, 204);
+    }
+
+    /**
      * Stores a new page in the database based on $request->input('page').
      * If set as $request->input('roundId'), also creates relationship to round.
      *

@@ -11,21 +11,11 @@
                 </div>
             </div>
 
-
-            <!-- Content -->
-<!--            <div class="form-group">
-                <label for="blockContent" class="col-xs-2 control-label">Content<br>(html is allowed - use wisely)</label>
-                <div class="col-xs-10">
-                    <textarea id="blockContent" class="form-control" rows="5" type="textarea" v-model="editBlockContent"></textarea>
-                </div>
-            </div>
--->
-
             <!-- Save / Delete buttons -->
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-10">
-                    <button class="btn btn-lg" v-on:click="savePage" :class="{ disabled: typeof page === 'undefined' }">Save</button>
-                    <button class="btn" v-on:click="deletePage" :class="{ disabled: typeof page === 'undefined' }">Delete</button>
+                    <button class="btn btn-lg" v-on:click="savePage" :class="{ disabled: !canSave }">Save</button>
+                    <button class="btn" v-on:click="deletePage" :class="{ disabled: !canDelete }">Delete</button>
                 </div>
             </div>
         </div>
@@ -43,12 +33,21 @@
         },
 
         props: [
+            'canDelete',
+            'canSave',
             'page'
         ],
 
         methods: {
             deletePage() {
-                console.log('deletePage method');
+                axios.delete('pages/' + this.editPage.id)
+                     .then(response => {
+                        if (response.status == 204) {
+                            // the page was deleted on the server, we need to delete it from
+                            // any local rounds' pages + from the overall pages object
+                            console.log("OK the page was deleted");
+                        }
+                     });
             },
 
             // sends a put of editPage's title to the server (for now)

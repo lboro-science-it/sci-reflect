@@ -49,6 +49,7 @@ Route::prefix('a/{activity}')->group(function() {
         // Page routes
         Route::post('pages', 'PageController@store');
         Route::put('pages/{pageId}', 'PageController@update');
+        Route::delete('pages/{pageId}', 'PageController@delete');
 
         // Round routes
         Route::get('rounds', 'RoundController@index');

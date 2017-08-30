@@ -27,12 +27,6 @@ Setup structure for {{ $activity->name }}
 
   <p>
     todo:
-    <strike>List of existing rounds</strike><br>
-    <strike>Add a round</strike><br>
-    <strike>Edit a round (title, format, number open/close date, content block, whether to keep visible, who can rate it)</strike><br>
-    <strike>Delete a round (should also unrelate all pages, delete any orphaned pages, skills etc)</strike><br>
-    <strike>Add page(s) to round</strike> - show all available pages that aren't already added, enable editing of pages, (adding skills to) etc<br>
-    <strike>Reorder pages in rounds</strike><br>
     Delete pages from rounds<br>
     Add content to pages (blocks, skills)<br>
     Reorder content in pages<br>
