@@ -11,6 +11,33 @@ use Illuminate\Http\Request;
 class PageController extends Controller
 {
     /**
+     * Create a relationship between the block with the passed ID and the page.
+     * Sets position to the last position on the page (i.e. after the page's
+     * existing content)
+     */
+    public function addBlock(Activity $activity, $pageId, Request $request) 
+    {
+        // get the page and block from the activity to ensure the auth user has auth to edit them
+        $page = $activity->pages()->where('id', $pageId)->first();
+        $block = $activity->blocks()->where('id', $request->input('blockId'))->first();
+
+        // log out the user if neither is set because it means they're up to no good
+        if (!isset($page) || !isset($block)) {
+            return redirect('eject');
+        }
+        
+        // get page's other content so we know what position to put the block in at
+        $blocks = $page->blocks()->get();
+        $skills = $page->skills()->get();
+
+        $newBlockPosition = 1 + $blocks->count() + $skills->count();
+
+        $page->blocks()->attach($block, ['position' => $newBlockPosition]);
+
+        return response()->json(['position' => $newBlockPosition], 200);
+    }
+
+    /**
      * Delete the page with specified id, as long as the user is staff in the
      * given $activity (Middleware ensures this is the case) and as long as
      * the page belongs to the activity. Also deletes all relationships the
@@ -88,6 +115,33 @@ class PageController extends Controller
         }
 
         return response()->json($response, 200);
+    }
+
+    /**
+     * Unset the pivot relationship between $pageId and the thing in the 
+     * request (block or skill)
+     */
+    public function unrelate(Activity $activity, $pageId, Request $request)
+    {
+        $page = $activity->pages()->where('id', $pageId)->first();
+        
+        if (!isset($page)) {
+            return redirect('eject');
+        }
+
+        if ($request->input('type') == 'block') {
+            $pivotToDelete = $page->blockPivots()->where('block_id', $request->input('id'))->first();
+        } else if ($request->input('type' == 'skill')) {
+            $pivotToDelete = $page->skillPivots()->where('skill_id', $request->input('id'))->first();
+        }
+
+        if (!isset($pivotToDelete)) {
+            return redirect('eject');
+        }
+
+        $pivotToDelete->delete();
+
+        return response()->json(null, 204);
     }
 
     /**

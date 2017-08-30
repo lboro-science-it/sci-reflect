@@ -50,6 +50,8 @@ Route::prefix('a/{activity}')->group(function() {
         Route::post('pages', 'PageController@store');
         Route::put('pages/{pageId}', 'PageController@update');
         Route::delete('pages/{pageId}', 'PageController@delete');
+        Route::put('pages/{pageId}/blocks', 'PageController@addBlock');
+        Route::put('pages/{pageId}/unrelate', 'PageController@unrelate');
 
         // Round routes
         Route::get('rounds', 'RoundController@index');

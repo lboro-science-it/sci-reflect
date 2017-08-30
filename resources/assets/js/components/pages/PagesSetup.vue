@@ -18,12 +18,12 @@
                 <!-- Page edit panel -->
                 <div class="col-xs-9 form-horizontal">
                     <page-edit :page="activePage"
-                               :blocks="activePageBlocks"
-                               :skills="activePageSkills"
+                               :blocks="blocks"
+                               :skills="skills"
                                :can-save="activePage.id !== null"
                                :can-delete="activePage.id !== null && pages.length > 1"
-                               v-on:update-page="updatePage"
-                               v-on:delete-page="deletePage">
+                               v-on:delete="deletePage"
+                               v-on:refresh="refreshPage">
                     </page-edit>
                 </div>
             </div>
@@ -45,9 +45,7 @@
     export default {
         data () {
             return {
-                activePage: defaultPage,
-                activePageBlocks: [],
-                activePageSkills: []
+                activePage: defaultPage
             }
         },
 
@@ -61,22 +59,28 @@
         watch: {
             // update activePageBlocks/Skills whenever activePage changes
             activePage(activePage) {
-                // get the page's blocks from the global blocks object
-                this.activePageBlocks = {};
-                let blockPivotsLength = activePage.block_pivots.length;
-                for (let i = 0; i < blockPivotsLength; i++) {
-                    let blockPivot = activePage.block_pivots[i];
-                    this.activePageBlocks[i] = JSON.parse(JSON.stringify(this.blocks[blockPivot.block_id]));
-                    this.activePageBlocks[i].position = blockPivot.position;
-                }
+                // combine page's blocks and skills into iterable content array sorted by position
+                activePage.content = activePage.block_pivots.concat(activePage.skill_pivots);
+                activePage.content.sort(function(a, b) {
+                    return a.position - b.position;
+                });
 
-                // get the page's skills from the global skills object
-                this.activePageSkills = {};
-                let skillPivotsLength = activePage.skill_pivots.length;
-                for (let i = 0; i < skillPivotsLength; i++) {
-                    let skillPivot = activePage.skill_pivots[i];
-                    this.activePageSkills[i] = JSON.parse(JSON.stringify(this.skills[skillPivot.skill_id]));
-                    this.activePageSkills[i].position = skillPivot.position;
+                // get the content of the blocks / skills from the global objects
+                let contentLength = activePage.content.length;
+                for (let i = 0; i < contentLength; i++) {
+                    let contentItem = activePage.content[i];
+    
+                    if (typeof contentItem.block_id !== 'undefined') {
+                        activePage.content[i] = JSON.parse(JSON.stringify(this.blocks[contentItem.block_id]));
+                        activePage.content[i].type = "block";
+                        activePage.content[i].id = contentItem.block_id;
+                    } else if (typeof contentItem.skill_id !== 'undefined') {
+                        activePage.content[i] = JSON.parse(JSON.stringify(this.skills[contentItem.skill_id]));
+                        activePage.content[i].type = "skill";
+                        activePage.content[i].id = contentItem.skill_id;
+                    }
+
+                    activePage.content[i].position = contentItem.position;
                 }
             }
         },
@@ -124,6 +128,11 @@
                 }
             },
 
+            // function to update the content of this.activePage
+            refreshPage() {
+                // todo
+            },
+
             // updates pages page_number properties to match the array order
             renumberPages() {
                 let pagesLength = this.pages.length;
@@ -161,23 +170,8 @@
                         break;
                     }
                 }
-            },
-
-            // save page to server
-            updatePage(page) {
-                let activePage = this.activePage;
-
-                axios.put('pages/' + page.id, {
-                    page: page
-                }).then(response => {
-                    // if response was ok, update the local page object to match the database response
-                    if (response.status == 200) {
-                        for (var property in response.data) {
-                            activePage[property] = response.data[property];
-                        }
-                    }
-                });
             }
+
         }
     }
 

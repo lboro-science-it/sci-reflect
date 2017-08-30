@@ -12,6 +12,12 @@ window.Vue = require('vue');
  * this instance.
  */
 
+Vue.component('add-block', require('./components/blocks/AddBlock.vue'));
+Vue.component('add-skill', require('./components/skills/AddSkill.vue'));
+
+Vue.component('content-block', require('./components/content/ContentBlock.vue'));
+Vue.component('content-skill', require('./components/content/ContentSkill.vue'));
+
 Vue.component('draggable', require('vuedraggable'));
 
 Vue.component('group-batch', require('./components/groups/GroupBatch.vue'));
