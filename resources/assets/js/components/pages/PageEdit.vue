@@ -73,7 +73,8 @@
                     blockId: blockId
                 }).then(response => {
                     if (response.status == 200) {
-                        // todo: replace this with telling parent about the new block
+                        // todo: replace this with telling parent about the new block, and to refresh
+
 
                         // the block was related, response.data.position tells us what position at
                         this.page.block_pivots.push({
@@ -147,12 +148,34 @@
         },
 
         watch: {
-            page() {
-                if (typeof this.page !== 'undefined') {
-                    this.editPage = JSON.parse(JSON.stringify(this.page));
-                } else {
-                    this.editPage = defaultPage;
+            // when page changes, put together its content and clone it all into editPage
+            page(page) {
+
+                // combine page's blocks and skills into iterable content array sorted by position
+                page.content = page.block_pivots.concat(page.skill_pivots);
+                page.content.sort(function(a, b) {
+                    return a.position - b.position;
+                });
+
+                // get the content of the blocks / skills from the global objects
+                let contentLength = page.content.length;
+                for (let i = 0; i < contentLength; i++) {
+                    let contentItem = page.content[i];
+    
+                    if (typeof contentItem.block_id !== 'undefined') {
+                        page.content[i] = JSON.parse(JSON.stringify(this.blocks[contentItem.block_id]));
+                        page.content[i].type = "block";
+                        page.content[i].id = contentItem.block_id;
+                    } else if (typeof contentItem.skill_id !== 'undefined') {
+                        page.content[i] = JSON.parse(JSON.stringify(this.skills[contentItem.skill_id]));
+                        page.content[i].type = "skill";
+                        page.content[i].id = contentItem.skill_id;
+                    }
+
+                    page.content[i].position = contentItem.position;
                 }
+
+                this.editPage = JSON.parse(JSON.stringify(page));
             }
         }
     }

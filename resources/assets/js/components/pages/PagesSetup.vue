@@ -22,8 +22,7 @@
                                :skills="skills"
                                :can-save="activePage.id !== null"
                                :can-delete="activePage.id !== null && pages.length > 1"
-                               v-on:delete="deletePage"
-                               v-on:refresh="refreshPage">
+                               v-on:delete="deletePage">
                     </page-edit>
                 </div>
             </div>
@@ -55,35 +54,6 @@
             'blocks',
             'skills'
         ],
-
-        watch: {
-            // update activePageBlocks/Skills whenever activePage changes
-            activePage(activePage) {
-                // combine page's blocks and skills into iterable content array sorted by position
-                activePage.content = activePage.block_pivots.concat(activePage.skill_pivots);
-                activePage.content.sort(function(a, b) {
-                    return a.position - b.position;
-                });
-
-                // get the content of the blocks / skills from the global objects
-                let contentLength = activePage.content.length;
-                for (let i = 0; i < contentLength; i++) {
-                    let contentItem = activePage.content[i];
-    
-                    if (typeof contentItem.block_id !== 'undefined') {
-                        activePage.content[i] = JSON.parse(JSON.stringify(this.blocks[contentItem.block_id]));
-                        activePage.content[i].type = "block";
-                        activePage.content[i].id = contentItem.block_id;
-                    } else if (typeof contentItem.skill_id !== 'undefined') {
-                        activePage.content[i] = JSON.parse(JSON.stringify(this.skills[contentItem.skill_id]));
-                        activePage.content[i].type = "skill";
-                        activePage.content[i].id = contentItem.skill_id;
-                    }
-
-                    activePage.content[i].position = contentItem.position;
-                }
-            }
-        },
 
         methods: {
             // sets activePage to either an actual page or a placeholder
@@ -126,11 +96,6 @@
                         });
 
                 }
-            },
-
-            // function to update the content of this.activePage
-            refreshPage() {
-                // todo
             },
 
             // updates pages page_number properties to match the array order
