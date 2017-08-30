@@ -96,9 +96,11 @@
                     roundId: this.round.id
                 }).then(response => {
                     if (response.status == 200) {
+                        let page = response.data.page;
+                        page.page_number = response.data.page_pivot.page_number;
                         // todo: create page_pivot on active round if specified
                         this.pages.push(response.data.page);
-                        this.round.page_pivots.push(response.data.page_pivots);
+                        this.round.page_pivots.push(response.data.page_pivot);
                     }
                 });
             },

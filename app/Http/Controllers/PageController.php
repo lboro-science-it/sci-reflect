@@ -24,7 +24,6 @@ class PageController extends Controller
 
         $response = [
             'page' => $page,
-            'page_pivots' => []
         ];
 
         $roundId = $request->input('roundId');
@@ -47,7 +46,7 @@ class PageController extends Controller
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-            $response['page_pivots'] = [
+            $response['page_pivot'] = [
                 'page_id' => $page->id,
                 'page_number' => $pageNumber
             ];
