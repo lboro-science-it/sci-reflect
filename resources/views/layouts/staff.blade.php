@@ -82,16 +82,18 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     @isset($activity)
-                      <ul class="nav nav-sidebar">
-                        <li><a href="{{ url('a/' . $activity->id) }}">Dashboard</a></li>
-                        <li><a href="{{ url('a/' . $activity->id . '/setup') }}">Setup activity</a></li>
-                        <li><a href="{{ url('a/' . $activity->id . '/rounds') }}">Rounds</a></li>
-                        <li><a href="{{ url('a/' . $activity->id . '/skills') }}">Skills</a></li>
-                        <li><a href="{{ url('a/' . $activity->id . '/users') }}">Users</a></li>
-                        <li><a href="{{ url('a/' . $activity->id . '/groups') }}">Groups</a></li>
-                        @include('partials.staff.openclose')
-                      </ul>
-                      @endisset
+                        @if($activity->status !== 'new')
+                            <ul class="nav nav-sidebar">
+                                <li><a href="{{ url('a/' . $activity->id) }}">Dashboard</a></li>
+                                <li><a href="{{ url('a/' . $activity->id . '/setup') }}">Setup activity</a></li>
+                                <li><a href="{{ url('a/' . $activity->id . '/rounds') }}">Rounds</a></li>
+                                <li><a href="{{ url('a/' . $activity->id . '/skills') }}">Skills</a></li>
+                                <li><a href="{{ url('a/' . $activity->id . '/users') }}">Users</a></li>
+                                <li><a href="{{ url('a/' . $activity->id . '/groups') }}">Groups</a></li>
+                                @include('partials.staff.openclose')
+                            </ul>
+                        @endif
+                    @endisset
                 </div>
                 <div class="col-sm-9 col-md-10 main">
                     @yield('content')
