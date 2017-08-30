@@ -40,14 +40,7 @@
 
         methods: {
             deletePage() {
-                axios.delete('pages/' + this.editPage.id)
-                     .then(response => {
-                        if (response.status == 204) {
-                            // the page was deleted on the server, we need to delete it from
-                            // any local rounds' pages + from the overall pages object
-                            console.log("OK the page was deleted");
-                        }
-                     });
+                this.$emit('delete-page', this.editPage);
             },
 
             // sends a put of editPage's title to the server (for now)

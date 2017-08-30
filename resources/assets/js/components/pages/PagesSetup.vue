@@ -108,21 +108,19 @@
             // deletes the page, updates the local pages array
             deletePage(page) {
                 if (this.pages.length > 1 && confirm("Are you sure?")) {
+
                     axios.delete('pages/' + page.id)
-                    .then(response => {
-                        if (response.status == 204) {
-                            let pagesLength = this.pages.length;
-                            for (let i = 0; i < pagesLength; i++) {
-                                let currentPage = this.pages[i];
-                                if (currentPage.id == page.id) {
-                                    this.pages.splice(i, 1);
-                                    break;
-                                }
+                        .then(response => {
+                            if (response.status == 204) {
+                                // page has been deleted on server - update local pages array
+                                this.splicePageById(page.id);
+                                this.renumberPages();
+                                this.activatePage(null);
+                                // tell parent component (rounds-setup) a page has been deleted
+                                this.$emit('delete-page', page);
                             }
-                            this.renumberPages();      // makes sure local page numbers are ok
-                            this.activatePage(null);   // set nothing to activePage
-                        }
-                    });
+                        });
+
                 }
             },
 
@@ -152,6 +150,17 @@
                         this.round.page_pivots = response.data;
                     }
                 });
+            },
+
+            splicePageById(pageId) {
+                let pagesLength = this.pages.length;
+                for (let i = 0; i < pagesLength; i++) {
+                    let currentPage = this.pages[i];
+                    if (currentPage.id == pageId) {
+                        this.pages.splice(i, 1);
+                        break;
+                    }
+                }
             },
 
             // save page to server
