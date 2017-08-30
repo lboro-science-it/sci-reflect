@@ -16,7 +16,8 @@
         </div>
 
         <div class="text-center form-group">
-            <button class="btn btn-lg" v-on:click="reorder" v-show="!orderItems">
+            <button class="btn btn-lg" v-on:click="reorder" v-show="!orderItems"
+                    :class="{ disabled: !canReorder }">
                 Re-order
             </button>
 
@@ -72,6 +73,12 @@
             'title'
         ],
 
+        computed: {
+            canReorder() {
+                return this.items.length > 1;
+            }
+        },
+
         methods: {
             // set active index on click of item, emit event to other components
             activateItem(index) {
@@ -92,8 +99,10 @@
 
             // turns reordering mode on - makes it impossible to edit the 'active' item
             reorder() {
-                this.activateItem(null);
-                this.orderItems = true;
+                if (this.canReorder) {
+                    this.activateItem(null);
+                    this.orderItems = true;
+                }
             },
 
             // send the new round_id => round_numbers to the server
