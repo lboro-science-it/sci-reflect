@@ -40,20 +40,23 @@
 
         methods: {
             deletePage() {
-                this.$emit('delete-page', this.editPage);
+                if (this.canDelete) {
+                    this.$emit('delete-page', this.editPage);
+                }
             },
 
             // sends a put of editPage's title to the server (for now)
             // todo: also send the pivots of the blocks / skills
             savePage() {
-                axios.put('pages/' + this.editPage.id, {
-                    title: this.editPage.title
-                }).then(response => {
-                    if (response.status == 200) {
-                        this.page.title = response.data.title;
-                        console.log(this.page.title);
-                    }
-                });
+                if (this.canSave) {
+                    axios.put('pages/' + this.editPage.id, {
+                        title: this.editPage.title
+                    }).then(response => {
+                        if (response.status == 200) {
+                            this.page.title = response.data.title;
+                        }
+                    });
+                }
             }
         },
 

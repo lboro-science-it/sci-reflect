@@ -20,8 +20,8 @@
                             <!-- Edit pages toggle button -->
                             <div class="text-center form-group">
                                 <button class="btn btn-lg" 
-                                        :class="{ disabled: activeRound.id === null }"
-                                        v-on:click="editView = 'pages'">
+                                        :class="{ disabled: !canEditPages }"
+                                        v-on:click="editPages">
                                     Edit pages ({{ activeRound.page_pivots.length }})
                                 </button>
                             </div>
@@ -88,6 +88,12 @@
             'skills'
         ],
 
+        computed: {
+            canEditPages() {
+                return this.activeRound.id !== null;
+            }
+        },
+
         watch: {
             // update activeRoundPages whenever activeRound is changed
             activeRound(activeRound) {
@@ -136,6 +142,13 @@
                             this.activateRound(null);   // set nothing to activeRound
                         }
                     });
+                }
+            },
+
+            // set editView to pages
+            editPages() {
+                if (this.canEditPages) {
+                    this.editView = 'pages';
                 }
             },
 

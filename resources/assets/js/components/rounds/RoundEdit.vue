@@ -127,16 +127,20 @@
         methods: {
             // emit an event to delete the round
             deleteRound() {
-                this.$emit('delete-round', this.editRound);
+                if (this.canDelete) {
+                    this.$emit('delete-round', this.editRound);
+                }
             },
 
             // emit an event containing the updated round & block content
             updateRound() {
-                // put the dates back in the right format
-                this.editRound.open_date = this.editRound.open_date == '' ? null : this.editRound.open_date.replace("T", " ");
-                this.editRound.close_date = this.editRound.close_date == '' ? null : this.editRound.close_date.replace("T", " ");
+                if (this.canSave) {
+                    // put the dates back in the right format
+                    this.editRound.open_date = this.editRound.open_date == '' ? null : this.editRound.open_date.replace("T", " ");
+                    this.editRound.close_date = this.editRound.close_date == '' ? null : this.editRound.close_date.replace("T", " ");
 
-                this.$emit('update-round', this.editRound, this.editBlockContent);
+                    this.$emit('update-round', this.editRound, this.editBlockContent);
+                }
             }
         }
     }
