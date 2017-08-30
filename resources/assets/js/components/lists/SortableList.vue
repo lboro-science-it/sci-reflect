@@ -36,7 +36,7 @@
             </button>
 
             <div v-show="addItem">
-                <input id="addItemInput" type="text" class="form-control input-lg" :placeholder="addCaption"
+                <input :id="addCaption + 'Input'" type="text" class="form-control input-lg" :placeholder="addCaption"
                        v-model="addItemName"
                        v-on:keyup.enter="storeItem(addItemName)">
 
@@ -127,9 +127,10 @@
 
             toggleAddItem() {
                 this.addItem = !this.addItem;
+                let addItemInputId = this.addCaption + 'Input';
                 if (this.addItem) {
                     Vue.nextTick(function() { 
-                        document.getElementById('addItemInput').focus();
+                        document.getElementById(addItemInputId).focus();
                     });
                 }
             }
