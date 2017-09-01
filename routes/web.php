@@ -38,6 +38,9 @@ Route::prefix('a/{activity}')->group(function() {
         Route::post('users', 'UserController@store');
         Route::put('users/{userId}/group', 'UserController@updateGroup');
 
+        // Block routes
+        Route::put('blocks/{blockId}', 'BlockController@update');
+
         // Group routes
         Route::get('groups', 'GroupController@index');
         Route::delete('groups/{groupId}', 'GroupController@delete');

@@ -52,9 +52,15 @@
 
             // emit a save event with the new item content... or just do it here
             save() {
-                this.item.content = this.editContent;
-                this.refreshEditContent();
-                this.edit = false;
+                axios.put('blocks/' + this.item.id, {
+                    content: this.editContent
+                }).then(response => {
+                    if (response.status == 200) {
+                        this.item.content = this.editContent;
+                        this.refreshEditContent();
+                        this.edit = false;
+                    }
+                });
             },
 
             // emit an event that the block should be unrelated from the page
