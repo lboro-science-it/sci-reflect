@@ -6,7 +6,7 @@
                 <span class="pull-right">Block</span>
             </h4>
             <button class="btn btn-lg" v-on:click="edit = !edit">Edit (todo)</button>
-            <button class="btn btn-lg" v-on:click="unrelateBlock">Delete (todo)</button>
+            <button class="btn btn-lg" v-on:click="unrelateBlock">Delete</button>
         </div>
         <div class="col-xs-9">
             <div class="panel panel-default">

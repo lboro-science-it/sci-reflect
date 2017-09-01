@@ -15,8 +15,8 @@
             <!-- Each item in the page.content array can be either a block or
                  a skill - so when we v-for them we are dynamically including
                  the necessary child component. -->
-            <draggable :list="editPage.content" class="dragArea" :options="{ handle: '.glyphicon' }">
-                <component v-for="(contentItem, index) in editPage.content"
+            <draggable :list="editContent" class="dragArea" :options="{ handle: '.glyphicon' }">
+                <component v-for="(contentItem, index) in editContent"
                            :is="'content-' + contentItem.type"
                            :key="contentItem.type + contentItem.id"
                            :item="contentItem"
@@ -59,6 +59,7 @@
     export default {
         data() {
             return {
+                editContent: [],
                 editPage: defaultPage
             }
         },
@@ -87,7 +88,6 @@
                         });
 
                         this.refreshEditPage();
-
                     }
                 });
             },
@@ -105,35 +105,33 @@
                     // clone the page into a local object that can be edited
                     this.editPage = JSON.parse(JSON.stringify(this.page));
 
-                    // combine page's blocks and skills into iterable content array sorted by position
-                    this.editPage.content = this.editPage.block_pivots.concat(this.editPage.skill_pivots);
-                    this.editPage.content.sort(function(a, b) {
+                    this.editContent = this.editPage.block_pivots.concat(this.editPage.skill_pivots);
+                    this.editContent.sort(function(a, b) {
                         return a.position - b.position;
                     });
 
                     // get the content of the blocks / skills from the global objects
-                    let contentLength = this.editPage.content.length;
+                    let contentLength = this.editContent.length;
                     for (let i = 0; i < contentLength; i++) {
-                        let contentItem = this.editPage.content[i];
+                        let contentItem = this.editContent[i];
         
                         if (typeof contentItem.block_id !== 'undefined') {
-                            this.editPage.content[i] = JSON.parse(JSON.stringify(this.blocks[contentItem.block_id]));
-                            this.editPage.content[i].type = "block";
-                            this.editPage.content[i].id = contentItem.block_id;
+                            this.editContent[i] = JSON.parse(JSON.stringify(this.blocks[contentItem.block_id]));
+                            this.editContent[i].type = "block";
+                            this.editContent[i].id = contentItem.block_id;
                         } else if (typeof contentItem.skill_id !== 'undefined') {
-                            this.editPage.content[i] = JSON.parse(JSON.stringify(this.skills[contentItem.skill_id]));
-                            this.editPage.content[i].type = "skill";
-                            this.editPage.content[i].id = contentItem.skill_id;
+                            this.editContent[i] = JSON.parse(JSON.stringify(this.skills[contentItem.skill_id]));
+                            this.editContent[i].type = "skill";
+                            this.editContent[i].id = contentItem.skill_id;
                         }
 
-                        this.editPage.content[i].position = contentItem.position;
+                        this.editContent[i].position = contentItem.position;
                     }
 
-                    console.log(this.editPage.content);
                 } else {
                     // create an empty editPage with empty content so the view can render
                     this.editPage = JSON.parse(JSON.stringify(this.page));
-                    this.editPage.content = [];
+                    this.editContent = [];
                 }
             },
 
@@ -151,14 +149,32 @@
                 }
             },
 
-            // removes this.page's block_pivot and content entry for blockId
-            spliceBlockById(blockId) {
+            // update this.page's block_pivots to remove the one with ID at position
+            spliceBlockByIdAndPosition(blockId, position) {
+                for (let index in this.page.block_pivots) {
+                    let blockPivot = this.page.block_pivots[index];
 
+                    if (blockPivot.block_id == blockId && blockPivot.position == position) {
+                        this.page.block_pivots.splice(index, 1);
+                        break;
+                    }
+                }
+
+                this.refreshEditPage();
             },
 
-            // removes this.page's skill_pivot and content entry for skillId
-            spliceSkillById(skillId) {
+            // update this.page's skill_pivots to remove the one at ID and Position
+            spliceSkillByIdAndPosition(skillId, position) {
+                for (let index in this.page.skill_pivots) {
+                    let skillPivot = this.page.skill_pivots[index];
 
+                    if (skillPivot.skill_id == skillId && skillPivot.position == position) {
+                        this.page.skill_pivots.splice(index, 1);
+                        break;
+                    }
+                }
+
+                this.refreshEditPage();
             },
 
             // remove pivot entry between item and current page
@@ -168,11 +184,11 @@
                     type: item.type,
                     id: item.id
                 }).then(response => {
-                    // todo: instead here just update this.page's block/skill pivots then refresh
+                    console.log(response.data);
                     if (item.type == 'block') {
-                        this.spliceBlockById(item.id);
+                        this.spliceBlockByIdAndPosition(item.id, item.position);
                     } else if (item.type == 'skill') {
-                        this.spliceSkillById(item.id);
+                        this.spliceSkillByIdAndPosition(item.id, item.position);
                     }
                 });
             }

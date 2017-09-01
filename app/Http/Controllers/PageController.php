@@ -124,10 +124,6 @@ class PageController extends Controller
     public function unrelate(Activity $activity, $pageId, Request $request)
     {
         $page = $activity->pages()->where('id', $pageId)->first();
-        
-        if (!isset($page)) {
-            return redirect('eject');
-        }
 
         if ($request->input('type') == 'block') {
             $pivotToDelete = $page->blockPivots()->where('block_id', $request->input('id'))->first();
@@ -135,11 +131,14 @@ class PageController extends Controller
             $pivotToDelete = $page->skillPivots()->where('skill_id', $request->input('id'))->first();
         }
 
+        // kick the user out if $pivotToDelete isn't set - it means they're trying to delete one they shouldn't be
         if (!isset($pivotToDelete)) {
             return redirect('eject');
         }
 
         $pivotToDelete->delete();
+
+        $page->refreshContentPositions();
 
         return response()->json(null, 204);
     }

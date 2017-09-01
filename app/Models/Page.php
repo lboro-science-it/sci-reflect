@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Reflect\BlockContentParser;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
@@ -73,7 +74,7 @@ class Page extends Model
      */
     public function getContent()
     {
-        $content = collect(array());
+        $content = collect();
 
         $this->skills->each(function ($item) use ($content) {
             // sort indicators by number, or name failing that
@@ -111,6 +112,44 @@ class Page extends Model
         }
 
         return $this->indicators;
+    }
+
+    /**
+     * Iterates through the page's content (blocks and skills) in order of
+     * positions, renumbering the positions starting from 1, so content
+     * can be deleted without a problem.
+     * 
+     */
+    public function refreshContentPositions()
+    {
+        $content = collect();
+        // put all of the page's blocks and skills into a collection
+        $this->blocks->each(function ($block) use ($content) {
+            $content->push($block);
+        });
+        $this->skills->each(function ($skill) use ($content) {
+            $content->push($skill);
+        });
+        // sort the collection by the items' positions
+        $content = $content->sortBy('pivot.position');
+
+        $position = 1;
+
+        // SQL query strings to build for updatess
+        $skillCases = '';
+        $blockCases = '';
+
+        foreach ($content as $contentItem) {
+            if ($contentItem instanceof \App\Block) {
+                $blockCases .= "when block_id = $contentItem->id then $position ";
+            } else if ($contentItem instanceof \App\Skill) {
+                $skillCases .= "when skill_id = $contentItem->id then $position ";
+            }
+            $position++;
+        }
+
+        DB::statement("UPDATE block_page SET position = (case $blockCases end) WHERE page_id = $this->id;");
+        DB::statement("UPDATE page_skill SET position = (case $skillCases end) WHERE page_id = $this->id;");
     }
 
 }
