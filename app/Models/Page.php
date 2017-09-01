@@ -148,8 +148,12 @@ class Page extends Model
             $position++;
         }
 
-        DB::statement("UPDATE block_page SET position = (case $blockCases end) WHERE page_id = $this->id;");
-        DB::statement("UPDATE page_skill SET position = (case $skillCases end) WHERE page_id = $this->id;");
+        if ($blockCases !== '') {
+            DB::statement("UPDATE block_page SET position = (case $blockCases end) WHERE page_id = $this->id;");
+        }
+        if ($skillCases !== '') {
+            DB::statement("UPDATE page_skill SET position = (case $skillCases end) WHERE page_id = $this->id;");
+        }
     }
 
 }
