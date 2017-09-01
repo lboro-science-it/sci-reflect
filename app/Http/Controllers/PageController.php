@@ -25,16 +25,21 @@ class PageController extends Controller
         if (!isset($page) || !isset($block)) {
             return redirect('eject');
         }
-        
-        // get page's other content so we know what position to put the block in at
-        $blocks = $page->blocks()->get();
-        $skills = $page->skills()->get();
 
-        $newBlockPosition = 1 + $blocks->count() + $skills->count();
+        // only add the block if it isn't already on the page
+        if (null === $page->blockPivots()->where('block_id', $block->id)->first()) {
+            // get page's other content so we know what position to put the block in at
+            $blocks = $page->blocks()->get();
+            $skills = $page->skills()->get();
 
-        $page->blocks()->attach($block, ['position' => $newBlockPosition]);
+            $newBlockPosition = 1 + $blocks->count() + $skills->count();
 
-        return response()->json(['position' => $newBlockPosition], 200);
+            $page->blocks()->attach($block, ['position' => $newBlockPosition]);
+
+            return response()->json(['position' => $newBlockPosition], 200);
+        } else {
+            return response()->json(null, 204);
+        }
     }
 
     /**
