@@ -36,7 +36,7 @@
 
     const defaultPage = {
         id: null,
-        title: '',
+        title: '<No Page Selected>',
         block_pivots: [],
         skill_pivots: []
     };

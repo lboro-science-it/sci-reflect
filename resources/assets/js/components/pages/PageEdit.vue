@@ -5,8 +5,8 @@
             
             <!-- Page Title -->
             <div class="form-group">
-                <label for="title" class="col-xs-2 control-label">Title</label>
-                <div class="col-xs-10">
+                <label for="title" class="col-xs-3 control-label">Title</label>
+                <div class="col-xs-9">
                     <input id="title" class="form-control" type="text" v-model="editPage.title" placeholder="Title">
                 </div>
             </div>
@@ -24,14 +24,19 @@
                 </component>
             </draggable>
 
-            <add-skill :skills="skills"></add-skill>
-            <add-block :blocks="blocks"
-                       v-on:add-block="addBlock">
-            </add-block>
+            <transition name="fade" mode="out-in">
+                <add-skill :skills="skills" v-show="canSave"></add-skill>
+            </transition>
+            <transition name="fade" mode="out-in">
+                <add-block :blocks="blocks"
+                           v-on:add-block="addBlock"
+                           v-show="canSave">
+                </add-block>
+            </transition>
 
             <!-- Save / Delete buttons -->
             <div class="form-group">
-                <div class="col-xs-offset-2 col-xs-10">
+                <div class="col-xs-offset-3 col-xs-9">
                     <button class="btn btn-lg" v-on:click="savePage" :class="{ disabled: !canSave }">Save</button>
                     <button class="btn" v-on:click="deletePage" :class="{ disabled: !canDelete }">Delete</button>
                 </div>
@@ -42,7 +47,8 @@
 
 <script>
     const defaultPage = {
-        title: "<No Page Set>",
+        id: null,
+        title: '<No Page Selected>',
         block_pivots: [],
         content: [],
         skill_pivots: []
@@ -73,20 +79,13 @@
                     blockId: blockId
                 }).then(response => {
                     if (response.status == 200) {
-                        // todo: replace this with telling parent about the new block, and to refresh
-
-
                         // the block was related, response.data.position tells us what position at
+                        // update the page's block_pivots then refresh the editPage object
                         this.page.block_pivots.push({
                             block_id: blockId,
                             position: response.data.position
                         });
 
-                        let newBlock = JSON.parse(JSON.stringify(this.blocks[blockId]));
-                        newBlock.type = "block";
-                        newBlock.id = blockId;
-
-                        this.page.content.push(newBlock);
                         this.refreshEditPage();
 
                     }
@@ -99,11 +98,42 @@
                 }
             },
 
+            // clone page prop into local editPage object and populate with its content
             refreshEditPage() {
-                if (typeof this.page !== 'undefined') {
+                // if this.page.id === null, it means no page is selected so we don't have any content to get
+                if (this.page.id !== null) {
+                    // clone the page into a local object that can be edited
                     this.editPage = JSON.parse(JSON.stringify(this.page));
+
+                    // combine page's blocks and skills into iterable content array sorted by position
+                    this.editPage.content = this.editPage.block_pivots.concat(this.editPage.skill_pivots);
+                    this.editPage.content.sort(function(a, b) {
+                        return a.position - b.position;
+                    });
+
+                    // get the content of the blocks / skills from the global objects
+                    let contentLength = this.editPage.content.length;
+                    for (let i = 0; i < contentLength; i++) {
+                        let contentItem = this.editPage.content[i];
+        
+                        if (typeof contentItem.block_id !== 'undefined') {
+                            this.editPage.content[i] = JSON.parse(JSON.stringify(this.blocks[contentItem.block_id]));
+                            this.editPage.content[i].type = "block";
+                            this.editPage.content[i].id = contentItem.block_id;
+                        } else if (typeof contentItem.skill_id !== 'undefined') {
+                            this.editPage.content[i] = JSON.parse(JSON.stringify(this.skills[contentItem.skill_id]));
+                            this.editPage.content[i].type = "skill";
+                            this.editPage.content[i].id = contentItem.skill_id;
+                        }
+
+                        this.editPage.content[i].position = contentItem.position;
+                    }
+
+                    console.log(this.editPage.content);
                 } else {
-                    this.editPage = defaultPage;
+                    // create an empty editPage with empty content so the view can render
+                    this.editPage = JSON.parse(JSON.stringify(this.page));
+                    this.editPage.content = [];
                 }
             },
 
@@ -138,6 +168,7 @@
                     type: item.type,
                     id: item.id
                 }).then(response => {
+                    // todo: instead here just update this.page's block/skill pivots then refresh
                     if (item.type == 'block') {
                         this.spliceBlockById(item.id);
                     } else if (item.type == 'skill') {
@@ -149,33 +180,8 @@
 
         watch: {
             // when page changes, put together its content and clone it all into editPage
-            page(page) {
-
-                // combine page's blocks and skills into iterable content array sorted by position
-                page.content = page.block_pivots.concat(page.skill_pivots);
-                page.content.sort(function(a, b) {
-                    return a.position - b.position;
-                });
-
-                // get the content of the blocks / skills from the global objects
-                let contentLength = page.content.length;
-                for (let i = 0; i < contentLength; i++) {
-                    let contentItem = page.content[i];
-    
-                    if (typeof contentItem.block_id !== 'undefined') {
-                        page.content[i] = JSON.parse(JSON.stringify(this.blocks[contentItem.block_id]));
-                        page.content[i].type = "block";
-                        page.content[i].id = contentItem.block_id;
-                    } else if (typeof contentItem.skill_id !== 'undefined') {
-                        page.content[i] = JSON.parse(JSON.stringify(this.skills[contentItem.skill_id]));
-                        page.content[i].type = "skill";
-                        page.content[i].id = contentItem.skill_id;
-                    }
-
-                    page.content[i].position = contentItem.position;
-                }
-
-                this.editPage = JSON.parse(JSON.stringify(page));
+            page() {
+                this.refreshEditPage();
             }
         }
     }

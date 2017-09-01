@@ -1,6 +1,6 @@
 <template>
     <div class="form-group">
-        <div class="col-xs-2">
+        <div class="col-xs-3">
             <h4>
                 <span class="glyphicon glyphicon-move"></span>
                 <span class="pull-right">Block</span>
@@ -8,7 +8,7 @@
             <button class="btn btn-lg" v-on:click="edit = !edit">Edit (todo)</button>
             <button class="btn btn-lg" v-on:click="unrelateBlock">Delete (todo)</button>
         </div>
-        <div class="col-xs-10">
+        <div class="col-xs-9">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <!-- Preview of content block as rendered HTML -->

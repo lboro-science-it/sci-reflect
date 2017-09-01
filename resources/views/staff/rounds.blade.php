@@ -27,7 +27,7 @@ Setup structure for {{ $activity->name }}
 
   <p>
     todo:
-    Delete pages from rounds<br>
+    <strike>Delete pages from rounds</strike><br>
     Add content to pages (blocks, skills)<br>
     Reorder content in pages<br>
     Delete content from pages<br>
