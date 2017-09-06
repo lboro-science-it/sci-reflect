@@ -139,9 +139,32 @@
             // todo: also send the pivots of the blocks / skills
             savePage() {
                 if (this.canSave) {
+                    let blockPositions = [];
+                    let skillPositions = [];
+                    let contentLength = this.editContent.length;
+
+                    for (let i = 0; i < contentLength; i++) {
+                        let contentItem = this.editContent[i];
+                        contentItem.position = i + 1;
+                        if (contentItem.type == 'block') {
+                            blockPositions.push({
+                                id: contentItem.id,
+                                position: contentItem.position
+                            });
+                        } else if (contentItem.type == 'skill') {
+                            skillPositions.push({
+                                id: contentItem.id,
+                                position: contentItem.position
+                            });
+                        }
+                    }
+
                     axios.put('pages/' + this.editPage.id, {
-                        title: this.editPage.title
+                        title: this.editPage.title,
+                        blocks: blockPositions,
+                        skills: skillPositions
                     }).then(response => {
+                        console.log(response.data);
                         if (response.status == 200) {
                             this.page.title = response.data.title;
                         }

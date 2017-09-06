@@ -149,7 +149,8 @@ class PageController extends Controller
     }
 
     /**
-     * Updates page title, endpoint of save method in PageEdit.vue component
+     * Updates page title, endpoint of save method in PageEdit.vue component.
+     * Also update positions of block / skill pivots.
      *
      */ 
     public function update(Activity $activity, $pageId, Request $request)
@@ -165,6 +166,25 @@ class PageController extends Controller
         $page->title = $request->input('title');
         $page->save();
 
+        // update the positions of the blocks / skills
+
+        $blockCases = '';
+        foreach ($request->input('blocks') as $block) {
+            $blockCases .= "when block_id = $block->id then $block->position ";
+        }
+        if ($blockCases !== '') {
+            DB::statement("UPDATE block_page SET position = (case $blockCases end) WHERE page_id = $page->id;");
+        }
+
+        $skillCases = '';
+        foreach ($request->input('skills') as $skill) {
+            $skillCases .= "when skill_id = $skill->id then $skill->position ";
+        }
+        if ($skillCases !== '') {
+            DB::statement("UPDATE page_skill SET position = (case $skillCases end) WHERE page_id = $page->id;");
+        }
+
         return response()->json($page, 200);
     }
+
 }
