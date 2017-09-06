@@ -14,8 +14,7 @@
         @append
         <student-table :rounds="sciReflect.rounds" 
                        :students="sciReflect.students"
-                       :groups="sciReflect.groups"
-                       put-url="{{ url('a/' . $activity->id . '/groups/') }}">
+                       :groups="sciReflect.groups">
         </student-table>
     @endif
 
@@ -23,7 +22,8 @@
         @section('sciReflect')
             sciReflect.staff = {!! json_encode($staff) !!};
         @append
-        <staff-table :staff="sciReflect.staff">
+        <staff-table :staff="sciReflect.staff"
+                     :groups="sciReflect.groups">
         </staff-table>
     @endif
 

@@ -72,7 +72,6 @@
                     axios.put('users/' + this.student.id + '/group', {
                         groupId: this.editGroupId
                     }).then(response => {
-                        console.log(response.data);
                         this.currentGroupId = response.data;
                         this.editGroupId = response.data;
                     });

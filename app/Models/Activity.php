@@ -201,7 +201,7 @@ class Activity extends Model
                 'id' => $staffMember->id,
                 'name' => $staffMember->name ?? '',
                 'email' => $staffMember->email,
-                'groupName' => $staffMember->group->name ?? false,
+                'groupId' => $staffMember->group->id ?? null,
                 'hasAccessed' => isset($staffMember->pivot->lti_user_id),
                 'lastAccess' => $staffMember->pivot->updated_at,
             ]);
