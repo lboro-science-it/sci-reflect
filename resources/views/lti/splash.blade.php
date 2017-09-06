@@ -27,24 +27,14 @@ navbar-transparent
             </div>
         @endisset
         <div class="row">
-            <div class="col-md-3 col-md-offset-2">
-                ** insert image **
-            </div>
-            <div class="col-md-5 text-center">
-                <h1>Some tagline about reflecting. Word.</h1>
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <h1>Click Submit to launch sciReflect.</h1>
                 <form action="{{ url('launch') }}" method="POST">
                     @foreach($params as $key => $value)
                         <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                     @endforeach
                     <input type="submit" class="btn btn-info btn-lg">
                 </form>
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-10 col-md-offset-2">
-                ** insert instructions for cookies - setting sci-el.lboro.ac.uk as trusted **
             </div>
         </div>
 
