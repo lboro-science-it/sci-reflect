@@ -94,6 +94,7 @@
         },
 
         props: [
+            'activeGroupId',
             'groups',
             'rounds',
             'students'
@@ -149,6 +150,12 @@
 
             unchecked(index) {
                 this.students[index].checked = false;
+            }
+        },
+
+        mounted() {
+            if (this.activeGroupId !== null) {
+                this.filterGroup = this.activeGroupId;
             }
         }
     }

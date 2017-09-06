@@ -14,7 +14,8 @@
         @append
         <student-table :rounds="sciReflect.rounds" 
                        :students="sciReflect.students"
-                       :groups="sciReflect.groups">
+                       :groups="sciReflect.groups"
+                       active-group-id="{!! json_encode($activeGroupId) !!}">
         </student-table>
     @endif
 

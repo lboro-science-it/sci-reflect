@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Activity;
 use App\Reflect\UserHelper;
 use App\User;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
 
@@ -16,11 +17,15 @@ class UserController extends Controller
         $rounds = $activity->getRoundListArray();
         $students = $activity->getStudentListArray();
         $staff = $activity->getStaffListArray();
+        
+        // get the user's group
+        $activeGroupId = $activity->users->where('id', Auth::user()->id)->first()->group->id;
 
         return view('staff.users')->with('students', $students)
                                   ->with('staff', $staff)
                                   ->with('rounds', $rounds)
-                                  ->with('groups', $groups);
+                                  ->with('groups', $groups)
+                                  ->with('activeGroupId', $activeGroupId);
     }
 
     /**
