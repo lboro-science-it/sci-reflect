@@ -32,8 +32,6 @@ class StudentChartController extends Controller
         $chartHelper = app('ChartHelper');
         $chartData = $chartHelper->getChartData($round, Auth::user());
 
-        dd($chartData);
-
         $skillsHelper = app('SkillsHelper');
 
         // todo: separate categories and skills so in the view categories can be iterated
