@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Activity;
 use App\Reflect\ChartHelper;
 use App\Reflect\SkillsHelper;
+use App\Rating;
 use App\Round;
 use Auth;
 use Illuminate\Http\Request;
@@ -30,12 +31,22 @@ class StudentChartController extends Controller
         // get the round object with the eager loaded data
         $round = $activity->rounds->where('id', $round->id)->first();
 
+/*
         $chartHelper = app('ChartHelper');
         $chartData = $chartHelper->getChartData($round, Auth::user());
+*/
+        // get the ratings for the round ready to pass to the activity method
+        $raterId = is_null($raterId) ? Auth::user()->id : $raterId;
+        $ratings = Rating::where('round_id', $round->id)
+                         ->where('rated_id', Auth::user()->id)
+                         ->where('rater_id', $raterId)
+                         ->get();
+
+        $chartData = $activity->getChartDataFromRatings($ratings);
+
 
         $skillsHelper = app('SkillsHelper');
 
-        // todo: move skillsHelper stuff to ratingsHelper as it's more about that...
         $categories = $activity->getCategories();
         $skills = $skillsHelper->getActivitySkills($round, Auth::user());
 
