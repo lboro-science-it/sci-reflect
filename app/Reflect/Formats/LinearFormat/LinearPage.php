@@ -49,6 +49,9 @@ class LinearPage extends BasePage
     public function done()
     {
         $this->user->incrementRound();
+        $ratingsHelper = app('RatingsHelper');
+
+        app('RatingsHelper')->createRatings($this->round, $this->user);
 
         return redirect('a/' . $this->activity->id . '/student/r/' . $this->round->round_number . '/chart');
     }

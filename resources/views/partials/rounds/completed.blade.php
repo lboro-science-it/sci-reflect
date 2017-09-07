@@ -10,7 +10,11 @@
                 </a>
 
                 @isset($round->staffRaterId)
-                    THERE IS A STAFF RATING
+                    (view 
+                    <a href="{{ url('a/' . $activity->id . '/student/r/' . $round->round_number . '/chart/' . $round->staffRaterId) }}">
+                        staff rating
+                    </a>
+                    )
                 @endisset
             </li>
         @endforeach

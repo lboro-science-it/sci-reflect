@@ -101,9 +101,15 @@ class Activity extends Model
         foreach($rounds as $round) {
             $round->viewable = $round->isViewable(Auth::user());
 
-            $round->staffRaterId = $round->ratings->filter(function ($item) {
+            // get the first unique staff rating, so we can display a link to it
+            $staffRating = $round->ratings->filter(function ($item) {
                 return $item['rater_id'] != Auth::user()->id;
             })->unique('rater_id')->first();
+
+            // store the id of the staff member so we can view their chart
+            if (isset($staffRating)) {
+                $round->staffRaterId = $staffRating->rater_id;
+            }
 
             if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
                 $round->completion = '100%';

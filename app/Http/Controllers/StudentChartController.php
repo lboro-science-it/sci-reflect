@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Activity;
 use App\Rating;
 use App\Round;
+use App\User;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -31,9 +32,12 @@ class StudentChartController extends Controller
 
         // get either the user's own ratings, or rater's if set in the route
         $raterId = $raterId ?? Auth::user()->id;
+
+        $rater = ($raterId == Auth::user()->id) ? Auth::user() : User::find($raterId);
+
         $ratings = Rating::where('round_id', $round->id)
                          ->where('rated_id', Auth::user()->id)
-                         ->where('rater_id', $raterId)
+                         ->where('rater_id', $rater->id)
                          ->get();
 
         $chartData = $activity->getChartDataFromRatings($ratings);
@@ -44,6 +48,7 @@ class StudentChartController extends Controller
         ->with('chartData', $chartData)
         ->with('categories', $categories)
         ->with('skills', $skills)
+        ->with('rater', $rater)
         ->with('round', $round)
         ->with('rounds', $activity->getRoundsData());
     }

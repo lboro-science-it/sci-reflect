@@ -57593,7 +57593,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         },
                         label: function label(tooltipItem, data) {
                             if (vueInstance.enabled[tooltipItem.index]) {
-                                return ' Your rating: ' + data.datasets[0].data[tooltipItem.index] + '/' + vueInstance.max;
+                                return ' Rating: ' + data.datasets[0].data[tooltipItem.index] + '/' + vueInstance.max;
                             } else {
                                 return ' Not available in this round';
                             }

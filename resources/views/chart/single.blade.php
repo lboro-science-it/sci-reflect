@@ -14,7 +14,11 @@
     <div class="col-md-3 col-md-push-7 col-sm-4 col-sm-push-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3>Your skills after {{ $round->title }}</h3>
+                <h3>{{ $round->title }}
+                    @if($rater->id != Auth::user()->id)
+                        <small>(rated by {{ $rater->name }})</small>
+                    @endif
+                </h3>
             </div>
             <div class="panel-body" style="padding: 20px;">
                 @include('partials.chart.chart', ['chartData' => $chartData])
@@ -35,10 +39,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3>
-                    @if($categories->count() > 0)
-                        Your skills
-                    @else
-                        Your strongest skills
+                    Your skills
+                    @if($rater->id != Auth::user()->id)
+                        <small>(rated by {{ $rater->name }})</small>
                     @endif
                 </h3>
             </div>
