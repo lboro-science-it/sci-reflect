@@ -62,7 +62,6 @@ class SkillsHelper
     public function getActivitySkills($round, $user)
     {
         $skills = $this->activity->getSkills();
-        $skills->load('block');
         $ratings = $user->getRatings($round);
         $max = $this->reflect->getChoices()->max('value');
 

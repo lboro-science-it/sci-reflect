@@ -23,7 +23,8 @@ class StudentChartController extends Controller
     public function show(Activity $activity, Round $round, $scope = null)
     {
         $activity->rounds->load([
-            'pages.skills.indicators'
+            'pages.skills.indicators',
+            'pages.skills.block'
         ]);
 
         // get the round object with the eager loaded data
