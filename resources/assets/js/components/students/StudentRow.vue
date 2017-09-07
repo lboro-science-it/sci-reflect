@@ -23,6 +23,8 @@
                 {{ round.completion }}
             </td>
             <td v-show="mode == 'overview'">
+                <!-- todo: swap below so if already rated, link to chart of ratings
+                -->
                 <a class="btn"
                    :href="getRateLink(round.roundNumber)"
                    :class="{ 'disabled': round.staffHasRated,
