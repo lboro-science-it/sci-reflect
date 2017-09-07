@@ -8,6 +8,10 @@
                 <a href="{{ url('a/' . $activity->id . '/student/r/' . $round->round_number . '/chart') }}">
                     {{ $round->title }} ({{ $round->completion }})
                 </a>
+
+                @isset($round->staffRaterId)
+                    THERE IS A STAFF RATING
+                @endisset
             </li>
         @endforeach
     </ul>

@@ -91,14 +91,20 @@ class Activity extends Model
         $rounds = $this->rounds->where(Auth::user()->role . '_rate', true)->sortBy('round_number');
         $currentRoundNumber = Auth::user()->currentRound;
 
-        $roundsData = new stdClass();
+        $rounds->load('ratings');
 
-        $roundsData->completed = collect(array());
-        $roundsData->future = collect(array());
+        $roundsData = new stdClass();
+        $roundsData->completed = collect();
+        $roundsData->future = collect();
         $roundsData->current = null;
 
         foreach($rounds as $round) {
             $round->viewable = $round->isViewable(Auth::user());
+
+            $round->staffRaterId = $round->ratings->filter(function ($item) {
+                return $item['rater_id'] != Auth::user()->id;
+            })->unique('rater_id')->first();
+
             if (is_null($currentRoundNumber) || $round->round_number < $currentRoundNumber) {
                 $round->completion = '100%';
                 $round->completionDecimal = 1.0;

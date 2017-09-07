@@ -39,7 +39,6 @@ class LinearActivity extends BaseActivity
     {
         $this->eagerLoad();
 
-        //todo: get improve links for weakest skills from previous round
         $activityData = new stdClass();
 
         $activityData->chartData = $this->getChartData();
@@ -49,22 +48,10 @@ class LinearActivity extends BaseActivity
         $activityData->rounds = $this->activity->getRoundsData();
 
         $activityData->totalSkills = $this->getTotalSkills();
-        /* todo:
-         * calculating these == calculating ratings without persisting ratings in db
-         * need to look at refactoring RatingsHelper(?) a bit to provide this service
-         * for an array of skills & indicators
-            $activityData->totalSkillsResponded = 0;
-            $activityData->totalSkillsRespondedMax = 0;
-            $activityData->totalSkillsRespondedMin = 0;
-            $activityData->totalSkillsRespondedNearMax = 0;
-         */
-
         $activityData->currentPageTitle = $this->getCurrentPageTitle();
-
         $activityData->statusMessage = $this->getStatusMessage($activityData->rounds->current);
 
         $skillsHelper = app('SkillsHelper');
-
         $activityData->strongestSkills = $skillsHelper->getUserSkills($this->previousRound, $this->user)->splice(0, 3);
         $activityData->weakestSkills = $skillsHelper->getUserSkills($this->previousRound, $this->user)->sortBy('rating')->splice(0, 3);
 
