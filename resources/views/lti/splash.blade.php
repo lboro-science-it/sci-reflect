@@ -28,12 +28,11 @@ navbar-transparent
         @endisset
         <div class="row">
             <div class="col-md-6 col-md-offset-3 text-center">
-                <h1>Click Submit to launch sciReflect.</h1>
                 <form action="{{ url('launch') }}" method="POST">
                     @foreach($params as $key => $value)
                         <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                     @endforeach
-                    <input type="submit" class="btn btn-info btn-lg">
+                    <input type="submit" value="Launch sciReflect" class="btn btn-info btn-lg">
                 </form>
             </div>
         </div>
