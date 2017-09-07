@@ -31,7 +31,7 @@ class StudentChartController extends Controller
         $round = $activity->rounds->where('id', $round->id)->first();
 
         // get the ratings for the round ready to pass to the activity method
-        $raterId = is_null($raterId) ? Auth::user()->id : $raterId;
+        $raterId = $raterId ?? Auth::user()->id;
         $ratings = Rating::where('round_id', $round->id)
                          ->where('rated_id', Auth::user()->id)
                          ->where('rater_id', $raterId)
