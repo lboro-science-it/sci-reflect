@@ -25,12 +25,7 @@ class Activity extends Model
      */
     public function getCategories()
     {
-        if (!$this->relationLoaded('categories')) {
-            $categories = $this->categories->sortBy('name')->sortBy('number');
-            $this->setRelation('categories', $categories);
-        }
-
-        return $this->categories;
+        return $this->categories->sortBy('name')->sortBy('number');
     }
 
     /** 
