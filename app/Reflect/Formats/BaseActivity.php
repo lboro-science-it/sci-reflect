@@ -3,6 +3,7 @@
 namespace App\Reflect\Formats;
 
 use App\Reflect\BlockContentParser;
+use App\Rating;
 use Auth;
 use Illuminate\Http\Request;
 use stdClass;
@@ -31,13 +32,15 @@ class BaseActivity
      */
     public function getChartData()
     {
-        $chartHelper = app('ChartHelper');
-
         if (isset($this->previousRound)) {
-            return $chartHelper->getChartData($this->previousRound, $this->user);
+            $ratings = Rating::where('round_id', $this->previousRound->id)
+                             ->where('rater_id', $this->user->id)
+                             ->where('rated_id', $this->user->id)
+                             ->get();
+            return $this->activity->getChartDataFromRatings($ratings);
         }
 
-        return $chartHelper->getChartData();
+        return $this->activity->getChartDataFromRatings();
     }
 
     private function getPreviousRound()

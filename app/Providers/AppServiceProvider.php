@@ -13,11 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
-        $this->app->bind('ChartHelper', function($app) {
-            return new \App\Reflect\ChartHelper($app->request, $app->make('Reflect'));
-        });
-
         $this->app->bind('RatingsHelper', function($app) {
             return new \App\Reflect\RatingsHelper($app->request, $app->make('Reflect'));
         });

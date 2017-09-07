@@ -83,8 +83,11 @@ class Activity extends Model
      * on $this's skills and the ratings provided.
      *
      */
-    public function getChartDataFromRatings($ratings)
+    public function getChartDataFromRatings($ratings = null)
     {
+        if (is_null($ratings)) {
+            $ratings = collect();
+        }
         // get the skills / categories in render order
         $skills = $this->getSkills();
         $categories = $this->getCategories();
