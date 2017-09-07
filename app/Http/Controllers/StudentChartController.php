@@ -20,7 +20,7 @@ class StudentChartController extends Controller
      * @param  App\Round $round
      * @return View
      */    
-    public function show(Activity $activity, Round $round, $scope = null)
+    public function show(Activity $activity, Round $round, $raterId = null)
     {
         $activity->rounds->load([
             'pages.skills.indicators',
@@ -35,18 +35,10 @@ class StudentChartController extends Controller
 
         $skillsHelper = app('SkillsHelper');
 
-        // todo: separate categories and skills so in the view categories can be iterated
-        // then skills where category (from a separate object)
+        // todo: move skillsHelper stuff to ratingsHelper as it's more about that...
+        $categories = $activity->getCategories();
+        $skills = $skillsHelper->getActivitySkills($round, Auth::user());
 
-        $categories = collect();
-        $skills = collect();
-        if (!isset($scope)) {
-            // todo: move skillsHelper stuff to ratingsHelper as it's more about that...
-            $categories = $activity->getCategories();
-            $skills = $skillsHelper->getActivitySkills($round, Auth::user());
-        } elseif ($scope == 'strongest') {
-            $skills = $skillsHelper->getUserSkills($round, Auth::user());
-        }
 
         return view('chart.single')
         ->with('chartData', $chartData)

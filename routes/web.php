@@ -86,7 +86,7 @@ Route::prefix('a/{activity}')->group(function() {
         Route::post('nonlinear/r/{round}/c/{category}', 'NonLinearController@page');
 
         // student chart routes
-        Route::get('student/r/{round}/chart/{scope?}', 'StudentChartController@show');
+        Route::get('student/r/{round}/chart/{raterId?}', 'StudentChartController@show');
     });
 
     Route::get('closed', 'ActivityController@showClosed');
