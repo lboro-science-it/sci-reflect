@@ -148,25 +148,21 @@ class Activity extends Model
      */
     public function getSkills()
     {
-        if (!isset($this->skills)) {
-            $skills = collect(array());
+        $skills = collect();
 
-            foreach($this->rounds as $round) {
-                $skills = $skills->merge($round->getSkills());
-            }
-
-            $skills = $skills->unique('id');
-            $categories = $this->getCategories();
-            $sortedSkills = collect(array());
-
-            foreach ($categories as $category) {
-                $sortedSkills = $sortedSkills->merge($skills->where('category_id', $category->id)->sortBy('title')->sortBy('number'));
-            }
-            $this->skills = $sortedSkills;
-
+        foreach($this->rounds as $round) {
+            $skills = $skills->merge($round->getSkills());
         }
 
-        return $this->skills;
+        $skills = $skills->unique('id');
+        $categories = $this->getCategories();
+        $sortedSkills = collect();
+
+        foreach ($categories as $category) {
+            $sortedSkills = $sortedSkills->merge($skills->where('category_id', $category->id)->sortBy('title')->sortBy('number'));
+        }
+
+        return $sortedSkills;
     }
 
     /**
