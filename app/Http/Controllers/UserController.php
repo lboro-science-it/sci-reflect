@@ -19,7 +19,7 @@ class UserController extends Controller
         $staff = $activity->getStaffListArray();
         
         // get the user's group
-        $activeGroupId = $activity->users->where('id', Auth::user()->id)->first()->group->id;
+        $activeGroupId = $activity->users->where('id', Auth::user()->id)->first()->pivot->group_id;
 
         return view('staff.users')->with('students', $students)
                                   ->with('staff', $staff)
