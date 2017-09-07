@@ -35,9 +35,8 @@ class Activity extends Model
      */
     public function getChartDataFromRatings($ratings = null)
     {
-        if (is_null($ratings)) {
-            $ratings = collect();
-        }
+        $ratings = $ratings ?? collect();
+
         // get the skills / categories in render order
         $skills = $this->getSkills();
         $categories = $this->getCategories();
