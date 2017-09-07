@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
-use App\Reflect\SkillsHelper;
 use App\Rating;
 use App\Round;
 use Auth;
@@ -30,7 +29,7 @@ class StudentChartController extends Controller
         // get the round object with the eager loaded data
         $round = $activity->rounds->where('id', $round->id)->first();
 
-        // get the ratings for the round ready to pass to the activity method
+        // get either the user's own ratings, or rater's if set in the route
         $raterId = $raterId ?? Auth::user()->id;
         $ratings = Rating::where('round_id', $round->id)
                          ->where('rated_id', Auth::user()->id)
@@ -38,13 +37,8 @@ class StudentChartController extends Controller
                          ->get();
 
         $chartData = $activity->getChartDataFromRatings($ratings);
-
-
-        $skillsHelper = app('SkillsHelper');
-
         $categories = $activity->getCategories();
-        $skills = $skillsHelper->getActivitySkills($round, Auth::user());
-
+        $skills = $activity->getSkillsFromRatings($ratings);
 
         return view('chart.single')
         ->with('chartData', $chartData)

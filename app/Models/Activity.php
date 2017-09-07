@@ -210,6 +210,34 @@ class Activity extends Model
     }
 
     /**
+     * Get the activity's skills with the user's ratings in a format such that
+     * they can be rendered in a view.
+     *
+     */
+    public function getSkillsFromRatings($ratings)
+    {
+        $skills = $this->getSkills();
+        $max = $this->choices->max('value');
+
+        foreach($skills as $skill) {
+            $rating = $ratings->where('skill_id', $skill->id)->first();
+            $skill->max = $max;
+
+            if (isset($rating)) {       // insert user rating data
+                $skill->rating = $rating->rating;
+                $skill->percent = $skill->rating / $max * 100;
+                $skill->background = app('Reflect')->getBackgroundColor($skill->percent);
+            } else {                    // insert placeholder data
+                $skill->rating = 0;
+                $skill->percent = 0;
+                $skill->background = '#e5e5e5';
+            }
+        }
+
+        return $skills;
+    }
+
+    /**
      * Returns a collection of categories containing skills for rendering
      * @return Collection
      */

@@ -27,6 +27,19 @@ class Reflect
         $this->activity = $request->route('activity');
     }
 
+    public function getBackgroundColor($percent)
+    {
+        if ($percent > 80) {
+            return '#ffcf36';
+        } elseif ($percent > 50) {
+            return '#f4a300';
+        } elseif ($percent > 25) {
+            return '#ef7d00';
+        }
+
+        return '#ed6000';
+    }
+
     /**
      * Returns a collection of choice options for users to choose between.
      * Globally at present, todo: make these configurable (in sets) per-skill.
