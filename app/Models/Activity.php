@@ -187,27 +187,14 @@ class Activity extends Model
     }
 
     /**
-     * Returns a collection of categories containing skills for rendering
-     * @return Collection
-     */
-    public function getSkillsInCategories()
-    {
-        $skills = $this->getSkills();
-        $categories = $this->getCategories()->whereIn('id', $skills->pluck('category_id')->unique());
-
-        foreach($categories as $category) {
-            $category->setRelation('skills', $skills->where('category_id', $category->id));
-        }
-
-        return $categories;
-    }
-
-    /**
      * Returns an array of the students within the activity for rendering
      */
     public function getStaffListArray()
     {
-        $this->loadUserGroups();
+        // load users' groups as related model directly (no pivot stuff)
+        foreach ($this->users as $user) {
+            $user->setRelation('group', $this->groups->where('id', $user->pivot->group_id)->first());
+        }
 
         $staff = $this->users->where('pivot.role', 'staff')->sortBy('email');
 
@@ -233,7 +220,10 @@ class Activity extends Model
      */
     public function getStudentListArray()
     {
-        $this->loadUserGroups();
+        // load the user's group as a related model on the user
+        foreach ($this->users as $user) {
+            $user->setRelation('group', $this->groups->where('id', $user->pivot->group_id)->first());
+        }
 
         $students = $this->users->where('pivot.role', 'student')->sortBy('email');
         $students->load('selections');
@@ -273,30 +263,6 @@ class Activity extends Model
         }
 
         return $studentsArray;
-    }
-
-    /**
-     * Tracks whether $userGroups have already been loaded, so this function
-     * can be called by multiple helpers without causing multiple queries.
-     * todo: manage this better without the property.
-     */
-    protected $userGroupsLoaded = false;
-    
-    /**
-     * Gets the activity's groups and saves them as relations to the activity's
-     * users directly (rather than activity->user pivots)
-     *
-     */
-    public function loadUserGroups()
-    {
-        if (!$this->userGroupsLoaded) {
-            // manually relate group to each user based on pivot to activity
-            $groups = $this->groups;
-            foreach ($this->users as $user) {
-                $user->setRelation('group', $groups->where('id', $user->pivot->group_id)->first());
-            }
-            $this->userGroupsLoaded = true;
-        }
     }
 
     /**
