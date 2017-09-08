@@ -164,6 +164,7 @@
                         blocks: blockPositions,
                         skills: skillPositions
                     }).then(response => {
+                        console.log('here in the response');
                         console.log(response.data);
                         if (response.status == 200) {
                             this.page.title = response.data.title;

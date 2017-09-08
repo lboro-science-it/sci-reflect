@@ -41,6 +41,8 @@ New activity
                                 <option value="{{ $activity->id }}">{{ $activity->name }} ({{ $activity->rounds->count() }} rounds, {{ $activity->skills->count() }} skills)</option>
                                 @endforeach
                             </select>
+
+                            <p>Warning: cloning content from another activity may take a while, as it has to create a whole bunch of database records and transpose all of their relationships. That's potentially a lot of queries! Be patient!</p>
                             @endif
 
                             <button type="submit" class="btn btn-primary">Save</button>

@@ -168,19 +168,19 @@ class PageController extends Controller
 
         // update the positions of the blocks / skills
 
-        $blockCases = '';
-        foreach ($request->input('blocks') as $block) {
-            $blockCases .= "when block_id = $block->id then $block->position ";
-        }
-        if ($blockCases !== '') {
+        if ($request->has('blocks') && count($request->input('blocks')) > 0) {
+            $blockCases = '';
+            foreach ($request->input('blocks') as $block) {
+                $blockCases .= "when block_id = " . $block['id'] . " then " . $block['position'] . " ";
+            }
             DB::statement("UPDATE block_page SET position = (case $blockCases end) WHERE page_id = $page->id;");
         }
 
-        $skillCases = '';
-        foreach ($request->input('skills') as $skill) {
-            $skillCases .= "when skill_id = $skill->id then $skill->position ";
-        }
-        if ($skillCases !== '') {
+        if ($request->has('skills') && count($request->input('skills')) > 0) {
+            $skillCases = '';
+            foreach ($request->input('skills') as $skill) {
+                $skillCases .= "when skill_id = " . $skill['id'] . " then " . $skill['position'] . " ";
+            }
             DB::statement("UPDATE page_skill SET position = (case $skillCases end) WHERE page_id = $page->id;");
         }
 

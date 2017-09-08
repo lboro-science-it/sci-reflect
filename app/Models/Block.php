@@ -11,10 +11,7 @@ class Block extends Model
         'content'
     ];
 
-    protected $fillable = [
-        'activity_id',
-        'content'
-    ];
+    protected $guarded = ['id'];
 
     public function pages()
     {

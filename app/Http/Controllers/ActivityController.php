@@ -36,7 +36,7 @@ class ActivityController extends Controller
         $activity->update($request->input());
         $activity->status = 'design';
         
-        if ($request->input('clone_from') == 'NULL') {
+        if (!$request->has('clone_from') || $request->input('clone_from') == 'null') {
             $round = new \App\Round;
             $round->format = $activity->format;
             $round->round_number = 1;
@@ -47,12 +47,10 @@ class ActivityController extends Controller
             $page->title = 'Intro Page';
             $activity->pages()->save($page);
             $round->pages()->attach($page->id, ['page_number' => 1]);
-
-            $activity->save();
         } else {
             // $request->input('clone_from') contains the activity ID to clone the content of
             // check it's one of the user's activities
-            $sourceActivity = Auth::user()->activities()->where('activity_id', $request->input('clone_from')->first();
+            $sourceActivity = Auth::user()->activities()->where('activity_id', $request->input('clone_from'))->first();
 
             // kick the user out if they are trying to clone someone else's activity
             if (!isset($sourceActivity)) {
@@ -61,6 +59,8 @@ class ActivityController extends Controller
 
             $activity->cloneFrom($sourceActivity);
         }
+
+        $activity->save();
 
         return view('staff.dashboard');
     }

@@ -20,14 +20,189 @@ class Activity extends Model
     // Data gathering methods
 
     /**
-     * Create clones of $sourceActivity's rounds, blocks, categories, choices,
+     * Create clones of $activity's rounds, blocks, categories, choices,
      * indicators, skills, pages, page_rounds, page_skills, all related to this
      * activity.
+     * Starts with the round object and cascades down, with an array
+     * to keep track of old IDs => new IDs.
      *
      */
-    public function cloneFrom($sourceActivity)
+    public function cloneFrom($activity)
     {
+        // lazy load necessary data on the source activity
+        $activity->load([
+            'blocks',
+            'categories',
+            'choices',
+            'pages',
+            'rounds',
+            'skills.indicators',
+            'rounds.pagePivots',
+            'pages.skillPivots',
+            'pages.blockPivots'
+        ]);
 
+        $idMaps = [];       // object to store maps of old to new IDs
+
+        // clone objects that just need the new activity ID, but where the new
+        // ids will be used elsewhere
+        $idMaps['blocks'] = $this->cloneFromCollection($activity->blocks);
+        $idMaps['categories'] = $this->cloneFromCollection($activity->categories);
+        $idMaps['pages'] = $this->cloneFromCollection($activity->pages);
+
+        // we don't need to use choice_id anywhere else so just clone it
+        $this->cloneFromCollection($activity->choices);
+
+        // clone objects that also need to update relationships' ids using $idMaps
+        $idMaps['rounds'] = $this->cloneRounds($activity->rounds, $idMaps);
+        $idMaps['skills'] = $this->cloneSkillsAndIndicators($activity->skills, $idMaps);
+
+        $skillPivotsToClone = $activity->pages->pluck('skillPivots')->collapse()->unique();
+        $blockPivotsToClone = $activity->pages->pluck('blockPivots')->collapse()->unique();
+        $pagePivotsToClone = $activity->rounds->pluck('pagePivots')->collapse()->unique();
+
+        $this->clonePivots($skillPivotsToClone, $idMaps);
+        $this->clonePivots($blockPivotsToClone, $idMaps);
+        $this->clonePivots($pagePivotsToClone, $idMaps);
+    }
+
+    /**
+     * Creates a replicated version of each model in $collection, updating its
+     * activity_id to be $this->id, returning an array of the old ids => new ids.
+     *
+     */
+    private function cloneFromCollection($collection)
+    {
+        $idMaps = [];
+        foreach ($collection as $item) {
+            $newItem = $item->replicate();
+            $newItem->activity_id = $this->id;
+            $newItem->save();
+            $idMaps[$item->id] = $newItem->id;
+        }
+
+        return $idMaps;
+    }
+
+    /**
+     * This is an ugly old method! It accepts a collection of pivot models,
+     * which it searches for columns block_id, page_id, round_id, skill_id.
+     * If it finds them, it transposes to the new values in $idMaps.
+     * On the plus side, it then inserts all the new records in a single insert.s
+     *
+     */ 
+    private function clonePivots($pivotsToClone, $idMaps)
+    {
+        if (!$pivotsToClone->count()) {
+            return;
+        }
+
+        $className = get_class($pivotsToClone[0]);
+
+        $pivotsToCreate = [];
+        foreach ($pivotsToClone as $pivot) {
+            $pivotArr = [];
+            foreach ($pivot->getAttributes() as $key => $value) {
+                if ($key != 'id') {
+                    switch ($key) {
+                        case 'block_id':
+                            $pivotArray[$key] = $idMaps['blocks'][$value];
+                            break;
+                        case 'page_id':
+                            $pivotArray[$key] = $idMaps['pages'][$value];
+                            break;
+                        case 'round_id':
+                            $pivotArray[$key] = $idMaps['rounds'][$value];
+                            break;
+                        case 'skill_id':
+                            $pivotArray[$key] = $idMaps['skills'][$value];
+                            break;
+                        case 'created_at':
+                            $pivotArray[$key] = date('Y-m-d H:i:s');
+                            break;
+                        case 'updated_at':
+                            $pivotArray[$key] = date('Y-m-d H:i:s');
+                            break;
+                        default:
+                            $pivotArray[$key] = $value;
+                    }
+                }
+            }
+
+            array_push($pivotsToCreate, $pivotArray);
+        }
+
+        $className::insert($pivotsToCreate);
+    }
+
+    /** 
+     * Clones the passed collection of $rounds into $this->activity, also using
+     * $idMaps array to update block_id to new values
+     *
+     */
+    private function cloneRounds($rounds, $idMaps)
+    {
+        $roundIdMaps = [];
+        foreach ($rounds as $round) {
+            $newRound = $round->replicate();
+            $newRound->activity_id = $this->id;
+            if (isset($newRound->block_id)) {
+                $newRound->block_id = $idMaps['blocks'][$newRound->block_id];
+            }
+
+            $newRound->save();
+
+            $roundIdMaps[$round->id] = $newRound->id;
+        }
+
+        // iterate them again now we can update the inherit_from_round_id column
+        foreach ($rounds as $round) {
+            $newRound = \App\Round::find($roundIdMaps[$round->id]);
+            if (isset($newRound->inherit_from_round_id)) {
+                $newRound->inherit_from_round_id = $roundIdMaps[$newRound->inherit_from_round_id];
+                $newRound->save();
+            }
+        }
+
+        return $roundIdMaps;
+    }
+
+    /** 
+     * Clones the passed collection of $skills into $this->activity, also using
+     * $idMaps array to update category_id and block_id to new values.
+     * A
+     *
+     */
+    private function cloneSkillsAndIndicators($skills, $idMaps)
+    {
+        $skillIdMaps = [];
+        $indicatorsToCreate = [];
+        foreach ($skills as $skill) {
+            $newSkill = $skill->replicate();
+            $newSkill->activity_id = $this->id;
+            $newSkill->category_id = $idMaps['categories'][$newSkill->category_id];
+            $newSkill->block_id = $idMaps['blocks'][$newSkill->block_id];
+            $newSkill->save();
+
+            $skillIdMaps[$skill->id] = $newSkill->id;
+
+            // build an array of cloned indicators to create, too. Since we don't
+            // need their IDs for any other tables, we can do in a single statement.
+            // That's lucky because there are likely to be four per skill.
+            foreach ($skill->indicators as $indicator) {
+                array_push($indicatorsToCreate, [
+                    'skill_id' => $newSkill->id,
+                    'text' => $indicator->text,
+                    'number' => $indicator->number,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at'  => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+        \App\Indicator::insert($indicatorsToCreate);
+
+        return $skillIdMaps;
     }
 
     /**
