@@ -24,6 +24,8 @@ class ActivityController extends Controller
 
     /**
      * Handle a submitted activity create form and generate default content.
+     * If $request->input('clone_from') is set we need to clone that activity's
+     * content into this activity.
      *
      * @param  Illuminate\Http\Request $request
      * @param  App\Activity $activity
@@ -34,18 +36,31 @@ class ActivityController extends Controller
         $activity->update($request->input());
         $activity->status = 'design';
         
-        $round = new \App\Round;
-        $round->format = $activity->format;
-        $round->round_number = 1;
-        $round->title = 'Round 1';
-        $activity->rounds()->save($round);
+        if ($request->input('clone_from') == 'NULL') {
+            $round = new \App\Round;
+            $round->format = $activity->format;
+            $round->round_number = 1;
+            $round->title = 'Round 1';
+            $activity->rounds()->save($round);
 
-        $page = new \App\Page;
-        $page->title = 'Intro Page';
-        $activity->pages()->save($page);
-        $round->pages()->attach($page->id, ['page_number' => 1]);
+            $page = new \App\Page;
+            $page->title = 'Intro Page';
+            $activity->pages()->save($page);
+            $round->pages()->attach($page->id, ['page_number' => 1]);
 
-        $activity->save();
+            $activity->save();
+        } else {
+            // $request->input('clone_from') contains the activity ID to clone the content of
+            // check it's one of the user's activities
+            $sourceActivity = Auth::user()->activities()->where('activity_id', $request->input('clone_from')->first();
+
+            // kick the user out if they are trying to clone someone else's activity
+            if (!isset($sourceActivity)) {
+                return redirect('eject');
+            }
+
+            $activity->cloneFrom($sourceActivity);
+        }
 
         return view('staff.dashboard');
     }
@@ -88,8 +103,18 @@ class ActivityController extends Controller
         if ($activity->status == 'new') {
             $reflect = app('Reflect');
 
+            // get the user's other activities in case they want to clone the content
+            $activities = Auth::user()->activities()
+                                      ->where('activity_id', '<>', $activity->id)
+                                      ->wherePivot('role', 'staff')
+                                      ->with('rounds')
+                                      ->with('skills')
+                                      ->get();
+
+
             return view('staff.new')
-                 ->with('formats', $reflect->getFormatDisplayNames());
+                 ->with('formats', $reflect->getFormatDisplayNames())
+                 ->with('activities', $activities);
         }
 
         return view('staff.dashboard');

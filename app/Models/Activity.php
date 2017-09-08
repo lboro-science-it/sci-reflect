@@ -20,6 +20,17 @@ class Activity extends Model
     // Data gathering methods
 
     /**
+     * Create clones of $sourceActivity's rounds, blocks, categories, choices,
+     * indicators, skills, pages, page_rounds, page_skills, all related to this
+     * activity.
+     *
+     */
+    public function cloneFrom($sourceActivity)
+    {
+
+    }
+
+    /**
      * Returns the categories within the activity, ordered for rendering.
      *
      */

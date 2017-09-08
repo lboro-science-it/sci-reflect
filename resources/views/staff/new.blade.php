@@ -33,6 +33,16 @@ New activity
                                 @endforeach
                             </select>
 
+                            @if($activities->count())
+                            <label for="clone_from">Clone content from (optional)</label>
+                            <select name="clone_from" class="form-control">
+                                <option value="null">Don't clone any content</option>
+                                @foreach($activities as $activity)
+                                <option value="{{ $activity->id }}">{{ $activity->name }} ({{ $activity->rounds->count() }} rounds, {{ $activity->skills->count() }} skills)</option>
+                                @endforeach
+                            </select>
+                            @endif
+
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>
