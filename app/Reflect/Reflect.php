@@ -57,6 +57,10 @@ class Reflect
      */
     public function getCurrentRoundFormat()
     {
+        if (!isset($this->activity)) {
+            return 'linear';
+        }
+        
         $round = $this->activity->rounds->where('round_number', Auth::user()->currentRound)->first();
 
         $format = isset($round->format) ? $round->format : $this->activity->format;
