@@ -74298,6 +74298,7 @@ var defaultPage = {
                     blocks: blockPositions,
                     skills: skillPositions
                 }).then(function (response) {
+                    console.log('here in the response');
                     console.log(response.data);
                     if (response.status == 200) {
                         _this2.page.title = response.data.title;
