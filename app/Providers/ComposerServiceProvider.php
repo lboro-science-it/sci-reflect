@@ -20,7 +20,7 @@ class ComposerServiceProvider extends ServiceProvider
         );
 
         View::composer(
-            'activity.student', 'App\ViewComposers\StudentDashboardComposer'
+            'linear.dashboard', 'App\ViewComposers\StudentDashboardComposer'
         );
 
     }
