@@ -25,12 +25,16 @@
             <td v-show="mode == 'overview'">
                 <!-- todo: swap below so if already rated, link to chart of ratings
                 -->
-                <a class="btn"
+                <a class="btn btn-info"
                    :href="getRateLink(round.roundNumber)"
-                   :class="{ 'disabled': round.staffHasRated,
-                             'btn-success': round.staffHasRated,
-                             'btn-info': !round.staffHasRated }"
-                   v-show="round.staffCanRate">Rate</a>
+                   v-show="round.staffCanRate & !round.staffHasRated">
+                   Rate
+               </a>
+                <a class="btn btn-success"
+                   :href="getReviewLink(round.roundNumber)"
+                   v-show="round.staffCanRate & round.staffHasRated">
+                   Review
+               </a>
             </td>
         </template>
        
@@ -92,6 +96,11 @@
             // returns link for rating the row's student for given round
             getRateLink(roundNumber) {
                 return window.sciReflect.baseUrl + '/r/' + roundNumber + '/rate/' + this.student.id;
+            },
+            
+            // returns link for (you guessed it) reviewing the ratings for given round
+            getReviewLink(roundNumber) {
+                return window.sciReflect.baseUrl + '/r/' + roundNumber + '/review/' + this.student.id;
             },
 
             // only show row if it fits filter criteria
