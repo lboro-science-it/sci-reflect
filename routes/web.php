@@ -70,6 +70,9 @@ Route::prefix('a/{activity}')->group(function() {
         // show form for rating a student
         Route::get('r/{round}/rate/{studentId}', 'RatingController@show');
         Route::post('r/{round}/rate/{studentId}', 'RatingController@store');
+
+        // show page for reviewing ratings of a student in a given round
+        Route::get('r/{round}/review/{studentId}', 'RatingController@review');
     });
 
     /**

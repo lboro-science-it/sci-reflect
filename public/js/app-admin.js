@@ -76661,6 +76661,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -76711,6 +76715,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // returns link for rating the row's student for given round
         getRateLink: function getRateLink(roundNumber) {
             return window.sciReflect.baseUrl + '/r/' + roundNumber + '/rate/' + this.student.id;
+        },
+
+
+        // returns link for (you guessed it) reviewing the ratings for given round
+        getReviewLink: function getReviewLink(roundNumber) {
+            return window.sciReflect.baseUrl + '/r/' + roundNumber + '/review/' + this.student.id;
         },
 
 
@@ -76840,19 +76850,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       directives: [{
         name: "show",
         rawName: "v-show",
-        value: (round.staffCanRate),
-        expression: "round.staffCanRate"
+        value: (round.staffCanRate & !round.staffHasRated),
+        expression: "round.staffCanRate & !round.staffHasRated"
       }],
-      staticClass: "btn",
-      class: {
-        'disabled': round.staffHasRated,
-          'btn-success': round.staffHasRated,
-          'btn-info': !round.staffHasRated
-      },
+      staticClass: "btn btn-info",
       attrs: {
         "href": _vm.getRateLink(round.roundNumber)
       }
-    }, [_vm._v("Rate")])])]
+    }, [_vm._v("\n               Rate\n           ")]), _vm._v(" "), _c('a', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (round.staffCanRate & round.staffHasRated),
+        expression: "round.staffCanRate & round.staffHasRated"
+      }],
+      staticClass: "btn btn-success",
+      attrs: {
+        "href": _vm.getReviewLink(round.roundNumber)
+      }
+    }, [_vm._v("\n               Review\n           ")])])]
   }), _vm._v(" "), _c('td', {
     directives: [{
       name: "show",

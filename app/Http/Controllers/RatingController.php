@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\Rating;
 use App\Round;
 use App\User;
 use Auth;
@@ -11,11 +12,56 @@ use Illuminate\Http\Request;
 
 class RatingController extends Controller
 {
+    /**
+     * Show the review of ratings for a student with given $studentId.
+     * Staff middleware prevents access unless Auth::user() is 'staff'.
+     * Note this is basically the same as the show chart method for students,
+     * if I wasn't leaving I would take a bit more time and tidy up the code
+     * as it's pretty much a copy and paste. What we need is to take the below
+     * code and stick it as a method on something like $round, e.g. so we call
+     * $round->getRatings($ratedId, $raterId) or whatever.
+     */
+    public function review(Activity $activity, Round $round, $studentId)
+    {
+        // todo: test the student belongs to the activity (low priority)
+
+        // this code is same as what is used in $activity->getRoundsData, to get
+        // the user id of the rater of the student so we can get the ratings.
+        // get the first unique staff rating, so we can display a link to it
+        $staffRating = $round->ratings->filter(function ($item) use ($studentId) {
+            return $item['rater_id'] != $studentId;
+        })->unique('rater_id')->first();
+
+        // store the id of the staff member so we can view their chart
+        if (!isset($staffRating)) {
+            return redirect('eject');
+        }
+
+        // now we can use $staffRating->rater_id to get the rater_id
+        $ratings = Rating::where('round_id', $round->id)
+                         ->where('rated_id', $studentId)
+                         ->where('rater_id', $staffRating->rater_id)
+                         ->get();
+
+        $chartData = $activity->getChartDataFromRatings($ratings);
+        $categories = $activity->getCategories();
+        $skills = $activity->getSkillsFromRatings($ratings);
+
+        $student = User::find($studentId);
+
+        return view('staff.review')
+             ->with('categories', $categories)
+             ->with('chartData', $chartData)
+             ->with('ratings', $ratings)
+             ->with('round', $round)
+             ->with('skills', $skills)
+             ->with('student', $student);
+    }
+
     /** 
      * Show the form for rating a student with given $studentId. Staff
      * middleware prevents this being accessible unless Auth::user has role
      * 'staff' in $activity.
-     * todo: also account for groups
      *
      */
     public function show(Activity $activity, Round $round, $studentId, Request $request)
