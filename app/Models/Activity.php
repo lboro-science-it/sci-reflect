@@ -206,6 +206,34 @@ class Activity extends Model
     }
 
     /**
+     * Takes a json object containing rounds, pages, skills, categories,
+     * blocks, choices, and turns them into database objects.
+     *
+     */
+    public function createFromJSON($json)
+    {
+        // ok from the json object we extract ...
+        // rounds array
+        // pages array
+        // skills array
+        // categories array
+        // blocks array
+        // choices array
+
+        // we can use choices, blocks and categories directly to create them
+        // but track actual id of blocks&categories vs array indexes
+
+        // then we can create the skills (using actual category ids in place of indexes) and indicators
+        // again track actual skill ids vs array indexes
+        
+        // then we can create pages, using actual skill ids in place of indexes + block ids in place of indexes
+        // must track the actual ids for pages
+
+        // then we can create rounds, transpose the page index to actual page id
+        // then we are done
+    }
+    
+    /**
      * Returns the categories within the activity, ordered for rendering.
      *
      */
@@ -461,6 +489,16 @@ class Activity extends Model
         }
 
         return $studentsArray;
+    }
+
+    public function isNew()
+    {
+        return $this->status == 'new';
+    }
+
+    public function isDesign()
+    {
+        return $this->status == 'design';
     }
 
     /**

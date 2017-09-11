@@ -100,7 +100,7 @@ class ActivityController extends Controller
      */
     public function show(Activity $activity)
     {
-        if ($activity->status == 'new') {
+        if ($activity->isNew()) {
             $reflect = app('Reflect');
 
             // get the user's other activities in case they want to clone the content
