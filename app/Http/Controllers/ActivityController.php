@@ -35,19 +35,16 @@ class ActivityController extends Controller
     {
         $activity->update($request->input());
         $activity->status = 'design';
-        
-        if (!$request->has('clone_from') || $request->input('clone_from') == 'null') {
-            $round = new \App\Round;
-            $round->format = $activity->format;
-            $round->round_number = 1;
-            $round->title = 'Round 1';
-            $activity->rounds()->save($round);
 
-            $page = new \App\Page;
-            $page->title = 'Intro Page';
-            $activity->pages()->save($page);
-            $round->pages()->attach($page->id, ['page_number' => 1]);
-        } else {
+        // ok, this is a pretty dang ugly conditional block...
+        // since the 'clone from' and 'create from json' options were added late,
+        // I don't have time to make this neater.
+        // So the first one checks if the 'clone from' select was set, if so it does that
+        // second one checks if any json was pasted, if so, create from that
+        // third, finally, manually create a few dummy objects. Frankly the third is useless since
+        // I didn't finish building the GUI.
+
+        if ($request->has('clone_from') && $request->input('clone_from') != 'null') {
             // $request->input('clone_from') contains the activity ID to clone the content of
             // check it's one of the user's activities
             $sourceActivity = Auth::user()->activities()->where('activity_id', $request->input('clone_from'))->first();
@@ -58,9 +55,42 @@ class ActivityController extends Controller
             }
 
             $activity->cloneFrom($sourceActivity);
+        } else if ($request->input('create_from_json') != '') {
+            // $request->input('create_from_json') contains a json object detailing rounds, pages, categories, choices, etc to create
+            // so we'll just chuck it to the $activity's $createFromJSON method
+            $json = $request->input('create_from_json');
+            $activity->createFromJSON($json);
+        } else {
+            $round = new \App\Round;
+            $round->format = $activity->format;
+            $round->round_number = 1;
+            $round->title = 'Round 1';
+            $activity->rounds()->save($round);
+
+            $page = new \App\Page;
+            $page->title = 'Intro Page';
+            $activity->pages()->save($page);
+            $round->pages()->attach($page->id, ['page_number' => 1]);
         }
 
         $activity->save();
+
+        return view('staff.dashboard');
+    }
+
+    /**
+     * Deals with the 'create from JSON' form in the Setup activity view.
+     * Basically, it gets the json out of the request and chucks it at the 
+     * $activity - so on the Activity model there is a corresponding 
+     * createFromJSON method which goes through the json and creates stuff.
+     *
+     */
+    public function createFromJSON(Activity $activity, Request $request)
+    {
+        if ($request->input('create_from_json') != '') {
+            $json = $request->input('create_from_json');
+            $activity->createFromJSON($json);
+        }
 
         return view('staff.dashboard');
     }

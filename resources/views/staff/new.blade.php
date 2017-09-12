@@ -45,6 +45,10 @@ New activity
                             <p>Warning: cloning content from another activity may take a while, as it has to create a whole bunch of database records and transpose all of their relationships. That's potentially a lot of queries! Be patient!</p>
                             @endif
 
+                            <label for="create_from_json">Create content from pasted JSON (optional)</label>
+                            <textarea name="create_from_json" rows="5" class="form-control" placeholder="Paste json object, see napkin for details of structure"></textarea>
+
+
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>

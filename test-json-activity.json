@@ -8,7 +8,7 @@
             "title": "Round 1",
             "block_id": 0,
             "staff_rate": 1,
-            "student_rate": 1.
+            "student_rate": 1,
             "pages": [
                 0, 5, 2
             ]
@@ -32,14 +32,14 @@
             "title": "Page 1",
             "skills": [
                 0, 2, 3
-            ],
+            ]
         },
         {
             "title": "Page 2",
             "blocks": [
                 0, 1
             ]
-        },
+        }
     ],
     "skills": [
         {
@@ -59,7 +59,7 @@
     ],
     "blocks": [
         {
-            "content": "Block content",
+            "content": "Block content"
         }
     ],
     "choices": [

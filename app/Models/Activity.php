@@ -212,13 +212,27 @@ class Activity extends Model
      */
     public function createFromJSON($json)
     {
-        // ok from the json object we extract ...
-        // rounds array
-        // pages array
-        // skills array
-        // categories array
-        // blocks array
-        // choices array
+        $jsonArray = json_decode($json, true);
+
+        // object to track how the array indexes in jsonArray map onto the
+        // created database items for blocks, categories, choices, etc
+        $idMaps = [];
+
+        // create blocks and categories, storing their ids in case
+        // they are referred to in later created pages, rounds, or skills
+        if (isset($jsonArray['blocks'])) {
+            $idMaps['blocks'] = $this->createBlocks($jsonArray['blocks']);
+        }
+        if (isset($jsonArray['categories'])) {
+            $idMaps['categories'] = $this->createCategories($jsonArray['categories']);
+        }
+
+        // create choices, don't store their ids as just related to activity
+        if (isset($jsonArray['choices'])) {
+            $this->createChoices($jsonArray['choices']);
+        }
+
+        dd($idMaps);
 
         // we can use choices, blocks and categories directly to create them
         // but track actual id of blocks&categories vs array indexes
@@ -232,7 +246,57 @@ class Activity extends Model
         // then we can create rounds, transpose the page index to actual page id
         // then we are done
     }
-    
+
+    /**
+     * Quick and dirty function to create a bunch of blocks related to this activity
+     * based on a blocksArray (passed by JSON data).
+     *
+     */
+    private function createBlocks($blocksArray)
+    {
+        $idMaps = [];
+        foreach ($blocksArray as $index => $blockItem) {
+            $block = new \App\Block();
+            $block->fill($blockItem);
+            $block->activity_id = $this->id;
+            $block->save();
+            $idMaps[$index] = $block->id;
+        }
+
+        return $idMaps;
+    }
+
+    /**
+     * Q&D function to create a bunch of categories related to this activity
+     *
+     */
+    private function createCategories($categoriesArray)
+    {
+        $idMaps = [];
+        foreach ($categoriesArray as $index => $categoryItem) {
+            $category = new \App\Category();
+            $category->fill($categoryItem);
+            $category->activity_id = $this->id;
+            $category->save();
+            $idMaps[$index] = $category->id;
+        }
+
+        return $idMaps;
+    }
+
+    /**
+     * Q&D function to create a bunch of choices related to this activity
+     */
+    private function createChoices($choicesArray)
+    {
+        foreach ($choicesArray as $choiceItem) {
+            $choice = new \App\Choice();
+            $choice->fill($choiceItem);
+            $choice->activity_id = $this->id;
+            $choice->save();
+        }
+    }
+
     /**
      * Returns the categories within the activity, ordered for rendering.
      *

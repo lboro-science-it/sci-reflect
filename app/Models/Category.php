@@ -14,6 +14,8 @@ class Category extends Model
         'number'
     ];
 
+    protected $guarded = [];
+
     public function skills()
     {
         return $this->hasMany('App\Skill');

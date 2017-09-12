@@ -33,6 +33,7 @@ Route::prefix('a/{activity}')->group(function() {
         Route::put('close', 'ActivityController@close');
         Route::put('open', 'ActivityController@open');
         Route::get('setup', 'ActivityController@showSetup');
+        Route::post('create-from-json', 'ActivityController@createFromJSON');
 
         Route::get('users', 'UserController@index');
         Route::post('users', 'UserController@store');
