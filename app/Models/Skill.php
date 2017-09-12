@@ -16,6 +16,8 @@ class Skill extends Model
         'indicators'
     ];
 
+    protected $guarded = [];
+
     public function block()
     {
         return $this->belongsTo('App\Block');

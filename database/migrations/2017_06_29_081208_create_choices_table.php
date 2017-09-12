@@ -17,7 +17,7 @@ class CreateChoicesTable extends Migration
             $table->increments('id');
             $table->integer('activity_id');
             $table->integer('value');
-            $table->string('label', 50);
+            $table->string('label', 50)->nullable();
             $table->timestamps();
         });
     }

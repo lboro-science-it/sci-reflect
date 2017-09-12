@@ -12,6 +12,8 @@ class Indicator extends Model
         'number'
     ];
 
+    protected $guarded = [];
+
     public function selections()
     {
         return $this->hasMany('App\Selection');

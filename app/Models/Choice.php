@@ -11,4 +11,6 @@ class Choice extends Model
         'value',
         'label'
     ];
+
+    protected $guarded = [];
 }

@@ -14,7 +14,8 @@ class Round extends Model
     ];
 
     protected $fillable = [
-        'format', 'keep_visible', 'round_number', 'staff_rate', 'student_rate', 'title'
+        'block_id', 'close_date', 'format', 'keep_visible', 'open_date',
+        'round_number', 'staff_rate', 'student_rate', 'title'
     ];
 
     // Relationship methods

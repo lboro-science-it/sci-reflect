@@ -2,8 +2,6 @@
     "rounds": [
         {
             "keep_visible": 1,
-            "open_date": "Y-m-d H:i:s",
-            "close_date": "Y-m-d H:i:s",
             "round_number": 1,
             "title": "Round 1",
             "block_id": 0,
@@ -15,8 +13,6 @@
         },
         {
             "keep_visible": 1,
-            "open_date": "Y-m-d H:i:s",
-            "close_date": "Y-m-d H:i:s",
             "round_number": 2,
             "title": "Round 2",
             "block_id": 0,
@@ -31,13 +27,79 @@
         {
             "title": "Page 1",
             "skills": [
-                0, 2, 3
+                {
+                    "id": 0,
+                    "position": 1
+                },
+                {
+                    "id": 2,
+                    "position": 2
+                }
             ]
         },
         {
             "title": "Page 2",
             "blocks": [
-                0, 1
+                {
+                    "id": 0,
+                    "position": 1
+                },
+                {
+                    "id": 1,
+                    "position": 2
+                }
+            ]
+        },
+        {
+            "title": "Page 3",
+            "blocks": [
+                {
+                    "id": 0,
+                    "position": 1
+                },
+                {
+                    "id": 1,
+                    "position": 2
+                }
+            ]
+        },
+        {
+            "title": "Page 4",
+            "blocks": [
+                {
+                    "id": 0,
+                    "position": 1
+                },
+                {
+                    "id": 1,
+                    "position": 2
+                }
+            ]
+        },
+        {
+            "title": "Page 5",
+            "blocks": [
+                {
+                    "id": 0,
+                    "position": 1
+                },
+                {
+                    "id": 1,
+                    "position": 2
+                }
+            ]
+        },
+        {
+            "title": "Page 6",
+            "blocks": [
+                {
+                    "id": 0,
+                    "position": 1
+                },
+                {
+                    "id": 1,
+                    "position": 2
+                }
             ]
         }
     ],
@@ -47,7 +109,119 @@
             "description": "Skill description",
             "block_id": 1,
             "number": 1,
-            "category_id": 0
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                },
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                }
+            ]
+        },
+        {
+            "title": "Skill title",
+            "description": "Skill description",
+            "block_id": 2,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                },
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                }
+            ]
+        },
+        {
+            "title": "Skill title",
+            "description": "Skill description",
+            "block_id": 2,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                },
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                }
+            ]
+        },
+        {
+            "title": "Skill title",
+            "description": "Skill description",
+            "block_id": 2,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                },
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                }
+            ]
+        },
+        {
+            "title": "Skill title",
+            "description": "Skill description",
+            "block_id": 2,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                },
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                }
+            ]
+        },
+        {
+            "title": "Skill title",
+            "description": "Skill description",
+            "block_id": 2,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                },
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                }
+            ]
+        },
+        {
+            "title": "Skill title",
+            "description": "Skill description",
+            "block_id": 2,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                },
+                {
+                    "text": "Indicator for skill",
+                    "number": 50
+                }
+            ]
         }
     ],
     "categories": [
@@ -58,6 +232,36 @@
         }
     ],
     "blocks": [
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
+        {
+            "content": "Block content"
+        },
         {
             "content": "Block content"
         }

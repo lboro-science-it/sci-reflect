@@ -221,30 +221,35 @@ class Activity extends Model
         // create blocks and categories, storing their ids in case
         // they are referred to in later created pages, rounds, or skills
         if (isset($jsonArray['blocks'])) {
-            $idMaps['blocks'] = $this->createBlocks($jsonArray['blocks']);
+            $idMaps['blocks'] = $this->createBlocksFromArray($jsonArray['blocks']);
         }
         if (isset($jsonArray['categories'])) {
-            $idMaps['categories'] = $this->createCategories($jsonArray['categories']);
+            $idMaps['categories'] = $this->createCategoriesFromArray($jsonArray['categories']);
         }
 
         // create choices, don't store their ids as just related to activity
         if (isset($jsonArray['choices'])) {
-            $this->createChoices($jsonArray['choices']);
+            $this->createChoicesFromArray($jsonArray['choices']);
         }
 
-        dd($idMaps);
+        // now $idMaps contains the actual ids of the blocks, categories from jsonArray
 
-        // we can use choices, blocks and categories directly to create them
-        // but track actual id of blocks&categories vs array indexes
+        // now create skills - pass the $idMaps object to it as it will need to
+        // know the actual block and category ids for relationships
+        if (isset($jsonArray['skills'])) {
+            $idMaps['skills'] = $this->createSkillsAndIndicatorsFromArray($jsonArray['skills'], $idMaps);
+        }
 
-        // then we can create the skills (using actual category ids in place of indexes) and indicators
-        // again track actual skill ids vs array indexes
-        
-        // then we can create pages, using actual skill ids in place of indexes + block ids in place of indexes
-        // must track the actual ids for pages
+        // now pages - pass the $idMaps object as it will need to know actual
+        // block and skill ids for relationships
+        if (isset($jsonArray['pages'])) {
+            $idMaps['pages'] = $this->createPagesFromArray($jsonArray['pages'], $idMaps);
+        }
 
-        // then we can create rounds, transpose the page index to actual page id
-        // then we are done
+        // finalmente rounds - needs to know ids of pages.
+        if (isset($jsonArray['rounds'])) {
+            $this->createRoundsFromArray($jsonArray['rounds'], $idMaps);
+        }
     }
 
     /**
@@ -252,7 +257,7 @@ class Activity extends Model
      * based on a blocksArray (passed by JSON data).
      *
      */
-    private function createBlocks($blocksArray)
+    private function createBlocksFromArray($blocksArray)
     {
         $idMaps = [];
         foreach ($blocksArray as $index => $blockItem) {
@@ -270,7 +275,7 @@ class Activity extends Model
      * Q&D function to create a bunch of categories related to this activity
      *
      */
-    private function createCategories($categoriesArray)
+    private function createCategoriesFromArray($categoriesArray)
     {
         $idMaps = [];
         foreach ($categoriesArray as $index => $categoryItem) {
@@ -287,7 +292,7 @@ class Activity extends Model
     /**
      * Q&D function to create a bunch of choices related to this activity
      */
-    private function createChoices($choicesArray)
+    private function createChoicesFromArray($choicesArray)
     {
         foreach ($choicesArray as $choiceItem) {
             $choice = new \App\Choice();
@@ -295,6 +300,112 @@ class Activity extends Model
             $choice->activity_id = $this->id;
             $choice->save();
         }
+    }
+
+    /**
+     * Takes an associative array (from JSON) of skills, plus separate array
+     * of how to transpose ids. Creates the siklls and indicators
+     *
+     */
+    private function createSkillsAndIndicatorsFromArray($skillsArray, $idMaps)
+    {
+        $skillIdMaps = [];
+        foreach ($skillsArray as $index => $skillItem) {
+            $skill = new \App\Skill();
+            $skill->fill(array_diff_key($skillItem, ['indicators' => '']));
+            $skill->block_id = $idMaps['blocks'][$skill->block_id];
+            $skill->activity_id = $this->id;
+            $skill->save();
+
+            $indicatorItems = $skillItem['indicators'] ?? [];
+
+            foreach ($indicatorItems as $indicatorItem) {
+                $indicator = new \App\Indicator();
+                $indicator->fill($indicatorItem);
+                $indicator->skill_id = $skill->id;
+                $indicator->save();
+            }
+
+            $skillIdMaps[$index] = $skill->id;
+        }
+
+        return $skillIdMaps;
+    }
+
+    private function createPagesFromArray($pagesArray, $idMaps)
+    {
+        $pageIdMaps = [];
+        foreach ($pagesArray as $index => $pageItem) {
+            $page = new \App\Page();
+            $page->fill(array_diff_key($pageItem, ['skills' => '']));
+            $page->activity_id = $this->id;
+            $page->save();
+
+            // create any blockPivots
+            $blockPivotsToCreate = [];
+            $blockItems = $pageItem['blocks'] ?? [];
+
+            foreach ($blockItems as $blockItem) {
+                array_push($blockPivotsToCreate, [
+                    'block_id' => $idMaps['blocks'][$blockItem['id']],
+                    'page_id' => $page->id,
+                    'position' => $blockItem['position'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+
+            \App\BlockPage::insert($blockPivotsToCreate);
+
+            $skillPivotsToCreate = [];
+            $skillItems = $pageItem['skills'] ?? [];
+
+            foreach ($skillItems as $skillItem) {
+                array_push($skillPivotsToCreate, [
+                    'skill_id' => $idMaps['skills'][$skillItem['id']],
+                    'page_id' => $page->id,
+                    'position' => $skillItem['position'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+
+            \App\PageSkill::insert($skillPivotsToCreate);
+
+            $pageIdMaps[$index] = $page->id;
+        }
+
+        return $pageIdMaps;
+    }
+
+    private function createRoundsFromArray($roundsArray, $idMaps)
+    {
+        foreach ($roundsArray as $roundItem) {
+            $round = new \App\Round();
+            $round->fill(array_diff_key($roundItem, ['pages' => '']));
+            $round->activity_id = $this->id;
+            $round->block_id = $idMaps['blocks'][$round->block_id];
+            $round->save();
+
+            $pagePivotsToCreate = [];
+            $pageItems = $roundItem['pages'] ?? [];
+
+            foreach ($pageItems as $index => $pageItem) {
+                array_push($pagePivotsToCreate, [
+                    'round_id' => $round->id,
+                    'page_id' => $idMaps['pages'][$pageItem],
+                    'page_number' => $index + 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+
+            \App\PageRound::insert($pagePivotsToCreate);
+        }
+        // ok we can just create a round object for every item in the array,
+        // excepting of course pages
+        // we can then create the PageRound pivots.
+        // pretty simple
     }
 
     /**
