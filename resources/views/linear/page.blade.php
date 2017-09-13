@@ -24,6 +24,7 @@
                                 @include('partials.skills.table', [
                                     'skill' => $contentItem,
                                     'choices' => $pageData->choices,
+                                    'descriptors' => $pageData->descriptors,
                                     'selections' => $pageData->selections
                                 ])
 

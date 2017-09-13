@@ -93,6 +93,13 @@ class Page extends Model
         return $content->sortBy('pivot.position');
     }
 
+    public function getDescriptors()
+    {
+        // get the page's skills, for each of them get its descriptors
+        $this->skills->load('descriptors');
+        return $this->skills->pluck('descriptors')->flatten()->unique('id');
+    }
+
     /**
      * Returns an array of the indicators present on this page (via skills).
      * @return array

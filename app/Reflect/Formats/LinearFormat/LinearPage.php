@@ -73,6 +73,7 @@ class LinearPage extends BasePage
 
         $data->choices = $this->reflect->getChoices();
         $data->content = $page->getContent();
+        $data->descriptors = $page->getDescriptors();
         $data->hasDone = $this->user->hasCompleted($this->round);
         $data->hasNext = $this->hasNextPage($page);
         $data->hasPrev = $this->hasPrevPage($page);

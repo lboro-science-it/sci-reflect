@@ -28,7 +28,15 @@
                            @if($choice->id == $selections[$indicator->id])
                                 checked 
                            @endif>
-                           <p class="scireflect-tooltip">This should get a purple border. I'm not sure what happens when it's really long, hopefully it's fine. Let's see by typing a load of shit.</p>
+                    <?php
+                        $descriptor = $descriptors->where('skill_id', $skill->id)->where('choice_id', $choice->id)->first();
+                        $text = isset($descriptor) ? $descriptor->text : null;
+                    ?>
+                    @isset($text)
+                        <p class="scireflect-tooltip">
+                            {{ $text }}
+                        </p>
+                    @endisset
                 </label>
             </td>
             @endforeach
