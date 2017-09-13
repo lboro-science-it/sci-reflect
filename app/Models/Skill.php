@@ -28,6 +28,11 @@ class Skill extends Model
         return $this->belongsTo('App\Category');
     }
 
+    public function descriptors()
+    {
+        return $this->hasMany('App\Descriptor');
+    }
+
     public function indicators()
     {
         return $this->hasMany('App\Indicator');

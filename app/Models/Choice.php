@@ -13,4 +13,9 @@ class Choice extends Model
     ];
 
     protected $guarded = [];
+
+    public function descriptors()
+    {
+        return $this->hasMany('App\Descriptor');
+    }
 }

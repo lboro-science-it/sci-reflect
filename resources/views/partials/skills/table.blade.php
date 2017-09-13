@@ -19,7 +19,7 @@
             </td>
             @foreach($choices as $choice)
             <td class="text-center" width="{{ 50 / $choiceCount }}%">
-                <label style="width: 100%; height: 100%;" for="{{ $indicator->id . '-' . $choice->id }}">
+                <label style="width: 100%; height: 100%; position: relative;" for="{{ $indicator->id . '-' . $choice->id }}">
                     <input id="{{ $indicator->id . '-' . $choice->id }}" 
                            name="{{ $indicator->id }}" 
                            value="{{ $choice->id }}"
@@ -28,6 +28,7 @@
                            @if($choice->id == $selections[$indicator->id])
                                 checked 
                            @endif>
+                           <p class="scireflect-tooltip">This should get a purple border. I'm not sure what happens when it's really long, hopefully it's fine. Let's see by typing a load of shit.</p>
                 </label>
             </td>
             @endforeach

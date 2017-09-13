@@ -103,6 +103,21 @@
   border:20px solid $lboro-purple;
 }
 
+.scireflect-radio:hover + .scireflect-tooltip {
+    display: block;
+    border: 5px solid $lboro-purple;
+    border-radius: 5px;
+}
+
+.scireflect-tooltip {
+    background: white;
+    display: none;
+    position: absolute;
+    left: -160px;
+    width: 400px;
+    z-index: 50;
+}
+
 .splash-container {
     height: -webkit-calc(100vh - 74px);
     height: -moz-calc(100vh - 74px);

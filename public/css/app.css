@@ -8456,6 +8456,21 @@ button.close {
   border: 20px solid #361163;
 }
 
+.scireflect-radio:hover + .scireflect-tooltip {
+  display: block;
+  border: 5px solid #361163;
+  border-radius: 5px;
+}
+
+.scireflect-tooltip {
+  background: white;
+  display: none;
+  position: absolute;
+  left: -160px;
+  width: 400px;
+  z-index: 50;
+}
+
 .splash-container {
   height: calc(100vh - 74px);
 }
