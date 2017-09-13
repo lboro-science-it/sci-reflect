@@ -18,7 +18,7 @@
                     {{ choice.label !== '' ? choice.label : '(value: ' + choice.value + ')' }}
                 </button>
             </transition>
-            <p class="scireflect-tooltip">
+            <p class="scireflect-tooltip" v-if="getDescriptorText(choice.id)">
                 {{ getDescriptorText(choice.id) }}
             </p>
         </div>
@@ -61,6 +61,10 @@ export default {
             let choiceDescriptor = this.descriptors.filter(descriptor => {
                 return descriptor.choice_id == choiceId;
             });
+
+            if (typeof choiceDescriptor[0] === 'undefined') {
+                return false;
+            }
 
             return choiceDescriptor[0].text;
         },

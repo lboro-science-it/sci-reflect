@@ -75824,6 +75824,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return descriptor.choice_id == choiceId;
             });
 
+            if (typeof choiceDescriptor[0] === 'undefined') {
+                return false;
+            }
+
             return choiceDescriptor[0].text;
         },
 
@@ -75880,9 +75884,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.updateRating(choice.value)
         }
       }
-    }, [_vm._v("\n                " + _vm._s(choice.label !== '' ? choice.label : '(value: ' + choice.value + ')') + "\n            ")])]), _vm._v(" "), _c('p', {
+    }, [_vm._v("\n                " + _vm._s(choice.label !== '' ? choice.label : '(value: ' + choice.value + ')') + "\n            ")])]), _vm._v(" "), (_vm.getDescriptorText(choice.id)) ? _c('p', {
       staticClass: "scireflect-tooltip"
-    }, [_vm._v("\n            " + _vm._s(_vm.getDescriptorText(choice.id)) + "\n        ")])], 1)
+    }, [_vm._v("\n            " + _vm._s(_vm.getDescriptorText(choice.id)) + "\n        ")]) : _vm._e()], 1)
   })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
