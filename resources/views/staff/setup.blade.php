@@ -129,6 +129,12 @@ Setup {{ $activity->name }}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"text": "Second indicator for basic skill 1",<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"number": 2<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"descriptors": [<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S1 This is the descriptor for the first choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S1 This is the descriptor for the second choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S1 Descriptor for third choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S1 Descriptor for fourth choice"<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;},<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;{<br/>
@@ -154,6 +160,12 @@ Setup {{ $activity->name }}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"text": "Third indicator for basic skill 2",<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"number": 3<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"descriptors": [<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S2 This is the descriptor for the first choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S2 This is the descriptor for the second choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S2 Descriptor for third choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S2 Descriptor for fourth choice"<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;},<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;{<br/>
@@ -167,6 +179,12 @@ Setup {{ $activity->name }}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"text": "Indicator for advanced skill 1",<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"number": 1<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"descriptors": [<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S3 This is the descriptor for the first choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S3 This is the descriptor for the second choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S3 Descriptor for third choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S3 Descriptor for fourth choice"<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;},<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;{<br/>
@@ -184,6 +202,12 @@ Setup {{ $activity->name }}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"text": "Another advanced skill 2 indicator. Nothing else to signpost here.",<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"number": 2<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"descriptors": [<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S4 This is the descriptor for the first choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S4 This is the descriptor for the second choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S4 Descriptor for third choice",<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"S4 Descriptor for fourth choice"<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;}<br/>
                         &nbsp;&nbsp;],<br/>
@@ -243,7 +267,7 @@ Setup {{ $activity->name }}
                         &nbsp;&nbsp;&nbsp;&nbsp;},<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;{<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"label": "AWESOME!",<br/>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"value": 999<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"value": 4<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp;}<br/>
                         &nbsp;&nbsp;]<br/>
                         }
