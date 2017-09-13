@@ -34,6 +34,7 @@ class Activity extends Model
             'blocks',
             'categories',
             'choices',
+            'descriptors',
             'pages',
             'rounds',
             'skills.indicators',
@@ -49,13 +50,13 @@ class Activity extends Model
         $idMaps['blocks'] = $this->cloneFromCollection($activity->blocks);
         $idMaps['categories'] = $this->cloneFromCollection($activity->categories);
         $idMaps['pages'] = $this->cloneFromCollection($activity->pages);
-
-        // we don't need to use choice_id anywhere else so just clone it
-        $this->cloneFromCollection($activity->choices);
+        $idMaps['choices'] = $this->cloneFromCollection($activity->choices);
 
         // clone objects that also need to update relationships' ids using $idMaps
         $idMaps['rounds'] = $this->cloneRounds($activity->rounds, $idMaps);
         $idMaps['skills'] = $this->cloneSkillsAndIndicators($activity->skills, $idMaps);
+
+        $this->cloneDescriptors($activity->descriptors, $idMaps);
 
         $skillPivotsToClone = $activity->pages->pluck('skillPivots')->collapse()->unique();
         $blockPivotsToClone = $activity->pages->pluck('blockPivots')->collapse()->unique();
@@ -133,6 +134,25 @@ class Activity extends Model
         }
 
         $className::insert($pivotsToCreate);
+    }
+
+    /**
+     * Clones the descriptors from a different activity into this activity,
+     * updating skill id and choice id to match whatever $idMaps says.
+     * This is an ugly function but I am running low on time now.
+     * TODO: do it all in a single insert statement.
+     *
+     */
+    private function cloneDescriptors($descriptors, $idMaps)
+    {
+        foreach ($descriptors as $descriptor) {
+            $newDescriptor = $descriptor->replicate();
+            $newDescriptor->activity_id = $this->id;
+            $newDescriptor->choice_id = $idMaps['choices'][$descriptor->choice_id];
+            $newDescriptor->skill_id = $idMaps['skills'][$descriptor->skill_id];
+
+            $newDescriptor->save();
+        }
     }
 
     /** 
@@ -229,7 +249,7 @@ class Activity extends Model
 
         // create choices, don't store their ids as just related to activity
         if (isset($jsonArray['choices'])) {
-            $this->createChoicesFromArray($jsonArray['choices']);
+            $idMaps['choices'] = $this->createChoicesFromArray($jsonArray['choices']);
         }
 
         // now $idMaps contains the actual ids of the blocks, categories from jsonArray
@@ -294,17 +314,24 @@ class Activity extends Model
      */
     private function createChoicesFromArray($choicesArray)
     {
-        foreach ($choicesArray as $choiceItem) {
+        $idMaps = [];
+
+        foreach ($choicesArray as $index => $choiceItem) {
             $choice = new \App\Choice();
             $choice->fill($choiceItem);
             $choice->activity_id = $this->id;
             $choice->save();
+            $idMaps[$index] = $choice->id;
         }
+
+        return $idMaps;
     }
 
     /**
      * Takes an associative array (from JSON) of skills, plus separate array
-     * of how to transpose ids. Creates the siklls and indicators
+     * of how to transpose ids. Creates the skills and indicators.
+     * Also creates Descriptors. Sorry the function name doesn't reflect this,
+     * will sort it if I have time.
      *
      */
     private function createSkillsAndIndicatorsFromArray($skillsArray, $idMaps)
@@ -312,9 +339,10 @@ class Activity extends Model
         $skillIdMaps = [];
         foreach ($skillsArray as $index => $skillItem) {
             $skill = new \App\Skill();
-            $skill->fill(array_diff_key($skillItem, ['indicators' => '']));
+            $skill->fill(array_diff_key($skillItem, ['indicators' => '', 'descriptors' => '']));
             $skill->block_id = $idMaps['blocks'][$skill->block_id];
             $skill->activity_id = $this->id;
+            $skill->category_id = $idMaps['categories'][$skill->category_id];
             $skill->save();
 
             $indicatorItems = $skillItem['indicators'] ?? [];
@@ -324,6 +352,17 @@ class Activity extends Model
                 $indicator->fill($indicatorItem);
                 $indicator->skill_id = $skill->id;
                 $indicator->save();
+            }
+
+            $descriptorItems = $skillItem['descriptors'] ?? [];
+
+            foreach ($descriptorItems as $descriptorIndex => $descriptorItem) {
+                $descriptor = new \App\Descriptor();
+                $descriptor->activity_id = $this->id;
+                $descriptor->skill_id = $skill->id;
+                $descriptor->choice_id = $idMaps['choices'][$descriptorIndex];
+                $descriptor->text = $descriptorItem;
+                $descriptor->save();
             }
 
             $skillIdMaps[$index] = $skill->id;

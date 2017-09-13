@@ -91,6 +91,12 @@
                     "text": "Second indicator for basic skill 1",
                     "number": 2
                 }
+            ],
+            "descriptors": [
+                "S1 This is the descriptor for the first choice",
+                "S1 This is the descriptor for the second choice",
+                "S1 Descriptor for third choice",
+                "S1 Descriptor for fourth choice"
             ]
         },
         {
@@ -116,6 +122,12 @@
                     "text": "Third indicator for basic skill 2",
                     "number": 3
                 }
+            ],
+            "descriptors": [
+                "S2 This is the descriptor for the first choice",
+                "S2 This is the descriptor for the second choice",
+                "S2 Descriptor for third choice",
+                "S2 Descriptor for fourth choice"
             ]
         },
         {
@@ -129,6 +141,12 @@
                     "text": "Indicator for advanced skill 1",
                     "number": 1
                 }
+            ],
+            "descriptors": [
+                "S3 This is the descriptor for the first choice",
+                "S3 This is the descriptor for the second choice",
+                "S3 Descriptor for third choice",
+                "S3 Descriptor for fourth choice"
             ]
         },
         {
@@ -146,6 +164,12 @@
                     "text": "Another advanced skill 2 indicator. Nothing else to signpost here.",
                     "number": 2
                 }
+            ],
+            "descriptors": [
+                "S4 This is the descriptor for the first choice",
+                "S4 This is the descriptor for the second choice",
+                "S4 Descriptor for third choice",
+                "S4 Descriptor for fourth choice"
             ]
         }
     ],
@@ -205,7 +229,7 @@
         },
         {
             "label": "AWESOME!",
-            "value": 999
+            "value": 4
         }
     ]
 }
