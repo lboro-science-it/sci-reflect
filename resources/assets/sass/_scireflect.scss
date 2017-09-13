@@ -103,7 +103,8 @@
   border:20px solid $lboro-purple;
 }
 
-.scireflect-radio:hover + .scireflect-tooltip {
+.scireflect-radio:hover + .scireflect-tooltip,
+.choice-btn:hover + .scireflect-tooltip {
     display: block;
     border: 5px solid $lboro-purple;
     border-radius: 5px;

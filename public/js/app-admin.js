@@ -75788,6 +75788,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -75805,7 +75808,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['choices', 'skill'],
+    props: ['choices', 'descriptors', 'skill'],
 
     methods: {
         getBtnClass: function getBtnClass(value) {
@@ -75815,14 +75818,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return 'btn-info';
             }
         },
+        getDescriptorText: function getDescriptorText(choiceId) {
+            // filter this.descriptors, look for the one with choice_id match
+            var choiceDescriptor = this.descriptors.filter(function (descriptor) {
+                return descriptor.choice_id == choiceId;
+            });
+
+            return choiceDescriptor[0].text;
+        },
 
 
         // update the skill in the parent array
         updateRating: function updateRating(value) {
             this.$emit('update-rating', value);
         }
-    }
+    },
 
+    mounted: function mounted() {
+        console.log(this.descriptors);
+    }
 });
 
 /***/ }),
@@ -75866,7 +75880,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.updateRating(choice.value)
         }
       }
-    }, [_vm._v("\n                " + _vm._s(choice.label !== '' ? choice.label : '(value: ' + choice.value + ')') + "\n            ")])])], 1)
+    }, [_vm._v("\n                " + _vm._s(choice.label !== '' ? choice.label : '(value: ' + choice.value + ')') + "\n            ")])]), _vm._v(" "), _c('p', {
+      staticClass: "scireflect-tooltip"
+    }, [_vm._v("\n            " + _vm._s(_vm.getDescriptorText(choice.id)) + "\n        ")])], 1)
   })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -75977,6 +75993,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -75990,7 +76007,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    props: ['choices', 'homeUrl', 'postUrl', 'roundNumber', 'skills', 'studentId', 'studentName'],
+    props: ['choices', 'descriptors', 'homeUrl', 'postUrl', 'roundNumber', 'skills', 'studentId', 'studentName'],
 
     computed: {
         saveBtnClass: function saveBtnClass() {
@@ -75999,6 +76016,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 return 'btn-success';
             }
+        },
+        activeSkillDescriptors: function activeSkillDescriptors() {
+            // get the id of the active skill
+            var activeSkillId = this.skills[this.activeSkillIndex].id;
+
+            // filter this.descriptors for ones whose skill_id matches
+            var activeSkillDescriptors = this.descriptors.filter(function (descriptor) {
+                return descriptor.skill_id == activeSkillId;
+            });
+
+            // return only the descriptors for the active skill
+            return activeSkillDescriptors;
         }
     },
 
@@ -76102,7 +76131,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('skill-rater', {
     attrs: {
       "skill": _vm.skills[_vm.activeSkillIndex],
-      "choices": _vm.choices
+      "choices": _vm.choices,
+      "descriptors": _vm.activeSkillDescriptors
     },
     on: {
       "update-rating": _vm.updateRating

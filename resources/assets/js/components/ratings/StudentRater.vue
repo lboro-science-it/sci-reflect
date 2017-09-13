@@ -26,6 +26,7 @@
                 <div class="panel-body">
                     <skill-rater :skill="skills[activeSkillIndex]"
                                  :choices="choices"
+                                 :descriptors="activeSkillDescriptors"
                                  v-on:update-rating="updateRating">
                     </skill-rater>
                 </div>
@@ -64,6 +65,7 @@
 
         props: [
             'choices',
+            'descriptors',
             'homeUrl',
             'postUrl',
             'roundNumber',
@@ -79,6 +81,19 @@
                 } else {
                     return 'btn-success';
                 }
+            },
+
+            activeSkillDescriptors() {
+                // get the id of the active skill
+                let activeSkillId = this.skills[this.activeSkillIndex].id;
+
+                // filter this.descriptors for ones whose skill_id matches
+                let activeSkillDescriptors = this.descriptors.filter(descriptor => {
+                    return descriptor.skill_id == activeSkillId;
+                });
+
+                // return only the descriptors for the active skill
+                return activeSkillDescriptors;
             }
         },
 

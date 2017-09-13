@@ -17,6 +17,7 @@ class CreateDescriptorsTable extends Migration
     {
         Schema::create('descriptors', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('activity_id');
             $table->integer('choice_id');
             $table->integer('skill_id');
             $table->string('text')->nullable();

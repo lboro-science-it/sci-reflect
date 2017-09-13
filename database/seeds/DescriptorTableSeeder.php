@@ -14,6 +14,7 @@ class DescriptorTableSeeder extends Seeder
         for ($skill = 1; $skill <= 12; $skill++) {
             for ($choice = 1; $choice <= 4; $choice++) {
                 DB::table('descriptors')->insert([
+                    'activity_id' => 1,
                     'choice_id' => $choice,
                     'skill_id' => $skill,
                     'text' => "This is the descriptor for skill $skill and choice $choice.",

@@ -8456,7 +8456,8 @@ button.close {
   border: 20px solid #361163;
 }
 
-.scireflect-radio:hover + .scireflect-tooltip {
+.scireflect-radio:hover + .scireflect-tooltip,
+.choice-btn:hover + .scireflect-tooltip {
   display: block;
   border: 5px solid #361163;
   border-radius: 5px;

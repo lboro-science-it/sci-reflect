@@ -712,6 +712,11 @@ class Activity extends Model
         return $this->hasMany('App\Choice');
     }
 
+    public function descriptors()
+    {
+        return $this->hasMany('App\Descriptor');
+    }
+
     public function groups()
     {
         return $this->hasMany('App\Group');

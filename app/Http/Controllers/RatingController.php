@@ -92,6 +92,7 @@ class RatingController extends Controller
         return view('staff.rating')
              ->with('skills', $skillsArray)
              ->with('choices', $choices)
+             ->with('descriptors', $activity->descriptors)
              ->with('round', $round)
              ->with('student', $student);
     }

@@ -18,6 +18,9 @@
                     {{ choice.label !== '' ? choice.label : '(value: ' + choice.value + ')' }}
                 </button>
             </transition>
+            <p class="scireflect-tooltip">
+                {{ getDescriptorText(choice.id) }}
+            </p>
         </div>
     </div>
 </template>
@@ -40,6 +43,7 @@ export default {
 
     props: [
         'choices',
+        'descriptors',
         'skill'
     ],
 
@@ -52,10 +56,23 @@ export default {
             }
         },
 
+        getDescriptorText(choiceId) {
+            // filter this.descriptors, look for the one with choice_id match
+            let choiceDescriptor = this.descriptors.filter(descriptor => {
+                return descriptor.choice_id == choiceId;
+            });
+
+            return choiceDescriptor[0].text;
+        },
+
         // update the skill in the parent array
         updateRating(value) {
             this.$emit('update-rating', value);
         }
+    },
+
+    mounted() {
+        console.log(this.descriptors);
     }
 
 }
