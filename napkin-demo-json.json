@@ -1,0 +1,211 @@
+{
+    "rounds": [
+        {
+            "keep_visible": 1,
+            "round_number": 1,
+            "title": "Round 1",
+            "block_id": 0,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                0, 1, 2
+            ]
+        },
+        {
+            "keep_visible": 1,
+            "round_number": 2,
+            "title": "Round 2",
+            "block_id": 1,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                0, 1, 3, 2
+            ]
+        }
+    ],
+    "pages": [
+        {
+            "title": "Intro page",
+            "blocks": [
+                {
+                    "id": 2,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Basic skills page",
+            "blocks": [
+                {
+                    "id": 3,
+                    "position": 1
+                }
+            ],
+            "skills": [
+                {
+                    "id": 0,
+                    "position": 2
+                },
+                {
+                    "id": 1,
+                    "position": 3
+                }
+            ]
+        },
+        {
+            "title": "Outro page",
+            "blocks": [
+                {
+                    "id": 4,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Advanced skills page",
+            "skills": [
+                {
+                    "id": 2,
+                    "position": 1
+                },
+                {
+                    "id": 3,
+                    "position": 2
+                }
+            ]
+        }
+    ],
+    "skills": [
+        {
+            "title": "Basic skill 1",
+            "description": "This is the description of a basic skill. This block_id is the content shown when the user clicks the 'improve' link.",
+            "block_id": 5,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "First indicator for basic skill 1",
+                    "number": 1
+                },
+                {
+                    "text": "Second indicator for basic skill 1",
+                    "number": 2
+                }
+            ]
+        },
+        {
+            "title": "Basic skill 2",
+            "description": "The is the description of another basic skill. Note that it doesn't matter how many indicators there are (as long as there's at least one)",
+            "block_id": 6,
+            "number": 2,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "First indicator for basic skill 2",
+                    "number": 1
+                },
+                {
+                    "text": "Second indicator for basic skill 2",
+                    "number": 2
+                },
+                {
+                    "text": "Fourth indicator for basic skill 2 - just to demonstrate that it's the number that determines what order they are rendered, not their order in this array.",
+                    "number": 4
+                },
+                {
+                    "text": "Third indicator for basic skill 2",
+                    "number": 3
+                }
+            ]
+        },
+        {
+            "title": "Advanced skill 1",
+            "description": "This is an advanced skill. As you can see, this is only used on the 4th page (advanced skills page) which is only present in round 2.",
+            "block_id": 7,
+            "number": 1,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "Indicator for advanced skill 1",
+                    "number": 1
+                }
+            ]
+        },
+        {
+            "title": "Advanced skill 2",
+            "description": "A second advanced skill. Note that the advanced skills are in a different category to the basic skills. They'll be displayed with a different colour",
+            "block_id": 8,
+            "number": 2,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "Indicator for advanced skill 2. Notice numbers of the skills. These determine their render order within their category (which has its own render order)",
+                    "number": 1
+                },
+                {
+                    "text": "Another advanced skill 2 indicator. Nothing else to signpost here.",
+                    "number": 2
+                }
+            ]
+        }
+    ],
+    "categories": [
+        {
+            "name": "Basic skills category",
+            "color": "#dff0d8",
+            "number": 1
+        },
+        {
+            "name": "Advanced skills category",
+            "color": "#0f0f04",
+            "number": 2
+        }
+    ],
+    "blocks": [
+        {
+            "content": "Content for the round 1 intro. Notice how the block_ids referred to in this json object are in fact references to the index within this json object - not the database itself. They will be transposed to what the ids become in the database."
+        },
+        {
+            "content": "Content for the round 2 intro. Of course, array indexes start at 0. Therefore this is block_id 1 as far as the json parser is concerned. When it gets inserted into the database, the actual id may end up as 4025 or something, doesn't matter."
+        },
+        {
+            "content": "Block for intro page. Notice how the intro page is included in both rounds 1 and 2. That means this content will be seen on the first page of both rounds."
+        },
+        {
+            "content": "Block for basic skills page. Notice how pages can have both blocks and skills. The position properties are used to sort the order they are rendered on the page."
+        },
+        {
+            "content": "Outro page content block. Notice how this page is included on both rounds 1 and 2, but in round 2, it is the fourth page. Page numbers and stuff will be automatically dealt with when the object is parsed."
+        },
+        {
+            "content": "Block for basic skill 1. When the students complete a round and see their skills overview, they can click on each skill and see advice on improving the skill - that is contained in this block."
+        },
+        {
+            "content": "Block for basic skill 2. Nothing much else to say on the blocks used in skills"
+        },
+        {
+            "content": "Block for advanced skill 1."
+        },
+        {
+            "content": "Block for advanced skill 2"
+        }
+    ],
+    "choices": [
+        {
+            "label": "Choice 1",
+            "value": 1
+        },
+        {
+            "label": "Choice 2",
+            "value": 2
+        },
+        {
+            "label": "Choice 3",
+            "value": 3
+        },
+        {
+            "label": "AWESOME!",
+            "value": 999
+        }
+    ]
+}
