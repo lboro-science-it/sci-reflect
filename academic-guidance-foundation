@@ -616,7 +616,7 @@
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I am aware of the safety requirements in the lab both for myself and others in the laboratory.",
+                    "text": "Health & Safety.",
                     "number": 1
                 }
             ]
@@ -629,7 +629,7 @@
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I like Maths and am confident with my numerical skills.",
+                    "text": "Numerical.",
                     "number": 1
                 }
             ]
@@ -642,20 +642,20 @@
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I have a good understanding of good laboratory practice and hence lab skils.",
+                    "text": "Lab Skills.",
                     "number": 1
                 }
             ]
         },
         {
-            "title": "Analytical",
+            "title": "Experimental Design",
             "description": "",
             "block_id": 25,
             "number": 4,
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I am confident in my investigative skills.",
+                    "text": "Experimental Design.",
                     "number": 1
                 }
             ]
@@ -668,11 +668,7 @@
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I have confident problem solving abilities.",
-                    "number": 1
-                },
-                {
-                    "text": "I understand what it means to be a critical thinker.",
+                    "text": "Problem Solving/Critical thinker.",
                     "number": 1
                 }
             ]
@@ -795,7 +791,7 @@
             "content": "Block for Subject-specific: Lab Skills"
         },
         {
-            "content": "Block for Subject-specific: Analytical"
+            "content": "Block for Subject-specific: Experimental Design"
         },
         {
             "content": "Block for Subject-specific: Problem Solving/Critical thinker"

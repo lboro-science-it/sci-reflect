@@ -17,7 +17,7 @@ class CreateSkillsTable extends Migration
             $table->increments('id');
             $table->integer('activity_id')->nullable();
             $table->integer('category_id')->nullable();
-            $table->string('title', 50)->nullable();
+            $table->string('title', 255)->nullable();
             $table->text('description')->nullable();
             $table->integer('block_id')->nullable();
             $table->integer('number');

@@ -616,63 +616,59 @@
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I am aware of the safety requirements in the lab both for myself and others in the laboratory.",
+                    "text": "Health & Safety.",
                     "number": 1
                 }
             ]
         },
         {
-            "title": "Numerical",
+            "title": "Ethical Issues",
             "description": "",
             "block_id": 23,
             "number": 2,
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I like Maths and am confident with my numerical skills.",
+                    "text": "Ethical Issues.",
                     "number": 1
                 }
             ]
         },
         {
-            "title": "Lab Skills",
+            "title": "Adaptability in Software Technologies",
             "description": "",
             "block_id": 24,
             "number": 3,
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I have a good understanding of good laboratory practice and hence lab skils.",
+                    "text": "Adaptability in Software Technologies.",
                     "number": 1
                 }
             ]
         },
         {
-            "title": "Analytical",
+            "title": "Modelling and Verification",
             "description": "",
             "block_id": 25,
             "number": 4,
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I am confident in my investigative skills.",
+                    "text": "Modelling and Verification.",
                     "number": 1
                 }
             ]
         },
         {
-            "title": "Problem Solving/Critical thinker",
+            "title": "Problem Solving and Critical thinking",
             "description": "",
             "block_id": 26,
             "number": 5,
             "category_id": 3,
             "indicators": [
                 {
-                    "text": "I have confident problem solving abilities.",
-                    "number": 1
-                },
-                {
-                    "text": "I understand what it means to be a critical thinker.",
+                    "text": "Problem Solving and Critical thinking.",
                     "number": 1
                 }
             ]
@@ -789,16 +785,16 @@
             "content": "Block for Subject-specific: Health & Safety"
         },
         {
-            "content": "Block for Subject-specific: Numerical"
+            "content": "Block for Subject-specific: Ethical Issues"
         },
         {
-            "content": "Block for Subject-specific: Lab Skills"
+            "content": "Block for Subject-specific: Adaptability in Software Technologies"
         },
         {
-            "content": "Block for Subject-specific: Analytical"
+            "content": "Block for Subject-specific: Modelling and Verification"
         },
         {
-            "content": "Block for Subject-specific: Problem Solving/Critical thinker"
+            "content": "Block for Subject-specific: Problem Solving and Critical thinking"
         }
     ]
 }
