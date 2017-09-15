@@ -15,7 +15,7 @@ class ActivityModelTest extends TestCase
      *
      * @return void
      */
-    public function testActivityIsOpen()
+    public function testIsOpen()
     {
         $activity = factory(\App\Activity::class)->create();
 

@@ -1,0 +1,90 @@
+{
+    "rounds": [{
+        "keep_visible":1,
+        "round_number":1,
+        "title":"round 1",
+        "block_id":0,
+        "staff_rate":0,
+        "student_rate":1,
+        "pages": [0]
+        }],
+    "pages": [{
+        "title": "whatever",
+        "blocks": [{
+            "id": 1,
+            "position": 1
+        }],
+        "skills": [{
+            "id": 0,
+            "position": 1
+        }, {
+            "id": 1,
+            "position": 2
+        }]
+    }],
+    "skills": [{
+            "title": "making a cup of tea",
+            "description": "description",
+            "block_id": 2,
+            "number": 0,
+            "category_id": 0,
+            "indicators": [{
+                "text": "did you leave the bag in for the correct time",
+                "number": 1
+            }]
+        },
+        {
+            "title": "making a cup of coffee",
+            "description": "description",
+            "block_id": 3,
+            "number": 1,
+            "category_id": 1,
+            "indicators": [{
+                    "text": "did you use enough milk",
+                    "number": 1
+                },
+                {
+                    "text": "did you use sugar?",
+                    "number": 2
+                }
+            ]
+        }
+    ],
+    "categories": [{
+            "name": "category 1",
+            "color": "#3b165c",
+            "number": 1
+        },
+        {
+            "name": "category 2",
+            "color": "#b6005d",
+            "number": 2
+        }
+    ],
+    "choices": [{
+            "label": "Poor",
+            "value": 1
+        },
+        {
+            "label": "Avg",
+            "value": 2
+        },
+        {
+            "label": "Good",
+            "value": 3
+        }
+    ],
+    "blocks": [{
+            "content": "round content blah"
+        },
+        {
+            "content": "page content blah"
+        },
+        {
+            "content": "skill 1 content"
+        },
+        {
+            "content": "skill 2 content"
+        }
+    ]
+}

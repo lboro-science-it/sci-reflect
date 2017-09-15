@@ -1,0 +1,602 @@
+{
+    "rounds": [
+        {
+            "keep_visible": 1,
+            "round_number": 1,
+            "title": "Week 4, Semester 1 Assessment",
+            "block_id": 0,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                0, 1, 2, 3, 4, 5, 6, 7
+            ]
+        },
+        {
+            "keep_visible": 1,
+            "round_number": 2,
+            "title": "Week 10, Semester 1 Assessment",
+            "block_id": 1,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                0, 1, 2, 3, 4, 5, 6, 7
+            ]
+        },
+        {
+            "keep_visible": 1,
+            "round_number": 2,
+            "title": "Week 7-10, Semester 2 Assessment",
+            "block_id": 2,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                0, 1, 2, 3, 4, 5, 6, 7
+            ]
+        }
+    ],
+    "pages": [
+        {
+            "title": "Introduction",
+            "blocks": [
+                {
+                    "id": 3,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "General Housekeeping",
+            "skills": [
+                {
+                    "id": 0,
+                    "position": 1
+                },
+                {
+                    "id": 1,
+                    "position": 2
+                },
+                {
+                    "id": 2,
+                    "position": 3
+                }
+            ]
+        },
+        {
+            "title": "Record Keeping",
+            "skills": [
+                {
+                    "id": 3,
+                    "position": 1
+                },
+                {
+                    "id": 4,
+                    "position": 2
+                },
+                {
+                    "id": 5,
+                    "position": 3
+                }
+            ]
+        },
+        {
+            "title": "Weighing and Measuring",
+            "skills": [
+                {
+                    "id": 6,
+                    "position": 1
+                },
+                {
+                    "id": 7,
+                    "position": 2
+                },
+                {
+                    "id": 8,
+                    "position": 3
+                }
+            ]
+        },
+        {
+            "title": "Waste Disposal",
+            "skills": [
+                {
+                    "id": 9,
+                    "position": 1
+                },
+                {
+                    "id": 10,
+                    "position": 2
+                },
+                {
+                    "id": 11,
+                    "position": 3
+                }
+            ]
+        },
+        {
+            "title": "Experimental set-up",
+            "skills": [
+                {
+                    "id": 12,
+                    "position": 1
+                },
+                {
+                    "id": 13,
+                    "position": 2
+                },
+                {
+                    "id": 14,
+                    "position": 3
+                }
+            ]
+        },
+        {
+            "title": "Sample Analysis",
+            "skills": [
+                {
+                    "id": 15,
+                    "position": 1
+                },
+                {
+                    "id": 16,
+                    "position": 2
+                },
+                {
+                    "id": 17,
+                    "position": 3
+                }
+            ]
+        },
+        {
+            "title": "Activity complete",
+            "blocks": [
+                {
+                    "id": 4,
+                    "position": 1
+                }
+            ]
+        }
+    ],
+    "skills": [
+        {
+            "title": "Work area clean",
+            "description": "",
+            "block_id": 5,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Is the work area clean?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Area contains unidentified chemicals",
+                "Minor spills and/or unidentified chemicals",
+                "Area clean and free from spills"
+            ]
+        },
+        {
+            "title": "Labelled reagents",
+            "description": "",
+            "block_id": 6,
+            "number": 2,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "Are the reagents labelled?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Unidentified reagents present",
+                "Some unidentified reagents present",
+                "All reagents clearly labelled"
+            ]
+        },
+        {
+            "title": "General tidiness",
+            "description": "",
+            "block_id": 7,
+            "number": 3,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "How is the general tidiness?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Used disposable droppers, gloves, paper towels left on benches",
+                "Some disposable items left on benches",
+                "All lab disposables such as droppers, gloves, paper towels thrown away"
+            ]
+        },
+        {
+            "title": "Units",
+            "description": "",
+            "block_id": 8,
+            "number": 2,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "Have units been used appropriately?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "No units present",
+                "Some units present",
+                "All appropriate units present"
+            ]
+        },
+        {
+            "title": "Method",
+            "description": "",
+            "block_id": 9,
+            "number": 3,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "Is a clear method present?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "No method outline present",
+                "Method outline present with some omissions",
+                "Clear method present"
+            ]
+        },
+        {
+            "title": "Observations",
+            "description": "",
+            "block_id": 10,
+            "number": 3,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "Have all observations been recorded correctly?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "None recorded",
+                "Some recorded",
+                "All recorded; new entry in lab book with date/title of experiment"
+            ]
+        },
+        {
+            "title": "Spillages",
+            "description": "",
+            "block_id": 11,
+            "number": 1,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "Have any spillages been cleaned correctly?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Spillages not cleaned",
+                "Spillages cleaned incorrectly",
+                "Spillages cleaned correctly"
+            ]
+        },
+        {
+            "title": "Technique",
+            "description": "",
+            "block_id": 12,
+            "number": 2,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "Has the correct technique been used?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Inaccurate technique",
+                "",
+                "Correct technique"
+            ]
+        },
+        {
+            "title": "Reagents housekeeping",
+            "description": "",
+            "block_id": 13,
+            "number": 3,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "Have reagents been taken back and secured?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Reagents not taken back, not secured",
+                "Reagents not taken back, but are secured",
+                "Reagents taken back and secured"
+            ]
+        },
+        {
+            "title": "Aqueous",
+            "description": "",
+            "block_id": 14,
+            "number": 1,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "Has aqueous waste been disposed of correctly?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Disposed of in incorrect container (e.g. halogenated)",
+                "Disposed of in sink with hot water",
+                "Disposed of correctly (sink with cold water)"
+            ]
+        },
+        {
+            "title": "Solids",
+            "description": "",
+            "block_id": 15,
+            "number": 2,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "Have solids been disposed of correctly?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Disposed of in incorrect container (e.g. halogenated)",
+                "Disposed of in general lab waste bin",
+                "Disposed of correctly in appropriate solid waste container"
+            ]
+        },
+        {
+            "title": "Concentrated acids",
+            "description": "",
+            "block_id": 16,
+            "number": 3,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "Have concentrated acids been disposed of correctly?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Disposed of in halogenated waste",
+                "Disposed of down sink",
+                "Diluted and disposed of down sink"
+            ]
+        },
+        {
+            "title": "Reflux condenser",
+            "description": "",
+            "block_id": 17,
+            "number": 1,
+            "category_id": 4,
+            "indicators": [
+                {
+                    "text": "Has the reflux condenser been correctly secured?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Not secured with clamp",
+                "Secured with clamp but incorrect place",
+                "Correctly secured with clamp"
+            ]
+        },
+        {
+            "title": "Room temperature stirring",
+            "description": "",
+            "block_id": 18,
+            "number": 2,
+            "category_id": 4,
+            "indicators": [
+                {
+                    "text": "Has the room temperature stirrer been correctly secured?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Not secured with clamp",
+                "Secured with clamp but incorrect place",
+                "Correctly secured with clamp"
+            ]
+        },
+        {
+            "title": "Titrations",
+            "description": "",
+            "block_id": 19,
+            "number": 3,
+            "category_id": 4,
+            "indicators": [
+                {
+                    "text": "Has the burette been properly clamped?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Burette not securely clamped (Do all labs use burette clamps? If so mark down if an ordinary clamp/boss is used)",
+                "Burette properly clamped but not eye level and/or funnel left in top after filling",
+                "Burette properly clamped at the right level, no funnel"
+            ]
+        },
+        {
+            "title": "ATR-FTIR",
+            "description": "",
+            "block_id": 20,
+            "number": 1,
+            "category_id": 5,
+            "indicators": [
+                {
+                    "text": "Was the sample point cleaned correctly?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Sample point not cleaned before use",
+                "Sample point cleaned before or after use",
+                "Sample point cleaned before AND after use"
+            ]
+        },
+        {
+            "title": "Melting point",
+            "description": "",
+            "block_id": 21,
+            "number": 2,
+            "category_id": 5,
+            "indicators": [
+                {
+                    "text": "Were the correct instrucment parameters and sample size used?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "Incorrect instrument parameters (e.g. ramp too quick)",
+                "Correct instrument parameters, too much / too little sample",
+                "Correct instrument sparameters, correct sample size"
+            ]
+        },
+        {
+            "title": "Spectroscopy (abs. / fluo.)",
+            "description": "",
+            "block_id": 22,
+            "number": 3,
+            "category_id": 5,
+            "indicators": [
+                {
+                    "text": "Were cells cleaned after use and a solvent blank run?",
+                    "number": 1
+                }
+            ],
+            "descriptors": [
+                "No blank & used cells left dirty/in instrument",
+                "",
+                "Cells cleaned after use & a solvent blank run"
+            ]
+        }
+    ],
+    "categories": [
+        {
+            "name": "General Housekeeping",
+            "color": "#3b165c",
+            "number": 1
+        },
+        {
+            "name": "Record Keeping",
+            "color": "#b6005d",
+            "number": 2
+        },
+        {
+            "name": "Weighing and Measuring",
+            "color": "#a7092c",
+            "number": 3
+        },
+        {
+            "name": "Waste Disposal",
+            "color": "#e57c00",
+            "number": 4
+        },
+        {
+            "name": "Experimental set-up",
+            "color": "#009c7b",
+            "number": 5
+        },
+        {
+            "name": "Sample Analysis",
+            "color": "#00577b",
+            "number": 6
+        }
+    ],
+    "blocks": [
+        {
+            "content": "Dashboard content for Round 1."
+        },
+        {
+            "content": "Dashboard content for Round 2."
+        },
+        {
+            "content": "Dashboard content for Round 3."
+        },
+        {
+            "content": "Intro page content (Common across all rounds)."
+        },
+        {
+            "content": "Activity complete page content (Common across all rounds)."
+        },
+        {
+            "content": "Work Area Clean - how to improve content."
+        },
+        {
+            "content": "Labelled Reagents - how to improve content."
+        },
+        {
+            "content": "General Tidiness - how to improve content."
+        },
+        {
+            "content": "Units - how to improve content."
+        },
+        {
+            "content": "Methods - how to improve content."
+        },
+        {
+            "content": "Observations - how to improve content."
+        },
+        {
+            "content": "Spillages - how to improve content."
+        },
+        {
+            "content": "Technique - how to improve content."
+        },
+        {
+            "content": "Reagents Housekeeping - how to improve content."
+        },
+        {
+            "content": "Aqueous - how to improve content."
+        },
+        {
+            "content": "Solids - how to improve content."
+        },
+        {
+            "content": "Concentrated Acids - how to improve content."
+        },
+        {
+            "content": "Reflux Condenser - how to improve content."
+        },
+        {
+            "content": "Room Temperature Stirring - how to improve content."
+        },
+        {
+            "content": "Titrations - how to improve content."
+        },
+        {
+            "content": "ATR-FTIR - how to improve content."
+        },
+        {
+            "content": "Melting Point - how to improve content."
+        },
+        {
+            "content": "Spectroscopy (abs. / fluo.) - how to improve content."
+        }
+    ],
+    "choices": [
+        {
+            "label": "Poor",
+            "value": 1
+        },
+        {
+            "label": "Average",
+            "value": 2
+        },
+        {
+            "label": "Good",
+            "value": 3
+        }
+    ]
+}

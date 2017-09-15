@@ -1,0 +1,800 @@
+{
+    "rounds": [
+        {
+            "keep_visible": 1,
+            "round_number": 1,
+            "title": "Session 1",
+            "block_id": 0,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+            ]
+        },
+        {
+            "keep_visible": 1,
+            "round_number": 2,
+            "title": "Session 2",
+            "block_id": 1,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+            ]
+        },
+        {
+            "keep_visible": 1,
+            "round_number": 3,
+            "title": "Session 3",
+            "block_id": 2,
+            "staff_rate": 1,
+            "student_rate": 1,
+            "pages": [
+                2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+            ]
+        }
+    ],
+    "pages": [
+        {
+            "title": "Welcome: Session 1",
+            "blocks": [
+                {
+                    "id": 3,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Welcome: Session 2",
+            "blocks": [
+                {
+                    "id": 4,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Welcome: Session 3",
+            "blocks": [
+                {
+                    "id": 5,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Core Knowledge: Active note taking",
+            "skills": [
+                {
+                    "id": 0,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Core Knowledge: Scientific writing skills",
+            "skills": [
+                {
+                    "id": 1,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Core Knowledge: Reviewing/editing skills",
+            "skills": [
+                {
+                    "id": 2,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Core Knowledge: Literature/resource searching",
+            "skills": [
+                {
+                    "id": 3,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Core Knowledge: Academic Scholarship",
+            "skills": [
+                {
+                    "id": 4,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Interpersonal: Team work",
+            "skills": [
+                {
+                    "id": 5,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Interpersonal: Extra-curricular engagement",
+            "skills": [
+                {
+                    "id": 6,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Interpersonal: Public engagement",
+            "skills": [
+                {
+                    "id": 7,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Interpersonal: Verbal/non-verbal communication",
+            "skills": [
+                {
+                    "id": 8,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Interpersonal: Listens to feedback",
+            "skills": [
+                {
+                    "id": 9,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Professional: Reliability",
+            "skills": [
+                {
+                    "id": 10,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Professional: Time management",
+            "skills": [
+                {
+                    "id": 11,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Professional: Work place etiquette",
+            "skills": [
+                {
+                    "id": 12,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Professional: Leadership",
+            "skills": [
+                {
+                    "id": 13,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Professional: Innovative and Enterprising",
+            "skills": [
+                {
+                    "id": 14,
+                    "position": 1
+                }
+            ]
+        },
+        {
+            "title": "Subject-specific",
+            "skills": [
+                {
+                    "id": 15,
+                    "position": 1
+                },
+                {
+                    "id": 16,
+                    "position": 2
+                },
+                {
+                    "id": 17,
+                    "position": 3
+                },
+                {
+                    "id": 18,
+                    "position": 4
+                },
+                {
+                    "id": 19,
+                    "position": 5
+                }
+            ]
+        },
+        {
+            "title": "End of session",
+            "blocks": [
+                {
+                    "id": 6,
+                    "position": 1
+                }
+            ]
+        }
+    ],
+    "skills": [
+        {
+            "title": "Active note taking",
+            "description": "",
+            "block_id": 7,
+            "number": 1,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "I understand how to take good notes",
+                    "number": 1
+                },
+                {
+                    "text": "I am able to make good quality revision notes from my lecture notes",
+                    "number": 2
+                },
+                {
+                    "text": "I am able to reproduce diagrams, figures and tables accurately",
+                    "number": 3
+                },
+                {
+                    "text": "I can identify weaknesses in my notes and know where to look to fill them",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Scientific writing skills",
+            "description": "",
+            "block_id": 8,
+            "number": 2,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "I understand the difference between scientific writing and narrative",
+                    "number": 1
+                },
+                {
+                    "text": "I am confident in my scientific writing skills",
+                    "number": 2
+                },
+                {
+                    "text": "I am able to read a question or assessment brief and understand what to do",
+                    "number": 3
+                },
+                {
+                    "text": "I know where I can get help with scientific writing if I need it",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Reviewing/editing skills",
+            "description": "",
+            "block_id": 9,
+            "number": 3,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "I always review and edit my work before handing it in",
+                    "number": 1
+                },
+                {
+                    "text": "I help my peers to review their work",
+                    "number": 2
+                },
+                {
+                    "text": "I ask for help from my peers to review my work",
+                    "number": 3
+                },
+                {
+                    "text": "I find peer review helps me to improve my scientic writing",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Literature/resource searching",
+            "description": "",
+            "block_id": 10,
+            "number": 4,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "I know how to look for resources using the e-library tools",
+                    "number": 1
+                },
+                {
+                    "text": "I know how to identify good quality literature resources",
+                    "number": 2
+                },
+                {
+                    "text": "I improve my wider understanding of topics by literature searching",
+                    "number": 3
+                },
+                {
+                    "text": "I know the diffierence between primary and secondary literature sources",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Academic Scholarship",
+            "description": "",
+            "block_id": 11,
+            "number": 5,
+            "category_id": 0,
+            "indicators": [
+                {
+                    "text": "I understand what Academic Scholarship means",
+                    "number": 1
+                },
+                {
+                    "text": "I know the difference between plagiarism and quotation",
+                    "number": 2
+                },
+                {
+                    "text": "I know the difference between group work and collusion",
+                    "number": 3
+                },
+                {
+                    "text": "I know how to reference in my academic field",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Team Work - 'Versatile team workers'",
+            "description": "",
+            "block_id": 12,
+            "number": 1,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "I am confident that I can work in different types of team",
+                    "number": 1
+                },
+                {
+                    "text": "I have participated in group tasks or activities that were successful",
+                    "number": 2
+                },
+                {
+                    "text": "I communicate regularly and clearly with my colleagues when I am part of a team",
+                    "number": 3
+                },
+                {
+                    "text": "I listen to and respect the opinions and views of colleagues as part of being a team member",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Extra-curricular engagement - 'Active participant'",
+            "description": "",
+            "block_id": 13,
+            "number": 2,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "I am involved in activities outside of my academic programme",
+                    "number": 1
+                },
+                {
+                    "text": "I seek out new opportunities to develop myself personally",
+                    "number": 2
+                },
+                {
+                    "text": "I identify my personal needs and engage in training/skills development to improve them",
+                    "number": 3
+                },
+                {
+                    "text": "I make the most of the Loughborough experience",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Public engagement - 'Caring, ethical and with integrity'",
+            "description": "",
+            "block_id": 14,
+            "number": 3,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "I actively participate in my community",
+                    "number": 1
+                },
+                {
+                    "text": "I take pride in my work and demonstrate academic integrity",
+                    "number": 2
+                },
+                {
+                    "text": "I embrace diversity and am inclusive in my dealings with others",
+                    "number": 3
+                },
+                {
+                    "text": "I demonstrate loyalty, honesty, fairness and respect whoever I interact with",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Verbal/non-verbal communication - 'Reflective and articulate'",
+            "description": "",
+            "block_id": 15,
+            "number": 4,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "My communication skills are the best that they can be",
+                    "number": 1
+                },
+                {
+                    "text": "I can present complex information confidently and clearly",
+                    "number": 2
+                },
+                {
+                    "text": "I can present information confidently and clearly to any audience",
+                    "number": 3
+                },
+                {
+                    "text": "I can use a range of methods to analyse and question before synthesising and making judgements",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Listens to feedback - 'Agile lifelong learners'",
+            "description": "",
+            "block_id": 16,
+            "number": 5,
+            "category_id": 1,
+            "indicators": [
+                {
+                    "text": "I reflect on my own actions and skills used to improve what I do",
+                    "number": 1
+                },
+                {
+                    "text": "I build on past experiences by applying lessons learnt to solve new problems",
+                    "number": 2
+                },
+                {
+                    "text": "I engage in continuous personal development",
+                    "number": 3
+                },
+                {
+                    "text": "I can gain a clear view of a situation from digesting and analysing evidence provided",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Reliability - 'Reliable and committed'",
+            "description": "",
+            "block_id": 17,
+            "number": 1,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "I feel that people can rely on me to deliver tasks I have agreed to do",
+                    "number": 1
+                },
+                {
+                    "text": "When asked I will undertake additional work to ensure projects are completed on time",
+                    "number": 2
+                },
+                {
+                    "text": "I work well with others on a given project",
+                    "number": 3
+                },
+                {
+                    "text": "I take pride in working collaboratively with others and producing the best we can",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Time management - 'Reliable and committed'",
+            "description": "",
+            "block_id": 18,
+            "number": 2,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "I manage my time well",
+                    "number": 1
+                },
+                {
+                    "text": "I can work to clear deadlines given by others",
+                    "number": 2
+                },
+                {
+                    "text": "I can organise myself in order to positively contribute to the completion of a task",
+                    "number": 3
+                },
+                {
+                    "text": "I can plan to achieve short, medium and long term goals",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Work place etiquette - 'Resilient and adaptable'",
+            "description": "",
+            "block_id": 19,
+            "number": 3,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "I understand the way I should conduct myself in the work place",
+                    "number": 1
+                },
+                {
+                    "text": "I can adapt my approach to manage a range of tasks and situations",
+                    "number": 2
+                },
+                {
+                    "text": "I respond well to both negative and positive feedback and reflect on it in an appropriate way",
+                    "number": 3
+                },
+                {
+                    "text": "I can adapt my feedback and behaviour to be sensitive to my audience",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Leadership - 'Competitive high achiever'",
+            "description": "",
+            "block_id": 20,
+            "number": 4,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "I can lead a group of people well",
+                    "number": 1
+                },
+                {
+                    "text": "I know how to inspire and motivate others",
+                    "number": 2
+                },
+                {
+                    "text": "I strive for the best in everything I do",
+                    "number": 3
+                },
+                {
+                    "text": "I am able to identify my own mistakes",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Innovation - 'Innovative and Enterprising'",
+            "description": "",
+            "block_id": 21,
+            "number": 5,
+            "category_id": 2,
+            "indicators": [
+                {
+                    "text": "I am not afraid to challenge solutions to arrive at the best results",
+                    "number": 1
+                },
+                {
+                    "text": "I take the initiative to learn new things",
+                    "number": 2
+                },
+                {
+                    "text": "I am able to generate novel and innovative ideas",
+                    "number": 3
+                },
+                {
+                    "text": "I am continually looking for ways to improve myself and my actions",
+                    "number": 4
+                }
+            ]
+        },
+        {
+            "title": "Health & Safety",
+            "description": "",
+            "block_id": 22,
+            "number": 1,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "I am aware of general health and safety issues, particularly those related to working with computers.",
+                    "number": 1
+                }
+            ]
+        },
+        {
+            "title": "Using mathematical software/IT skills",
+            "description": "",
+            "block_id": 23,
+            "number": 2,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "I am comfortable with Maple, Matlab, Microsoft Excel (select the software with the least rating).",
+                    "number": 1
+                }
+            ]
+        },
+        {
+            "title": "Understanding of proofs and mathematical language",
+            "description": "",
+            "block_id": 24,
+            "number": 3,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "I can appreciate and participate in the construction of proofs, and am aware of relevant mathematical language.",
+                    "number": 1
+                }
+            ]
+        },
+        {
+            "title": "Research methods",
+            "description": "",
+            "block_id": 25,
+            "number": 4,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "I am confident in my use of the library, and other online resources that supplement the material in the lecture notes.",
+                    "number": 1
+                }
+            ]
+        },
+        {
+            "title": "Problem Solving/Critical thinking",
+            "description": "",
+            "block_id": 26,
+            "number": 5,
+            "category_id": 3,
+            "indicators": [
+                {
+                    "text": "I am comfortable with my level of critical thinking and problem solving skills.",
+                    "number": 1
+                }
+            ]
+        }
+    ],
+    "categories": [
+        {
+            "name": "Core Knowledge",
+            "color": "#3b165c",
+            "number": 1
+        },
+        {
+            "name": "Interpersonal",
+            "color": "#b6005d",
+            "number": 2
+        },
+        {
+            "name": "Professional",
+            "color": "#a7092c",
+            "number": 3
+        },
+        {
+            "name": "Subject-specific",
+            "color": "#e57c00",
+            "number": 4
+        }
+    ],
+    "choices": [
+        {
+            "label": "Strongly disagree",
+            "value": 1
+        },
+        {
+            "label": "Disagree",
+            "value": 2
+        },
+        {
+            "label": "Agree",
+            "value": 3
+        },
+        {
+            "label": "Strongly Agree",
+            "value": 4
+        }
+    ],
+    "blocks": [
+        {
+            "content": "Block for Session 1 Dashboard"
+        },
+        {
+            "content": "Block for Session 2 Dashboard"
+        },
+        {
+            "content": "Block for Session 3 Dashboard"
+        },
+        {
+            "content": "Block for Session 1 Intro page"
+        },
+        {
+            "content": "Block for Session 2 Intro page"
+        },
+        {
+            "content": "Block for Session 3 Intro page"
+        },
+        {
+            "content": "Block for End of Session page"
+        },
+        {
+            "content": "Block for Core Knowledge: Active note taking"
+        },
+        {
+            "content": "Block for Core Knowledge: Scientific writing skills"
+        },
+        {
+            "content": "Block for Core Knowledge: Reviewing/editing skills"
+        },
+        {
+            "content": "Block for Core Knowledge: Literature/resource searching"
+        },
+        {
+            "content": "Block for Core Knowledge: Academic Scholarship"
+        },
+        {
+            "content": "Block for Interpersonal: Team work"
+        },
+        {
+            "content": "Block for Interpersonal: Extra-curricular engagement"
+        },
+        {
+            "content": "Block for Interpersonal: Public engagement"
+        },
+        {
+            "content": "Block for Interpersonal: Verbal/non-verbal Communcation"
+        },
+        {
+            "content": "Block for Interpersonal: Listens to feedback"
+        },
+        {
+            "content": "Block for Professional: Reliability"
+        },
+        {
+            "content": "Block for Professional: Time management"
+        },
+        {
+            "content": "Block for Professional: Work place etiquette"
+        },
+        {
+            "content": "Block for Professional: Leadership"
+        },
+        {
+            "content": "Block for Professional: Innovation"
+        },
+        {
+            "content": "Block for Subject-specific: Health & Safety"
+        },
+        {
+            "content": "Block for Subject-specific: Using mathematical software/IT skills"
+        },
+        {
+            "content": "Block for Subject-specific: Understanding of proofs and mathematical language"
+        },
+        {
+            "content": "Block for Subject-specific: Research methods"
+        },
+        {
+            "content": "Block for Subject-specific: Problem Solving/Critical thinking"
+        }
+    ]
+}
